@@ -1,0 +1,44 @@
+/* styles.css 또는 index.css 파일에 추가 */
+.product-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.product-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.product-item {
+  flex: 1 1 calc(16.66% - 20px);
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.product-item img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
