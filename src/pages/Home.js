@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../css/home.css';
+import './components/Header.js'
+import Header from './components/Header.js';
 
 
 
@@ -7,7 +9,7 @@ const Home = () => {
     const products = [
         {
             id: 1,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: '삼성전자 2024 스마트 모니터 (미개봉)',
             price: 220000,
             location: '서둔동',
@@ -15,7 +17,7 @@ const Home = () => {
         },
         {
             id: 2,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: '아이폰 12 128기가 화이트',
             price: 250000,
             location: '철산3동',
@@ -23,7 +25,7 @@ const Home = () => {
         },
         {
             id: 3,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: 'LG OLED TV 55인치',
             price: 1200000,
             location: '강남구',
@@ -31,7 +33,7 @@ const Home = () => {
         },
         {
             id: 4,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: '삼성 갤럭시 S21 256기가',
             price: 450000,
             location: '신사동',
@@ -39,7 +41,7 @@ const Home = () => {
         },
         {
             id: 5,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: 'Apple AirPods Pro',
             price: 150000,
             location: '홍대',
@@ -47,7 +49,7 @@ const Home = () => {
         },
         {
             id: 6,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: '소니 WH-1000XM4 무선 헤드폰',
             price: 350000,
             location: '부산진구',
@@ -56,7 +58,7 @@ const Home = () => {
         // 추가 데이터
         {
             id: 7,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: 'Samsung Galaxy Buds 2',
             price: 120000,
             location: '서울시',
@@ -64,7 +66,7 @@ const Home = () => {
         },
         {
             id: 8,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: 'MacBook Air 2023',
             price: 1400000,
             location: '강서구',
@@ -72,7 +74,7 @@ const Home = () => {
         },
         {
             id: 9,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: 'LG 27인치 게이밍 모니터',
             price: 300000,
             location: '안양시',
@@ -80,7 +82,7 @@ const Home = () => {
         },
         {
             id: 10,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: 'Sony PlayStation 5',
             price: 600000,
             location: '성남시',
@@ -88,7 +90,7 @@ const Home = () => {
         },
         {
             id: 11,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com200',
             title: 'Apple iPad Pro 11인치',
             price: 800000,
             location: '일산',
@@ -96,7 +98,7 @@ const Home = () => {
         },
         {
             id: 12,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: '닌텐도 스위치 OLED',
             price: 400000,
             location: '부천시',
@@ -104,7 +106,7 @@ const Home = () => {
         },
         {
             id: 13,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: 'Razer DeathAdder 게이밍 마우스',
             price: 80000,
             location: '수원시',
@@ -112,7 +114,7 @@ const Home = () => {
         },
         {
             id: 14,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: 'ASUS TUF 15.6인치 노트북',
             price: 900000,
             location: '대전',
@@ -120,7 +122,7 @@ const Home = () => {
         },
         {
             id: 15,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: 'Bose QuietComfort 35 II',
             price: 300000,
             location: '광주',
@@ -128,11 +130,27 @@ const Home = () => {
         },
         {
             id: 16,
-            image: 'https://via.placeholder.com/150',
+            image: 'https://via.placeholder.com/200',
             title: 'GoPro Hero 10',
             price: 500000,
             location: '제주도',
             time: '14시간 전',
+        },
+        {
+            id: 17,
+            image: 'https://via.placeholder.com/200',
+            title: '스타벅스 5만원',
+            price: 47000,
+            location: '군자동',
+            time: '1시간 전',
+        },
+        {
+            id: 18,
+            image: 'https://via.placeholder.com/200',
+            title: '삼천리 자전거',
+            price: '150,000',
+            location: '',
+            time: '2시간 전'
         }
     ];
 
@@ -153,6 +171,9 @@ const Home = () => {
 
       
     return (
+        <>
+        <Header/>
+        <div className='home-body'>
         <section>
             <div className="product-list">
                 <h2>당신을 위한 추천상품!</h2>
@@ -176,6 +197,31 @@ const Home = () => {
                 </div>
             </div>
         </section>
+        <section>
+            <div className="product-list">
+                <h2>방금 등록된 상품</h2>
+                <div className="product-items">
+                    {currentProducts.map(product => (
+                        <div key={product.id} className="product-item">
+                            <img src={product.image} alt={product.title} />
+                            <h3>{product.title}</h3>
+                            <p>{product.price}원</p>
+                            <p>{product.location} | {product.time}</p>
+                        </div>
+                    ))}
+                </div>
+                <div className="pagination">
+                    <button onClick={handlePrevPage} disabled={currentPage === 0}>
+                        이전
+                    </button>
+                    <button onClick={handleNextPage} disabled={currentPage >= Math.ceil(products.length / itemsPerPage) - 1}>
+                        다음
+                    </button>
+                </div>
+            </div>
+        </section>
+        </div>
+        </>
     );
 };
 

@@ -1,4 +1,6 @@
-/* styles.css 또는 index.css 파일에 추가 */
+.home-body {
+  padding: 0 180px;
+}
 .product-list {
   display: flex;
   flex-direction: column;
@@ -7,14 +9,12 @@
 .product-items {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px;
 }
 
 .product-item {
   flex: 1 1 calc(16.66% - 20px);
   box-sizing: border-box;
-  background-color: #f9f9f9;
-  padding: 10px;
   border-radius: 8px;
   text-align: center;
 }

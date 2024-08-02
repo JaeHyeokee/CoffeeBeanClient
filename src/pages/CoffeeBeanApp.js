@@ -18,7 +18,7 @@ import CarDetail from './car/CarDetail';
 import CarList from './car/CarList';
 import CarUpdate from './car/CarUpdate';
 import Chat from './chatting/Chat';
-import ChatList from './chatting/ChatList';
+import ChatFrame from './chatting/ChatFrame';
 import PostCreate from './post/PostCreate';
 import PostDetail from './post/PostDetail';
 import PostList from './post/PostList';
@@ -46,9 +46,6 @@ const CoffeeBeanApp = () => {
             <Route path = '/CarDetail' Component={CarDetail}/>
             <Route path = '/CarLIst' Component={CarList}/>
             <Route path = '/CarUpdate' Component={CarUpdate}/>
-
-            <Route path='/Chat' Component={Chat}/>
-            <Route path='/Chat' Component={ChatList}/>
 
             <Route path = '/DipsList' Component={DipsList}/>
             <Route path = '/LogIn' Component={LogIn}/>

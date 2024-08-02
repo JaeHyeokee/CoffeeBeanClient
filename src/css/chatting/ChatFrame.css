@@ -1,3 +1,9 @@
+h3 {
+    text-align: center;
+    color: black;
+    font-size:x-large;
+}
+
 .chat-list {
     background-color: rgb(206, 206, 206);
     color: black;
