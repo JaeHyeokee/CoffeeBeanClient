@@ -1,4 +1,63 @@
-.chat-list {
-    background-color: rgb(206, 206, 206);
+p {
+    margin: 0;
+}
+
+.chat-elem {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: white;
     color: black;
+}
+
+.chat-elem:hover {
+    background-color: #F5F5F5;
+}
+
+.img-frame-pf {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    width: 13%;
+}
+
+.img-frame-pd {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    padding-right: 5px;
+    width: 13%;
+}
+
+.profile-img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+}
+
+.chat-room-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px 0;
+    width: 74%;
+}
+
+.nickname-and-time {
+    display: flex;
+    gap: 10px;
+}
+
+.nickname {
+    font-weight: bold;
+}
+
+.timestamp {
+    font-size: 12px;
+}
+
+.product-img {
+    height: 40px;
+    width: 40px;
+    border-radius: 5px;
 }
