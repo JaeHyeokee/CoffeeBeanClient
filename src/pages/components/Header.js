@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import '../../css/components/Header.css';
 import chat from '../../image/ChatIcon.svg';
 import my from '../../image/MyIcon.svg';
-import sale from '../../image/SaleIcon.svg'
+import sale from '../../image/SaleIcon.svg';
+import x from '../../image/x.svg';
 import { Link } from 'react-router-dom';
 import ChatDiv from '../chatting/ChatFrame';
 
@@ -107,8 +108,8 @@ const Header = () => {
                 {isChatSidebarOpen && (
                     <>
                         <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
-                        <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}> 
-                            <button className='close-button' onClick={toggleChatSidebar}>×</button> {/* 사이드바 닫기 버튼 */}
+                        <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
+                            <button className='close-button' onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25}/></button> {/* 사이드바 닫기 버튼 */}
                             <ChatDiv />
                         </div>
                     </>

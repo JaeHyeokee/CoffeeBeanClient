@@ -1,10 +1,8 @@
-h3 {
+.chatting {
+    background-color: #EBEBEB;
+    margin: 0;
+    padding: 20px;
     text-align: center;
     color: black;
-    font-size:x-large;
-}
-
-.chat-list {
-    background-color: rgb(206, 206, 206);
-    color: black;
+    font-size: x-large;
 }
