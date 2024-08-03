@@ -1,0 +1,123 @@
+.page-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.productcreate-body {
+    width: 80%;
+    max-width: 800px; 
+}
+
+.productcreate-body h2 {
+    margin-bottom: 20px;
+}
+
+.add-attachment {
+    display: flex;
+    align-items: center;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.add-attachment img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.add-attachment h4 {
+    margin: 0;
+}
+
+.product-name, .product-price, .product-info {
+    margin-bottom: 40px;
+}
+
+/* 상품명 */
+.product-name-input {
+    width: 100%;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    box-sizing: border-box;
+    font-size: large;
+}
+
+/* 카테고리 */
+.product-category {
+    width: 30%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #f5f5f5;
+}
+
+.dropdown-button {
+    background-color: #f5f5f5;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+/* 가격 */
+.product-price {
+    position: relative;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.product-price img {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+}
+
+.product-input-price {
+    width: 100%;
+    padding-left: 40px;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: large;
+}
+
+/* 상품 설명 */
+.product-info {
+    width: 100%;
+}
+
+.product-input-info {
+    width: 100%;
+    height: 150px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: large;
+    resize: vertical;
+}
+
+.product-status button {
+    width: 90px;
+    height: 40px;
+    border-radius: 10px;
+    border-style: none;
+}
+
+.product-status-button1 {
+    margin-right: 30px;
+}
+
+

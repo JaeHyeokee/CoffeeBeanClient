@@ -69,13 +69,13 @@ const Header = () => {
 
                             {isSaleMenuOpen && (
                                 <div className='dropdown-menu'>
-                                    <Link to="/ProductList" className="nav-link">
+                                    <Link to="/ProductCreate" className="nav-link">
                                         <button className='dropdown-button'>중고물품</button>
                                     </Link>
-                                    <Link to="/PropertyList" className="nav-link">
+                                    <Link to="/PropertyCreate" className="nav-link">
                                         <button className='dropdown-button'>부동산</button>
                                     </Link>
-                                    <Link to="/CarList" className="nav-link">
+                                    <Link to="/CarCreate" className="nav-link">
                                         <button className='dropdown-button'>중고차</button>
                                     </Link>
                                 </div>
