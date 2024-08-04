@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import attachment from '../../image/Attachment.png'
 import price from '../../image/ProductPrice.png'
 import check from '../../image/Uncheck.png'
+import { Link } from 'react-router-dom';
 
 const ProductCreate = () => {
     return (
@@ -22,11 +23,11 @@ const ProductCreate = () => {
             </div>
 
             <div className='product-category'>
-                <button className='dropdown-button'>패션의류</button>
-                <button className='dropdown-button'>뷰티</button> 
-                <button className='dropdown-button'>노트북/PC</button>                  
-                <button className='dropdown-button'>도서/음반/문구</button>                  
-                <button className='dropdown-button'>레저/여행</button>                  
+                <button className='product-category-button'>패션의류</button>
+                <button className='product-category-button'>뷰티</button> 
+                <button className='product-category-button'>노트북/PC</button>                  
+                <button className='product-category-button'>도서/음반/문구</button>                  
+                <button className='product-category-button'>레저/여행</button>                  
             </div>
 
             <div className='product-price'>
@@ -48,7 +49,14 @@ const ProductCreate = () => {
                 <p>거래방법</p>
                 <button className='deal-way-button1'>
                     <img src={check} alt='' />택배거래</button>
-                <button className='deal-way-button2'>직거래</button>
+                <button className='deal-way-button2'>
+                    <img src={check} alt='' />직거래</button>
+            </div>
+
+            <div>
+                <Link to='/ProductDetail/:id'>
+                <button className='register-button'>등록하기</button>
+                </Link>
             </div>
 
         </div>

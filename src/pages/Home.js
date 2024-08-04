@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../css/home.css';
 import './components/Header.js'
 import Header from './components/Header.js';
+import { Link } from 'react-router-dom';
 
 
 
@@ -179,12 +180,12 @@ const Home = () => {
                 <h2>당신을 위한 추천상품!</h2>
                 <div className="product-items">
                     {currentProducts.map(product => (
-                        <div key={product.id} className="product-item">
+                        <Link key={product.id} to={`/ProductDetail/${product.id}`} className="product-item">
                             <img src={product.image} alt={product.title} />
                             <h3>{product.title}</h3>
                             <p>{product.price}원</p>
                             <p>{product.location} | {product.time}</p>
-                        </div>
+                        </Link>
                     ))}
                 </div>
                 <div className="pagination">
@@ -202,12 +203,12 @@ const Home = () => {
                 <h2>방금 등록된 상품</h2>
                 <div className="product-items">
                     {currentProducts.map(product => (
-                        <div key={product.id} className="product-item">
+                        <Link key={product.id} to={`/ProductDetail/${product.id}`} className="product-item">
                             <img src={product.image} alt={product.title} />
                             <h3>{product.title}</h3>
                             <p>{product.price}원</p>
                             <p>{product.location} | {product.time}</p>
-                        </div>
+                        </Link>
                     ))}
                 </div>
                 <div className="pagination">
