@@ -1,0 +1,83 @@
+.productdetail-body {
+    margin-top: 50px;
+    padding: 0 300px;
+}
+
+.product-detail {
+    display: flex;
+    flex-direction: column; 
+}
+
+.productdetail-top {
+    display: flex;
+    margin-bottom: 50px; 
+}
+
+.product-image img {
+    width: 500px;
+    border-radius: 10px;
+    margin-right: 200px;
+}
+
+.product-info {
+    flex: 1; 
+}
+
+.product-info-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 20px; 
+}
+
+.product-info-bottom div {
+    text-align: center;
+}
+
+/* 채팅하기, 찜하기 버튼 */
+.chat-dip-button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; 
+}
+
+.chat-button,
+.dip-button {
+    width: 48%; 
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chat-button {
+    background-color: white;
+}
+
+.dip-button {
+    background-color: black;
+    color: white;
+}
+
+/* 상품정보, user정보 */
+.productdetail-bottom {
+    display: flex;
+    width: 100%;
+    justify-content: space-between; 
+}
+
+.product-info-detail {
+    flex: 6; 
+    padding: 10px;
+    box-sizing: border-box;
+    border-right: 1px solid #ccc; 
+}
+
+.user-info {
+    flex: 4;
+    padding: 10px;
+    box-sizing: border-box;
+}
