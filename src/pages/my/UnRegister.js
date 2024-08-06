@@ -2,9 +2,9 @@ import React from 'react';
 
 const UnRegister = () => {
     return (
-        <div>
-            
-        </div>
+        <>
+            <h1>UnREgister</h1>  
+        </>
     );
 };
 
