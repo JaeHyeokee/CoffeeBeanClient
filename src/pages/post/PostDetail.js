@@ -1,10 +1,49 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../components/Header';
+import '../../css/post/PostDetail.css'
+import { Link, useLocation, useParams } from 'react-router-dom';
 
-const PostDetail = () => {
+const PostDetail = ({ initialContentType }) => {
+
+    const { id } = useParams();
+
+    const location = useLocation(); //현재 URL 정보
+    const queryParams = new URLSearchParams(location.search); //쿼리 문자열을 URLSearchParams 객체로 변환
+    const contentType = queryParams.get('contentType') || initialContentType; //contentType 파라미터 가져오거나 initialContentType 사용하기
+                        
+    const [selectedContentType, setSelectedContentType] = useState(contentType); //선택한 콘텐츠 상태
+
+    const posts = [
+        {id:1, title: '중고나라 카페 채팅방 이용시 주의사항', content:'상세내용~~~'},
+        {id:2, title: '회원등급 개편안내', content:'상세내용~~~'},
+        {id:3, title: '중고나라 시세 알아보기', content:'상세내용~~~'},
+        {id:4, title: '무료나눔 이용가이드', content:'상세내용~~~'},
+        {id:5, title: '사기꾼 예방하는 7가지 방법', content:'상세내용~~~'}
+    ];
+
+    const post = posts.find(post => post.id === parseInt(id));
+
     return (
         <>
-          <Header/>  
+          <Header/> 
+          <div className='postdetail-body'>
+          <h1>콘텐츠</h1>
+            <hr/>
+            <div className='post-list'>
+                <Link to='/PostList?contentType=contentType1'className={selectedContentType === 'contentType1' ? 'active-link' : ''}
+                    onClick={() => setSelectedContentType('contentType1')} >ㅇㅇ 소식</Link>
+                <Link to='/PostList?contentType=contentType2'className={selectedContentType === 'contentType2' ? 'active-link' : ''}
+                    onClick={() => setSelectedContentType('contentType2')}>중고거래 팁</Link>
+                <Link to='/PostList?contentType=contentType3'className={selectedContentType === 'contentType3' ? 'active-link' : ''}
+                    onClick={() => setSelectedContentType('contentType3')}>사기예방</Link>
+            </div>
+          <div className='postdetail-body'>
+            <div>{post.id}</div>
+            <div>{post.title}</div>
+            <div>{post.content}</div>
+          </div>
+          </div>
+
         </>
     );
 };

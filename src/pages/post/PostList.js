@@ -12,15 +12,15 @@ const PostList = ({ initialContentType }) => {
 
     const contentList = {
         contentType1: [
-            { id: 1, title: '중고나라 카페 채팅방 이용시 주의사항' },
-            { id: 2, title: '회원등급 개편안내' }
+            { id: 1, title: '중고나라 카페 채팅방 이용시 주의사항',  content:'상세내용~~~1'},
+            { id: 2, title: '회원등급 개편안내',  content:'상세내용~~~'}
         ],
         contentType2: [
-            { id: 3, title: '중고나라 시세 알아보기' },
-            { id: 4, title: '무료나눔 이용가이드' }
+            { id: 3, title: '중고나라 시세 알아보기', content:'상세내용~~~' },
+            { id: 4, title: '무료나눔 이용가이드', content:'상세내용~~~' }
         ],
         contentType3: [
-            { id: 5, title: '사기꾼 예방하는 7가지 방법' }
+            { id: 5, title: '사기꾼 예방하는 7가지 방법', content:'상세내용~~~' }
         ]
     };
 
@@ -46,8 +46,10 @@ const PostList = ({ initialContentType }) => {
                         <p key={post.id}>
                             <Link to={`/PostDetail/${post.id}`} > 
                             {post.title}
+                            <hr/>
                             </Link>
-                            </p>
+                        </p>
+                       
                             
                     ))
                 ) : (
