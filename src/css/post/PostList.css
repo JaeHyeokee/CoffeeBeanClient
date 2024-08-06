@@ -6,11 +6,17 @@
     display: flex;
 }
 
-.post-list {
+.post-list a {
     text-decoration: none;
-    margin-right: 50px;
-    background-color:white;
-    border-style: none;
-    font-weight: bold;
-    font-size: 20px;
+    color: black;
+    margin-right: 150px;
+    margin-bottom: 30px;
+}
+
+.post-list a:hover {
+    text-decoration: underline;
+}
+
+.post-title p {
+    margin-bottom: 10px;
 }

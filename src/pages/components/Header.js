@@ -104,10 +104,12 @@ const Header = () => {
                     </nav>
                 </div>
 
+                <div className='category-car-post'>
                 <Category />
                 <div className='header-bottom'>
-                <div>중고차</div>
-                <div>게시판</div>
+                <Link to='/CarList' className='category-car'>중고차</Link>
+                <Link to ='/PostList'>게시판</Link>
+                </div>
                 </div>
 
                 {/* 사이드바 */}

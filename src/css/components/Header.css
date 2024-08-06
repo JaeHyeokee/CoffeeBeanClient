@@ -16,6 +16,21 @@ header {
     display: flex;
     align-items: center;
   }
+
+.header-bottom a {
+    text-decoration: none; 
+    color: inherit;      
+    font-weight: bold;  
+    font-size: large;
+}
+
+.category-car-post {
+  display: flex;
+}
+
+.category-car {
+  margin-right: 20px;
+}
   
   .logo {
     width: 200px;

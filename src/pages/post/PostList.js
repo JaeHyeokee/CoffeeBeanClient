@@ -12,15 +12,15 @@ const PostList = ({ initialContentType }) => {
 
     const contentList = {
         contentType1: [
-            '중고나라 카페 채팅방 이용시 주의사항', 
-            '회원등급 개편안내'
+            { id: 1, title: '중고나라 카페 채팅방 이용시 주의사항' },
+            { id: 2, title: '회원등급 개편안내' }
         ],
         contentType2: [
-            '중고나라 시세 알아보기', 
-            '무료나눔 이용가이드'
+            { id: 3, title: '중고나라 시세 알아보기' },
+            { id: 4, title: '무료나눔 이용가이드' }
         ],
         contentType3: [
-            '사기꾼 예방하는 7가지 방법'
+            { id: 5, title: '사기꾼 예방하는 7가지 방법' }
         ]
     };
 
@@ -42,8 +42,13 @@ const PostList = ({ initialContentType }) => {
             </div>
             <div className='post-title'>
                 {posts.length > 0 ? (
-                    posts.map((item, index) => (
-                        <p key={index}>{item}</p>
+                    posts.map((post) => (
+                        <p key={post.id}>
+                            <Link to={`/PostDetail/${post.id}`} > 
+                            {post.title}
+                            </Link>
+                            </p>
+                            
                     ))
                 ) : (
                     <p>해당 카테고리에 대한 게시물이 없습니다.</p>
