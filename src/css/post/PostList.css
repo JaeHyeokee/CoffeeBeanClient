@@ -1,0 +1,16 @@
+.postlist-body {
+    padding: 30px 13%;
+}
+
+.post-list {
+    display: flex;
+}
+
+.post-list {
+    text-decoration: none;
+    margin-right: 50px;
+    background-color:white;
+    border-style: none;
+    font-weight: bold;
+    font-size: 20px;
+}

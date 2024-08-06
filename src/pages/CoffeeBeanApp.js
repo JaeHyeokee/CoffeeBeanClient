@@ -17,8 +17,6 @@ import CarCreate from './car/CarCreate';
 import CarDetail from './car/CarDetail';
 import CarList from './car/CarList';
 import CarUpdate from './car/CarUpdate';
-import Chat from './chatting/Chat';
-import ChatFrame from './chatting/ChatFrame';
 import PostCreate from './post/PostCreate';
 import PostDetail from './post/PostDetail';
 import PostList from './post/PostList';
@@ -60,13 +58,15 @@ const CoffeeBeanApp = () => {
             <Route path = '/UnRegister' Component={UnRegister}/>
 
             <Route path = '/PostCreate' Component={PostCreate}/>
-            <Route path = '/PostDetail' Component={PostDetail}/>
-            <Route path = '/PostList' Component={PostList}/>
+            <Route path = '/PostDetail/:id' Component={PostDetail}/>
+            <Route path="/PostList" element={<PostList initialContentType="contentType1" />} />
             <Route path = '/PostUpdate' Component={PostUpdate}/>
 
             <Route path = '/ProductCreate' Component={ProductCreate}/>
-            <Route path = '/ProductDetail' Component={ProductDetail}/>
-            <Route path = '/ProductList' Component={ProductList}/>
+            <Route path = '/ProductDetail/:id' Component={ProductDetail}/>
+            <Route path = '/ProductList/:category' Component={ProductList}/>
+            <Route path = '/ProductList/:category/:subcategory' Component={ProductList}/>
+            <Route path = '/ProductList/:category/:subcategory/:subsubcategory' Component={ProductList}/>
             <Route path = '/ProductUpdate' Component={ProductUpdate}/>
 
             <Route path = '/PropertyCreate' Component={PropertyCreate}/>

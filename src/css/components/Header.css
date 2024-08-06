@@ -11,6 +11,11 @@ header {
     padding: 10px 20px;
     position: relative;
   }
+
+  .header-bottom {
+    display: flex;
+    align-items: center;
+  }
   
   .logo {
     width: 200px;
@@ -81,24 +86,66 @@ header {
     display: flex;
     align-items: center;
     text-decoration: none; 
-    color: inherit; /* 링크 색상 상속 */
+    color: inherit;
   }
 
   
-  /* 카테고리 */
-  .category {
+/* 카테고리 */
+.category {
+    display: flex;
+    position: relative;
     padding: 10px 20px;
-  }
+}
+
+.category-menu {
+    position: relative; 
+}
   
   .category-button {
     padding: 10px 20px;
-    font-size: 16px;
+    font-size: 18px;
     color: white;
     background-color: black;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-right: 70px;
+    cursor: pointer;
   }
+
+
+.dropdown-content {
+    display: none; 
+    position: absolute; 
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 10000000; 
+    top: 100%; 
+    left: 0;
+    width: 200px; 
+}
+
+  .category-menu:hover .dropdown-content {
+    display: block; 
+}
+
+.dropdown-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.property-button,
+.post-button {
+  background-color: white;
+  color: black;
+  border-style: none;
+  margin-right: 30px;
+  cursor: pointer;
+  font-size: 16px;
+}
 
 /* 채팅 */
 /* 전체 페이지의 스크롤 막기 */

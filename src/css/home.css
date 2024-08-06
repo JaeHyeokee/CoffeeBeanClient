@@ -1,6 +1,7 @@
 .home-body {
-  padding: 0 180px;
+  padding: 0 13%;
 }
+
 .product-list {
   display: flex;
   flex-direction: column;
@@ -17,6 +18,16 @@
   box-sizing: border-box;
   border-radius: 8px;
   text-align: center;
+  text-decoration: none;
+  color: black;
+}
+
+.product-item:active {
+  color: inherit;
+}
+
+.product-item:visited {
+  color: inherit;
 }
 
 .product-item img {

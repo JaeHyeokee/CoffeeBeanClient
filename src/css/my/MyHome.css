@@ -1,0 +1,36 @@
+.myhome-body {
+    display: flex;
+    padding: 50px 13%;
+}
+
+.mypage-box {
+    width: 200x;
+    margin-right: 150px;
+    
+}
+
+.mypage-box p {
+    margin-bottom: 10px;
+}
+
+.mypage {
+    font-weight: bolder;
+    font-size:x-large;
+    margin-bottom: 20px;
+}
+
+.deal-info,
+.my-info {
+    font-weight: bolder;
+    font-size: larger;
+    margin-bottom: 10px;
+}
+
+.myinfo-detail {
+    flex: 6;
+}
+
+.myinfo-detail p {
+    font-size:xx-large;
+    font-weight: bolder;
+}

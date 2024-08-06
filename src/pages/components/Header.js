@@ -6,6 +6,7 @@ import sale from '../../image/SaleIcon.svg';
 import x from '../../image/x.svg';
 import { Link } from 'react-router-dom';
 import ChatDiv from '../chatting/ChatFrame';
+import Category from './Category';
 
 const Header = () => {
 
@@ -14,7 +15,7 @@ const Header = () => {
     const [isSaleMenuOpen, setIsSaleMenuOpen] = useState(false);
     const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
 
-    // 사이드바 스크롤관리
+    // 사이드바 스크롤관리 (채팅하기 눌렀을때)
     useEffect(() => {
         if (isChatSidebarOpen) {
             document.body.classList.add('no-scroll');
@@ -29,22 +30,22 @@ const Header = () => {
     const toggleChatSidebar = () => {
         setIsChatSidebarOpen(!isChatSidebarOpen);
 
-        if(isSaleMenuOpen) setIsMyMenuOpen(false);
-        if(isMyMenuOpen) setIsMyMenuOpen(false);
+        if (isSaleMenuOpen) setIsMyMenuOpen(false);
+        if (isMyMenuOpen) setIsMyMenuOpen(false);
     }
 
     const toggleSaleMenu = () => {
         setIsSaleMenuOpen(!isSaleMenuOpen);
 
-        if(isSaleMenuOpen) setIsMyMenuOpen(false);
-        if(isChatSidebarOpen) setIsChatSidebarOpen(false);
+        if (isSaleMenuOpen) setIsMyMenuOpen(false);
+        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
     };
 
     const toggleMyMenu = () => {
         setIsMyMenuOpen(!isMyMenuOpen);
 
-        if(isMyMenuOpen) setIsSaleMenuOpen(false);
-        if(isChatSidebarOpen) setIsChatSidebarOpen(false);
+        if (isMyMenuOpen) setIsSaleMenuOpen(false);
+        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
     }
 
 
@@ -52,19 +53,21 @@ const Header = () => {
         <>
             <header>
                 <div className='header-top'>
-                    <img src='https://via.placeholder.com/200x80' className='logo' alt='로고'/>
-                    <input type='text' className='search' placeholder='어떤 상품을 찾으시나요?'/>
+                    <Link to='/'>
+                        <img src='https://via.placeholder.com/200x80' className='logo' alt='로고' />
+                    </Link>
+                    <input type='text' className='search' placeholder='어떤 상품을 찾으시나요?' />
                     <nav className="nav">
                         <div>
                             <button className="nav-item" onClick={toggleChatSidebar}>
-                                <img src={chat} className="nav-icon" alt="아이콘"/>
+                                <img src={chat} className="nav-icon" alt="아이콘" />
                                 채팅하기
                             </button>
                         </div>
 
                         <div>
                             <button className="nav-item" onClick={toggleSaleMenu}>
-                                <img src={sale} className="nav-icon" alt="아이콘"/>
+                                <img src={sale} className="nav-icon" alt="아이콘" />
                                 판매하기
                             </button>
 
@@ -85,7 +88,7 @@ const Header = () => {
 
                         <div>
                             <button className="nav-item" onClick={toggleMyMenu}>
-                                <img src={my} className="nav-icon" alt="아이콘"/>
+                                <img src={my} className="nav-icon" alt="아이콘" />
                                 마이
                             </button>
 
@@ -100,8 +103,11 @@ const Header = () => {
                         </div>
                     </nav>
                 </div>
-                <div className='category'>
-                    <button className='category-button'>카테고리</button>
+
+                <Category />
+                <div className='header-bottom'>
+                <div>중고차</div>
+                <div>게시판</div>
                 </div>
 
                 {/* 사이드바 */}
@@ -109,7 +115,7 @@ const Header = () => {
                     <>
                         <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
                         <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
-                            <button className='close-button' onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25}/></button> {/* 사이드바 닫기 버튼 */}
+                            <button className='close-button' onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25} /></button> {/* 사이드바 닫기 버튼 */}
                             <ChatDiv />
                         </div>
                     </>
