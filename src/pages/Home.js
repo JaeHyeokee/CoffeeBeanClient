@@ -91,7 +91,7 @@ const Home = () => {
         },
         {
             id: 11,
-            image: 'https://via.placeholder.com200',
+            image: 'https://via.placeholder.com/200',
             title: 'Apple iPad Pro 11인치',
             price: 800000,
             location: '일산',

@@ -11,6 +11,11 @@ header {
     padding: 10px 20px;
     position: relative;
   }
+
+  .header-bottom {
+    display: flex;
+    align-items: center;
+  }
   
   .logo {
     width: 200px;
@@ -85,12 +90,12 @@ header {
   }
 
   
-  /* 카테고리 */
-  .category {
+/* 카테고리 */
+.category {
     display: flex;
     position: relative;
     padding: 10px 20px;
-  }
+}
 
 .category-menu {
     position: relative; 

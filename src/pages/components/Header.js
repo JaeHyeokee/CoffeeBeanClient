@@ -6,6 +6,7 @@ import sale from '../../image/SaleIcon.svg';
 import x from '../../image/x.svg';
 import { Link } from 'react-router-dom';
 import ChatDiv from '../chatting/ChatFrame';
+import Category from './Category';
 
 const Header = () => {
 
@@ -29,22 +30,22 @@ const Header = () => {
     const toggleChatSidebar = () => {
         setIsChatSidebarOpen(!isChatSidebarOpen);
 
-        if(isSaleMenuOpen) setIsMyMenuOpen(false);
-        if(isMyMenuOpen) setIsMyMenuOpen(false);
+        if (isSaleMenuOpen) setIsMyMenuOpen(false);
+        if (isMyMenuOpen) setIsMyMenuOpen(false);
     }
 
     const toggleSaleMenu = () => {
         setIsSaleMenuOpen(!isSaleMenuOpen);
 
-        if(isSaleMenuOpen) setIsMyMenuOpen(false);
-        if(isChatSidebarOpen) setIsChatSidebarOpen(false);
+        if (isSaleMenuOpen) setIsMyMenuOpen(false);
+        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
     };
 
     const toggleMyMenu = () => {
         setIsMyMenuOpen(!isMyMenuOpen);
 
-        if(isMyMenuOpen) setIsSaleMenuOpen(false);
-        if(isChatSidebarOpen) setIsChatSidebarOpen(false);
+        if (isMyMenuOpen) setIsSaleMenuOpen(false);
+        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
     }
 
 
@@ -53,20 +54,20 @@ const Header = () => {
             <header>
                 <div className='header-top'>
                     <Link to='/'>
-                    <img src='https://via.placeholder.com/200x80' className='logo' alt='로고'/>
+                        <img src='https://via.placeholder.com/200x80' className='logo' alt='로고' />
                     </Link>
-                    <input type='text' className='search' placeholder='어떤 상품을 찾으시나요?'/>
+                    <input type='text' className='search' placeholder='어떤 상품을 찾으시나요?' />
                     <nav className="nav">
                         <div>
                             <button className="nav-item" onClick={toggleChatSidebar}>
-                                <img src={chat} className="nav-icon" alt="아이콘"/>
+                                <img src={chat} className="nav-icon" alt="아이콘" />
                                 채팅하기
                             </button>
                         </div>
 
                         <div>
                             <button className="nav-item" onClick={toggleSaleMenu}>
-                                <img src={sale} className="nav-icon" alt="아이콘"/>
+                                <img src={sale} className="nav-icon" alt="아이콘" />
                                 판매하기
                             </button>
 
@@ -87,7 +88,7 @@ const Header = () => {
 
                         <div>
                             <button className="nav-item" onClick={toggleMyMenu}>
-                                <img src={my} className="nav-icon" alt="아이콘"/>
+                                <img src={my} className="nav-icon" alt="아이콘" />
                                 마이
                             </button>
 
@@ -103,61 +104,22 @@ const Header = () => {
                     </nav>
                 </div>
 
-            <div className='category'>
-                <div className='category-menu'>
-                    <button className='category-button'>카테고리</button>
-                        <div className='dropdown-content'>
-                            <div className='dropdown-section'>
-                                <h4>카테고리1</h4>
-                                <ul>
-                                    <li>패션의류</li>
-                                    <li>모바일/태블릿</li>
-                                    <li>가구/인테리어</li>
-                                    <li>반려동물/취미</li>
-                                    <li>티켓/쿠폰</li>
-                                </ul>
-                            </div>
-                            <div className='dropdown-section'>
-                                <h4>카테고리2</h4>
-                                <ul>
-                                    <li>여성의류</li>
-                                    <li>남성의류</li>
-                                    <li>스마트폰</li>
-                                    <li>태블릿PC</li>
-                                    <li>케이스/거치대/보호필름</li>
-                                    <li>배터리/충전기/케이블</li>
-                                    <li>침실가구</li>
-                                    <li>거실가구</li>
-                                    <li>주방가구</li>
-                                    <li>기타가구</li>
-                                    <li>반려동물</li>
-                                    <li>키덜트</li>
-                                    <li>핸드메이드/DIY</li>
-                                    <li>악기</li>
-                                    <li>티켓</li>
-                                    <li>상품권/쿠폰</li>
-                                </ul>
-                            </div>
-                        </div>
+                <Category />
+                <div className='header-bottom'>
+                <div>중고차</div>
+                <div>게시판</div>
                 </div>
-                    <Link to='/Propertylist'>
-                        <button className='property-button'>부동산</button>
-                    </Link>
-                    <Link to='/PostList'>
-                        <button className='post-button'>게시판</button>
-                    </Link>
-            </div>
 
-                            {/* 사이드바 */}
-                            {isChatSidebarOpen && (
-                                <>
-                                    <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
-                                    <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
-                                        <button className='close-button' onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25}/></button> {/* 사이드바 닫기 버튼 */}
-                                        <ChatDiv />
-                                    </div>
-                                </>
-                            )}
+                {/* 사이드바 */}
+                {isChatSidebarOpen && (
+                    <>
+                        <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
+                        <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
+                            <button className='close-button' onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25} /></button> {/* 사이드바 닫기 버튼 */}
+                            <ChatDiv />
+                        </div>
+                    </>
+                )}
             </header>
         </>
     );
