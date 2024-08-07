@@ -7,6 +7,7 @@ import x from '../../image/x.svg';
 import { Link } from 'react-router-dom';
 import ChatDiv from '../chatting/ChatFrame';
 import Category from './Category';
+import CarCategory from './CarCategory';
 
 const Header = () => {
 
@@ -107,7 +108,8 @@ const Header = () => {
                 <div className='category-car-post'>
                 <Category />
                 <div className='header-bottom'>
-                <Link to='/CarList' className='category-car'>중고차</Link>
+                {/* <Link to='/CarList' className='category-car'>중고차</Link> */}
+                <CarCategory/>
                 <Link to ='/PostList'>게시판</Link>
                 </div>
                 </div>

@@ -41,8 +41,9 @@ const CoffeeBeanApp = () => {
             <Route path = '/UserManagement' Component={UserManagement}/>
 
             <Route path = '/CarCreate' Component={CarCreate}/>
-            <Route path = '/CarDetail' Component={CarDetail}/>
-            <Route path = '/CarLIst' Component={CarList}/>
+            <Route path = '/CarDetail/:id' Component={CarDetail}/>
+            <Route path = '/CarLIst/:category' Component={CarList}/>
+            <Route path = '/CarLIst/:category/:subcategory' Component={CarList}/>
             <Route path = '/CarUpdate' Component={CarUpdate}/>
 
             <Route path = '/DipsList' Component={DipsList}/>

@@ -1,11 +1,42 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
-import '../../css/product/ProductList.css'
+import '../../css/product/ProductList.css';
+import ProductItem from '../components/ProductItem';
 
 const ProductList = () => {
-
+    const [products, setProducts] = useState([]);
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { category, subcategory, subsubcategory } = useParams();
+
+    useEffect(() => {
+        axios.get('http://localhost:8088/product/list')
+            .then(response => {
+                console.log(response.data);
+                if(Array.isArray(response.data)){
+                    setProducts(response.data);
+                }else {
+                    console.log('에러에러에러에ㅓ레ㅓ레ㅓ레ㅓㅔㅓㅔ')
+                }
+                setLoading(false);
+            })
+    }, []);
+
+    useEffect(() => {   //카테고리 제품 필터링
+        if (Array.isArray(products)) {
+            const filtered = products.filter(product => {
+                return (
+                    (category ? product.category === category : true) &&
+                    (subcategory ? product.subcategory === subcategory : true) &&
+                    (subsubcategory ? product.subsubcategory === subsubcategory : true)
+                );
+            });
+            setFilteredProducts(filtered);
+        }
+    }, [products, category, subcategory, subsubcategory]);
+
     return (
         <>
             <Header />
@@ -62,6 +93,20 @@ const ProductList = () => {
                         </tr>
                     </tbody>
                 </table>
+
+                <div className='product-list'>
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        filteredProducts.length > 0 ? (
+                            filteredProducts.map(product => (
+                                <ProductItem key={product.id} product={product} />
+                            ))
+                        ) : (
+                            <p>해당 카테고리에 대한 제품이 없습니다.</p>
+                        )
+                    )}
+                </div>
             </div>
         </>
     );

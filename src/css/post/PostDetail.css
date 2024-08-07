@@ -1,3 +1,11 @@
 .postdetail-body {
     padding: 30px 20%;
 }
+
+.postdetail-title {
+    text-align: center;
+}
+
+.postdetail-content {
+    text-align: left;
+}

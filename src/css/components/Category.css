@@ -45,6 +45,11 @@
     margin-bottom: 10px;
 }
 
+.dropdown-title a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .dropdown-submenu {
     position: relative;
 }
@@ -58,6 +63,11 @@
 .dropdown-submenu li {
     padding: 10px;
     cursor: pointer;
+}
+
+.dropdown-submenu a {
+    text-decoration: none;
+    color: inherit;
 }
 
 .dropdown-submenu li:hover {
