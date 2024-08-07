@@ -81,7 +81,7 @@ const Header = () => {
                             </button>
                             {isMyMenuOpen && (
                                 <div className='dropdown-menu'>
-                                    <Link to="/MyHome" className="nav-link">
+                                    <Link to="/MyPage" className="nav-link">
                                         <button className='dropdown-button'>마이페이지</button>
                                     </Link>
                                     <button className='dropdown-button'>로그아웃</button>
