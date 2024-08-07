@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import '../../css/product/ProductDetail.css'
+import { Carousel } from 'react-bootstrap';
 
 const ProductDetail = () => {
     const{id} = useParams();
@@ -9,7 +10,7 @@ const ProductDetail = () => {
     const products = [
         {
             id: 1,
-            image: 'https://via.placeholder.com/200',
+            image: 'https://via.placeholder.com/450',
             title: '삼성전자 2024 스마트 모니터 (미개봉)',
             price: 220000,
             location: '서둔동',
@@ -22,7 +23,7 @@ const ProductDetail = () => {
         },
         {
             id: 2,
-            image: 'https://via.placeholder.com/200',
+            image: '//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg',
             title: '아이폰 12 128기가 화이트',
             price: 250000,
             location: '철산3동',
@@ -112,7 +113,7 @@ const ProductDetail = () => {
         },
         {
             id: 10,
-            image: 'https://via.placeholder.com/200',
+            image: 'https://via.placeholder.com/500',
             title: 'Sony PlayStation 5',
             price: 600000,
             location: '성남시',
@@ -123,7 +124,7 @@ const ProductDetail = () => {
         },
         {
             id: 11,
-            image: 'https://via.placeholder.com200',
+            image: 'https://via.placeholder.com500',
             title: 'Apple iPad Pro 11인치',
             price: 800000,
             location: '일산',
@@ -135,7 +136,7 @@ const ProductDetail = () => {
         },
         {
             id: 12,
-            image: 'https://via.placeholder.com/200',
+            image: 'https://via.placeholder.com/500',
             title: '닌텐도 스위치 OLED',
             price: 400000,
             location: '부천시',
@@ -146,7 +147,7 @@ const ProductDetail = () => {
         },
         {
             id: 13,
-            image: 'https://via.placeholder.com/200',
+            image: 'https://via.placeholder.com/500',
             title: 'Razer DeathAdder 게이밍 마우스',
             price: 80000,
             location: '수원시',
@@ -157,7 +158,7 @@ const ProductDetail = () => {
         },
         {
             id: 14,
-            image: 'https://via.placeholder.com/200',
+            image: 'https://via.placeholder.com/500',
             title: 'ASUS TUF 15.6인치 노트북',
             price: 900000,
             location: '대전',
@@ -168,7 +169,7 @@ const ProductDetail = () => {
         },
         {
             id: 15,
-            image: 'https://via.placeholder.com/200',
+            image: 'https://via.placeholder.com/500',
             title: 'Bose QuietComfort 35 II',
             price: 300000,
             location: '광주',
@@ -179,7 +180,7 @@ const ProductDetail = () => {
         },
         {
             id: 16,
-            image: 'https://via.placeholder.com/200',
+            image: 'https://via.placeholder.com/500',
             title: 'GoPro Hero 10',
             price: 500000,
             location: '제주도',
@@ -190,7 +191,7 @@ const ProductDetail = () => {
         },
         {
             id: 17,
-            image: 'https://via.placeholder.com/200',
+            image: 'https://via.placeholder.com/500',
             title: '스타벅스 5만원',
             price: 47000,
             location: '군자동',
@@ -201,7 +202,7 @@ const ProductDetail = () => {
         },
         {
             id: 18,
-            image: 'https://via.placeholder.com/200',
+            image: 'https://via.placeholder.com/500',
             title: '삼천리 자전거',
             price: '150,000',
             location: '',
@@ -215,6 +216,12 @@ const ProductDetail = () => {
     const productId = parseInt(id, 10);
     const product = products.find(p => p.id === productId);
 
+    const [index, setIndex] = useState(0);
+
+    const handleSelect = (selectedIndex) => {
+      setIndex(selectedIndex);
+    };
+
     return (
         <>
         <Header/>
@@ -223,33 +230,58 @@ const ProductDetail = () => {
                 {product ? (
                     <>
                     <section className='productdetail-top'>
-                        <div className='product-image'>
+                        {/* <div className='product-image'>
                             <img src={product.image} alt='' />
-                        </div>
+                        </div> */}
+                        <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
+                        <Carousel.Item>
+                            <img className='product-image' src={product.image} />
+                            <Carousel.Caption>
+                            <h3>First slide label</h3>
+                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                            </Carousel.Caption>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img className='product-image' src={product.image} />
+                            <Carousel.Caption>
+                            <h3>Second slide label</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                            </Carousel.Caption>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img className='product-image' src={product.image}/>
+                            <Carousel.Caption>
+                            <h3>Third slide label</h3>
+                            <p>
+                                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+                            </p>
+                            </Carousel.Caption>
+                        </Carousel.Item>
+                        </Carousel>
 
                         <div className='product-info'>
-                            <p>카테고리 경로 들어갈 자리</p>
-                            <h1>{product.title}</h1>
-                            <h1>가격: {product.price.toLocaleString()}원</h1>
-                                <div className='product-info-bottom'>
-                                    <div>
-                                        <p>제품상태</p>
-                                        <p>{product.status}</p>
+                                    <p>카테고리 경로 들어갈 자리</p>
+                                    <h1>{product.title}</h1>
+                                    <h1>가격: {product.price.toLocaleString()}원</h1>
+                                    <div className='product-info-bottom'>
+                                        <div>
+                                            <p>제품상태</p>
+                                            <p>{product.status}</p>
+                                        </div>
+                                        <div>
+                                            <p>거래방식</p>
+                                            <p>{product.dealing_type}</p>
+                                        </div>
+                                        <div>
+                                            <p>판매상태</p>
+                                            <p>{product.dealing_status}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p>거래방식</p>
-                                        <p>{product.dealing_type}</p>
-                                    </div>
-                                    <div>
-                                        <p>판매상태</p>
-                                        <p>{product.dealing_status}</p>
+                                    <div className='chat-dip-button'>
+                                        <button className='chat-button'>채팅하기</button>
+                                        <button className='dip-button'>찜하기</button>
                                     </div>
                                 </div>
-                            <div className='chat-dip-button'>
-                                <button className='chat-button'>채팅하기</button>
-                                <button className='dip-button'>찜하기</button>
-                            </div>
-                        </div>
                     </section>
 
                         <section className='productdetail-bottom'>
