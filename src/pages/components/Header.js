@@ -15,7 +15,6 @@ const Header = () => {
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
     const [isSaleMenuOpen, setIsSaleMenuOpen] = useState(false);
     const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
-
     // 사이드바 스크롤관리 (채팅하기 눌렀을때)
     useEffect(() => {
         if (isChatSidebarOpen) {
@@ -23,33 +22,24 @@ const Header = () => {
         } else {
             document.body.classList.remove('no-scroll');
         }
-
         return () => document.body.classList.remove('no-scroll');
     }, [isChatSidebarOpen]);
-
     //메뉴 열고 닫는 토글
     const toggleChatSidebar = () => {
         setIsChatSidebarOpen(!isChatSidebarOpen);
-
         if (isSaleMenuOpen) setIsMyMenuOpen(false);
         if (isMyMenuOpen) setIsMyMenuOpen(false);
     }
-
     const toggleSaleMenu = () => {
         setIsSaleMenuOpen(!isSaleMenuOpen);
-
         if (isSaleMenuOpen) setIsMyMenuOpen(false);
         if (isChatSidebarOpen) setIsChatSidebarOpen(false);
     };
-
     const toggleMyMenu = () => {
         setIsMyMenuOpen(!isMyMenuOpen);
-
         if (isMyMenuOpen) setIsSaleMenuOpen(false);
         if (isChatSidebarOpen) setIsChatSidebarOpen(false);
     }
-
-
     return (
         <>
             <header>
@@ -65,13 +55,11 @@ const Header = () => {
                                 채팅하기
                             </button>
                         </div>
-
                         <div>
                             <button className="nav-item" onClick={toggleSaleMenu}>
                                 <img src={sale} className="nav-icon" alt="아이콘" />
                                 판매하기
                             </button>
-
                             {isSaleMenuOpen && (
                                 <div className='dropdown-menu'>
                                     <Link to="/ProductCreate" className="nav-link">
@@ -86,13 +74,11 @@ const Header = () => {
                                 </div>
                             )}
                         </div>
-
                         <div>
                             <button className="nav-item" onClick={toggleMyMenu}>
                                 <img src={my} className="nav-icon" alt="아이콘" />
                                 마이
                             </button>
-
                             {isMyMenuOpen && (
                                 <div className='dropdown-menu'>
                                     <Link to="/MyHome" className="nav-link">
@@ -104,16 +90,13 @@ const Header = () => {
                         </div>
                     </nav>
                 </div>
-
                 <div className='category-car-post'>
-                <Category />
-                <div className='header-bottom'>
-                {/* <Link to='/CarList' className='category-car'>중고차</Link> */}
-                <CarCategory/>
-                <Link to ='/PostList'>게시판</Link>
+                    <Category />
+                    <div className='header-bottom'>
+                        <CarCategory />
+                        <Link to='/PostList'>게시판</Link>
+                    </div>
                 </div>
-                </div>
-
                 {/* 사이드바 */}
                 {isChatSidebarOpen && (
                     <>
@@ -128,5 +111,4 @@ const Header = () => {
         </>
     );
 };
-
 export default Header;
