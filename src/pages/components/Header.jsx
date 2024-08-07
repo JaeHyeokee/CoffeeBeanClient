@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 import ChatDiv from '../chatting/ChatFrame';
 import Category from './Category';
 import CarCategory from './CarCategory';
+import { Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
 
 const Header = () => {
 
@@ -15,6 +16,7 @@ const Header = () => {
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
     const [isSaleMenuOpen, setIsSaleMenuOpen] = useState(false);
     const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
+
     // 사이드바 스크롤관리 (채팅하기 눌렀을때)
     useEffect(() => {
         if (isChatSidebarOpen) {
@@ -49,54 +51,47 @@ const Header = () => {
                     </Link>
                     <input type='text' className='search' placeholder='어떤 상품을 찾으시나요?' />
                     <nav className="nav">
-                        <div>
+                        {/* 채팅하기 */}
+                        <div className='chat-menu'>
                             <button className="nav-item" onClick={toggleChatSidebar}>
-                                <img src={chat} className="nav-icon" alt="아이콘" />
-                                채팅하기
+                                <img src={chat} className="nav-icon" alt="아이콘" /> 채팅하기
                             </button>
                         </div>
+
+                        {/* 판매하기 */}
                         <div>
-                            <button className="nav-item" onClick={toggleSaleMenu}>
+                            <Navbar>
                                 <img src={sale} className="nav-icon" alt="아이콘" />
-                                판매하기
-                            </button>
-                            {isSaleMenuOpen && (
-                                <div className='dropdown-menu'>
-                                    <Link to="/ProductCreate" className="nav-link">
-                                        <button className='dropdown-button'>중고물품</button>
-                                    </Link>
-                                    <Link to="/PropertyCreate" className="nav-link">
-                                        <button className='dropdown-button'>부동산</button>
-                                    </Link>
-                                    <Link to="/CarCreate" className="nav-link">
-                                        <button className='dropdown-button'>중고차</button>
-                                    </Link>
-                                </div>
-                            )}
+                                <NavDropdown title="판매하기" id="basic-nav-dropdown" className='drop'>
+                                    <NavDropdown.Item href="/ProductCreate">중고물품</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item href="/CarCreate">중고차</NavDropdown.Item>
+                                </NavDropdown>
+                            </Navbar>
                         </div>
+
+                        {/* 마이 */}
                         <div>
-                            <button className="nav-item" onClick={toggleMyMenu}>
+
+                            <Navbar>
                                 <img src={my} className="nav-icon" alt="아이콘" />
-                                마이
-                            </button>
-                            {isMyMenuOpen && (
-                                <div className='dropdown-menu'>
-                                    <Link to="/MyPage" className="nav-link">
-                                        <button className='dropdown-button'>마이페이지</button>
-                                    </Link>
-                                    <button className='dropdown-button'>로그아웃</button>
-                                </div>
-                            )}
+                                <NavDropdown title="마이" id="basic-nav-dropdown" className='drop'>
+                                    <NavDropdown.Item href="/MyPage">마이페이지</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item href="/CarCreate">로그아웃</NavDropdown.Item>
+                                </NavDropdown>
+                            </Navbar>
                         </div>
                     </nav>
                 </div>
+
+
                 <div className='category-car-post'>
                     <Category />
-                    <div className='header-bottom'>
-                        <CarCategory />
-                        <Link to='/PostList'>게시판</Link>
-                    </div>
+                    <CarCategory />
+                    <Link to='/PostList'>게시판</Link>
                 </div>
+
                 {/* 사이드바 */}
                 {isChatSidebarOpen && (
                     <>

@@ -1,218 +1,112 @@
 header {
-    display: flex;
-    flex-direction: column; 
-    border-bottom: 1px solid #ddd;
-    padding: 0 20%;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ddd;
+  padding: 0 20%;
 
-  }
+}
 
-  .header-top {
-    display: flex;
-    align-items: center;
-    padding: 20px 0;
-    position: relative;
-  }
+.header-top {
+  display: flex;
+  align-items: center;
+  padding: 20px 0;
+  position: relative;
+}
 
-  .header-bottom {
-    display: flex;
-    align-items: center;
-  }
+.logo {
+  width: 200px;
+  height: 80px;
+  margin-right: 20px;
+}
 
-.header-bottom a {
-    text-decoration: none; 
-    color: inherit;      
-    font-weight: bold;  
-    font-size: large;
+/* 검색 */
+.search {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #f0f0f0;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  margin-right: 20px;
+  outline: none;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+}
+
+.chat-menu {
+  padding: 15px 0;
+}
+
+.nav-item {
+  display: flex;
+  border: none;
+  font-size: 18px;
+  color: black;
+  background-color: white;
+}
+
+.sale-drop {
+  color: black;
 }
 
 .category-car-post {
   display: flex;
 }
 
-.category-car {
-  margin-right: 20px;
-}
-  
-  .logo {
-    width: 200px;
-    height: 80px; 
-    margin-right: 20px; 
-  }
-  
-  .search {
-    flex: 1; 
-    padding: 20px;
-    border: 1px solid #f0f0f0;
-    background-color: #f0f0f0;
-    border-radius: 10px;
-    margin-right: 20px; 
-    outline: none; 
-  }
-  
-  .search:focus {
-    border-color: #ccc; 
-    box-shadow: none; 
-  }
-  
-  .nav {
-    display: flex;
-    gap: 10px; 
-  }
-  
-  .nav-item {
-    display: flex;
-    padding: 8px 12px;
-    border: none;
-    font-size: 18px;
-    color: black;
-    background-color: white;
-    border-radius: 4px;
-    cursor: pointer;
-    position: relative;
-  }
-
-
-  .dropdown-menu {
-    position: absolute;
-    top: 100%; /* 버튼 아래로 위치 */
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 10px;
-    z-index: 1000; 
-    display: flex;
-    flex-direction: column;
-    width: 90px;
-  }
-
-  .dropdown-button {
-  display: block;
-  width: 100%;
-  padding: 8px;
-  border: none;
-  background-color: white;
-  color: black;
-  border-radius: 4px;
-  cursor: pointer;
-  text-align: left;
-  margin-bottom: 5px;
-}
-
-  .nav-link {
-    display: flex;
-    align-items: center;
-    text-decoration: none; 
-    color: inherit;
-  }
-
-  
-/* 카테고리 */
-.category {
-    display: flex;
-    position: relative;
-    padding: 10px 20px;
-}
-
-.category-menu {
-    position: relative; 
-}
-  
-  .category-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    color: white;
-    background-color: black;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-right: 70px;
-    cursor: pointer;
-  }
-
-
-.dropdown-content {
-    display: none; 
-    position: absolute; 
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    z-index: 10000000; 
-    top: 100%; 
-    left: 0;
-    width: 200px; 
-}
-
-  .category-menu:hover .dropdown-content {
-    display: block; 
-}
-
-.dropdown-section ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.property-button,
-.post-button {
-  background-color: white;
-  color: black;
-  border-style: none;
-  margin-right: 30px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
 /* 채팅 */
-/* 전체 페이지의 스크롤 막기 */
 .no-scroll {
-    overflow: hidden;
+  overflow: hidden; /* 스크롤 막기 */
 }
 
 /* 사이드바 */
 .chat-sidebar {
-    position: fixed;
-    right: 0;
-    top: 0;
-    width: 35%;
-    height: 100vh;
-    background-color: white;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    z-index: 1000; 
-    transform: translateX(100%); /* 기본적으로 사이드바가 화면 오른쪽 밖에 위치 */
-    transition: transform 0.3s ease; 
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 35%;
+  height: 100vh;
+  background-color: white;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  transform: translateX(100%);
+  /* 기본적으로 사이드바가 화면 오른쪽 밖에 위치 */
+  transition: transform 0.3s ease;
 }
 
 .chat-sidebar.open {
-    transform: translateX(0); /* 사이드바가 화면에 나타나도록 변환 */
+  transform: translateX(0);
+  /* 사이드바가 화면에 나타나도록 변환 */
 }
 
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); /* 반투명 */
-    z-index: 999; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5); 
+  z-index: 999;
 }
 
 /* 오버레이가 표시될 때 */
 .overlay.active {
-    display: block; /* 표시 */
+  display: block;
+  /* 표시 */
 }
 
 /* 닫기버튼 */
 .close-button {
-    position: absolute; 
-    top: 20px; 
-    right: 20px; 
-    background: none;
-    border: none;
-    font-size: 24px;
-    color: black;
-    cursor: pointer;
-    z-index: 1001; 
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: black;
+  cursor: pointer;
+  z-index: 1001;
 }
