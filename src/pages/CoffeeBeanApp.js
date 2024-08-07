@@ -1,16 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Home';
-import MyHome from './my/MyHome';
+import MyPage from './my/MyPage';
 import MyInformation from './my/MyInformation';
-import DipsList from './my/DipsList';
 import LogIn from './my/LogIn';
-import PurchaseList from './my/PurchaseList';
 import Register from './my/Register';
 import ReviewCreate from './my/ReviewCreate';
 import ReviewDetail from './my/ReviewDetail';
 import ReviewList from './my/ReviewList';
-import SaleList from './my/SaleList';
 import UnRegister from './my/UnRegister';
 import UserManagement from './admin/UserManagement';
 import CarCreate from './car/CarCreate';
@@ -46,16 +43,13 @@ const CoffeeBeanApp = () => {
             <Route path = '/CarLIst/:category/:subcategory' Component={CarList}/>
             <Route path = '/CarUpdate' Component={CarUpdate}/>
 
-            <Route path = '/DipsList' Component={DipsList}/>
             <Route path = '/LogIn' Component={LogIn}/>
-            <Route path = '/MyHome' Component={MyHome}/>
+            <Route path = '/MyHome' Component={MyPage}/>
             <Route path = '/MyInformation' Component={MyInformation}/>
-            <Route path = '/PurchaseList' Component={PurchaseList}/>
             <Route path = '/Register' Component={Register}/>
             <Route path = '/ReviewCreate' Component={ReviewCreate}/>
             <Route path = '/ReviewDetail' Component={ReviewDetail}/>
             <Route path = '/ReviewList' Component={ReviewList}/>
-            <Route path = '/SaleList' Component={SaleList}/>
             <Route path = '/UnRegister' Component={UnRegister}/>
 
             <Route path = '/PostCreate' Component={PostCreate}/>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DipsList = () => {
+const MyNav = () => {
     return (
         <div>
             
@@ -8,4 +8,4 @@ const DipsList = () => {
     );
 };
 
-export default DipsList;
+export default MyNav;

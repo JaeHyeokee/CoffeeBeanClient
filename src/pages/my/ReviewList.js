@@ -2,9 +2,9 @@ import React from 'react';
 
 const ReviewList = () => {
     return (
-        <div>
-            
-        </div>
+        <>
+            <h1>ReviewList</h1>  
+        </>
     );
 };
 
