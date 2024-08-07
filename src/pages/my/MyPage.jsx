@@ -5,7 +5,6 @@ import MyHome from './MyHome';
 import MyInformation from './MyInformation';
 import ReviewList from './ReviewList';
 import UnRegister from './UnRegister';
-// import 'bootstrap/dist/css/bootstrap.min.css';
 
 const MyPage = () => {
     const [activePage, setActivePage] = useState('MyHome');
