@@ -1,0 +1,109 @@
+.productdetail-body {
+    margin-top: 50px;
+    padding: 0 20%;
+}
+
+.product-detail {
+    display: flex;
+    flex-direction: column; 
+}
+
+.productdetail-top {
+    display: flex;
+    margin-bottom: 50px; 
+    align-items: flex-start; 
+    gap: 20px; 
+}
+
+.carousel {
+    width: 450px;
+    margin-right: 100px;
+}
+
+.product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    object-fit: cover;
+}
+
+.carousel-item {
+    height: auto; /* 슬라이드의 높이를 고정 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel-item img {
+    max-height: 450px;
+    max-width: 450px;
+}
+
+/* 상품정보 */
+.product-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-info-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 30px; 
+    margin-top: 30px;
+}
+
+.product-info-bottom div {
+    text-align: center;
+}
+
+/* 채팅하기, 찜하기 버튼 */
+.chat-dip-button {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; 
+}
+
+.chat-button,
+.dip-button {
+    width: 48%; 
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chat-button {
+    background-color: white;
+}
+
+.dip-button {
+    background-color: black;
+    color: white;
+}
+
+/* 상품정보, user정보 */
+.productdetail-bottom {
+    display: flex;
+    width: 100%;
+    justify-content: space-between; 
+}
+
+.product-info-detail {
+    flex: 6; 
+    padding: 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ccc;
+    margin-right: 100px;
+}
+
+.user-info {
+    flex: 4;
+    padding: 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid #ccc;
+}
