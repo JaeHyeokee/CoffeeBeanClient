@@ -1,7 +1,7 @@
 const exData = [
     {
         id: 1,
-        image: 'https://via.placeholder.com/450',
+        image: 'https://cdn.womennews.co.kr/news/photo/201905/189120_303951_74.jpg',
         title: '삼성전자 2024 스마트 모니터 (미개봉)',
         price: 220000,
         location: '서둔동',
@@ -9,7 +9,8 @@ const exData = [
         status: '중고',
         dealing_type: '택배',
         dealing_status: '판매중',
-        userId:'1'
+        userId:'1',
+        username:'삐약삐약'
     },
     {
         id: 2,
@@ -20,8 +21,9 @@ const exData = [
         time: '20분 전',
         status: '새상품',
         dealing_type: '직거래',
-        dealing_status: '예약중'
-
+        dealing_status: '예약중',
+        userId:'1',
+        username:'삐약삐약'
     },
     {
         id: 3,

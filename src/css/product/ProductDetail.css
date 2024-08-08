@@ -35,8 +35,8 @@
 }
 
 .carousel-item img {
-    max-height: 100%;
-    width: auto;
+    max-height: 450px;
+    max-width: 450px;
 }
 
 /* 상품정보 */

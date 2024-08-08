@@ -73,7 +73,6 @@ header {
   flex-direction: column;
   z-index: 1000;
   transform: translateX(100%);
-  /* 기본적으로 사이드바가 화면 오른쪽 밖에 위치 */
   transition: transform 0.3s ease;
 }
 
