@@ -75,7 +75,7 @@ const Header = () => {
 
                             <Navbar>
                                 <img src={my} className="nav-icon" alt="아이콘" />
-                                <NavDropdown title="마이" id="basic-nav-dropdown" className='drop'>
+                                <NavDropdown title="마이" id="basic-nav-dropdown" >
                                     <NavDropdown.Item href="/MyPage">마이페이지</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item href="/CarCreate">로그아웃</NavDropdown.Item>
