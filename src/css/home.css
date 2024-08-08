@@ -9,9 +9,9 @@
 
 .product-items {
   display: flex;
-  align-items: center; /* 버튼과 아이템을 수직으로 가운데 정렬 */
-  justify-content: space-between; /* 버튼을 좌우 끝으로 배치 */
-  flex-wrap: wrap; /* 제품 아이템들이 한 줄에 배치되도록 설정 */
+  align-items: center; 
+  justify-content: space-between; 
+  flex-wrap: wrap; 
 }
 
 .pagination-buttons {
@@ -21,13 +21,6 @@
 
 }
 
-/* .product-items {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: space-between;
-}
- */
 .product-item {
   flex: 1 1 calc(16.66% - 20px);
   box-sizing: border-box;
