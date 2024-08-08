@@ -3,8 +3,8 @@ import '../../css/components/Category.css';
 import { Link } from 'react-router-dom';
 
 const Category = () => {
-    const [activeCategory, setActiveCategory] = useState(null); // 카테고리1 상태
-    const [activeSubcategory, setActiveSubcategory] = useState(null); // 카테고리2 상태
+    const [active, setActive] = useState(false); // 카테고리 전체 상태
+    const [activeSubcategory, setActiveSubcategory] = useState(null); // 현재 활성화된 서브카테고리
 
     const categories = {
         "패션의류": ["여성의류", "남성의류"],
@@ -33,65 +33,59 @@ const Category = () => {
         "상품권/쿠폰": ["백화점/마트/편의점", "영화/문화/게임", "외식/주유"]
     };
 
-    const handleCategoryClick = (category) => {
-        setActiveCategory(category);
-        setActiveSubcategory(null); // 서브카테고리 초기화
+    const handleButtonClick = () => {
+        setActive(!active);
     };
 
     const handleSubcategoryClick = (subcategory) => {
-        setActiveSubcategory(subcategory);
+        setActiveSubcategory(subcategory === activeSubcategory ? null : subcategory);
     };
 
     return (
         <div className='category'>
             <button
                 className='category-button'
-                onClick={() => setActiveCategory(activeCategory ? null : '카테고리')}
+                onClick={handleButtonClick}
             >
                 카테고리
             </button>
-            {activeCategory && (
+            {active && (
                 <div className='dropdown-content'>
                     {Object.keys(categories).map((category) => (
                         <div
                             className='dropdown-section'
                             key={category}
                         >
-                            <h4
-                                className='dropdown-title'
-                                onClick={() => handleCategoryClick(category)}
-                            >
-                                <Link to={`/ProductList/${encodeURIComponent(category)}`} onClick={() => setActiveCategory(category)}>{category}</Link>
+                            <h4 className='dropdown-title'>
+                                <Link to={`/ProductList/${encodeURIComponent(category)}`}>{category}</Link>
                             </h4>
-                            {activeCategory === category && (
-                                <div className='dropdown-submenu'>
-                                    <ul>
-                                        {categories[category].map((subcategory) => (
-                                            <li
-                                                key={subcategory}
-                                                onClick={() => handleSubcategoryClick(subcategory)}
-                                            >
-                                                <Link to={`/ProductList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}`} onClick={() => setActiveSubcategory(subcategory)}>
-                                                    {subcategory}
-                                                </Link>
-                                                {activeSubcategory === subcategory && (
-                                                    <div className='dropdown-submenu-3'>
-                                                        <ul>
-                                                            {subcategories[subcategory] && subcategories[subcategory].map((subsubcategory) => (
-                                                                <li key={subsubcategory}>
-                                                                    <Link to={`/ProductList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}/${encodeURIComponent(subsubcategory)}`}>
-                                                                        {subsubcategory}
-                                                                    </Link>
-                                                                </li>
-                                                            ))}
-                                                        </ul>
-                                                    </div>
-                                                )}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
+                            <div className='dropdown-submenu'>
+                                <ul>
+                                    {categories[category].map((subcategory) => (
+                                        <li
+                                            key={subcategory}
+                                            onClick={() => handleSubcategoryClick(subcategory)}
+                                        >
+                                            <Link to={`/ProductList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}`}>
+                                                {subcategory}
+                                            </Link>
+                                            {activeSubcategory === subcategory && subcategories[subcategory] && subcategories[subcategory].length > 0 && (
+                                                <div className='dropdown-submenu-3'>
+                                                    <ul>
+                                                        {subcategories[subcategory].map((subsubcategory) => (
+                                                            <li key={subsubcategory}>
+                                                                <Link to={`/ProductList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}/${encodeURIComponent(subsubcategory)}`}>
+                                                                    {subsubcategory}
+                                                                </Link>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
                     ))}
                 </div>

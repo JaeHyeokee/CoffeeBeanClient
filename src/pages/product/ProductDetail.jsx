@@ -6,6 +6,7 @@ import { Carousel } from 'react-bootstrap';
 import products from '../components/ExData';
 import ChatFrame from '../chatting/ChatFrame';
 import x from '../../image/x.svg';
+import Swal from 'sweetalert2';
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -22,6 +23,20 @@ const ProductDetail = () => {
     const toggleChatSidebar = () => {
         setIsChatSidebarOpen(!isChatSidebarOpen);
     }
+
+    const dip = () => {
+        Swal.fire({
+            title: '찜콩',
+            html: '<div style="display: flex; align-items: center; justify-content: center;">' +
+                  '</div>',
+            showConfirmButton: false, // 확인 숨기기
+            width: '400px',
+
+            //계속 둘러보기, 찜 목록가기
+            
+        });
+    };
+    
 
     useEffect(() => {
         if (isChatSidebarOpen) {
@@ -89,7 +104,7 @@ const ProductDetail = () => {
                                             채팅하기
                                         </button>
                                         
-                                        <button className='dip-button'>찜하기</button>
+                                        <button className='dip-button' onClick={dip}>찜하기</button>
                                     </div>
                                 </div>
                             </section>

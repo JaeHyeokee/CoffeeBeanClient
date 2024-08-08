@@ -32,16 +32,7 @@ const Header = () => {
         if (isSaleMenuOpen) setIsMyMenuOpen(false);
         if (isMyMenuOpen) setIsMyMenuOpen(false);
     }
-    const toggleSaleMenu = () => {
-        setIsSaleMenuOpen(!isSaleMenuOpen);
-        if (isSaleMenuOpen) setIsMyMenuOpen(false);
-        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
-    };
-    const toggleMyMenu = () => {
-        setIsMyMenuOpen(!isMyMenuOpen);
-        if (isMyMenuOpen) setIsSaleMenuOpen(false);
-        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
-    }
+
     return (
         <>
             <header>
