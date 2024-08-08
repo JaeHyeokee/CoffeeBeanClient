@@ -28,15 +28,15 @@ const ProductDetail = () => {
         Swal.fire({
             title: '찜콩',
             html: '<div style="display: flex; align-items: center; justify-content: center;">' +
-                  '</div>',
+                '</div>',
             showConfirmButton: false, // 확인 숨기기
             width: '400px',
 
             //계속 둘러보기, 찜 목록가기
-            
+
         });
     };
-    
+
 
     useEffect(() => {
         if (isChatSidebarOpen) {
@@ -55,31 +55,31 @@ const ProductDetail = () => {
                     {product ? (
                         <>
                             <section className='productdetail-top'>
-                            <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
-                        <Carousel.Item>
-                            <img className='product-image' src={product.image} />
-                            <Carousel.Caption>
-                            <h3>First slide label</h3>
-                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                            </Carousel.Caption>
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <img className='product-image' src={product.image} />
-                            <Carousel.Caption>
-                            <h3>Second slide label</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            </Carousel.Caption>
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <img className='product-image' src={product.image}/>
-                            <Carousel.Caption>
-                            <h3>Third slide label</h3>
-                            <p>
-                                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                            </p>
-                            </Carousel.Caption>
-                        </Carousel.Item>
-                        </Carousel>
+                                <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
+                                    <Carousel.Item>
+                                        <img className='product-image' src={product.image} />
+                                        <Carousel.Caption>
+                                            <h3>First slide label</h3>
+                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                        </Carousel.Caption>
+                                    </Carousel.Item>
+                                    <Carousel.Item>
+                                        <img className='product-image' src={product.image} />
+                                        <Carousel.Caption>
+                                            <h3>Second slide label</h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                        </Carousel.Caption>
+                                    </Carousel.Item>
+                                    <Carousel.Item>
+                                        <img className='product-image' src={product.image} />
+                                        <Carousel.Caption>
+                                            <h3>Third slide label</h3>
+                                            <p>
+                                                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+                                            </p>
+                                        </Carousel.Caption>
+                                    </Carousel.Item>
+                                </Carousel>
 
                                 <div className='product-info'>
                                     <p>카테고리 경로 들어갈 자리</p>
@@ -103,7 +103,7 @@ const ProductDetail = () => {
                                         <button className="chat-button" onClick={toggleChatSidebar}>
                                             채팅하기
                                         </button>
-                                        
+
                                         <button className='dip-button' onClick={dip}>찜하기</button>
                                     </div>
                                 </div>
