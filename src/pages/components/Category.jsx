@@ -37,8 +37,18 @@ const Category = () => {
         setActive(!active);
     };
 
-    const handleSubcategoryClick = (subcategory) => {
-        setActiveSubcategory(subcategory === activeSubcategory ? null : subcategory);
+    //카테고리 선택하면 메뉴 닫기
+    const handleCategoryClick = () => {
+        setActive(false); 
+    };
+
+    //카테고리3
+    const handleSubcategoryMouseEnter = (subcategory) => {
+        setActiveSubcategory(subcategory);
+    };
+
+    const handleSubcategoryMouseLeave = () => {
+        setActiveSubcategory(null);
     };
 
     return (
@@ -52,20 +62,14 @@ const Category = () => {
             {active && (
                 <div className='dropdown-content'>
                     {Object.keys(categories).map((category) => (
-                        <div
-                            className='dropdown-section'
-                            key={category}
-                        >
-                            <h4 className='dropdown-title'>
+                        <div className='dropdown-section' key={category} onClick={handleCategoryClick} >
+                             <h4 className='dropdown-title'>
                                 <Link to={`/ProductList/${encodeURIComponent(category)}`}>{category}</Link>
                             </h4>
                             <div className='dropdown-submenu'>
                                 <ul>
                                     {categories[category].map((subcategory) => (
-                                        <li
-                                            key={subcategory}
-                                            onClick={() => handleSubcategoryClick(subcategory)}
-                                        >
+                                        <li key={subcategory} onMouseEnter={() => handleSubcategoryMouseEnter(subcategory)} onMouseLeave={handleSubcategoryMouseLeave}>
                                             <Link to={`/ProductList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}`}>
                                                 {subcategory}
                                             </Link>
@@ -91,6 +95,7 @@ const Category = () => {
                 </div>
             )}
         </div>
+        
     );
 };
 
