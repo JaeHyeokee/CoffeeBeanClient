@@ -46,7 +46,7 @@ const Category = () => {
                 className='category-button'
                 onMouseEnter={handleMouseEnter}
             >
-                카테고리
+                중고물품
             </div>
             {active && (
                 <div className='dropdown-content' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>

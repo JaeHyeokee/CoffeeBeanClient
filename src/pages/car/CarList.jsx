@@ -4,13 +4,13 @@ import Header from '../components/Header';
 import '../../css/car/CarList.css';
 
 const CarList = () => {
-    const { category, subcategory } = useParams(); // URL 파라미터 추출
+    const { category, subcategory } = useParams(); 
 
     const [cars, setCars] = useState([]);
     const [filteredCars, setFilteredCars] = useState([]);
 
     useEffect(() => {
-        const fetchCars = async () => {
+        const fetchCars = () => {
             const data = [
                 { id: 1, name: '제네시스 G80', category: '국산차', subcategory: '제네시스' },
                 { id: 2, name: '현대 소나타', category: '국산차', subcategory: '현대' },
