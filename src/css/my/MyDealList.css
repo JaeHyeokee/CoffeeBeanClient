@@ -2,9 +2,23 @@
     margin-top: 70px;
 }
 
+.my-list-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .sell-title {
     font-size: 20px;
     font-weight: bold;
+}
+
+.my-list-filter {
+    width: 150px !important;
+}
+
+.my-list-filter:focus {
+    border: 1px solid #0DCC5A;
 }
 
 #sell-status {
