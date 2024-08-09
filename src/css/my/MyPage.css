@@ -1,36 +1,57 @@
 .myhome-body {
     display: flex;
-    padding: 50px 20%;
+    padding: 80px 20% 30px 20%;
 }
 
-.my-nav-box {
+.my-nav-body {
+    display: flex;
+    flex-direction: column;
     width: 25%;
-    
 }
 
 .mypage {
     font-weight: bolder;
     font-size: larger;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 23px;
 }
 
-.mypage-menu {
-    padding: 0;
-    li {
-        margin-top: 10px;
-        list-style-type: none;
-        cursor: pointer;
-        font-size: 13px;
-        color: dimgray;
-    }
-    li.active {
-        color: black;
-        font-weight: bold;
+.my-pay-info {
+    font-weight: bolder;
+    font-size: larger;
+    margin-bottom: 3px;
+}
 
-    }
-    li:hover {
-        color: #0DCC5A;
-    }
+.my-nav-box {
+    width: 100%;
+    gap: 2px;
+    margin: 0 0 20px !important;
+}
+
+.my-nav-box div {
+    margin-top: 10px;
+    list-style-type: none;
+    cursor: pointer;
+    font-size: 13px;
+    color: dimgray;
+}
+
+.my-nav-box div.active {
+    color: black;
+    font-weight: bold;
+}
+
+.my-nav-box div:hover {
+    color: #0DCC5A;
+}
+
+.my-account-info {
+    font-weight: bolder;
+    font-size: larger;
+    margin: 0 0 3px;
+    padding: 17px 0 0;
+    border-top: 1px solid #E6E6E6;
+    width: 60%;
 }
 
 .mypage-activated {

@@ -3,6 +3,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './Home';
 import MyPage from './my/MyPage';
 import MyInformation from './my/MyInformation';
+import DipsList from './my/DipsList';
+import Join from './my/Join';
 import LogIn from './my/LogIn';
 import Register from './my/Register';
 import ReviewCreate from './my/ReviewCreate';
@@ -26,6 +28,9 @@ import PropertyCreate from './property/PropertyCreate';
 import PropertyDetail from './property/PropertyDetail';
 import Propertylist from './property/Propertylist';
 import PropertyUpdate from './property/PropertyUpdate';
+import LoginContextProvider from '../contexts/LoginContextProvider';
+import MyHome from './my/MyHome';
+import SaleList from './my/SaleList';
 import ChatList from './chatting/ChatList';
 import Chat from './chatting/Chat';
 
@@ -34,46 +39,50 @@ const CoffeeBeanApp = () => {
     return (
         <>
         <BrowserRouter>
-        <Routes>
-            <Route path = '/' Component = {Home}/>
+            <LoginContextProvider>
+                <Routes>
+                    <Route path = '/' Component = {Home}/>
 
+                    <Route path = '/UserManagement' Component={UserManagement}/>
             <Route path = '/UserManagement' Component={UserManagement}/>
 
             <Route path='/Chat' Component={Chat} />
             <Route path='/ChatList' Component={ChatList} />
 
-            <Route path = '/CarCreate' Component={CarCreate}/>
-            <Route path = '/CarDetail/:id' Component={CarDetail}/>
-            <Route path = '/CarLIst/:category' Component={CarList}/>
-            <Route path = '/CarLIst/:category/:subcategory' Component={CarList}/>
-            <Route path = '/CarUpdate' Component={CarUpdate}/>
+                    <Route path = '/CarCreate' Component={CarCreate}/>
+                    <Route path = '/CarDetail' Component={CarDetail}/>
+                    <Route path = '/CarLIst' Component={CarList}/>
+                    <Route path = '/CarUpdate' Component={CarUpdate}/>
 
-            <Route path = '/LogIn' Component={LogIn}/>
-            <Route path = '/MyPage' Component={MyPage}/>
-            <Route path = '/MyInformation' Component={MyInformation}/>
-            <Route path = '/Register' Component={Register}/>
-            <Route path = '/ReviewCreate' Component={ReviewCreate}/>
-            <Route path = '/ReviewDetail' Component={ReviewDetail}/>
-            <Route path = '/ReviewList' Component={ReviewList}/>
-            <Route path = '/UnRegister' Component={UnRegister}/>
+                    <Route path = '/DipsList' Component={DipsList}/>
+                    <Route path = '/Login' Component={LogIn}/>
+                    <Route path = '/MyHome' Component={MyHome}/>
+                    <Route path = '/MyInformation' Component={MyInformation}/>
+                    <Route path = '/Register' Component={Register}/>
+                    <Route path = '/ReviewCreate' Component={ReviewCreate}/>
+                    <Route path = '/ReviewDetail' Component={ReviewDetail}/>
+                    <Route path = '/ReviewList' Component={ReviewList}/>
+                    <Route path = '/SaleList' Component={SaleList}/>
+                    <Route path = '/UnRegister' Component={UnRegister}/>
 
-            <Route path = '/PostCreate' Component={PostCreate}/>
-            <Route path = '/PostDetail/:id' element={<PostDetail />}/>
-            <Route path="/PostList" element={<PostList initialContentType="contentType1" />} />
-            <Route path = '/PostUpdate' Component={PostUpdate}/>
+                    <Route path = '/PostCreate' Component={PostCreate}/>
+                    <Route path = '/PostDetail/:id' Component={PostDetail}/>
+                    <Route path = '/PostList' Component={PostList}/>
+                    <Route path = '/PostUpdate' Component={PostUpdate}/>
 
-            <Route path = '/ProductCreate' Component={ProductCreate}/>
-            <Route path = '/ProductDetail/:id' Component={ProductDetail}/>
-            <Route path = '/ProductList/:category' Component={ProductList}/>
-            <Route path = '/ProductList/:category/:subcategory' Component={ProductList}/>
-            <Route path = '/ProductList/:category/:subcategory/:subsubcategory' Component={ProductList}/>
-            <Route path = '/ProductUpdate' Component={ProductUpdate}/>
+                    <Route path = '/ProductCreate' Component={ProductCreate}/>
+                    <Route path = '/ProductDetail/:id' Component={ProductDetail}/>
+                    <Route path = '/ProductList' Component={ProductList}/>
+                    <Route path = '/ProductUpdate' Component={ProductUpdate}/>
 
-            <Route path = '/PropertyCreate' Component={PropertyCreate}/>
-            <Route path = '/PropertyDetail' Component={PropertyDetail}/>
-            <Route path = '/Propertylist' Component={Propertylist}/>
-            <Route path = '/PropertyUpdate' Component={PropertyUpdate}/>
-        </Routes>
+                    <Route path = '/PropertyCreate' Component={PropertyCreate}/>
+                    <Route path = '/PropertyDetail' Component={PropertyDetail}/>
+                    <Route path = '/Propertylist' Component={Propertylist}/>
+                    <Route path = '/PropertyUpdate' Component={PropertyUpdate}/>
+
+                    <Route path = '/Join' Component={Join}/>
+                </Routes>
+            </LoginContextProvider>
         </BrowserRouter>
             
         </>

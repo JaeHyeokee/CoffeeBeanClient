@@ -1,0 +1,103 @@
+.sell-list {
+    margin-top: 70px;
+}
+
+.my-list-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.sell-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.my-list-filter {
+    width: 150px !important;
+}
+
+.my-list-filter:focus {
+    border: 1px solid #0DCC5A;
+}
+
+#sell-status {
+    li {
+        padding: 0;
+        font-size: 15px;
+        font-weight: bold;
+        width: 150px;
+        height: 50px;
+        button {
+            color: #9CA3AF;
+            width: 100%;
+            border: 0;
+        }
+        button:hover {
+            border: 0;
+            color: #0DCC5A;
+            border-bottom: 2px solid #0DCC5A;
+        }
+        button.active {
+            color: black;
+            border-bottom: 2px solid black;
+        }
+    }
+}
+
+.sell-list-filter-frame {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    font-size: 15px;
+    color: dimgray;
+}
+
+.sell-list-filter {
+    button {
+        border: 0;
+        color: dimgray;
+        font-size: 13px;
+        background-color: white;
+    }
+    button.active {
+        font-weight: bold;
+    }
+}
+
+.sell-list-info {
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+#sell-info-card {
+    width: 20%;
+    height: 300px;
+    border: 0;
+    cursor: pointer;
+}
+
+#sell-info-card-img {
+    height: 55%;
+}
+
+#sell-info-card-body {
+    padding: 15px 5px;
+}
+
+#sell-info-title {
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+#sell-info-price {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#sell-info-extra {
+    color: #9CA3AF;
+    font-size: 13px;
+}

@@ -2,13 +2,16 @@ import React, { useState } from 'react';
 import Header from '../components/Header';
 import '../../css/my/MyPage.css'
 import MyHome from './MyHome';
+import SaleList from './SaleList';
+import BuyList from './BuyList';
+import DipsList from './DipsList';
 import MyInformation from './MyInformation';
 import ReviewList from './ReviewList';
 import UnRegister from './UnRegister';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import { Nav } from 'react-bootstrap';
 
 const MyPage = () => {
-    const [activePage, setActivePage] = useState('MyHome');
+    const [activePage, setActivePage] = useState('SaleList');
 
     const handlePageChange = (page) => {
         setActivePage(page);
@@ -18,17 +21,25 @@ const MyPage = () => {
         <>
             <Header />
             <div className='myhome-body'>
-                <nav className='my-nav-box'>
+                <div className='my-nav-body'>
                     <div className='mypage'>마이 페이지</div>
-                    <ul className='mypage-menu'>
-                        <li className={activePage === 'MyHome' ? 'active' : ''} onClick={() => handlePageChange('MyHome')}>마이 홈</li>
-                        <li className={activePage === 'MyInformation' ? 'active' : ''} onClick={() => handlePageChange('MyInformation')}>내 정보 관리</li>
-                        <li className={activePage === 'ReviewList' ? 'active' : ''} onClick={() => handlePageChange('ReviewList')}>거래 후기</li>
-                        <li className={activePage === 'UnRegister' ? 'active' : ''} onClick={() => handlePageChange('UnRegister')}>탈퇴하기</li>
-                    </ul>
-                </nav>
+                    <div className='my-pay-info'>거래 정보</div>
+                    <Nav className='flex-column my-nav-box'>
+                        <Nav.Item className={activePage === 'SaleList' ? 'active' : ''} onClick={() => handlePageChange('SaleList')}>판매 내역</Nav.Item>
+                        <Nav.Item className={activePage === 'BuyList' ? 'active' : ''} onClick={() => handlePageChange('BuyList')}>구매 내역</Nav.Item>
+                        <Nav.Item className={activePage === 'DipsList' ? 'active' : ''} onClick={() => handlePageChange('DipsList')}>찜 목록</Nav.Item>
+                    </Nav>
+                    <div className='my-account-info'>내 정보</div>
+                    <Nav className='flex-column my-nav-box'>
+                        <Nav.Item className={activePage === 'MyInformation' ? 'active' : ''} onClick={() => handlePageChange('MyInformation')}>내 정보 관리</Nav.Item>
+                        <Nav.Item className={activePage === 'ReviewList' ? 'active' : ''} onClick={() => handlePageChange('ReviewList')}>나의 후기</Nav.Item>
+                        <Nav.Item className={activePage === 'UnRegister' ? 'active' : ''} onClick={() => handlePageChange('UnRegister')}>탈퇴하기</Nav.Item>
+                    </Nav>
+                </div>
                 <section className='mypage-activated'>
-                    {activePage === 'MyHome' && <MyHome/>}
+                    {activePage === 'SaleList' && <SaleList/>}
+                    {activePage === 'BuyList' && <BuyList/>}
+                    {activePage === 'DipsList' && <DipsList/>}
                     {activePage === 'MyInformation' && <MyInformation/>}
                     {activePage === 'ReviewList' && <ReviewList/>}
                     {activePage === 'UnRegister' && <UnRegister/>}
