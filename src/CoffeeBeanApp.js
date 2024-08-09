@@ -71,7 +71,9 @@ const CoffeeBeanApp = () => {
 
                     <Route path = '/ProductCreate' Component={ProductCreate}/>
                     <Route path = '/ProductDetail/:id' Component={ProductDetail}/>
-                    <Route path = '/ProductList' Component={ProductList}/>
+                    <Route path = '/ProductList/:category' Component={ProductList}/>
+                    <Route path = '/ProductList/:category/:subcategory' Component={ProductList}/>
+                    <Route path = '/ProductList/:category/:subcategory/:subsubcategory' Component={ProductList}/>
                     <Route path = '/ProductUpdate' Component={ProductUpdate}/>
 
                     <Route path = '/PropertyCreate' Component={PropertyCreate}/>
