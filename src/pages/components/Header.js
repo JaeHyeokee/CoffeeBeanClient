@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../../css/components/Header.css';
 import chat from '../../image/ChatIcon.svg';
 import my from '../../image/MyIcon.svg';
@@ -6,13 +6,16 @@ import sale from '../../image/SaleIcon.svg';
 import x from '../../image/x.svg';
 import { Link } from 'react-router-dom';
 import ChatDiv from '../chatting/ChatFrame';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
-const Header = () => {
+const Header = () => { 
 
     //상태관리
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
     const [isSaleMenuOpen, setIsSaleMenuOpen] = useState(false);
     const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
+
+    const { isLogin, logout, userInfo } = useContext(LoginContext);
 
     // 사이드바 스크롤관리 (채팅하기 눌렀을때)
     useEffect(() => {
@@ -99,6 +102,13 @@ const Header = () => {
                                     <button className='dropdown-button'>로그아웃</button>
                                 </div>
                             )}
+                        </div>
+
+                        <div>
+                            <Link className='nav-link' to="/login">
+                                <button className='nav-item'>로그인</button>
+                            </Link>
+
                         </div>
                     </nav>
                 </div>

@@ -1,11 +1,11 @@
 import React from 'react';
 
-const LogIn = () => {
+const JoinForm = () => {
     return (
         <div>
-            
+            <h2> join form</h2>
         </div>
     );
 };
 
-export default LogIn;
+export default JoinForm;
