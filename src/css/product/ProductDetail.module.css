@@ -1,14 +1,14 @@
-.productdetail-body {
+.productdetailBody {
     margin-top: 50px;
     padding: 0 20%;
 }
 
-.product-detail {
+.productDetail {
     display: flex;
     flex-direction: column; 
 }
 
-.productdetail-top {
+.productdetailTop {
     display: flex;
     margin-bottom: 50px; 
     align-items: flex-start; 
@@ -16,37 +16,37 @@
 }
 
 .carousel {
-    width: 450px;
-    margin-right: 100px;
+    width: 300px;
+    margin-right: 300px;
 }
 
-.product-image {
+.productImage {
     width: 100%;
     height: auto;
     border-radius: 20px;
     object-fit: cover;
 }
 
-.carousel-item {
+.carouselItem {
     height: auto; /* 슬라이드의 높이를 고정 */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.carousel-item img {
-    max-height: 450px;
-    max-width: 450px;
+.carouselItem img {
+    max-height: 300px;
+    max-width: 300px;
 }
 
 /* 상품정보 */
-.product-info {
+.productInfo {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-.product-info-bottom {
+.productInfoBottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -57,19 +57,19 @@
     margin-top: 30px;
 }
 
-.product-info-bottom div {
+.productInfoBottom div {
     text-align: center;
 }
 
 /* 채팅하기, 찜하기 버튼 */
-.chat-dip-button {
+.chatDipButton {
     display: flex;
     justify-content: space-between;
     width: 100%; 
 }
 
-.chat-button,
-.dip-button {
+.chatButton,
+.dipButton {
     width: 48%; 
     height: 50px;
     border: 1px solid black;
@@ -77,23 +77,23 @@
     cursor: pointer;
 }
 
-.chat-button {
+.chatButton {
     background-color: white;
 }
 
-.dip-button {
+.dipButton {
     background-color: black;
     color: white;
 }
 
 /* 상품정보, user정보 */
-.productdetail-bottom {
+.productdetailBottom {
     display: flex;
     width: 100%;
     justify-content: space-between; 
 }
 
-.product-info-detail {
+.productInfoDetail {
     flex: 6; 
     padding: 10px;
     box-sizing: border-box;
@@ -101,7 +101,7 @@
     margin-right: 100px;
 }
 
-.user-info {
+.userInfo {
     flex: 4;
     padding: 10px;
     box-sizing: border-box;

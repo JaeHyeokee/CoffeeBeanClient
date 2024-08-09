@@ -1,0 +1,125 @@
+.cardetailBody {
+    width: 1280px;
+    margin: auto;
+    padding: 20px;
+}
+
+.carDetail {
+    display: flex;
+    flex-direction: column;
+}
+
+.cardetailTop {
+    margin-top: 80px;
+    display: flex;
+    margin-bottom: 50px;
+    gap: 20px; /* 간격 조정 */
+}
+
+.carouselItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carouselItem img {
+    border-radius: 20px;
+    width: 604px;
+    height: 604px;
+    object-fit: cover;
+}
+
+.carInfo {
+    display: flex;
+    flex-direction: column;
+    width: 604px;
+}
+
+.carName {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.carPrice {
+    font-size: 38px;
+    font-weight: 700;
+}
+
+.carInfoBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin: 30px 0;
+}
+
+.carInfoBottom div {
+    text-align: center;
+}
+
+.chatDipButton {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.chatButton,
+.dipButton {
+    width: 48%;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chatButton {
+    background-color: white;
+}
+
+.dipButton {
+    background-color: black;
+    color: white;
+}
+
+/* 박스 스타일 */
+.infoBox {
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.infoBox h2 {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.cardetailInfo {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.leftPanel {
+    flex: 2;
+}
+
+.rightPanel {
+    flex: 1;
+}
+
+.cardetailBottom {
+    margin-top: 20px;
+}
+
+.cardetailBottom .infoBox {
+    margin-top: 0;
+}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
-import '../../css/product/ProductDetail.css';
+import styles from '../../css/product/ProductDetail.module.css'; // CSS 모듈 import
 import { Carousel } from 'react-bootstrap';
 import products from '../components/ExData';
 import ChatFrame from '../chatting/ChatFrame';
@@ -27,16 +27,11 @@ const ProductDetail = () => {
     const dip = () => {
         Swal.fire({
             title: '찜콩',
-            html: '<div style="display: flex; align-items: center; justify-content: center;">' +
-                '</div>',
-            showConfirmButton: false, // 확인 숨기기
+            html: '<div style="display: flex; align-items: center; justify-content: center;"></div>',
+            showConfirmButton: false,
             width: '400px',
-
-            //계속 둘러보기, 찜 목록가기
-
         });
     };
-
 
     useEffect(() => {
         if (isChatSidebarOpen) {
@@ -50,28 +45,28 @@ const ProductDetail = () => {
     return (
         <>
             <Header />
-            <div className='productdetail-body'>
-                <div className="product-detail">
+            <div className={styles.productdetailBody}>
+                <div className={styles.productDetail}>
                     {product ? (
                         <>
-                            <section className='productdetail-top'>
+                            <section className={styles.productdetailTop}>
                                 <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
                                     <Carousel.Item>
-                                        <img className='product-image' src={product.image} />
+                                        <img className={styles.productImage} src={product.image} alt="Product" />
                                         <Carousel.Caption>
                                             <h3>First slide label</h3>
                                             <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
                                         </Carousel.Caption>
                                     </Carousel.Item>
                                     <Carousel.Item>
-                                        <img className='product-image' src={product.image} />
+                                        <img className={styles.productImage} src={product.image} alt="Product" />
                                         <Carousel.Caption>
                                             <h3>Second slide label</h3>
                                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                                         </Carousel.Caption>
                                     </Carousel.Item>
                                     <Carousel.Item>
-                                        <img className='product-image' src={product.image} />
+                                        <img className={styles.productImage} src={product.image} alt="Product" />
                                         <Carousel.Caption>
                                             <h3>Third slide label</h3>
                                             <p>
@@ -81,11 +76,11 @@ const ProductDetail = () => {
                                     </Carousel.Item>
                                 </Carousel>
 
-                                <div className='product-info'>
+                                <div className={styles.productInfo}>
                                     <p>카테고리 경로 들어갈 자리</p>
                                     <h1>{product.title}</h1>
                                     <h1>가격: {product.price.toLocaleString()}원</h1>
-                                    <div className='product-info-bottom'>
+                                    <div className={styles.productInfoBottom}>
                                         <div>
                                             <p>제품상태</p>
                                             <p>{product.status}</p>
@@ -99,22 +94,21 @@ const ProductDetail = () => {
                                             <p>{product.dealing_status}</p>
                                         </div>
                                     </div>
-                                    <div className='chat-dip-button'>
-                                        <button className="chat-button" onClick={toggleChatSidebar}>
+                                    <div className={styles.chatDipButton}>
+                                        <button className={styles.chatButton} onClick={toggleChatSidebar}>
                                             채팅하기
                                         </button>
-
-                                        <button className='dip-button' onClick={dip}>찜하기</button>
+                                        <button className={styles.dipButton} onClick={dip}>찜하기</button>
                                     </div>
                                 </div>
                             </section>
 
-                            <section className='productdetail-bottom'>
-                                <div className='product-info-detail'>
+                            <section className={styles.productdetailBottom}>
+                                <div className={styles.productInfoDetail}>
                                     <p>상품정보</p>
                                 </div>
 
-                                <div className='user-info'>
+                                <div className={styles.userInfo}>
                                     <p>가게정보</p>
                                 </div>
                             </section>
@@ -125,12 +119,12 @@ const ProductDetail = () => {
 
                     {isChatSidebarOpen && (
                         <>
-                            <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
-                            <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
-                                <button className='close-button' onClick={toggleChatSidebar}>
+                            <div className={`${styles.overlay} ${isChatSidebarOpen ? styles.active : ''}`} onClick={toggleChatSidebar} />
+                            <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? styles.open : ''}`}>
+                                <button className={styles.closeButton} onClick={toggleChatSidebar}>
                                     <img src={x} alt='닫기' height={25} width={25} />
                                 </button>
-                                <ChatFrame productId={productId} /> {/* 상품id 전달 */}
+                                <ChatFrame productId={productId} />
                             </div>
                         </>
                     )}
