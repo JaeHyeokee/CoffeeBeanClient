@@ -26,6 +26,8 @@ import PropertyCreate from './property/PropertyCreate';
 import PropertyDetail from './property/PropertyDetail';
 import Propertylist from './property/Propertylist';
 import PropertyUpdate from './property/PropertyUpdate';
+import ChatList from './chatting/ChatList';
+import Chat from './chatting/Chat';
 
 
 const CoffeeBeanApp = () => {
@@ -36,6 +38,9 @@ const CoffeeBeanApp = () => {
             <Route path = '/' Component = {Home}/>
 
             <Route path = '/UserManagement' Component={UserManagement}/>
+
+            <Route path='/Chat' Component={Chat} />
+            <Route path='/ChatList' Component={ChatList} />
 
             <Route path = '/CarCreate' Component={CarCreate}/>
             <Route path = '/CarDetail/:id' Component={CarDetail}/>

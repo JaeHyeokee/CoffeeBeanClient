@@ -5,7 +5,8 @@ import my from '../../image/MyIcon.svg';
 import sale from '../../image/SaleIcon.svg';
 import x from '../../image/x.svg';
 import { Link } from 'react-router-dom';
-import ChatDiv from '../chatting/ChatFrame';
+import ChatList from '../chatting/ChatList';
+import Chat from '../chatting/Chat';
 import Category from './Category';
 import CarCategory from './CarCategory';
 
@@ -15,6 +16,8 @@ const Header = () => {
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
     const [isSaleMenuOpen, setIsSaleMenuOpen] = useState(false);
     const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
+    const [selectedChatRoomId, setSelectedChatRoomId] = useState(null); // 선택된 채팅방 상태
+
     // 사이드바 스크롤관리 (채팅하기 눌렀을때)
     useEffect(() => {
         if (isChatSidebarOpen) {
@@ -40,6 +43,17 @@ const Header = () => {
         if (isMyMenuOpen) setIsSaleMenuOpen(false);
         if (isChatSidebarOpen) setIsChatSidebarOpen(false);
     }
+
+    // 채팅방 선택 함수
+    const handleSelectChatRoom = (chatRoomId) => {
+        setSelectedChatRoomId(chatRoomId);
+    };
+
+    // 뒤로가기 함수
+    const handleBackToChatList = () => {
+        setSelectedChatRoomId(null);
+    };
+
     return (
         <>
             <header>
@@ -103,7 +117,11 @@ const Header = () => {
                         <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
                         <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
                             <button className='close-button' onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25} /></button> {/* 사이드바 닫기 버튼 */}
-                            <ChatDiv />
+                            {!selectedChatRoomId ? (
+                                <ChatList onSelectChatRoom={handleSelectChatRoom} />
+                            ) : (
+                                <Chat chatRoomId={selectedChatRoomId} onBack={handleBackToChatList} />
+                            )}
                         </div>
                     </>
                 )}
