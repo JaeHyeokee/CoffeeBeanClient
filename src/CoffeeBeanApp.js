@@ -1,32 +1,34 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Home from './Home';
-import MyPage from './my/MyPage';
-import MyInformation from './my/MyInformation';
-import LogIn from './my/LogIn';
-import Register from './my/Register';
-import ReviewCreate from './my/ReviewCreate';
-import ReviewDetail from './my/ReviewDetail';
-import ReviewList from './my/ReviewList';
-import UnRegister from './my/UnRegister';
-import UserManagement from './admin/UserManagement';
-import CarCreate from './car/CarCreate';
-import CarDetail from './car/CarDetail';
-import CarList from './car/CarList';
-import CarUpdate from './car/CarUpdate';
-import PostCreate from './post/PostCreate';
-import PostDetail from './post/PostDetail';
-import PostList from './post/PostList';
-import PostUpdate from './post/PostUpdate';
-import ProductCreate from './product/ProductCreate';
-import ProductDetail from './product/ProductDetail';
-import ProductList from './product/ProductList';
-import ProductUpdate from './product/ProductUpdate';
-import PropertyCreate from './property/PropertyCreate';
-import PropertyDetail from './property/PropertyDetail';
-import Propertylist from './property/Propertylist';
-import PropertyUpdate from './property/PropertyUpdate';
+import Home from './pages/Home';
+import MyPage from './pages/my/MyPage';
+import MyInformation from './pages/my/MyInformation';
+import LogIn from './pages/my/LogIn';
+import Register from './pages/my/Register';
+import ReviewCreate from './pages/my/ReviewCreate';
+import ReviewDetail from './pages/my/ReviewDetail';
+import ReviewList from './pages/my/ReviewList';
+import UnRegister from './pages/my/UnRegister';
+import UserManagement from './pages/admin/UserManagement';
+import CarCreate from './pages/car/CarCreate';
+import CarDetail from './pages/car/CarDetail';
+import CarList from './pages/car/CarList';
+import CarUpdate from './pages/car/CarUpdate';
+import PostCreate from './pages/post/PostCreate';
+import PostDetail from './pages/post/PostDetail';
+import PostList from './pages/post/PostList';
+import PostUpdate from './pages/post/PostUpdate';
+import ProductCreate from './pages/product/ProductCreate';
+import ProductDetail from './pages/product/ProductDetail';
+import ProductList from './pages/product/ProductList';
+import ProductUpdate from './pages/product/ProductUpdate';
+import PropertyCreate from './pages/property/PropertyCreate';
+import PropertyDetail from './pages/property/PropertyDetail';
+import Propertylist from './pages/property/Propertylist';
+import PropertyUpdate from './pages/property/PropertyUpdate';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './CoffeeBeanApp.css';
 
 const CoffeeBeanApp = () => {
     return (
@@ -44,7 +46,7 @@ const CoffeeBeanApp = () => {
             <Route path = '/CarUpdate' Component={CarUpdate}/>
 
             <Route path = '/LogIn' Component={LogIn}/>
-            <Route path = '/MyHome' Component={MyPage}/>
+            <Route path = '/MyPage' Component={MyPage}/>
             <Route path = '/MyInformation' Component={MyInformation}/>
             <Route path = '/Register' Component={Register}/>
             <Route path = '/ReviewCreate' Component={ReviewCreate}/>
@@ -54,7 +56,7 @@ const CoffeeBeanApp = () => {
 
             <Route path = '/PostCreate' Component={PostCreate}/>
             <Route path = '/PostDetail/:id' element={<PostDetail />}/>
-            <Route path="/PostList" element={<PostList initialContentType="contentType1" />} />
+            <Route path = '/PostList' element={<PostList initialContentType="contentType1" />} />
             <Route path = '/PostUpdate' Component={PostUpdate}/>
 
             <Route path = '/ProductCreate' Component={ProductCreate}/>
