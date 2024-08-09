@@ -28,7 +28,7 @@ const DipsList = () => {
                                     <Card.Img id='sell-info-card-img' src='https://img2.joongna.com/media/original/2024/08/03/1722684220548T4v_S4eys.jpg?impolicy=thumb&amp;size=50'/>
                                     <Card.Body id='sell-info-card-body'>
                                         <Card.Title id='sell-info-title'>쬬꼬렛</Card.Title>
-                                        <Card.Text id='sell-info-price'>15,000원</Card.Text>
+                                                                                                                                                                                                                                                                                                                                       <Card.Text id='sell-info-price'>15,000원</Card.Text>
                                         <Card.Text id='sell-info-extra'>정자동 | 2일 전</Card.Text>
                                     </Card.Body>
                                 </Card>
@@ -75,7 +75,6 @@ const DipsList = () => {
                         <Tab eventKey='outOfSale' title='판매완료'>
                             판매완료
                         </Tab>
-                        <div>총 0개</div>
                     </Tabs>
                 </section>
             </>

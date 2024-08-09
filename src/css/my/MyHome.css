@@ -59,9 +59,10 @@
 .trust-index-bar {
     width: 100%;
     margin-bottom: 15px;
+    border-radius: 10px !important;
 }
 
 .trust-index-bar .progress-bar {
     background: linear-gradient(90deg, #0DCC5A, #01A1AD);
-    border-radius: 6px;
+    border-radius: 10px;
 }

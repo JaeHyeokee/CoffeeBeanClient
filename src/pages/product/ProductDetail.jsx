@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../components/Header';
 import styles from '../../css/product/ProductDetail.module.css'; // CSS 모듈 import
 import { Carousel } from 'react-bootstrap';
@@ -7,14 +8,23 @@ import products from '../components/ExData';
 import ChatFrame from '../chatting/ChatFrame';
 import x from '../../image/x.svg';
 import Swal from 'sweetalert2';
+import { Carousel } from 'react-bootstrap';
 
 const ProductDetail = () => {
-    const { id } = useParams();
-    const productId = parseInt(id, 10);
-    const product = products.find(p => p.id === productId);
-
+    const { id } = useParams(); 
+    const [product, setProduct] = useState(null);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
+
+    useEffect(() => {
+        axios.get(`http://localhost:8088/product/detail/${id}`)
+            .then(response => {
+                setProduct(response.data);
+            })
+            .catch(error => {
+                console.error('실패', error);
+            });
+    }, [id]);
 
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
@@ -22,7 +32,7 @@ const ProductDetail = () => {
 
     const toggleChatSidebar = () => {
         setIsChatSidebarOpen(!isChatSidebarOpen);
-    }
+    };
 
     const dip = () => {
         Swal.fire({
@@ -41,6 +51,10 @@ const ProductDetail = () => {
         }
         return () => document.body.classList.remove('no-scroll');
     }, [isChatSidebarOpen]);
+
+    if (!product) {
+        return <p>상품을 찾을 수 없습니다.</p>;
+    }
 
     return (
         <>
