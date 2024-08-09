@@ -5,6 +5,7 @@ import attachment from '../../image/Attachment.png'
 import price from '../../image/ProductPrice.png'
 import check from '../../image/Uncheck.png'
 import { Link } from 'react-router-dom';
+import Category from '../components/Category';
 
 const ProductCreate = () => {
     return (
@@ -22,13 +23,7 @@ const ProductCreate = () => {
                 <input type='text' className='product-name-input' placeholder='상품명'/>
             </div>
 
-            <div className='product-category'>
-                <button className='product-category-button'>패션의류</button>
-                <button className='product-category-button'>뷰티</button> 
-                <button className='product-category-button'>노트북/PC</button>                  
-                <button className='product-category-button'>도서/음반/문구</button>                  
-                <button className='product-category-button'>레저/여행</button>                  
-            </div>
+            <Category/>            
 
             <div className='product-price'>
                 <img src={price} alt='' />

@@ -1,5 +1,5 @@
 .home-body {
-  padding: 0 180px;
+  padding: 0 20%;
 }
 
 .product-list {
@@ -9,10 +9,25 @@
 
 .product-items {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  align-items: center; /* 버튼과 아이템을 수직으로 가운데 정렬 */
+  justify-content: space-between; /* 버튼을 좌우 끝으로 배치 */
+  flex-wrap: wrap; /* 제품 아이템들이 한 줄에 배치되도록 설정 */
 }
 
+.pagination-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+/* .product-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+ */
 .product-item {
   flex: 1 1 calc(16.66% - 20px);
   box-sizing: border-box;
@@ -31,7 +46,8 @@
 }
 
 .product-item img {
-  max-width: 100%;
+  max-width: 150px;
+  max-height: 150px;
   height: auto;
   border-radius: 4px;
 }
@@ -42,12 +58,7 @@
   margin-top: 20px;
 }
 
-.pagination button {
-  padding: 10px 20px;
-  margin: 0 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
+
 
 .pagination button:disabled {
   background-color: #ccc;
