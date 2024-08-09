@@ -12,7 +12,7 @@ const ProductList = () => {
     const { category, subcategory, subsubcategory } = useParams();
 
     useEffect(() => {
-        /* axios.get('http://localhost:8088/product/list')
+        axios.get('http://localhost:8088/product/list')
             .then(response => {
                 console.log(response.data);
                 if(Array.isArray(response.data)){
@@ -21,7 +21,7 @@ const ProductList = () => {
                     console.log('에러에러에러에ㅓ레ㅓ레ㅓ레ㅓㅔㅓㅔ')
                 }
                 setLoading(false);
-            }) */
+            })
     }, []);
 
     useEffect(() => {   //카테고리 제품 필터링

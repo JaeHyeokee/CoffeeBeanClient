@@ -62,7 +62,7 @@ const Home = () => {
                             </button>
                             {currentProductsRecommended.map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
-                                    <img src={product.image} alt={product.name} />
+                                    <img src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
                                     <h3>{product.name}</h3>
                                     <p>{product.price.toLocaleString()}원</p>
                                     <p>{product.desiredArea} | {product.time}</p>
@@ -85,7 +85,7 @@ const Home = () => {
                             </button>
                             {currentProductsAdded.map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
-                                    <img src={product.fileList} alt={product.name} />
+                                    <img src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
                                     <h3>{product.name}</h3>
                                     <p>{product.price.toLocaleString()}원</p>
                                     <p>{product.desiredArea} | {product.time}</p>

@@ -63,21 +63,21 @@ const ProductDetail = () => {
                     <section className='productdetail-top'>
                         <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
                         <Carousel.Item>
-                        <img className='product-image' src={product.image} alt={product.name} />
+                        <img className='product-image' src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
                             <Carousel.Caption>
                             <h3>First slide label</h3>
                             <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
                             </Carousel.Caption>
                         </Carousel.Item>
                         <Carousel.Item>
-                        <img className='product-image' src={product.image} alt={product.name} />
+                        <img className='product-image' src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
                             <Carousel.Caption>
                             <h3>Second slide label</h3>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                             </Carousel.Caption>
                         </Carousel.Item>
                         <Carousel.Item>
-                        <img className='product-image' src={product.image} alt={product.name} />
+                        <img className='product-image' src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
                             <Carousel.Caption>
                             <h3>Third slide label</h3>
                             <p>
