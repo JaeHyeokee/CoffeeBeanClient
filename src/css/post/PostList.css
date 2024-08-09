@@ -1,0 +1,37 @@
+.postlist-body {
+    padding: 30px 20%;
+}
+
+.post-list {
+    display: flex;
+}
+
+.post-list a {
+    text-decoration: none;
+    color: black;
+    margin-right: 130px;
+    margin-bottom: 30px;
+}
+
+.post-list a:hover {
+    text-decoration: underline;
+}
+
+.post-title {
+
+}
+
+.post-title a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 17px;
+}
+
+.post-title p {
+    margin-bottom: 20px;
+}
+
+.post-title hr {
+    margin-top: 20px;
+    color: lightgrey;
+}

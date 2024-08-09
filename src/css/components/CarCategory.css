@@ -1,0 +1,51 @@
+.car-category {
+    position: relative;
+}
+
+.car-category-button {
+    padding: 10px 20px;
+    font-size: 18px;
+    color: white;
+    background-color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 100px;
+}
+
+.drop-content {
+    display: none; 
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    z-index: 1000;
+    display: flex;
+    width: 200px;
+}
+
+.drop-section {
+    margin-bottom: 10px;
+}
+
+.drop-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.drop-items {
+    margin-top: 5px;
+}
+
+.drop-item {
+    display: block;
+    padding: 5px 0;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.drop-item:hover {
+    text-decoration: underline;
+}
