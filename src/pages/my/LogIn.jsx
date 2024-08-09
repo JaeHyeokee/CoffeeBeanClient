@@ -1,11 +1,14 @@
 import React from 'react';
+import LoginForm from '../components/LoginForm';
 
-const LogIn = () => {
+const Login = () => {
     return (
         <div>
-            
+            <div className='container'>
+            <LoginForm/>
+            </div>
         </div>
     );
 };
 
-export default LogIn;
+export default Login;

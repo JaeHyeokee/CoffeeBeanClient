@@ -1,3 +1,233 @@
-.chat-detail {
+.chat-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.chatHeader {
+    width: 100%;
+    height: 4%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    align-content: center;
     color: black;
+}
+
+.backBtn {
+    border: none;
+    background-color: white;
+    cursor: pointer;
+    position: absolute; 
+    top: 5px; 
+    left: 20px; 
+}
+
+.productPicture {
+    width: 100%;
+    height: 8%;
+    margin: 0;
+    padding: 0;
+    color: black;
+    align-content: center;
+    text-align: center;
+}
+
+.productPicture2 {
+    width: 100%;
+    height: 8%;
+    margin: 0;
+    padding: 0;
+    color: black;
+    align-content: center;
+    text-align: center;
+}
+
+.me {
+    display: flex;
+    flex-direction: column; /* 세로 방향으로 정렬 */
+    font-size: 10px; /* 폰트 크기 조정 */
+}
+
+.own-message1 {
+    align-self: flex-end; /* 오른쪽 정렬 */
+    max-width: 80%;
+}
+
+.own-message2 {
+    align-self: flex-start; /* 왼쪽 정렬 */
+    max-width: 80%;
+}
+
+.own-message1 .messageText {
+    background-color: yellow;
+    border-radius: 10px;
+    padding: 7px 9px;
+    margin: 2px 0;
+    align-self: flex-end;
+    font-weight: bold;
+}
+
+.own-message2 .messageText {
+    background-color: white; /* 원하는 배경색 */
+    border-radius: 10px; /* 모서리 둥글게 */
+    padding: 7px 9px;
+    margin: 2px 0;
+    font-weight: bold;
+}
+
+.isRead1 {
+    white-space: nowrap; /* 줄 바꿈 방지 */
+    height: 40%;
+    padding: 0;
+    color: lightsalmon;
+    font-size: 9px;
+    margin: 5px 4px 0 33px;
+    font-weight: bold;
+}
+
+.sendTime1 {
+    height: 55%;
+    background-color: #f0f0f0;
+    padding: 0;
+    color: black;
+    align-content: center;
+    font-size: 11px;
+    margin: 0 4px 3px 0;
+    align-self: flex-end;
+}
+
+.isRead2 {
+    white-space: nowrap; /* 줄 바꿈 방지 */
+    height: 40%;
+    padding: 0;
+    color: #f0f0f0;
+    font-size: 9px;
+    margin: 4px 0 2px 5px;
+    font-weight: bold;
+}
+
+.sendTime2 {
+    height: 60%;
+    background-color: #f0f0f0;
+    padding: 0;
+    color: black;
+    align-content: center;
+    font-size: 11px;
+    margin: 0 4px 3px 4px;
+}
+
+.messages {
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    margin: 5px 0;
+    padding: 10px 13px;
+    height: 72%;
+    overflow-y: auto;
+    color: black;
+    display: flex;
+    flex-direction: column; /* 세로 방향 정렬 */
+    align-items: flex-start; /* 기본적으로 왼쪽 정렬 */
+    font-size: 14px;
+    font-weight: bo;
+}
+
+.own-message {
+    text-align: right;
+}
+.message {
+    display: flex;
+}
+
+.message-input {
+    display: flex;
+    height: 12%; /* 부모 높이 */
+    width: 100%;
+}
+
+.textarea {
+    width: 87%;
+    margin: 0 10px;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box; /* 패딩 포함하여 크기 계산 */
+    resize: none; /* 크기 조정 비활성화 */
+    outline: none; /* 선택 시 보더 제거 */
+    overflow-y: auto; /* 세로 스크롤이 필요할 때만 표시 */
+    height: 40px; /* 초기 높이 설정 */
+    max-height: 100%; /* 최대 높이 설정 (필요에 따라 조정) */
+}
+
+.message-input button {
+    width: 10%;
+    height: 100%; /* 버튼 높이 설정 */
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.message-input button:hover {
+    background-color: lightgreen;
+    color: white;
+}
+
+.chat-container .sendBtn {
+    background-color: yellow; /* 원하는 배경색 */
+    color: black; /* 글자색 */
+    border: none; /* 기본 테두리 제거 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 5px; /* 둥근 모서리 */
+    padding: 10px 20px; /* 내Padding */
+    cursor: pointer; /* 마우스 커서 변경 */
+    transition: background-color 0.3s; /* 호버 시 부드러운 전환 효과 */
+    font-weight: bold;
+}
+.messageDelete {
+    border: none;
+    cursor: pointer;
+    margin-top: 3px;
+}
+.messageDelete:hover {
+    
+}
+
+.list {
+    display: flex;
+}
+
+.profile {
+    width: 25%;
+    height: 100%;
+    align-content: center;
+    text-align: center;
+}
+
+.chatList {
+    width: 75%;
+    height: 100%;
+    align-content: center;
+    text-align: start;
+    margin-left: 20px;
+}
+
+.userName {
+    font-weight: bold;
+}
+
+.userMessage {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+.joinMessage {
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin: 50px 0 0 75px;
+
 }

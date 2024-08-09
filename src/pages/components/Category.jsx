@@ -6,6 +6,7 @@ const Category = () => {
     const [active, setActive] = useState(false); // 카테고리 전체 상태
     const [activeSubcategory, setActiveSubcategory] = useState(null); // 현재 활성화된 서브카테고리
 
+
     const categories = {
         "패션의류": ["여성의류", "남성의류"],
         "모바일/태블릿": ["스마트폰", "태블릿PC", "케이스/거치대/보호필름", "배터리/충전기/케이블"],
@@ -33,46 +34,41 @@ const Category = () => {
         "상품권/쿠폰": ["백화점/마트/편의점", "영화/문화/게임", "외식/주유"]
     };
 
-    const handleButtonClick = () => {
-        setActive(!active);
-    };
+    const handleMouseEnter = () => setActive(true);
+    const handleMouseLeave = () => setActive(false);
 
-    //카테고리 선택하면 메뉴 닫기
-    const handleCategoryClick = () => {
-        setActive(false); 
-    };
-
-    //카테고리3
-    const handleSubcategoryMouseEnter = (subcategory) => {
-        setActiveSubcategory(subcategory);
-    };
-
-    const handleSubcategoryMouseLeave = () => {
-        setActiveSubcategory(null);
-    };
+    const handleSubcategoryMouseEnter = (subcategory) => setActiveSubcategory(subcategory);
+    const handleSubcategoryMouseLeave = () => setActiveSubcategory(null);
 
     return (
-        <div className='category'>
-            <button
+        <div className='category' onMouseLeave={handleMouseLeave}>
+            <div
                 className='category-button'
-                onClick={handleButtonClick}
+                onMouseEnter={handleMouseEnter}
             >
-                카테고리
-            </button>
+                중고물품
+            </div>
             {active && (
-                <div className='dropdown-content'>
+                <div className='dropdown-content' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                     {Object.keys(categories).map((category) => (
-                        <div className='dropdown-section' key={category} onClick={handleCategoryClick} >
-                             <h4 className='dropdown-title'>
+                        <div className='dropdown-section' key={category}>
+                            {/* 카테고리1 */}
+                            <h4 className='dropdown-title'>
                                 <Link to={`/ProductList/${encodeURIComponent(category)}`}>{category}</Link>
                             </h4>
+                            {/* 카테고리2 */}
                             <div className='dropdown-submenu'>
                                 <ul>
                                     {categories[category].map((subcategory) => (
-                                        <li key={subcategory} onMouseEnter={() => handleSubcategoryMouseEnter(subcategory)} onMouseLeave={handleSubcategoryMouseLeave}>
+                                        <li
+                                            key={subcategory}
+                                            onMouseEnter={() => handleSubcategoryMouseEnter(subcategory)}
+                                            onMouseLeave={handleSubcategoryMouseLeave}
+                                        >
                                             <Link to={`/ProductList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}`}>
                                                 {subcategory}
                                             </Link>
+                                            {/* 카태고리3 */}
                                             {activeSubcategory === subcategory && subcategories[subcategory] && subcategories[subcategory].length > 0 && (
                                                 <div className='dropdown-submenu-3'>
                                                     <ul>
@@ -95,7 +91,6 @@ const Category = () => {
                 </div>
             )}
         </div>
-        
     );
 };
 

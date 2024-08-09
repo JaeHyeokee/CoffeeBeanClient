@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import '../../css/components/CarCategory.css';
+import { Link } from 'react-router-dom';
 
 const CarCategory = () => {
-    const [selectedMainCategory, setSelectedMainCategory] = useState(null);
+    const [active, setActive] = useState(false); // Corrected state name
     const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
     const carcategories = {
@@ -11,53 +11,49 @@ const CarCategory = () => {
         "수입차": ["벤츠", "BMW", "아우디", "테슬라", "포르쉐"]
     };
 
-    const handleMainCategoryClick = (category) => {
-        setSelectedMainCategory(category === selectedMainCategory ? null : category);
-        setSelectedSubCategory(null); // 서브카테고리 초기화
-    };
+    const handleMouseEnter = () => setActive(true);
+    const handleMouseLeave = () => setActive(false);
 
-    const handleSubCategoryClick = (subCategory) => {
-        setSelectedSubCategory(subCategory === selectedSubCategory ? null : subCategory);
-    };
+    const handleSubcategoryMouseEnter = (subcategory) => setSelectedSubCategory(subcategory);
+    const handleSubcategoryMouseLeave = () => setSelectedSubCategory(null);
 
     return (
-        <div className='car-category'>
-            <button
+        <div className='car-category' onMouseLeave={handleMouseLeave}>
+            <div
                 className='car-category-button'
-                onClick={() => handleMainCategoryClick('중고차')}
+                onMouseEnter={handleMouseEnter}
             >
                 중고차
-            </button>
+            </div>
 
-            {selectedMainCategory && (
+            {active && (
                 <div className='drop-content'>
                     {Object.keys(carcategories).map((category) => (
                         <div className='drop-section' key={category}>
-                            <h4
-                                className={`drop-title ${selectedMainCategory === category ? 'active' : ''}`}
-                                onClick={() => handleMainCategoryClick(category)}
-                            >
-                                {category}
+                            {/* 카테고리1 */}
+                            <h4 className='drop-title'>
+                                <Link to={`/CarList/${encodeURIComponent(category)}`}>{category}</Link>
                             </h4>
-                            {selectedMainCategory === category && (
-                                <div className='drop-items'>
-                                    {carcategories[category].map((subCategory) => (
-                                        <Link
-                                            key={subCategory}
-                                            to={`/CarList/${encodeURIComponent(category)}/${encodeURIComponent(subCategory)}`}
-                                            className={`drop-item ${selectedSubCategory === subCategory ? 'active' : ''}`}
-                                            onClick={() => handleSubCategoryClick(subCategory)}
+                            {/* 카테고리2 */}
+                            <div className='dropdown-submenu-car'>
+                                <ul>
+                                    {carcategories[category].map((subcategory) => (
+                                        <li
+                                            key={subcategory}
+                                            onMouseEnter={() => handleSubcategoryMouseEnter(subcategory)}
+                                            onMouseLeave={handleSubcategoryMouseLeave}
                                         >
-                                            {subCategory}
-                                        </Link>
+                                            <Link to={`/CarList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}`}>
+                                                {subcategory}
+                                            </Link>
+                                        </li>
                                     ))}
-                                </div>
-                            )}
+                                </ul>
+                            </div>
                         </div>
                     ))}
                 </div>
             )}
-
         </div>
     );
 };
