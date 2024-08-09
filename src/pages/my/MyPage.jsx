@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../components/Header';
-import '../../css/my/MyPage.css'
-import MyHome from './MyHome';
-import SaleList from './SaleList';
-import BuyList from './BuyList';
-import DipsList from './DipsList';
+import Style from '../../css/my/MyPage.module.css';
+import MyDealList from './MyDealList';
 import MyInformation from './MyInformation';
 import ReviewList from './ReviewList';
 import UnRegister from './UnRegister';
@@ -12,6 +9,7 @@ import { Nav } from 'react-bootstrap';
 
 const MyPage = () => {
     const [activePage, setActivePage] = useState('SaleList');
+    const [isProductOrCar, setIsProductOrCar] = useState('prod');
 
     const handlePageChange = (page) => {
         setActivePage(page);
@@ -20,26 +18,26 @@ const MyPage = () => {
     return (
         <>
             <Header />
-            <div className='myhome-body'>
-                <div className='my-nav-body'>
-                    <div className='mypage'>마이 페이지</div>
-                    <div className='my-pay-info'>거래 정보</div>
-                    <Nav className='flex-column my-nav-box'>
-                        <Nav.Item className={activePage === 'SaleList' ? 'active' : ''} onClick={() => handlePageChange('SaleList')}>판매 내역</Nav.Item>
-                        <Nav.Item className={activePage === 'BuyList' ? 'active' : ''} onClick={() => handlePageChange('BuyList')}>구매 내역</Nav.Item>
-                        <Nav.Item className={activePage === 'DipsList' ? 'active' : ''} onClick={() => handlePageChange('DipsList')}>찜 목록</Nav.Item>
+            <div className={Style.myHomeBody}>
+                <div className={Style.myNavBody}>
+                    <div className={Style.myPage}>마이 페이지</div>
+                    <div className={Style.myPayInfo}>거래 정보</div>
+                    <Nav className={`flex-column ${Style.myNavBox}`}>
+                        <Nav.Item className={activePage === 'SaleList' ? `${Style.active}` : ''} onClick={() => handlePageChange('SaleList')}>판매 내역</Nav.Item>
+                        <Nav.Item className={activePage === 'BuyList' ? `${Style.active}` : ''} onClick={() => handlePageChange('BuyList')}>구매 내역</Nav.Item>
+                        <Nav.Item className={activePage === 'DipsList' ? `${Style.active}` : ''} onClick={() => handlePageChange('DipsList')}>찜 목록</Nav.Item>
                     </Nav>
-                    <div className='my-account-info'>내 정보</div>
-                    <Nav className='flex-column my-nav-box'>
-                        <Nav.Item className={activePage === 'MyInformation' ? 'active' : ''} onClick={() => handlePageChange('MyInformation')}>내 정보 관리</Nav.Item>
-                        <Nav.Item className={activePage === 'ReviewList' ? 'active' : ''} onClick={() => handlePageChange('ReviewList')}>나의 후기</Nav.Item>
-                        <Nav.Item className={activePage === 'UnRegister' ? 'active' : ''} onClick={() => handlePageChange('UnRegister')}>탈퇴하기</Nav.Item>
+                    <div className={Style.myAccountInfo}>내 정보</div>
+                    <Nav className={`flex-column ${Style.myNavBox}`}>
+                        <Nav.Item className={activePage === 'MyInformation' ? `${Style.active}` : ''} onClick={() => handlePageChange('MyInformation')}>내 정보 관리</Nav.Item>
+                        <Nav.Item className={activePage === 'ReviewList' ? `${Style.active}` : ''} onClick={() => handlePageChange('ReviewList')}>나의 후기</Nav.Item>
+                        <Nav.Item className={activePage === 'UnRegister' ? `${Style.active}` : ''} onClick={() => handlePageChange('UnRegister')}>탈퇴하기</Nav.Item>
                     </Nav>
                 </div>
-                <section className='mypage-activated'>
-                    {activePage === 'SaleList' && <SaleList/>}
-                    {activePage === 'BuyList' && <BuyList/>}
-                    {activePage === 'DipsList' && <DipsList/>}
+                <section className={Style.myPageActivated}>
+                    {activePage === 'SaleList' && <MyDealList pageType={'sell'} isProductOrCar={isProductOrCar} setIsProductOrCar={setIsProductOrCar}/>}
+                    {activePage === 'BuyList' && <MyDealList pageType={'buy'} isProductOrCar={isProductOrCar} setIsProductOrCar={setIsProductOrCar}/>}
+                    {activePage === 'DipsList' && <MyDealList pageType={'dips'} isProductOrCar={isProductOrCar} setIsProductOrCar={setIsProductOrCar}/>}
                     {activePage === 'MyInformation' && <MyInformation/>}
                     {activePage === 'ReviewList' && <ReviewList/>}
                     {activePage === 'UnRegister' && <UnRegister/>}
