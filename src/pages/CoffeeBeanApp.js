@@ -5,7 +5,6 @@ import MyPage from './my/MyPage';
 import MyInformation from './my/MyInformation';
 import DipsList from './my/DipsList';
 import Join from './my/Join';
-import PurchaseList from './my/PurchaseList';
 import LogIn from './my/LogIn';
 import Register from './my/Register';
 import ReviewCreate from './my/ReviewCreate';
@@ -30,6 +29,8 @@ import PropertyDetail from './property/PropertyDetail';
 import Propertylist from './property/Propertylist';
 import PropertyUpdate from './property/PropertyUpdate';
 import LoginContextProvider from '../contexts/LoginContextProvider';
+import MyHome from './my/MyHome';
+import SaleList from './my/SaleList';
 
 
 const CoffeeBeanApp = () => {
@@ -48,10 +49,9 @@ const CoffeeBeanApp = () => {
                     <Route path = '/CarUpdate' Component={CarUpdate}/>
 
                     <Route path = '/DipsList' Component={DipsList}/>
-                    <Route path = '/Login' Component={Login}/>
+                    <Route path = '/Login' Component={LogIn}/>
                     <Route path = '/MyHome' Component={MyHome}/>
                     <Route path = '/MyInformation' Component={MyInformation}/>
-                    <Route path = '/PurchaseList' Component={PurchaseList}/>
                     <Route path = '/Register' Component={Register}/>
                     <Route path = '/ReviewCreate' Component={ReviewCreate}/>
                     <Route path = '/ReviewDetail' Component={ReviewDetail}/>

@@ -73,6 +73,15 @@ const Header = () => {
                                 </NavDropdown>
                             </Navbar>
                         </div>
+
+                        {/* 로그인 */}
+                        <div>
+                            <div className='chat-menu'>
+                            <a className="nav-item" href="/Login">
+                                <img src={my} className="nav-icon" alt="아이콘" /> 로그인
+                            </a>
+                        </div>
+                        </div>
                     </nav>
                 </div>
 
