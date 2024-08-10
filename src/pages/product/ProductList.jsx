@@ -28,9 +28,9 @@ const ProductList = () => {
         if (Array.isArray(products)) {
             const filtered = products.filter(product => {
                 return (
-                    (category ? product.category === category : true) &&
-                    (subcategory ? product.subcategory === subcategory : true) &&
-                    (subsubcategory ? product.subsubcategory === subsubcategory : true)
+                    (category ? product.category1 === category : true) &&
+                    (subcategory ? product.category2 === subcategory : true) &&
+                    (subsubcategory ? product.category3 === subsubcategory : true)
                 );
             });
             setFilteredProducts(filtered);
