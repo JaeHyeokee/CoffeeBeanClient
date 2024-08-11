@@ -71,7 +71,7 @@ const CarDetail = () => {
                     </Carousel>
 
                     <div className={styles.carInfo}>
-                        <p>{car.category1} > {car.category2}</p>
+                        <p>{car.category1}  {car.category2}</p>
                         <h2 className={styles.carName}>{car.name}</h2>
                         <h1 className={styles.carPrice}>{car.price.toLocaleString()} 만원</h1>
                         <div className={styles.carInfoBottom}>

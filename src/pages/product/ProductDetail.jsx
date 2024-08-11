@@ -8,7 +8,6 @@ import products from '../components/ExData';
 import ChatFrame from '../chatting/ChatFrame';
 import x from '../../image/x.svg';
 import Swal from 'sweetalert2';
-import { Carousel } from 'react-bootstrap';
 
 const ProductDetail = () => {
     const { id } = useParams(); 
@@ -138,7 +137,7 @@ const ProductDetail = () => {
                                 <button className={styles.closeButton} onClick={toggleChatSidebar}>
                                     <img src={x} alt='닫기' height={25} width={25} />
                                 </button>
-                                <ChatFrame productId={productId} />
+                                <ChatFrame productId={id} />
                             </div>
                         </>
                     )}
