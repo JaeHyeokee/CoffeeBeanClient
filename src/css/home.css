@@ -1,5 +1,5 @@
 .home-body {
-  padding: 0 20%;
+  padding: 30px 20%;
 }
 
 .product-list {
@@ -18,7 +18,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-style: none;
+}
 
+.pagination-buttons img {
+  width: 30px;
+  height: 30px;
 }
 
 .product-item {
@@ -30,8 +35,14 @@
   color: black;
 }
 
-.product-item:active {
-  color: inherit;
+.product-item h4 {
+  display: -webkit-box; /* 브라우저에서 flexbox를 사용할 수 있게 */
+  -webkit-box-orient: vertical; /* 박스 방향을 세로로 설정 */
+  -webkit-line-clamp: 2; /* 최대 두 줄까지*/
+  overflow: hidden; /* 넘어가는 내용은 숨김 */
+  text-overflow: ellipsis; /* 2줄 넘어가면 ... */
+  line-height: 1.2em; /* 줄 높이 설정 */
+  height: 2.1em; /* 줄의 높이 설정 */
 }
 
 .product-item:visited {
@@ -51,9 +62,10 @@
   margin-top: 20px;
 }
 
-
-
 .pagination button:disabled {
-  background-color: #ccc;
   cursor: not-allowed;
+}
+
+.pagination-buttons {
+  background-color: white;
 }

@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../../css/components/Header.css';
 import chat from '../../image/ChatIcon.svg';
 import my from '../../image/MyIcon.svg';
 import sale from '../../image/SaleIcon.svg';
 import x from '../../image/x.svg';
 import { Link } from 'react-router-dom';
-import ChatDiv from '../chatting/ChatFrame';
+import ChatList from '../chatting/ChatList';
+import Chat from '../chatting/Chat';
 import Category from './Category';
 import CarCategory from './CarCategory';
 import { Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
+import { LoginContext } from '../../contexts/LoginContextProvider'
 
 const Header = () => {
 
@@ -16,6 +18,9 @@ const Header = () => {
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
     const [isSaleMenuOpen, setIsSaleMenuOpen] = useState(false);
     const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
+    const [selectedChatRoomId, setSelectedChatRoomId] = useState(null); // 선택된 채팅방 상태
+
+    const {isLogin, logout, userInfo } = useContext(LoginContext);
 
     // 사이드바 스크롤관리 (채팅하기 눌렀을때)
     useEffect(() => {
@@ -32,6 +37,26 @@ const Header = () => {
         if (isSaleMenuOpen) setIsMyMenuOpen(false);
         if (isMyMenuOpen) setIsMyMenuOpen(false);
     }
+    const toggleSaleMenu = () => {
+        setIsSaleMenuOpen(!isSaleMenuOpen);
+        if (isSaleMenuOpen) setIsMyMenuOpen(false);
+        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
+    };
+    const toggleMyMenu = () => {
+        setIsMyMenuOpen(!isMyMenuOpen);
+        if (isMyMenuOpen) setIsSaleMenuOpen(false);
+        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
+    }
+
+    // 채팅방 선택 함수
+    const handleSelectChatRoom = (chatRoomId) => {
+        setSelectedChatRoomId(chatRoomId);
+    };
+
+    // 뒤로가기 함수
+    const handleBackToChatList = () => {
+        setSelectedChatRoomId(null);
+    };
 
     return (
         <>
@@ -60,28 +85,34 @@ const Header = () => {
                                 </NavDropdown>
                             </Navbar>
                         </div>
-
-                        {/* 마이 */}
-                        <div>
-
-                            <Navbar>
-                                <img src={my} className="nav-icon" alt="아이콘" />
-                                <NavDropdown title="마이" id="basic-nav-dropdown" >
-                                    <NavDropdown.Item href="/MyPage">마이페이지</NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item href="/CarCreate">로그아웃</NavDropdown.Item>
-                                </NavDropdown>
-                            </Navbar>
-                        </div>
-
-                        {/* 로그인 */}
-                        <div>
-                            <div className='chat-menu'>
-                            <a className="nav-item" href="/Login">
-                                <img src={my} className="nav-icon" alt="아이콘" /> 로그인
-                            </a>
-                        </div>
-                        </div>
+                        
+                        { !isLogin ?
+                            <>
+                                {/* 로그인 */}
+                                <div>
+                                    <div className='chat-menu'>
+                                    <a className="nav-item" href="/Login">
+                                        <img src={my} className="nav-icon" alt="아이콘" /> 로그인
+                                    </a>
+                                </div>
+                                </div>
+                            </>
+                            :
+                            <>
+                                {/* 마이 */}
+                                <div>
+                                    <Navbar>
+                                        <img src={my} className="nav-icon" alt="아이콘" />
+                                        <NavDropdown title="마이" id="basic-nav-dropdown" >
+                                            <NavDropdown.Item href="/MyPage">마이페이지</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item onClick={ () => logout() }>로그아웃 {userInfo.userName}
+                                            </NavDropdown.Item>
+                                        </NavDropdown>
+                                    </Navbar>
+                                </div>
+                            </>
+                        }
                     </nav>
                 </div>
 
@@ -98,7 +129,11 @@ const Header = () => {
                         <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
                         <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
                             <button className='close-button' onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25} /></button> {/* 사이드바 닫기 버튼 */}
-                            <ChatDiv />
+                            {!selectedChatRoomId ? (
+                                <ChatList onSelectChatRoom={handleSelectChatRoom} />
+                            ) : (
+                                <Chat chatRoomId={selectedChatRoomId} onBack={handleBackToChatList} />
+                            )}
                         </div>
                     </>
                 )}
