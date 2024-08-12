@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import '../../css/product/ProductCreate.module.css'; // Updated import
 import Header from '../components/Header';
 import price from '../../image/ProductPrice.png';
@@ -10,6 +10,18 @@ import styles from '../../css/product/ProductCreate.module.css'; // Import CSS M
 const ProductCreate = () => {
 
     const navigate = useNavigate();
+
+    // const { isLogin, roles } = useContext(LoginContext);
+    // const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     if (!isLogin) {
+    //         Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") })
+    //         return;
+    //     }
+
+    //     console.log(`/member : ${roles}`);
+    // }, []);
 
     const [product, setProduct] = useState({
         name: "",
@@ -69,7 +81,7 @@ const ProductCreate = () => {
 
     return (
         <>
-            <Header />
+        <Header />
             <Form onSubmit={submitProduct}>
                 <div className={styles.productcreateBody}>
                     <Form.Group className={styles.productName} controlId="formBasicTitle">

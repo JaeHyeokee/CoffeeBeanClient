@@ -72,6 +72,12 @@ const LoginForm = () => {
         <button className="btn btn--form btn-login" value="Login">
           Login
         </button>
+
+        <div>
+            아직 회원이 아니신가요?
+            <a href='/Join'>회원가입</a>
+            을 지금 하세요!
+        </div>
       </form>
   </div>
     );
