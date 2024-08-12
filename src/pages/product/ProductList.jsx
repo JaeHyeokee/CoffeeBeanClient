@@ -12,7 +12,7 @@ const ProductList = () => {
     const { category, subcategory, subsubcategory } = useParams();
 
     useEffect(() => {
-        /* axios.get('http://localhost:8088/product/list')
+        axios.get('http://localhost:8088/product/list')
             .then(response => {
                 console.log(response.data);
                 if(Array.isArray(response.data)){
@@ -21,16 +21,16 @@ const ProductList = () => {
                     console.log('에러에러에러에ㅓ레ㅓ레ㅓ레ㅓㅔㅓㅔ')
                 }
                 setLoading(false);
-            }) */
+            })
     }, []);
 
     useEffect(() => {   //카테고리 제품 필터링
         if (Array.isArray(products)) {
             const filtered = products.filter(product => {
                 return (
-                    (category ? product.category === category : true) &&
-                    (subcategory ? product.subcategory === subcategory : true) &&
-                    (subsubcategory ? product.subsubcategory === subsubcategory : true)
+                    (category ? product.category1 === category : true) &&
+                    (subcategory ? product.category2 === subcategory : true) &&
+                    (subsubcategory ? product.category3 === subsubcategory : true)
                 );
             });
             setFilteredProducts(filtered);
@@ -96,7 +96,7 @@ const ProductList = () => {
 
                 <div className='product-list'>
                     {loading ? (
-                        <p>Loading...</p>
+                        <p>로.딩.중..</p>
                     ) : (
                         filteredProducts.length > 0 ? (
                             filteredProducts.map(product => (

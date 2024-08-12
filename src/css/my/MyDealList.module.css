@@ -1,27 +1,54 @@
-.sell-list {
+.sellList {
     margin-top: 70px;
 }
 
-.my-list-header {
+.myListHeader {
     display: flex;
     justify-content: space-between;
     width: 100%;
 }
 
-.sell-title {
+.sellTitle {
     font-size: 20px;
     font-weight: bold;
 }
 
-.my-list-filter {
+.categoryFilterButtonFrame {
+    display: flex;
+    gap: 10px;
+    button {
+        width: 100px;
+    }
+    button:hover {
+        background-color: #0DCC5A;
+        border: 0;
+    }
+}
+
+.categoryFilterButton {
+    border: 1px solid #E9E9E9 !important;
+    font-weight: bold !important;
+    background-color: white !important;
+    color: black !important;
+}
+
+.categoryFilterButtonActive {
+    border: 0 !important;
+    font-weight: bold !important;
+    background-color: black !important;
+    color: white !important;
+}
+
+.myListFilter {
     width: 150px !important;
 }
 
-.my-list-filter:focus {
+.myListFilter:focus {
     border: 1px solid #0DCC5A;
 }
 
-#sell-status {
+.sellStatus {
+    gap: 0;
     li {
         padding: 0;
         font-size: 15px;
@@ -31,21 +58,20 @@
         button {
             color: #9CA3AF;
             width: 100%;
-            border: 0;
+            border: 0 !important;
         }
         button:hover {
-            border: 0;
-            color: #0DCC5A;
-            border-bottom: 2px solid #0DCC5A;
-        }
-        button.active {
-            color: black;
-            border-bottom: 2px solid black;
+            color: #0DCC5A !important;
+            border-bottom: 2px solid #0DCC5A !important;
         }
     }
 }
 
-.sell-list-filter-frame {
+.sellStatusTab {
+    background-color: black;
+}
+
+.sellListFilterFrame {
     display: flex;
     justify-content: space-between;
     margin-top: 25px;
@@ -53,7 +79,12 @@
     color: dimgray;
 }
 
-.sell-list-filter {
+.filterButtonImg {
+    width: 25px;
+    margin-right: 10px;
+}
+
+.sellListFilter {
     button {
         border: 0;
         color: dimgray;
@@ -65,39 +96,39 @@
     }
 }
 
-.sell-list-info {
+.sellListInfo {
     display: flex;
     margin-top: 20px;
     gap: 20px;
 }
 
-#sell-info-card {
+.sellInfoCard {
     width: 20%;
     height: 300px;
     border: 0;
     cursor: pointer;
 }
 
-#sell-info-card-img {
+.sellInfoCardImg {
     height: 55%;
 }
 
-#sell-info-card-body {
+.sellInfoCardBody {
     padding: 15px 5px;
 }
 
-#sell-info-title {
+.sellInfoTitle {
     font-weight: bold;
     margin-top: 5px;
     margin-bottom: 20px;
 }
 
-#sell-info-price {
+.sellInfoPrice {
     font-weight: bold;
     margin-bottom: 5px;
 }
 
-#sell-info-extra {
+.sellInfoExtra {
     color: #9CA3AF;
     font-size: 13px;
 }

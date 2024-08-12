@@ -1,14 +1,14 @@
-.myhome-info {
+.myHomeInfo {
     display: flex;
 }
 
-.myhome-profile-img {
+.myHomeProfileImg {
     width: 25%;
     border-radius: 50%;
     margin-right: 50px;
 }
 
-.myhome-profile-content {
+.myHomeProfileContent {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -16,23 +16,23 @@
     padding: 10px 0;
 }
 
-.nickname-print {
+.nickNamePrint {
     font-size: 50px;
 }
 
-.oneline-intro {
+.oneLineIntro {
     color: gray;
     font-size: 15px;
     margin-bottom: 20px;
 }
 
-.trust-index-info {
+.trustIndexInfo {
     display: flex;
     justify-content: space-between;
     margin: 10px 5px;
 }
 
-.my-trust-index {
+.myTrustIndex {
     display: flex;
     align-items: baseline;
     gap: 5px;
@@ -44,25 +44,25 @@
     }
 }
 
-.my-trust-index-figure {
+.myTrustIndexFigure {
     font-size: 20px;
     font-weight: bold;
 }
 
-.max-trust-index {
+.maxTrustIndex {
     margin: 0;
     padding-top: 5px;
     color: gray;
     font-size: 15px;
 }
 
-.trust-index-bar {
+.trustIndexBar {
     width: 100%;
     margin-bottom: 15px;
     border-radius: 10px !important;
 }
 
-.trust-index-bar .progress-bar {
+.trustIndexBar div {
     background: linear-gradient(90deg, #0DCC5A, #01A1AD);
     border-radius: 10px;
 }

@@ -1,34 +1,34 @@
-.myhome-body {
+.myHomeBody {
     display: flex;
     padding: 80px 20% 30px 20%;
 }
 
-.my-nav-body {
+.myNavBody {
     display: flex;
     flex-direction: column;
     width: 25%;
 }
 
-.mypage {
+.myPage {
     font-weight: bolder;
     font-size: larger;
     margin-bottom: 20px;
     font-size: 23px;
 }
 
-.my-pay-info {
+.myPayInfo {
     font-weight: bolder;
     font-size: larger;
     margin-bottom: 3px;
 }
 
-.my-nav-box {
+.myNavBox {
     width: 100%;
     gap: 2px;
     margin: 0 0 20px !important;
 }
 
-.my-nav-box div {
+.myNavBox div {
     margin-top: 10px;
     list-style-type: none;
     cursor: pointer;
@@ -36,16 +36,16 @@
     color: dimgray;
 }
 
-.my-nav-box div.active {
+.myNavBox div.active {
     color: black;
     font-weight: bold;
 }
 
-.my-nav-box div:hover {
+.myNavBox div:hover {
     color: #0DCC5A;
 }
 
-.my-account-info {
+.myAccountInfo {
     font-weight: bolder;
     font-size: larger;
     margin: 0 0 3px;
@@ -54,6 +54,6 @@
     width: 60%;
 }
 
-.mypage-activated {
+.myPageActivated {
     width: 75%;
 }

@@ -2,33 +2,39 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import '../../css/car/CarList.css';
+import axios from 'axios';
+import CarItem from '../components/CarItem';
 
 const CarList = () => {
+    const [cars, setCars] = useState([])
+    const [filteredCars, setFilteredCars] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { category, subcategory } = useParams(); 
 
-    const [cars, setCars] = useState([]);
-    const [filteredCars, setFilteredCars] = useState([]);
-
     useEffect(() => {
-        const fetchCars = () => {
-            const data = [
-                { id: 1, name: '제네시스 G80', category: '국산차', subcategory: '제네시스' },
-                { id: 2, name: '현대 소나타', category: '국산차', subcategory: '현대' },
-                { id: 3, name: '벤츠 C-Class', category: '수입차', subcategory: '벤츠' },
-                { id: 4, name: 'BMW 320i', category: '수입차', subcategory: 'BMW' }
-            ];
-            setCars(data);
-        };
-        fetchCars();
+        axios.get('http://localhost:8088/car/list')
+        .then(response => {
+            console.log(response.data);
+            if(Array.isArray(response.data)){
+                setCars(response.data);
+            }else {
+                console.log('에러에ㅓ레어레ㅓㄹ에ㅓㄹ에ㅓㄹ에ㅓ레어레어레어레어레어렌에ㅓㄹ')
+            }
+            setLoading(false);
+        })
     }, []);
 
     useEffect(() => {
-        const result = cars.filter(car =>
-            (!category || car.category === category) &&
-            (!subcategory || car.subcategory === subcategory)
-        );
-        setFilteredCars(result);
-    }, [category, subcategory, cars]);
+        if(Array.isArray(cars)){
+            const filterd = cars.filter(car => {
+                return (
+                    (category ? car.category1 === category : true) &&
+                    (subcategory ? car.category2 === subcategory : true)
+                );
+            });
+            setFilteredCars(filterd);
+        }
+    }, [ cars, category, subcategory]);
 
     return (
         <>
@@ -88,14 +94,16 @@ const CarList = () => {
                 </table>
 
                 <div className='car-list'>
-                    {filteredCars.length > 0 ? (
-                        filteredCars.map(car => (
-                            <div key={car.id} className='car-item'>
-                                <p>{car.name}</p>
-                            </div>
-                        ))
+                    {loading ? (
+                        <p>로딩~</p>
                     ) : (
-                        <p>해당 카테고리 및 서브카테고리에 맞는 자동차가 없습니다.</p>
+                        filteredCars.length > 0 ? (
+                            filteredCars.map(car => (
+                                <CarItem key={car.id} car={car}/>
+                            ))
+                        ) : (
+                            <p>해당 카테고리 존재하는 제품이 엄슴</p>
+                        )
                     )}
                 </div>
             </div>
