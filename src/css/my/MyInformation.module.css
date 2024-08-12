@@ -1,0 +1,34 @@
+.profileImgGroup {
+    display: flex;
+    justify-content: center;
+}
+
+.profileImgFrame {
+    position: relative;
+    width: fit-content;
+    margin: 50px 0;
+}
+
+.profileImg {
+    width: 100px;
+    border-radius: 50%;
+}
+
+.imgUpdateBtn {
+    position: absolute;
+    width: 26px;
+    height: 26px;
+    bottom: 0;
+    right: 5px;
+    border-radius: 50% !important;
+    z-index: 10;
+    background-color: black !important;
+    border: 0 !important;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.imgUpdateBtnImg {
+    width: 15px;
+    height: 15px;
+}
