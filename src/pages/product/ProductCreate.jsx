@@ -1,17 +1,61 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../css/product/ProductCreate.css'
 import Header from '../components/Header';
-import attachment from '../../image/Attachment.png'
 import price from '../../image/ProductPrice.png'
-import check from '../../image/Uncheck.png'
-import { Link } from 'react-router-dom';
+import { Form, Link, Navigate, useNavigate } from 'react-router-dom';
 import Category from '../components/Category';
+import axios from 'axios';
 
 const ProductCreate = () => {
+
+    const navigate = useNavigate();
+
+    const [product, setProduct] = useState({
+        name:"",
+        description:"",
+        price:"",
+        dealingStatus:"",
+        category1:"",
+        category2:"",
+        category3:"",
+        status:"",
+        dealingType:"",
+        desiredArea:""
+    })
+
+    const changeValue = (e) => {
+        setProduct({
+            ...product,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    const submitProduct = (e) => {
+        e.preventDefault();
+
+        axios({
+            method:'post',
+            url:'http://localhost8088/product/write/2',
+            headers: {
+                "Content-Type": 'application/json',
+            },
+            data: JSON.stringify(product),
+        })
+        .then(response => {
+            const {data, status, statusText} = response;
+            if(status === 201){
+                console.log('상품생성', data);
+                navigate(`/product/detail/${data.id}`)
+            }else{
+                alert ('등록 실패-')
+            }
+        })
+    };
+ 
     return (
         <>
         <Header/>
-        <div className='page-container'>
+      {/*   <Form onSubmit={submitProduct}>
         <div className='productcreate-body'>
 
             <button className='add-attachment'>
@@ -19,20 +63,22 @@ const ProductCreate = () => {
                 <h4>추가하기</h4>
             </button>
 
-            <div className='product-name'>
-                <input type='text' className='product-name-input' placeholder='상품명'/>
-            </div>
+            <Form.Group className='product-name' controlId="formBasicTitle">
+                <Form.Label>Title</Form.Label>
+                <Form.Control type='text' placeholder='상품명' onChange={changeValue} name='name'/>
+            </Form.Group>
 
             <Category/>            
 
-            <div className='product-price'>
+            <Form.Group className='product-price' controlId="formBasicPrice">
+                <Form.Label>Price</Form.Label>
                 <img src={price} alt='' />
-                <input type='text' className='product-input-price' placeholder='가격' />
-            </div>
+                <Form.Control type='text' placeholder='가격' onChange={changeValue} className='product-input-price' name='price'/>
+            </Form.Group>
 
-            <div className="product-info">
-                <textarea className="product-input-info" placeholder="상품 설명"></textarea>
-            </div>
+            <Form.Group className="product-info" controlId="formBasicdescription">
+                <Form.Control type='textarea' placeholder="상품 설명" onChange={changeValue} className="product-input-info" name='description'/>
+            </Form.Group>
 
             <div className='product-status'>
                 <p>상품상태</p>
@@ -55,7 +101,7 @@ const ProductCreate = () => {
             </div>
 
         </div>
-        </div>
+        </Form> */}
 
         </>
     );

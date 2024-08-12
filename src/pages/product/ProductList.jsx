@@ -96,7 +96,7 @@ const ProductList = () => {
 
                 <div className='product-list'>
                     {loading ? (
-                        <p>Loading...</p>
+                        <p>로.딩.중..</p>
                     ) : (
                         filteredProducts.length > 0 ? (
                             filteredProducts.map(product => (

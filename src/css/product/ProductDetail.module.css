@@ -1,18 +1,18 @@
-.productdetail-body {
+.productdetailBody {
     margin-top: 50px;
     padding: 0 20%;
 }
 
-.product-detail {
+.productDetail {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 }
 
-.productdetail-top {
+.productdetailTop {
     display: flex;
-    margin-bottom: 50px; 
-    align-items: flex-start; 
-    gap: 20px; 
+    margin-bottom: 50px;
+    align-items: flex-start;
+    gap: 20px;
 }
 
 .carousel {
@@ -20,88 +20,88 @@
     margin-right: 100px;
 }
 
-.product-image {
+.productImage {
     width: 100%;
     height: auto;
     border-radius: 20px;
     object-fit: cover;
 }
 
-.carousel-item {
+.carouselItem {
     height: auto; /* 슬라이드의 높이를 고정 */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.carousel-item img {
+.carouselItemImg {
     max-height: 450px;
     max-width: 450px;
 }
 
 /* 상품정보 */
-.product-info {
+.productInfo {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-.product-info-bottom {
+.productInfoBottom {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px;
     border: 2px solid #ccc;
     border-radius: 10px;
-    margin-bottom: 30px; 
+    margin-bottom: 30px;
     margin-top: 30px;
 }
 
-.product-info-bottom div {
+.productInfoBottomDiv {
     text-align: center;
 }
 
 /* 채팅하기, 찜하기 버튼 */
-.chat-dip-button {
+.chatDipButton {
     display: flex;
     justify-content: space-between;
-    width: 100%; 
+    width: 100%;
 }
 
-.chat-button,
-.dip-button {
-    width: 48%; 
+.chatButton,
+.dipButton {
+    width: 48%;
     height: 50px;
     border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.chat-button {
+.chatButton {
     background-color: white;
 }
 
-.dip-button {
+.dipButton {
     background-color: black;
     color: white;
 }
 
 /* 상품정보, user정보 */
-.productdetail-bottom {
+.productdetailBottom {
     display: flex;
     width: 100%;
-    justify-content: space-between; 
+    justify-content: space-between;
 }
 
-.product-info-detail {
-    flex: 6; 
+.productInfoDetail {
+    flex: 6;
     padding: 10px;
     box-sizing: border-box;
     border-bottom: 1px solid #ccc;
     margin-right: 100px;
 }
 
-.user-info {
+.userInfo {
     flex: 4;
     padding: 10px;
     box-sizing: border-box;

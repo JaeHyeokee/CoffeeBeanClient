@@ -3,6 +3,10 @@ import '../css/home.css';
 import Header from './components/Header.jsx';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import prev from './../image/PrevButton.png'
+import next from './../image/NextButton.png'
+
+
 
 const Home = () => {
     const [products, setProducts] = useState([]);
@@ -58,18 +62,18 @@ const Home = () => {
                         <h2>당신을 위한 추천상품!</h2>
                         <div className="product-items">
                             <button className='pagination-buttons' onClick={handlePrevPageRecommended} disabled={currentPageRecommended === 0}>
-                                이전
+                                <img src={prev} alt='' />
                             </button>
                             {currentProductsRecommended.map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
                                     <img src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
-                                    <h3>{product.name}</h3>
+                                    <h4>{product.name}</h4>
                                     <p>{product.price.toLocaleString()}원</p>
                                     <p>{product.desiredArea} | {product.time}</p>
                                 </Link>
                             ))}
                             <button className='pagination-buttons' onClick={handleNextPageRecommended} disabled={currentPageRecommended >= Math.ceil(products.length / itemsPerPage) - 1}>
-                                다음
+                                <img src={next} alt='' />
                             </button>
                         </div>
                     </div>
@@ -80,19 +84,19 @@ const Home = () => {
                     <div className="product-list">
                         <h2>방금 등록된 상품</h2>
                         <div className="product-items">
-                        <button onClick={handlePrevPageAdded} disabled={currentPageAdded === 0}>
-                                이전
+                        <button className='pagination-buttons' onClick={handlePrevPageAdded} disabled={currentPageAdded === 0}>
+                        <img src={prev} alt='' />
                             </button>
                             {currentProductsAdded.map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
                                     <img src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
-                                    <h3>{product.name}</h3>
+                                    <h4>{product.name}</h4>
                                     <p>{product.price.toLocaleString()}원</p>
                                     <p>{product.desiredArea} | {product.time}</p>
                                 </Link>
                             ))}
-                            <button onClick={handleNextPageAdded} disabled={currentPageAdded >= Math.ceil(products.length / itemsPerPage) - 1}>
-                                다음
+                            <button className='pagination-buttons' onClick={handleNextPageAdded} disabled={currentPageAdded >= Math.ceil(products.length / itemsPerPage) - 1}>
+                            <img src={next} alt='' />
                             </button>
                         </div>
                     </div>
