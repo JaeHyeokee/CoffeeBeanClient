@@ -44,7 +44,7 @@ const CoffeeBeanApp = () => {
                     <Route path = '/UserManagement' Component={UserManagement}/>
 
                     <Route path = '/CarCreate' Component={CarCreate}/>
-                    <Route path = '/CarDetail' Component={CarDetail}/>
+                    <Route path = '/CarDetail/:id' Component={CarDetail}/>
                     <Route path = '/CarLIst' Component={CarList}/>
                     <Route path = '/CarUpdate' Component={CarUpdate}/>
 

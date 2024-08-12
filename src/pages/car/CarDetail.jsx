@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import styles from '../../css/car/CarDetail.module.css';
 import { Carousel } from 'react-bootstrap';
@@ -11,21 +11,33 @@ import axios from 'axios';
 const CarDetail = () => {
     const { id } = useParams();
     const [car, setCar] = useState(null);
+    const [recommendedCars, setRecommendedCars] = useState([]);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        const fetchCarDetails = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8088/car/detail/${id}`);
+        axios.get(`http://localhost:8088/car/detail/${id}`)
+            .then(response => {
                 setCar(response.data);
-            } catch (error) {
-                console.error('Error fetching car details:', error);
-            }
-        };
-
-        fetchCarDetails();
+                window.scrollTo(0, 0); // 페이지 로드 시 스크롤을 맨 위로 이동
+            })
+            .catch(error => {
+                console.error('실패', error);
+            });
     }, [id]);
+
+    useEffect(() => {
+        if (car) {
+            axios.get(`http://localhost:8088/car/category2/${car.category2}`)
+                .then(response => {
+                    setRecommendedCars(response.data);
+                })
+                .catch(error => {
+                    console.error('추천 차량 불러오기 실패', error);
+                });
+        }
+    }, [car]);
 
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
@@ -57,6 +69,14 @@ const CarDetail = () => {
         return <div>Loading...</div>;
     }
 
+    // Split the introduce string by specific keywords
+    const introduceLines = car.introduce.split(/(?<=니다|입니다|습니다)\s*/);
+
+    const handleImageClick = (carId) => {
+        navigate(`/CarDetail/${carId}`);
+        window.scrollTo(0, 0); // 페이지 이동 시 스크롤을 맨 위로 이동
+    };
+
     return (
         <>
             <Header />
@@ -71,9 +91,11 @@ const CarDetail = () => {
                     </Carousel>
 
                     <div className={styles.carInfo}>
-                        <p>{car.category1}  {car.category2}</p>
+                        <p>{car.category1} {car.category2}</p>
                         <h2 className={styles.carName}>{car.name}</h2>
-                        <h1 className={styles.carPrice}>{car.price.toLocaleString()} 만원</h1>
+                        <h1 className={styles.carPrice}>
+                            {car.price === 0 ? '가격협의' : `${car.price.toLocaleString()} 만원`}
+                        </h1>
                         <div className={styles.carInfoBottom}>
                             <div>
                                 <p>제품상태</p>
@@ -123,7 +145,28 @@ const CarDetail = () => {
                 <section className={styles.cardetailBottom}>
                     <div className={styles.infoBox}>
                         <h2>상품정보</h2>
-                        <p className={styles.introduce}>{car.introduce}</p>
+                        {introduceLines.map((line, index) => (
+                            <p key={index} className={styles.introduce}>{line}</p>
+                        ))}
+                    </div>
+                </section>
+
+                <section className={styles.carRecommend}>
+                    <h2>추천 차량</h2>
+                    <div className={styles.recommendationContainer}>
+                        {recommendedCars.map((recCar) => {
+                            // Get the first image for each recommended car
+                            const firstImage = recCar.fileList.length > 0 ? recCar.fileList[0].source : '';
+                            return (
+                                <div key={recCar.carId} className={styles.recommendationCard} onClick={() => handleImageClick(recCar.carId)}>
+                                    {firstImage && (
+                                        <img src={firstImage} alt={recCar.name} className={styles.recommendationImage} />
+                                    )}
+                                    <h3>{recCar.name}</h3>
+                                    <p>{recCar.price === 0 ? '가격협의' : `${recCar.price} 만원`}</p>
+                                </div>
+                            );
+                        })}
                     </div>
                 </section>
 
