@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import '../../css/components/Header.css';
 import chat from '../../image/ChatIcon.svg';
 import my from '../../image/MyIcon.svg';
@@ -9,6 +9,7 @@ import ChatDiv from '../chatting/ChatFrame';
 import Category from './Category';
 import CarCategory from './CarCategory';
 import { Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
+import { LoginContext } from '../../contexts/LoginContextProvider'
 
 const Header = () => {
 
@@ -16,6 +17,8 @@ const Header = () => {
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
     const [isSaleMenuOpen, setIsSaleMenuOpen] = useState(false);
     const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
+
+    const {isLogin, logout, userInfo } = useContext(LoginContext);
 
     // 사이드바 스크롤관리 (채팅하기 눌렀을때)
     useEffect(() => {
@@ -60,28 +63,34 @@ const Header = () => {
                                 </NavDropdown>
                             </Navbar>
                         </div>
-
-                        {/* 마이 */}
-                        <div>
-
-                            <Navbar>
-                                <img src={my} className="nav-icon" alt="아이콘" />
-                                <NavDropdown title="마이" id="basic-nav-dropdown" >
-                                    <NavDropdown.Item href="/MyPage">마이페이지</NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item href="/CarCreate">로그아웃</NavDropdown.Item>
-                                </NavDropdown>
-                            </Navbar>
-                        </div>
-
-                        {/* 로그인 */}
-                        <div>
-                            <div className='chat-menu'>
-                            <a className="nav-item" href="/Login">
-                                <img src={my} className="nav-icon" alt="아이콘" /> 로그인
-                            </a>
-                        </div>
-                        </div>
+                        
+                        { !isLogin ?
+                            <>
+                                {/* 로그인 */}
+                                <div>
+                                    <div className='chat-menu'>
+                                    <a className="nav-item" href="/Login">
+                                        <img src={my} className="nav-icon" alt="아이콘" /> 로그인
+                                    </a>
+                                </div>
+                                </div>
+                            </>
+                            :
+                            <>
+                                {/* 마이 */}
+                                <div>
+                                    <Navbar>
+                                        <img src={my} className="nav-icon" alt="아이콘" />
+                                        <NavDropdown title="마이" id="basic-nav-dropdown" >
+                                            <NavDropdown.Item href="/MyPage">마이페이지</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item onClick={ () => logout() }>로그아웃 {userInfo.userName}
+                                            </NavDropdown.Item>
+                                        </NavDropdown>
+                                    </Navbar>
+                                </div>
+                            </>
+                        }
                     </nav>
                 </div>
 
