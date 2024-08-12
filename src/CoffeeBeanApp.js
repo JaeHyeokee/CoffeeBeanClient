@@ -50,8 +50,9 @@ const CoffeeBeanApp = () => {
                     <Route path='/ChatList' Component={ChatList} />
 
                     <Route path = '/CarCreate' Component={CarCreate}/>
-                    <Route path = '/CarDetail' Component={CarDetail}/>
-                    <Route path = '/CarLIst' Component={CarList}/>
+                    <Route path = '/CarDetail/id' Component={CarDetail}/>
+                    <Route path = '/CarLIst/:category' Component={CarList}/>
+                    <Route path = '/CarLIst/:category/:subcategory' Component={CarList}/>
                     <Route path = '/CarUpdate' Component={CarUpdate}/>
 
                     <Route path = '/Login' Component={LogIn}/>
