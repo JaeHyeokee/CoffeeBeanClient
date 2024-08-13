@@ -103,11 +103,8 @@ li {
     background-color: transparent;
     border: none;
     cursor: pointer;
-    color: white;
-    background-color: black;
-    border-radius: 5px;
+    color: red;
     font-size: 14px;
-    font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -121,4 +118,12 @@ li {
     background-color: white;
     cursor: pointer;
     justify-content: space-between; /* 좌우 정렬 */
+}
+.noChatRoom {
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    align-content: center;
+    margin-top: 30px;
 }
