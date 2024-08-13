@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import '../../css/chatting/Chat.css';
 import TextareaAutosize from 'react-textarea-autosize';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const Chat = ({ chatRoomId, onBack }) => {
     const [messages, setMessages] = useState([]);
@@ -11,8 +12,10 @@ const Chat = ({ chatRoomId, onBack }) => {
     const [isConnected, setIsConnected] = useState(false);
     const [isJoin, setIsJoin] = useState(null); // 상태를 추가하여 isJoin 값을 저장
     const stompClient = useRef(null);
-    const userId = localStorage.getItem('userId');
     const messagesEndRef = useRef(null);
+
+    const { userInfo } = useContext(LoginContext);
+    const userId = userInfo.userId;
 
     // 서버에서 isJoin 값을 가져옴
     useEffect(() => {
@@ -159,7 +162,7 @@ const Chat = ({ chatRoomId, onBack }) => {
     // 채팅이 업데이트되거나 처음 렌더링될 때 가장 최근 채팅으로 스크롤
     useEffect(() => {
         if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "auto" });
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [messages]);
 
