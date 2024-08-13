@@ -14,7 +14,7 @@ const ProductList = () => {
     useEffect(() => {
         axios.get('http://localhost:8088/product/list')
             .then(response => {
-                console.log(response.data);
+                console.log('응답데이터:' + response.data);
                 if(Array.isArray(response.data)){
                     setProducts(response.data);
                 }else {
@@ -22,6 +22,7 @@ const ProductList = () => {
                 }
                 setLoading(false);
             })
+            
     }, []);
 
     useEffect(() => {   //카테고리 제품 필터링
