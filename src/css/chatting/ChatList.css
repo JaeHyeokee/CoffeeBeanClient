@@ -103,8 +103,11 @@ li {
     background-color: transparent;
     border: none;
     cursor: pointer;
-    color: red;
+    color: white;
+    background-color: black;
+    border-radius: 5px;
     font-size: 14px;
+    font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;

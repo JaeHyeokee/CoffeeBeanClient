@@ -1,0 +1,182 @@
+.cardetailBody {
+    width: 1280px;
+    margin: auto;
+    padding: 20px;
+}
+
+.carDetail {
+    display: flex;
+    flex-direction: column;
+}
+
+.cardetailTop {
+    margin-top: 80px;
+    display: flex;
+    margin-bottom: 50px;
+    gap: 20px; /* 간격 조정 */
+}
+
+.carouselItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.carouselItem img {
+    border-radius: 20px;
+    width: 604px;
+    height: 604px;
+    object-fit: cover;
+}
+
+.carInfo {
+    display: flex;
+    flex-direction: column;
+    width: 604px;
+}
+
+.carName {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.carPrice {
+    font-size: 38px;
+    font-weight: 700;
+}
+
+.carInfoBottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin: 30px 0;
+}
+
+.carInfoBottom div {
+    text-align: center;
+}
+
+.chatDipButton {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.chatButton,
+.dipButton {
+    width: 48%;
+    height: 50px;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.chatButton {
+    background-color: white;
+}
+
+.dipButton {
+    background-color: black;
+    color: white;
+}
+
+/* 박스 스타일 */
+.infoBox {
+    padding: 10px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.infoBox h2 {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+
+.cardetailInfo {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.leftPanel {
+    flex: 2;
+}
+
+.rightPanel {
+    flex: 1;
+}
+
+.cardetailBottom {
+    margin-top: 20px;
+}
+
+.cardetailBottom .infoBox {
+    margin-top: 0;
+}
+
+.cardetailBody {
+    width: 1280px;
+    margin: auto;
+    padding: 20px;
+}
+
+
+/* 추천 차량 섹션 스타일 */
+.carRecommend {
+    margin: 20px 0;
+}
+
+.recommendationContainer {
+    display: flex;
+    flex-wrap: wrap; /* 줄 바꿈을 허용 */
+    gap: 20px; /* 카드 사이의 간격 */
+    justify-content: space-between; /* 카드 사이의 간격을 균등하게 배분 */
+}
+
+.recommendationCard {
+    flex: 1 1 calc(20% - 20px); /* 20% 너비와 간격 고려 */
+    max-width: calc(20% - 20px); /* 최대 너비 설정 */
+    background-color: #fff; /* 배경 색상 */
+    border-radius: 8px; /* 모서리 둥글게 */
+    overflow: hidden; /* 내용이 넘칠 경우 숨기기 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    padding: 10px; /* 카드 내 여백 */
+    box-sizing: border-box; /* 여백과 테두리 포함하여 크기 계산 */
+}
+
+.recommendationImage {
+    width: 100%; /* 이미지가 카드 전체 너비를 차지하도록 설정 */
+    height: 180px; /* 이미지 비율 유지 */
+    border-bottom: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 10px; /* 이미지와 텍스트 사이의 간격 */
+}
+
+.recommendationCard h3 {
+    margin: 10px 0; /* 제목과 다른 요소 사이의 여백 */
+    font-size: 1rem; /* 제목 폰트 크기 설정 */
+}
+
+.recommendationCard p {
+    margin: 0; /* 가격과 다른 요소 사이의 여백 제거 */
+    font-size: 0.875rem; /* 가격 폰트 크기 설정 */
+}
+
+/* CarDetail.module.css */
+.recommendationImage {
+    transition: transform 0.3s ease;
+}
+
+.recommendationCard:hover .recommendationImage {
+    transform: scale(1.05);
+}

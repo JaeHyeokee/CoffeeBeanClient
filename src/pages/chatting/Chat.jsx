@@ -12,15 +12,16 @@ const Chat = ({ chatRoomId, onBack }) => {
     const [isJoin, setIsJoin] = useState(null); // 상태를 추가하여 isJoin 값을 저장
     const stompClient = useRef(null);
     const userId = localStorage.getItem('userId');
+    const messagesEndRef = useRef(null);
 
-    // Fetch isJoin value from server
+    // 서버에서 isJoin 값을 가져옴
     useEffect(() => {
         const fetchIsJoin = async () => {
             try {
                 const response = await axios.get(`http://localhost:8088/api/leave/${chatRoomId}`);
                 setIsJoin(response.data);
             } catch (error) {
-                console.error("Error fetching isJoin value:", error);
+                console.error("isJoin 값을 가져오는 중 오류 발생:", error);
             }
         };
 
@@ -29,21 +30,6 @@ const Chat = ({ chatRoomId, onBack }) => {
         }
     }, [chatRoomId]);
 
-    // Debugging: log isJoin value
-    // useEffect(() => {
-    //     console.log('isJoin value:', isJoin);
-    //     if (isJoin === 1) {
-    //         showMessage({
-    //             sender: { userId: null },
-    //             messageText: "상대방이 채팅방을 나갔습니다.",
-    //             sendTime: new Date().toISOString(),
-    //             isRead: true,
-    //             messageId: null
-    //         });
-    //     }
-    // }, [isJoin]);
-
-    // Fetch messages and set up WebSocket connection
     useEffect(() => {
         if (!chatRoomId || !userId) return;
 
@@ -53,38 +39,38 @@ const Chat = ({ chatRoomId, onBack }) => {
                 if (Array.isArray(response.data)) {
                     setMessages(response.data);
                 } else {
-                    console.error("Expected array but received:", response.data);
+                    console.error("배열을 예상했지만 다음을 받음:", response.data);
                 }
             } catch (error) {
-                console.error("There was an error fetching the messages!", error);
+                console.error("메시지를 가져오는 중 오류 발생!", error);
                 setMessages([]);
             }
         };
 
         fetchMessages();
 
-        // WebSocket connection
+        // WebSocket 연결
         const socket = new SockJS('http://localhost:8088/ws');
         stompClient.current = Stomp.over(socket);
 
         stompClient.current.connect({}, (frame) => {
-            console.log('Connected: ' + frame);
+            console.log('연결됨: ' + frame);
             setIsConnected(true);
             stompClient.current.subscribe(`/topic/public/${chatRoomId}`, (message) => {
                 showMessage(JSON.parse(message.body));
             });
         }, (error) => {
-            console.error('STOMP Error: ' + error);
+            console.error('STOMP 오류: ' + error);
             setIsConnected(false);
         });
 
-        // Mark messages as read
+        // 메시지를 읽음으로 표시
         const markMessagesAsRead = async () => {
             try {
                 await axios.post(`http://localhost:8088/api/messages/read/${chatRoomId}/${userId}`);
-                console.log('Messages marked as read');
+                console.log('메시지가 읽음으로 표시되었습니다');
             } catch (error) {
-                console.error('Error marking messages as read:', error);
+                console.error('메시지를 읽음으로 표시하는 중 오류 발생:', error);
             }
         };
         markMessagesAsRead();
@@ -92,19 +78,19 @@ const Chat = ({ chatRoomId, onBack }) => {
         return () => {
             if (stompClient.current !== null) {
                 stompClient.current.disconnect(() => {
-                    console.log('Disconnected');
+                    console.log('연결 해제됨');
                     setIsConnected(false);
                 });
             }
         };
     }, [chatRoomId, userId]);
 
-    // Display new messages
+    // 새로운 메시지 표시
     const showMessage = (message) => {
         setMessages(prevMessages => [...prevMessages, message]);
     };
 
-    // Send a new message
+    // 새로운 메시지 전송
     const sendMessage = () => {
         if (isConnected && messageInput.trim() !== '') {
             const chatMessage = {
@@ -119,7 +105,7 @@ const Chat = ({ chatRoomId, onBack }) => {
             );
             setMessageInput('');
         } else {
-            console.error('Cannot send message, STOMP client is not connected.');
+            console.error('메시지를 전송할 수 없음, STOMP 클라이언트가 연결되지 않았습니다.');
         }
     };
 
@@ -130,7 +116,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         }
     };
 
-    // Delete a message
+    // 메시지 삭제
     const handleDelete = async (messageId, sendTime) => {
         const currentTime = new Date().getTime();
         const messageTime = new Date(sendTime).getTime();
@@ -145,14 +131,14 @@ const Chat = ({ chatRoomId, onBack }) => {
             const response = await axios.delete(`http://localhost:8088/api/messages/${messageId}`);
             if (response.status === 200) {
                 setMessages(prevMessages => prevMessages.filter(message => message.messageId !== messageId));
-                window.alert("메세지가 삭제되었습니다.");
+                window.alert("메시지가 삭제되었습니다.");
             }
         } else {
-            window.alert('메세지를 작성한지 1분 이상 경과하였습니다.');
+            window.alert('메시지를 작성한 지 1분 이상 경과하였습니다.');
         }
     };
 
-    // Format message time
+    // 메시지 시간 포맷팅
     const formatTime = (dateTime) => {
         const date = new Date(dateTime);
         const hours = date.getHours();
@@ -169,6 +155,14 @@ const Chat = ({ chatRoomId, onBack }) => {
         }
         return null;
     }
+
+    // 채팅이 업데이트되거나 처음 렌더링될 때 가장 최근 채팅으로 스크롤
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "auto" });
+        }
+    }, [messages]);
+
     return (
         <div className="chat-container">
             <h3 className='chatHeader'>
@@ -182,7 +176,7 @@ const Chat = ({ chatRoomId, onBack }) => {
             <div className='productPicture'>
                 상품 사진 및 금액(정보)
             </div>
-            <div className="messages">
+            <div className={`messages ${isJoin === 1 ? 'gray-background' : ''}`}>
                 {messages.map((message, index) => (
                     <div key={index} className={`message ${message.sender.userId === parseInt(userId, 10) ? 'own-message1' : 'own-message2'}`}>
                         {message.sender.userId === parseInt(userId, 10) ? (
@@ -205,26 +199,29 @@ const Chat = ({ chatRoomId, onBack }) => {
                         )}
                     </div>
                 ))}
-                <div>    
+                <div ref={messagesEndRef} />
+                <div className='joinDiv'>    
                     {isJoin === 1 && (
-                    <div className="joinMessage">상대방이 채팅방을 나갔습니다.</div>
+                        <div className="joinMessage1">상대방이 채팅방을 나갔습니다
+                            <div className='joinMessage2'>(채팅방이 비활성화됩니다)</div>
+                        </div>
                     )}
                 </div>
             </div>
             <div className="message-input">
-              <TextareaAutosize
-                  className='textarea'
-                  type="text"
-                  value={messageInput}
-                  onChange={(e) => setMessageInput(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="할 말 적으렴"
-                  minRows={1}
-                  maxRows={5}
-                  disabled={isJoin === 1} // isJoin이 1이면 textarea 비활성화
-              />
-              <button className='sendBtn' onClick={sendMessage}>전송</button>
-          </div>
+                <TextareaAutosize
+                    className='textarea'
+                    type="text"
+                    value={messageInput}
+                    onChange={(e) => setMessageInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="메시지를 입력하세요"
+                    minRows={1}
+                    maxRows={5}
+                    disabled={isJoin === 1} // isJoin이 1이면 textarea 비활성화
+                />
+                <button className='sendBtn' onClick={sendMessage}>전송</button>
+            </div>
         </div>
     );
 };
