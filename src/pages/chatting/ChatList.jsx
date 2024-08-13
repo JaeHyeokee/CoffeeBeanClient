@@ -30,15 +30,20 @@ const ChatList = ({ onSelectChatRoom }) => {
   };
 
   const deleteChatList = async (chatRoomId) => {
-    try {
-      await axios.post(`http://localhost:8088/chatRooms/leave/${chatRoomId}/${userId}`)
-      setChatRooms(prevRooms => prevRooms.filter(room => room.chatRoomId !== chatRoomId));
-      window.confirm("채팅방을 나가시겠습니까?")
-      console.log("채팅방 나가기 성공.");
-    } catch (error) {
-      console.log('채팅방 나가기 실패.', error);
+    const confirmLeave = window.confirm("채팅방을 나가시겠습니까?");
+    if (confirmLeave) {
+        try {
+            await axios.post(`http://localhost:8088/chatRooms/leave/${chatRoomId}/${userId}`);
+            setChatRooms(prevRooms => prevRooms.filter(room => room.chatRoomId !== chatRoomId));
+            console.log("채팅방 나가기 성공.");
+        } catch (error) {
+            console.log('채팅방 나가기 실패.', error);
+        }
+    } else {
+        console.log("채팅방 나가기를 취소했습니다.");
     }
-  };
+};
+
   
 
   return (
