@@ -1,0 +1,59 @@
+.myHomeBody {
+    display: flex;
+    padding: 80px 20% 30px 20%;
+}
+
+.myNavBody {
+    display: flex;
+    flex-direction: column;
+    width: 25%;
+}
+
+.myPage {
+    font-weight: bolder;
+    font-size: larger;
+    margin-bottom: 20px;
+    font-size: 23px;
+}
+
+.myPayInfo {
+    font-weight: bolder;
+    font-size: larger;
+    margin-bottom: 3px;
+}
+
+.myNavBox {
+    width: 100%;
+    gap: 2px;
+    margin: 0 0 20px !important;
+}
+
+.myNavBox div {
+    margin-top: 10px;
+    list-style-type: none;
+    cursor: pointer;
+    font-size: 13px;
+    color: dimgray;
+}
+
+.myNavBox div.active {
+    color: black;
+    font-weight: bold;
+}
+
+.myNavBox div:hover {
+    color: #0DCC5A;
+}
+
+.myAccountInfo {
+    font-weight: bolder;
+    font-size: larger;
+    margin: 0 0 3px;
+    padding: 17px 0 0;
+    border-top: 1px solid #E6E6E6;
+    width: 60%;
+}
+
+.myPageActivated {
+    width: 75%;
+}

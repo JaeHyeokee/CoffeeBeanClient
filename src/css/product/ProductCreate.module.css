@@ -1,9 +1,10 @@
-.productcreate-body {
-    width: 80%;
+/* ProductCreate.module.css */
+.productcreateBody {
+    width: 100%;
     max-width: 800px; 
 }
 
-.page-container {
+.pageContainer {
     display: flex;
     justify-content: center; 
     align-items: center;
@@ -11,12 +12,11 @@
     box-sizing: border-box;
 }
 
-
-.productcreate-body h2 {
+.productcreateBody h2 {
     margin-bottom: 20px;
 }
 
-.add-attachment {
+.addAttachment {
     display: flex;
     align-items: center;
     background-color: #f5f5f5;
@@ -27,22 +27,22 @@
     cursor: pointer;
 }
 
-.add-attachment img {
+.addAttachment img {
     width: 20px;
     height: 20px;
     margin-right: 10px;
 }
 
-.add-attachment h4 {
+.addAttachment h4 {
     margin: 0;
 }
 
-.product-name, .product-price, .product-info {
+.productName, .productPrice, .productInfo {
     margin-bottom: 40px;
 }
 
 /* 상품명 */
-.product-name-input {
+.productNameInput {
     width: 100%;
     height: 50px;
     border: 1px solid #ccc;
@@ -52,34 +52,14 @@
     font-size: large;
 }
 
-/* 카테고리 */
-.product-category {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    width: 30%;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    background-color: #f5f5f5;
-    flex-direction: column;
-}
-
-.product-category-button {
-    display: block;
-    background-color: #f5f5f5;
-    padding: 10px;
-    cursor: pointer;
-    border: none;
-}
-
 /* 가격 */
-.product-price {
+.productPrice {
     position: relative;
     width: 100%;
     margin-top: 30px;
 }
 
-.product-price img {
+.productPrice img {
     position: absolute;
     left: 10px;
     top: 50%;
@@ -88,7 +68,7 @@
     height: 20px;
 }
 
-.product-input-price {
+.productInputPrice {
     width: 100%;
     padding-left: 40px;
     height: 50px;
@@ -99,11 +79,11 @@
 }
 
 /* 상품 설명 */
-.product-info {
+.productInfo {
     width: 100%;
 }
 
-.product-input-info {
+.productInputInfo {
     width: 100%;
     height: 150px;
     border: 1px solid #ccc;
@@ -114,34 +94,19 @@
     resize: vertical;
 }
 
-/* 상품상태 */
-.product-status button {
-    width: 90px;
-    height: 40px;
-    border-radius: 10px;
-    border-style: none;
-    margin-bottom: 50px;
-}
-
-.product-status-button1 {
-    margin-right: 30px;
-    
-}
-
 /* 거래방법 */
-.deal-way {
+.dealWay {
     margin-bottom: 20px; 
 }
 
-
-.deal-way img {
+.dealWay img {
     width: 20px;  
     height: 20px;
     margin-right: 10px; 
 }
 
-.deal-way-button1,
-.deal-way-button2 {
+.dealWayButton1,
+.dealWayButton2 {
     background-color: white;
     border: none;
     padding: 10px; 
@@ -153,7 +118,7 @@
 }
 
 /* 등록하기 */
-.register-button {
+.registerButton {
     background-color: black; 
     border: none; 
     color: white; 
@@ -168,7 +133,6 @@
     transition: background-color 0.3s ease;
 }
 
-.register-button:hover {
+.registerButton:hover {
     background-color: #000000c4; 
 }
-

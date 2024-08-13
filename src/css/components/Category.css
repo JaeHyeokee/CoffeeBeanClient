@@ -2,12 +2,6 @@
     position: relative;
 }
 
-.category-menu {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
 .category-button {
     padding: 10px 20px;
     font-size: 18px;
@@ -16,28 +10,26 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    width: 120px;
+    text-align: center;
 }
 
 .dropdown-content {
-    display: none; 
+    display: flex;
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: white;
+    background-color: rgb(255, 255, 255);
+    width: 1020%;
     border: 1px solid #ddd;
     border-radius: 4px;
     z-index: 1000;
-    display: flex;
-    width: 1000px;
+    flex-wrap: wrap;
 }
 
 .dropdown-section {
-    position: relative;
     padding: 10px;
-}
-
-.dropdown-section:hover .dropdown-content {
-    display: flex; 
+    flex: 1 1 20%; 
 }
 
 .dropdown-title {
@@ -51,7 +43,7 @@
 }
 
 .dropdown-submenu {
-    position: relative;
+    width: 100%;
 }
 
 .dropdown-submenu ul {
@@ -63,6 +55,7 @@
 .dropdown-submenu li {
     padding: 10px;
     cursor: pointer;
+    position: relative;
 }
 
 .dropdown-submenu a {
@@ -71,52 +64,33 @@
 }
 
 .dropdown-submenu li:hover {
-    background-color: #f0f0f0;
+    background-color: white;
 }
 
-.dropdown-submenu-2 {
-    position: absolute;
+.dropdown-submenu-3 {
+    position: relative;
     top: 0;
-    left: 100%;
-    margin-left: 10px;
     background-color: white;
-    border: 1px solid #ddd;
+    border-bottom: solid 1px #ddd;
     border-radius: 4px;
-    width: 250px; 
     display: none;
 }
 
-.dropdown-submenu-2 ul {
+.dropdown-submenu-3 ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.dropdown-submenu-2 li {
+.dropdown-submenu-3 li {
     padding: 10px;
     cursor: pointer;
 }
 
-.dropdown-submenu-2 li:hover {
+.dropdown-submenu-3 li:hover {
     background-color: #f0f0f0;
 }
 
-
-.property-button,
-.post-button {
-    background-color: white;
-    color: black;
-    border-style: none;
-    margin-right: 30px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-
-.category .dropdown-content {
-    flex-direction: row; 
-}
-
-.category .dropdown-section {
-    flex: 5;
+.dropdown-submenu li:hover .dropdown-submenu-3 {
+    display: block;
 }

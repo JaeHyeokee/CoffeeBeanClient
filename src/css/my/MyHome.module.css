@@ -1,0 +1,68 @@
+.myHomeInfo {
+    display: flex;
+}
+
+.myHomeProfileImg {
+    width: 25%;
+    border-radius: 50%;
+    margin-right: 50px;
+}
+
+.myHomeProfileContent {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 75%;
+    padding: 10px 0;
+}
+
+.nickNamePrint {
+    font-size: 50px;
+}
+
+.oneLineIntro {
+    color: gray;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+.trustIndexInfo {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 5px;
+}
+
+.myTrustIndex {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin: 0;
+    color: #0CB650;
+    font-size: 15px;
+    p {
+        margin: 0;
+    }
+}
+
+.myTrustIndexFigure {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.maxTrustIndex {
+    margin: 0;
+    padding-top: 5px;
+    color: gray;
+    font-size: 15px;
+}
+
+.trustIndexBar {
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 10px !important;
+}
+
+.trustIndexBar div {
+    background: linear-gradient(90deg, #0DCC5A, #01A1AD);
+    border-radius: 10px;
+}

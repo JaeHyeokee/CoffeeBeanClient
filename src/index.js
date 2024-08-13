@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import CoffeeBeanApp from './pages/CoffeeBeanApp';
+import CoffeeBeanApp from './CoffeeBeanApp';
 import reportWebVitals from './reportWebVitals';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
+// 강제 로그인 코드
+localStorage.setItem('userId', '1');
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
