@@ -1,50 +1,114 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import '../../css/post/PostDetail.css'
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import axios from 'axios';
 
-const PostDetail = ({ initialContentType }) => {
+const PostDetail = () => {
 
-    const { id } = useParams();
+  const navigate = useNavigate();
+  const { postId } = useParams();
 
-    const location = useLocation(); //현재 URL 정보
-    const queryParams = new URLSearchParams(location.search); //쿼리 문자열을 URLSearchParams 객체로 변환
-    const contentType = queryParams.get('contentType') || initialContentType; //contentType 파라미터 가져오거나 initialContentType 사용하기
-                        
-    const [selectedContentType, setSelectedContentType] = useState(contentType); //선택한 콘텐츠 상태
+  const [post, setPost] = useState({
+    postId: "",
+    type: "",
+    title: "",
+    content: "",
+    regDate: "",
+    fileList: []
+  });
 
-    const posts = [
-        {id:1, title: '중고나라 카페 채팅방 이용시 주의사항', content:'안녕하세요, 중고나라입니다.카페 채팅방은 중고거래 및 중고나라 서비스에 대해 자유롭게 이야기를 나눌 수 있는 공간입니다.회원분들이 안전하고 쾌적한 채팅 이용을 할 수 있도록 주의 사항을 안내드립니다.■ 주의사항- 자신 또는 타인의 영리 활동을 목적으로하는 내용을 게시하는 행위- 동일하거나 유사한 내용의 정보를 반복적으로 게시하는 도배 행위- 욕설 및 비방 등 다른 이용자에게 불쾌감을 줄 수 있는 행위- URL 등을 통해 채팅 참여자를 중고나라 외 공간으로 유도하는 행위이를 위반한 경우 채팅방 참여에 제한이 있을 수 있으니 참고 부탁드리겠습니다.중고나라는 회원분들의 원활한 중고나라 카페 이용을 위해 최선을 다하겠습니다.감사합니다.'},
-        {id:2, title: '회원등급 개편안내', content:'상세내용~~~'},
-        {id:3, title: '중고나라 시세 알아보기', content:'상세내용~~~'},
-        {id:4, title: '무료나눔 이용가이드', content:'상세내용~~~'},
-        {id:5, title: '사기꾼 예방하는 7가지 방법', content:'상세내용~~~'}
-    ];
+  const userId = 1;       // Token 가능하면 수정
 
-    const post = posts.find(post => post.id === parseInt(id));
+  const encodedFileName = encodeURIComponent(post.fileList.filename);
+const imageUrl = `/upload/${encodedFileName}`;
 
-    return (
-        <>
-          <Header/> 
-          <div className='postdetail-body'>
-          <h1>콘텐츠</h1>
-            <hr/>
-            <div className='post-list'>
-                <Link to='/PostList?contentType=contentType1'className={selectedContentType === 'contentType1' ? 'active-link' : ''}
-                    onClick={() => setSelectedContentType('contentType1')} >ㅇㅇ 소식</Link>
-                <Link to='/PostList?contentType=contentType2'className={selectedContentType === 'contentType2' ? 'active-link' : ''}
-                    onClick={() => setSelectedContentType('contentType2')}>중고거래 팁</Link>
-                <Link to='/PostList?contentType=contentType3'className={selectedContentType === 'contentType3' ? 'active-link' : ''}
-                    onClick={() => setSelectedContentType('contentType3')}>사기예방</Link>
-            </div>
-          <div className='postdetail-body'>
-            <div className='postdetail-title'>{post.title}</div>
-            <div className='postdetail-content'>{post.content}</div>
+  useEffect(() => {
+    axios({
+      method: "get",
+      url: "http://localhost:8088/post/detail/" + postId
+    })
+      .then(response => {
+        const { data, status } = response;
+        if (status == 200) {
+          setPost(data);
+        } else {
+          window.alert('로드 실패');
+        }
+      })
+  }, [postId]);
+
+  const deletePost = () => {
+    if (!window.confirm('삭제하시겠습니까?')) return;
+
+    axios({
+      method: "delete",
+      url: `http://localhost:8088/post/delete/${postId}`,
+    })
+      .then(response => {
+        const { data, status, statusText } = response;
+        if (data === 1) {
+          navigate('/PostList');
+        } else {
+          window.alert("삭제 실패");
+        }
+      })
+      .catch(error => {
+        console.error('에러: ', error);
+        window.alert("네트워크 에러 또는 서버 문제 발생");
+    });
+  };
+
+  // const post = posts.find(post => postId === parseInt(postId));
+
+  return (
+    <>
+      <Header />
+      <div className="container mt-3 mb-3">
+      <div className="mb-3">
+      <h3>{post.type}</h3>
+        <h4><strong>{post.title}</strong></h4>
+        <p><strong>등록일:</strong> {new Date(post.regDate).toLocaleDateString()}</p>
+        <div>
+          <h5>내용:</h5>
+          <p>{post.content}</p>
+        </div>
+        <div className="container mt-3 mb-3 border rounded">
+          <div className="mb-3 mt-3">
+            <label>첨부파일:</label>
+            {/* 첨부파일 이름 및 이미지 미리보기 */}
+            <ul className="list-group mb-1">
+              {post.fileList && post.fileList.length > 0 ? (
+                post.fileList.map(file => (
+                  <li className="list-group-item" key={file.attachmentId}>
+                    <a href={`/upload/${file.filename}`} target="_blank" rel="noopener noreferrer">
+                      {file.source}
+                    </a>
+                  </li>
+                ))
+              ) : (
+                <li className="list-group-item">첨부파일이 없습니다.</li>
+              )}
+            </ul>
+            {post.fileList && post.fileList.map(file => (
+              file.image && (
+                <img
+                  key={file.attachmentId}
+                  src={`/upload/${imageUrl}`}
+                  className="img-thumbnail"
+                  alt={file.source}
+                />
+              )
+            ))}
           </div>
-          </div>
-
-        </>
-    );
+        </div>
+        <button className="btn btn-danger" onClick={deletePost}>삭제</button>
+        <button className="btn btn-secondary ms-2" onClick={() => navigate(`/PostUpdate/${postId}`)}>수정</button>
+        <button className="btn btn-secondary ms-2" onClick={() => navigate('/PostList')}>목록으로 돌아가기</button>
+      </div>
+    </div>
+    </>
+  );
 };
 
 export default PostDetail;

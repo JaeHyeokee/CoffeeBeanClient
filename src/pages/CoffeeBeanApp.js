@@ -52,10 +52,10 @@ const CoffeeBeanApp = () => {
             <Route path = '/ReviewList' Component={ReviewList}/>
             <Route path = '/UnRegister' Component={UnRegister}/>
 
-            <Route path = '/PostCreate' Component={PostCreate}/>
-            <Route path = '/PostDetail/:id' element={<PostDetail />}/>
-            <Route path="/PostList" element={<PostList initialContentType="contentType1" />} />
-            <Route path = '/PostUpdate' Component={PostUpdate}/>
+            <Route path = '/PostCreate/:userId' Component={PostCreate}/>
+            <Route path = '/PostDetail/:postId' element={<PostDetail/>}/>
+            <Route path = "/PostList" element={<PostList initialContentType="contentType1" />} />
+            <Route path = '/PostUpdate/:postId' element={<PostUpdate/>}/>
 
             <Route path = '/ProductCreate' Component={ProductCreate}/>
             <Route path = '/ProductDetail/:id' Component={ProductDetail}/>
