@@ -44,6 +44,7 @@ const imageUrl = `/upload/${encodedFileName}`;
     axios({
       method: "delete",
       url: `http://localhost:8088/post/delete/${postId}`,
+      withCredentials: true
     })
       .then(response => {
         const { data, status, statusText } = response;
