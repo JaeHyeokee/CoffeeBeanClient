@@ -26,14 +26,14 @@ const Header = () => {
     
 
     // 사이드바 스크롤관리 (채팅하기 눌렀을때)
-    useEffect(() => {
+    /* useEffect(() => {
         if (isChatSidebarOpen) {
             document.body.classList.add('no-scroll');
         } else {
             document.body.classList.remove('no-scroll');
         }
         return () => document.body.classList.remove('no-scroll');
-    }, [isChatSidebarOpen]);
+    }, [isChatSidebarOpen]); */
 
     //메뉴 열고 닫는 토글
     const toggleChatSidebar = () => {

@@ -7,6 +7,7 @@ import x from '../../image/x.svg';
 import Swal from 'sweetalert2';
 import { Carousel } from 'react-bootstrap';
 import styles from '../../css/product/ProductDetail.module.css';
+import Chat from '../chatting/Chat';
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -30,7 +31,7 @@ const ProductDetail = () => {
 
     const toggleChatSidebar = () => {
         setIsChatSidebarOpen(!isChatSidebarOpen);
-    };
+    }
 
     const dip = () => {
         Swal.fire({
@@ -40,15 +41,6 @@ const ProductDetail = () => {
             width: '400px',
         });
     };
-
-    useEffect(() => {
-        if (isChatSidebarOpen) {
-            document.body.classList.add('no-scroll');
-        } else {
-            document.body.classList.remove('no-scroll');
-        }
-        return () => document.body.classList.remove('no-scroll');
-    }, [isChatSidebarOpen]);
 
     if (!product) {
         return <p>상품을 찾을 수 없습니다.</p>;
@@ -108,13 +100,12 @@ const ProductDetail = () => {
                     </section>
                 </div>
 
-                {isChatSidebarOpen && (
+                 {/* 사이드바 */}
+                 {isChatSidebarOpen && (
                     <>
-                        <div className={`${styles.overlay} ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} />
-                        <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? 'open' : ''}`}>
-                            <button className={styles.closeButton} onClick={toggleChatSidebar}>
-                                <img src={x} alt='닫기' height={25} width={25} />
-                            </button>
+                        <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
+                        <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
+                            <button className='close-button' onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25} /></button> {/* 사이드바 닫기 버튼 */}
                             <ChatFrame productId={id} />
                         </div>
                     </>

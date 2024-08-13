@@ -38,9 +38,16 @@ const subcategories = {
 const ProductCreate = () => {
 
     const navigate = useNavigate();
-    const { isLogin, userInfo } = useContext(LoginContext);
+    const { userInfo } = useContext(LoginContext);
 
     const userId = userInfo.userId;
+
+    useEffect(() => {
+        if(userId == null){
+            navigate('/login');
+        }
+    },[userId, navigate])
+    
 
     const [product, setProduct] = useState({
         name: "",
@@ -55,6 +62,12 @@ const ProductCreate = () => {
         category3: "",
     });
 
+
+    //selectedCategory -> 카테고리1
+    //selectedSubCategory -> 카테고리2
+    //subCategoryOptions -> 카테고리1에 따라 동적으로 업데이트되는 카테고리2
+    //subCategory3Options -> 카테고리2에 따라 동적으로 업데이되는 카테고리3
+
     const [selectedCategory, setSelectedCategory] = useState("");
     const [subCategoryOptions, setSubCategoryOptions] = useState([]);
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
@@ -62,22 +75,22 @@ const ProductCreate = () => {
 
     useEffect(() => {
         if (selectedCategory) {
-            setSubCategoryOptions(categories[selectedCategory] || []);
+            setSubCategoryOptions(categories[selectedCategory] || []); // 선택한 카테고리1에 따른 카테고리 2
             setProduct(prevProduct => ({
                 ...prevProduct,
-                category2: "",
-                category3: "",
+                category2: "", //카테고리2 초기화
+                category3: "", //카테고리3 초기화
             }));
             setSelectedSubCategory("");
         }
-    }, [selectedCategory]);
+    }, [selectedCategory]); //카테고리가 변경될때마다 실행
 
     useEffect(() => {
         if (selectedSubCategory) {
-            setSubCategory3Options(subcategories[selectedSubCategory] || []);
+            setSubCategory3Options(subcategories[selectedSubCategory] || []); // 선택한 카테고리2에 따른 카테고리 3
             setProduct(prevProduct => ({
                 ...prevProduct,
-                category3: "",
+                category3: "", //카테고리3 초기화
             }));
         }
     }, [selectedSubCategory]);
@@ -88,10 +101,8 @@ const ProductCreate = () => {
         if (type === 'checkbox') {
             if (name === 'dealingType') {
                 setProduct(prevProduct => ({
-                    ...prevProduct,
-                    dealingType: checked
-                        ? [...prevProduct.dealingType, value]  
-                        : prevProduct.dealingType.filter(type => type !== value)  
+                    ...prevProduct,         //체크되면 배열에 추가                  //체크 풀면 배열에서 빼기
+                    dealingType: checked ? [...prevProduct.dealingType, value] : prevProduct.dealingType.filter(type => type !== value)  
                 }));
             }
         } else {
@@ -103,7 +114,7 @@ const ProductCreate = () => {
     };
 
     const handleCategoryChange = (e) => {
-        setSelectedCategory(e.target.value);
+        setSelectedCategory(e.target.value); //선택한 카테고리1
         setProduct({
             ...product,
             category1: e.target.value
@@ -111,11 +122,10 @@ const ProductCreate = () => {
     };
 
     const handleSubCategoryChange = (e) => {
-        setSelectedSubCategory(e.target.value);
+        setSelectedSubCategory(e.target.value); //선택한 카테고리2
         setProduct({
             ...product,
             category2: e.target.value,
-            category3: ""
         });
     };
 
@@ -126,6 +136,7 @@ const ProductCreate = () => {
         });
     };
     
+    //상품상태
     const handleStatusChange = (status) => {
         setProduct({
             ...product,
