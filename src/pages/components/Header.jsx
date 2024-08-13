@@ -10,7 +10,7 @@ import Chat from '../chatting/Chat';
 import Category from './Category';
 import CarCategory from './CarCategory';
 import { Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
-import { LoginContext } from '../../contexts/LoginContextProvider'
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const Header = () => {
 

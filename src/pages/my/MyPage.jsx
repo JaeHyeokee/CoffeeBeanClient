@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Style from '../../css/my/MyPage.module.css';
 import MyDealList from './MyDealList';
@@ -9,7 +9,9 @@ import { Nav } from 'react-bootstrap';
 
 const MyPage = () => {
     const [activePage, setActivePage] = useState('SaleList');
-    const [isProductOrCar, setIsProductOrCar] = useState('prod');
+    const [isProductOrCar, setIsProductOrCar] = useState('product');
+
+    useEffect(() => {}, [isProductOrCar]);
 
     const handlePageChange = (page) => {
         setActivePage(page);

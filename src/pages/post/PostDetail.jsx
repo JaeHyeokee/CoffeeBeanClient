@@ -44,7 +44,6 @@ const imageUrl = `/upload/${encodedFileName}`;
     axios({
       method: "delete",
       url: `http://localhost:8088/post/delete/${postId}`,
-      withCredentials: true
     })
       .then(response => {
         const { data, status, statusText } = response;
@@ -82,7 +81,7 @@ const imageUrl = `/upload/${encodedFileName}`;
               {post.fileList && post.fileList.length > 0 ? (
                 post.fileList.map(file => (
                   <li className="list-group-item" key={file.attachmentId}>
-                    <a href={`/upload/${file.filename}`} target="_blank" rel="noopener noreferrer">
+                    <a href={file.source} target="_blank" rel="noopener noreferrer">
                       {file.source}
                     </a>
                   </li>
@@ -92,14 +91,8 @@ const imageUrl = `/upload/${encodedFileName}`;
               )}
             </ul>
             {post.fileList && post.fileList.map(file => (
-              file.image && (
-                <img
-                  key={file.attachmentId}
-                  src={`/upload/${imageUrl}`}
-                  className="img-thumbnail"
-                  alt={file.source}
-                />
-              )
+                  <img src={file.source}>
+                  </img>
             ))}
           </div>
         </div>
