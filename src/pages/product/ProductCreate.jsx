@@ -1,62 +1,184 @@
-import React from 'react';
-import '../../css/product/ProductCreate.css'
+import React, { useState, useContext, useEffect } from 'react';
+import '../../css/product/ProductCreate.module.css'; // Updated import
 import Header from '../components/Header';
-import attachment from '../../image/Attachment.png'
-import price from '../../image/ProductPrice.png'
-import check from '../../image/Uncheck.png'
-import { Link } from 'react-router-dom';
-import Category from '../components/Category';
+import price from '../../image/ProductPrice.png';
+import { Form, Button } from 'react-bootstrap';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import styles from '../../css/product/ProductCreate.module.css'; // Import CSS Module
 
 const ProductCreate = () => {
+
+    const navigate = useNavigate();
+
+    // const { isLogin, roles } = useContext(LoginContext);
+    // const navigate = useNavigate();
+
+    // useEffect(() => {
+    //     if (!isLogin) {
+    //         Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") })
+    //         return;
+    //     }
+
+    //     console.log(`/member : ${roles}`);
+    // }, []);
+
+    const [product, setProduct] = useState({
+        name: "",
+        description: "",
+        price: "",
+        dealingStatus: "판매중",
+        category1: "",
+        category2: "",
+        category3: "",
+        status: "중고",
+        dealingType: "직거래",
+        desiredArea: ""
+    });
+
+    const changeValue = (e) => {
+        const { name, value, type, checked } = e.target;
+
+        if (type === 'radio') {
+            setProduct({
+                ...product,
+                [name]: value
+            });
+        } else if (type === 'checkbox') {
+            setProduct(prevProduct => ({
+                ...prevProduct,
+                [name]: checked ? value : ""
+            }));
+        } else {
+            setProduct({
+                ...product,
+                [name]: value,
+            });
+        }
+    };
+
+    const submitProduct = (e) => {
+        e.preventDefault();
+
+        axios({
+            method: 'post',
+            url: 'http://localhost:8088/product/write/1',
+            headers: {
+                "Content-Type": 'application/json',
+            },
+            data: JSON.stringify(product),
+        })
+        .then(response => {
+            const { data, status } = response;
+            if (status === 201) {
+                console.log('상품생성', data);
+                navigate(`/product/ProductDetail/${data.id}`);
+            } else {
+                alert('등록 실패-');
+            }
+        });
+    };
+
     return (
         <>
-        <Header/>
-        <div className='page-container'>
-        <div className='productcreate-body'>
+        <Header />
+            <Form onSubmit={submitProduct}>
+                <div className={styles.productcreateBody}>
+                    <Form.Group className={styles.productName} controlId="formBasicTitle">
+                        <Form.Label>Title</Form.Label>
+                        <Form.Control type='text' value={product.name} placeholder='상품명' onChange={changeValue} name='name' />
+                    </Form.Group>
 
-            <button className='add-attachment'>
-                <img src={attachment} alt='첨부파일'/>
-                <h4>추가하기</h4>
-            </button>
+                    <Form.Group className={styles.productPrice} controlId="formBasicPrice">
+                        <Form.Label>Price</Form.Label>
+                        <img src={price} alt='' />
+                        <Form.Control type='text' placeholder='가격' value={product.price} onChange={changeValue} className={styles.productInputPrice} name='price' />
+                    </Form.Group>
 
-            <div className='product-name'>
-                <input type='text' className='product-name-input' placeholder='상품명'/>
-            </div>
+                    <Form.Group className={styles.productInfo} controlId="formBasicDescription">
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control type='textarea' placeholder="상품 설명" value={product.description} onChange={changeValue} className={styles.productInputInfo} name='description' />
+                    </Form.Group>
 
-            <Category/>            
+                    <Form.Group>
+                        <Form.Label>판매 상태</Form.Label>
+                        <Form.Check
+                            type="radio"
+                            id="status-sell"
+                            name="dealingStatus"
+                            value="판매중"
+                            checked={product.dealingStatus === "판매중"}
+                            onChange={changeValue}
+                            label="판매중"
+                        />
+                        <Form.Check
+                            type="radio"
+                            id="status-sold-out"
+                            name="dealingStatus"
+                            value="품절"
+                            checked={product.dealingStatus === "품절"}
+                            onChange={changeValue}
+                            label="품절"
+                        />
+                    </Form.Group>
 
-            <div className='product-price'>
-                <img src={price} alt='' />
-                <input type='text' className='product-input-price' placeholder='가격' />
-            </div>
+                    {/* status */}
+                    <Form.Group>
+                        <Form.Label>상품 상태</Form.Label>
+                        <Form.Check
+                            type="radio"
+                            id="status-new"
+                            name="status"
+                            value="새상품"
+                            checked={product.status === "새상품"}
+                            onChange={changeValue}
+                            label="새상품"
+                        />
+                        <Form.Check
+                            type="radio"
+                            id="status-used"
+                            name="status"
+                            value="중고"
+                            checked={product.status === "중고"}
+                            onChange={changeValue}
+                            label="중고"
+                        />
+                    </Form.Group>
 
-            <div className="product-info">
-                <textarea className="product-input-info" placeholder="상품 설명"></textarea>
-            </div>
+                    {/* dealingType */}
+                    <Form.Group>
+                        <Form.Label>거래 방식</Form.Label>
+                        <Form.Check
+                            type="checkbox"
+                            id="dealing-type-direct"
+                            name="dealingType"
+                            value="직거래"
+                            checked={product.dealingType.includes("직거래")}
+                            onChange={changeValue}
+                            label="직거래"
+                        />
+                        <Form.Check
+                            type="checkbox"
+                            id="dealing-type-shipping"
+                            name="dealingType"
+                            value="배송"
+                            checked={product.dealingType.includes("배송")}
+                            onChange={changeValue}
+                            label="배송"
+                        />
+                    </Form.Group>
 
-            <div className='product-status'>
-                <p>상품상태</p>
-                <button className='product-status-button1'>중고</button>
-                <button className='product-status-button2'>새상품</button>
-            </div>
+                    <Form.Group className={styles.productName} controlId="formBasicDesiredArea">
+                        <Form.Label>거래희망지역</Form.Label>
+                        <Form.Control type='text' placeholder='거래희망지역' onChange={changeValue} name='desiredArea' />
+                    </Form.Group>
 
-            <div className='deal-way'>
-                <p>거래방법</p>
-                <button className='deal-way-button1'>
-                    <img src={check} alt='' />택배거래</button>
-                <button className='deal-way-button2'>
-                    <img src={check} alt='' />직거래</button>
-            </div>
+                    <div>
+                        <Button className={styles.registerButton} type='submit'>등록하기</Button>
+                    </div>
 
-            <div>
-                <Link to='/ProductDetail/:id'>
-                <button className='register-button'>등록하기</button>
-                </Link>
-            </div>
-
-        </div>
-        </div>
-
+                </div>
+            </Form>
         </>
     );
 };

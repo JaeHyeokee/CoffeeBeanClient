@@ -138,21 +138,24 @@ const LoginContextProvider = ({children}) => {
   // 로그아웃
   const logout = (force = false) => {
     
+    // confirm 없이 강제 로그아웃.
     if(force){
-      logoutSetting(); // 로그아웃 세팅
+      logoutSetting();  // 로그아웃 세팅
 
-      // 페이지 이동 -> "/"
+      // 페이이 지동 -> "/"
       navigate("/");
       return;
     }
 
-    Swal.confirm("로그아웃 하시겠습니까?", "로그아웃을 진행합니다.", "warning", 
-  (result) => {
-    if(result.isConfirmed){
-      logoutSetting(); // 로그아웃 세팅
-      navigate("/");
-    }
-  })
+    Swal.confirm("로그아웃 하시겠습니까", "로그아웃을 진행합니다", "warning", 
+      (result) => {
+        if(result.isConfirmed){
+          logoutSetting();  // 로그아웃 세팅
+          navigate("/");
+        } 
+      }
+    );
+
   };
 
   // 로그인 세팅
@@ -198,8 +201,14 @@ const LoginContextProvider = ({children}) => {
     setRoles(null);
     // 쿠키 지우기
     Cookies.remove('accessToken');
-    // axios 의 default header 삭제
+    // axios 의 default  header 도 삭제
     api.defaults.headers.common.Authorization = undefined;
+
+    // 새로고침]
+    // local storage 지우기
+    localStorage.removeItem("isLogin");
+    localStorage.removeItem("userInfo");
+    localStorage.removeItem("roles");
   };
 
   return (

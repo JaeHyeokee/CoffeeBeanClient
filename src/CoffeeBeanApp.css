@@ -1,0 +1,13 @@
+@import url("https://hangeul.pstatic.net/hangeul_static/css/nanum-square.css");
+body {
+    font-family: 'NanumSquare', sans-serif;
+}
+
+/* MyDealList.jsx */
+.MyDealList_sellStatus__N6Xki {
+    li {
+        button.active {
+            border-bottom: 2px solid black !important;
+        }
+    }
+}
