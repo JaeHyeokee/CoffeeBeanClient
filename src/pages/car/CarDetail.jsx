@@ -14,6 +14,7 @@ const CarDetail = () => {
     const [recommendedCars, setRecommendedCars] = useState([]);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
+    const [showFullIntroduce, setShowFullIntroduce] = useState(false); // 더보기 버튼 상태
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -69,8 +70,8 @@ const CarDetail = () => {
         return <div>Loading...</div>;
     }
 
-    // Split the introduce string by specific keywords
     const introduceLines = car.introduce.split(/(?<=니다|입니다|습니다)\s*/);
+    const maxLinesToShow = 5; // 처음에 보여줄 줄 수
 
     const handleImageClick = (carId) => {
         navigate(`/CarDetail/${carId}`);
@@ -145,9 +146,14 @@ const CarDetail = () => {
                 <section className={styles.cardetailBottom}>
                     <div className={styles.infoBox}>
                         <h2>상품정보</h2>
-                        {introduceLines.map((line, index) => (
+                        {introduceLines.slice(0, showFullIntroduce ? introduceLines.length : maxLinesToShow).map((line, index) => (
                             <p key={index} className={styles.introduce}>{line}</p>
                         ))}
+                        {introduceLines.length > maxLinesToShow && (
+                            <button onClick={() => setShowFullIntroduce(!showFullIntroduce)} className={styles.moreButton}>
+                                {showFullIntroduce ? '접기' : '더보기'}
+                            </button>
+                        )}
                     </div>
                 </section>
 
@@ -155,7 +161,6 @@ const CarDetail = () => {
                     <h2>추천 차량</h2>
                     <div className={styles.recommendationContainer}>
                         {recommendedCars.map((recCar) => {
-                            // Get the first image for each recommended car
                             const firstImage = recCar.fileList.length > 0 ? recCar.fileList[0].source : '';
                             return (
                                 <div key={recCar.carId} className={styles.recommendationCard} onClick={() => handleImageClick(recCar.carId)}>
