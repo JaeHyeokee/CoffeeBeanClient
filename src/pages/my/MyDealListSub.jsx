@@ -6,9 +6,9 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 import { useNavigate } from 'react-router-dom';
 
 const MyDealListSub = (props) => {
-    const { key, isProductOrCar } = props;
+    const { activatedKey, isProductOrCar, pageType } = props;
     const { userInfo } = useContext(LoginContext);
-    const [ products, setProducts ] = useState([]);
+    var [ products, setProducts ] = useState([]);
     const [ sortedType, setSortedType ] = useState('1');
     const navigate = useNavigate();
 
@@ -25,22 +25,22 @@ const MyDealListSub = (props) => {
                 console.log('데이터 로드 실패');
             }
         });
-        
-    }, [userInfo, sortedType]);
 
-    useEffect(() => {
+        if(!activatedKey) return;
         filterDealingStatus();
-    },[key]);
+    }, [userInfo, sortedType, activatedKey]);
 
     const filterDealingStatus = () => {
-        console.log("slkfajsdlfkajwlfk" + key);
-        if(key === 'onSale') {
-            setProducts(products.filter(product => product.dealingStatus ==='판매중'));
-        } else if(key === 'booked') {
-            setProducts(products.filter(product => product.dealingStatus ==='예약중'));
-        } else if(key === 'outOfSale') {
-            setProducts(products.filter(product => product.dealingStatus ==='판매완료'));
+        console.log("활성화 키 : " + activatedKey);
+        console.log(activatedKey === 'onSale');
+        if(activatedKey === 'onSale') {
+            setProducts(products.filter(product => product.dealingStatus === '판매중'));
+        } else if(activatedKey === 'booked') {
+            setProducts(products.filter(product => product.dealingStatus === '예약중'));
+        } else if(activatedKey === 'outOfSale') {
+            setProducts(products.filter(product => product.dealingStatus === '판매완료'));
         }
+        console.log(products);
     };
 
     const goDetailPage = (id) => {

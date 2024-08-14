@@ -39,14 +39,6 @@
     color: white !important;
 }
 
-.myListFilter {
-    width: 150px !important;
-}
-
-.myListFilter:focus {
-    border: 1px solid #0DCC5A;
-}
-
 .sellStatus {
     gap: 0;
     li {
@@ -65,8 +57,4 @@
             border-bottom: 2px solid #0DCC5A !important;
         }
     }
-}
-
-.sellStatusTab {
-    background-color: black;
 }
