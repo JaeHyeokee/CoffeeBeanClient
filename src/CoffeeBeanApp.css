@@ -3,8 +3,8 @@ body {
     font-family: 'NanumSquare', sans-serif;
 }
 
-/* MyDealList.jsx */
-.MyDealListTab_sellStatus__B6IZD {
+/* DealListTab.jsx */
+.DealListTab_sellStatus__Dzvps {
     li {
         button.active {
             border-bottom: 2px solid black !important;
