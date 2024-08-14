@@ -1,0 +1,40 @@
+.carListBody {
+    width: 1280px;
+    margin: auto;
+    padding: 20px;
+
+}
+
+.searchResult {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.categoryContainer {
+    width: 100%;
+}
+
+.carList {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pageButton {
+    padding: 10px;
+    margin: 0 5px;
+    border: 1px solid #ddd;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.pageButton.active {
+    background-color: #007bff;
+    color: white;
+}

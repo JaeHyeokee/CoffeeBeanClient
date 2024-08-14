@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import prev from './../image/PrevButton.png'
 import next from './../image/NextButton.png'
+import Footer from './components/Footer.jsx';
 
 
 
@@ -102,6 +103,7 @@ const Home = () => {
                     </div>
                 </section>
             </div>
+            <Footer/>
         </>
     );
 };
