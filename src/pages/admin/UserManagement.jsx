@@ -53,7 +53,7 @@ const UserManagement = () => {
                     quitCount.eventUse,
                     quitCount.etc
                 ],
-                backgroundColor: 'rgba(255, 99, 132, 0.5)'
+                backgroundColor: '#0dcc59ca'
 
             }
         ]
@@ -81,7 +81,6 @@ const UserManagement = () => {
 
     return (
         <>
-        <Header/>
         <div className={styles.usermanagementBody}>
         <p>회원탈퇴 사유 차트</p>
         <Bar data={chartData} options={chartOptions}/>
