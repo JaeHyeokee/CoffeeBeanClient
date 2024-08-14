@@ -18,18 +18,22 @@ const ProductList = () => {
 
     useEffect(() => {
         const fetchProducts = async () => {
-
-            const response = await axios.get('http://localhost:8088/product/category', {
-                params: {
-                    category1: category || undefined,
-                    category2: subcategory || undefined,
-                    category3: subsubcategory || undefined,
+            try {
+                const response = await axios.get('http://localhost:8088/product/category', {
+                    params: {
+                        category1: category || undefined,
+                        category2: subcategory || undefined,
+                        category3: subsubcategory || undefined,
+                    }
+                });
+                console.log('응답데이터: ', response.data)
+                if (Array.isArray(response.data)) {
+                    setProducts(response.data);
                 }
-            });
-            if (Array.isArray(response.data)) {
-                setProducts(response.data);
-            } else {
-                console.error('에러');
+            } catch (error) {
+                console.error('에러', error);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -71,7 +75,7 @@ const ProductList = () => {
                             <td>
                                 <div className={styles.category1Result}>
                                     <p>전체</p>
-                                    <p>&gt; {category}</p>
+                                    <p>&gt; {category}</p> 
                                     {subcategory && <p>&gt; {subcategory}</p>}
                                     {subsubcategory && <p>&gt; {subsubcategory}</p>}
                                 </div>
@@ -84,9 +88,9 @@ const ProductList = () => {
                             </td>
                             <td>
                                 <div className={styles.category2Result}>
-                                    <input type='text' className={styles.productInputPrice1} placeholder=' 최소가격' />
+                                    <input type='text' className={styles.productInputPrice1} placeholder=' 최소가격'/>
                                     <p>~</p>
-                                    <input type='text' className={styles.productInputPrice2} placeholder=' 최대가격' />
+                                    <input type='text' className={styles.productInputPrice2} placeholder=' 최대가격'/>
                                     <button className={styles.category2ResultButton}>적용</button>
                                 </div>
                             </td>
