@@ -7,8 +7,8 @@ const CarCategory = () => {
     const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
     const carcategories = {
-        "국산차": ["제네시스", "현대", "기아", "쉐보레", "르노코리아"],
-        "수입차": ["벤츠", "BMW", "아우디", "테슬라", "포르쉐"]
+        "국산차": ["현대", "제네시스", "기아", "쉐보레", "르노코리아(삼성)", "KG모빌리티(쌍용)"],
+        "외제차": ["벤츠", "포르쉐", "BMW", "페라리", "롤스로이스", "벤틀리", "람보르기니", "테슬라", "랜드로버"]
     };
 
     const handleMouseEnter = () => setActive(true);
