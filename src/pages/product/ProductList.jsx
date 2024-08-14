@@ -14,6 +14,7 @@ const ProductList = () => {
     const [loading, setLoading] = useState(true);
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
+    const [priceInfo, setPriceInfo] = useState({});
     const { category, subcategory, subsubcategory } = useParams();
 
     useEffect(() => {
@@ -37,7 +38,20 @@ const ProductList = () => {
             }
         };
 
+        const fetchPriceInfo = async () =>{
+            try {
+                const response = await axios.get('http://localhost:8088/product/priceInfo', {
+                    params: {category2: subcategory || ''}
+                });
+                setPriceInfo(response.data)
+            }catch(erroe) {
+                console.error()
+            }
+        }
+
+
         fetchProducts();
+        fetchPriceInfo();
     }, [category, subcategory, subsubcategory]);
 
     useEffect(() => {
@@ -115,6 +129,12 @@ const ProductList = () => {
                         </tr>
                     </tbody>
                 </table>
+
+                <div className={styles.priceInfo}>
+                    <h2>시세 정보</h2>
+                    <p>평균 가격: {priceInfo.averagePrice ? `${priceInfo.averagePrice.toLocaleString()}원` : '정보 없음'}</p>
+                    <p>제품 수: {priceInfo.productCount || '정보 없음'}</p>
+                </div>
 
                 <div className={styles.productList}>
                     {loading ? (
