@@ -13,8 +13,6 @@ const MyPage = () => {
     const [activePage, setActivePage] = useState('SaleList');
     const [isProductOrCar, setIsProductOrCar] = useState('product');
 
-    useEffect(() => {}, [isProductOrCar]);
-
     const handlePageChange = (page) => {
         setActivePage(page);
     };
