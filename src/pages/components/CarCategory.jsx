@@ -32,7 +32,11 @@ const CarCategory = () => {
                         <div className='drop-section' key={category}>
                             {/* 카테고리1 */}
                             <h4 className='drop-title'>
-                                <Link to={`/CarList/${encodeURIComponent(category)}`}>{category}</Link>
+                                <Link to={`/CarList/${encodeURIComponent(category)}`}>
+                                <div>
+                                    {category}
+                                </div>
+                                </Link>
                             </h4>
                             {/* 카테고리2 */}
                             <div className='dropdown-submenu-car'>
@@ -44,7 +48,9 @@ const CarCategory = () => {
                                             onMouseLeave={handleSubcategoryMouseLeave}
                                         >
                                             <Link to={`/CarList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}`}>
+                                                <div>
                                                 {subcategory}
+                                                </div>
                                             </Link>
                                         </li>
                                     ))}
