@@ -4,10 +4,13 @@ body {
 }
 
 /* MyDealList.jsx */
-.MyDealList_sellStatus__N6Xki {
+.MyDealListTab_sellStatus__B6IZD {
     li {
         button.active {
             border-bottom: 2px solid black !important;
+        }
+        button.active:hover {
+            border-bottom: 2px solid #0DCC5A !important;
         }
     }
 }

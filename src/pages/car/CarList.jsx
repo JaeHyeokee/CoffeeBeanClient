@@ -93,7 +93,7 @@ const CarList = () => {
 
     return (
         <>
-            <Header />
+            <Header/>
             <div className={styles.carListBody}>
                 <div className={styles.searchResult}>검색결과</div>
 
