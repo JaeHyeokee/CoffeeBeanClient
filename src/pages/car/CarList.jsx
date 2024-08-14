@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import '../../css/car/CarList.css';
 import axios from 'axios';
 import CarItem from '../components/CarItem';
+import Footer from '../components/Footer';
 
 const CarList = () => {
     const [cars, setCars] = useState([])
@@ -107,6 +108,7 @@ const CarList = () => {
                     )}
                 </div>
             </div>
+            <Footer/>
         </>
     );
 };

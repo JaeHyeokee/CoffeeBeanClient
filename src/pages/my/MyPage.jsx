@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import Style from '../../css/my/MyPage.module.css';
 import MyDealList from './MyDealList';
 import MyInformation from './MyInformation';
@@ -19,7 +20,7 @@ const MyPage = () => {
 
     return (
         <>
-            <Header />
+            <Header/>
             <div className={Style.myHomeBody}>
                 <div className={Style.myNavBody}>
                     <div className={Style.myPage}>마이 페이지</div>
@@ -45,6 +46,7 @@ const MyPage = () => {
                     {activePage === 'UnRegister' && <UnRegister/>}
                 </section>
             </div>
+            <Footer/>
         </>
     );
 };

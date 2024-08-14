@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import '../../css/post/PostDetail.css'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import Footer from '../components/Footer';
 
 const PostDetail = () => {
 
@@ -65,42 +66,43 @@ const imageUrl = `/upload/${encodedFileName}`;
     <>
       <Header />
       <div className="container mt-3 mb-3">
-      <div className="mb-3">
-      <h3>{post.type}</h3>
-        <h4><strong>{post.title}</strong></h4>
-        <p><strong>등록일:</strong> {new Date(post.regDate).toLocaleDateString()}</p>
-        <div>
-          <h5>내용:</h5>
-          <p>{post.content}</p>
-        </div>
-        <div className="container mt-3 mb-3 border rounded">
-          <div className="mb-3 mt-3">
-            <label>첨부파일:</label>
-            {/* 첨부파일 이름 및 이미지 미리보기 */}
-            <ul className="list-group mb-1">
-              {post.fileList && post.fileList.length > 0 ? (
-                post.fileList.map(file => (
-                  <li className="list-group-item" key={file.attachmentId}>
-                    <a href={file.source} target="_blank" rel="noopener noreferrer">
-                      {file.source}
-                    </a>
-                  </li>
-                ))
-              ) : (
-                <li className="list-group-item">첨부파일이 없습니다.</li>
-              )}
-            </ul>
-            {post.fileList && post.fileList.map(file => (
+        <div className="mb-3">
+          <h3>{post.type}</h3>
+          <h4><strong>{post.title}</strong></h4>
+          <p><strong>등록일:</strong> {new Date(post.regDate).toLocaleDateString()}</p>
+          <div>
+            <h5>내용:</h5>
+            <p>{post.content}</p>
+          </div>
+          <div className="container mt-3 mb-3 border rounded">
+            <div className="mb-3 mt-3">
+              <label>첨부파일:</label>
+              {/* 첨부파일 이름 및 이미지 미리보기 */}
+              <ul className="list-group mb-1">
+                {post.fileList && post.fileList.length > 0 ? (
+                  post.fileList.map(file => (
+                    <li className="list-group-item" key={file.attachmentId}>
+                      <a href={file.source} target="_blank" rel="noopener noreferrer">
+                        {file.source}
+                      </a>
+                    </li>
+                  ))
+                ) : (
+                  <li className="list-group-item">첨부파일이 없습니다.</li>
+                )}
+              </ul>
+              {post.fileList && post.fileList.map(file => (
                   <img src={file.source}>
                   </img>
-            ))}
+              ))}
+            </div>
           </div>
+          <button className="btn btn-danger" onClick={deletePost}>삭제</button>
+          <button className="btn btn-secondary ms-2" onClick={() => navigate(`/PostUpdate/${postId}`)}>수정</button>
+          <button className="btn btn-secondary ms-2" onClick={() => navigate('/PostList')}>목록으로 돌아가기</button>
         </div>
-        <button className="btn btn-danger" onClick={deletePost}>삭제</button>
-        <button className="btn btn-secondary ms-2" onClick={() => navigate(`/PostUpdate/${postId}`)}>수정</button>
-        <button className="btn btn-secondary ms-2" onClick={() => navigate('/PostList')}>목록으로 돌아가기</button>
       </div>
-    </div>
+      <Footer/>
     </>
   );
 };

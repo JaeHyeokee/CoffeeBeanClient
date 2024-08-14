@@ -5,7 +5,6 @@ import MyPage from './pages/my/MyPage';
 import MyInformation from './pages/my/MyInformation';
 import Join from './pages/my/Join';
 import LogIn from './pages/my/LogIn';
-import Register from './pages/my/Register';
 import ReviewCreate from './pages/my/ReviewCreate';
 import ReviewDetail from './pages/my/ReviewDetail';
 import ReviewList from './pages/my/ReviewList';
@@ -23,10 +22,6 @@ import ProductCreate from './pages/product/ProductCreate';
 import ProductDetail from './pages/product/ProductDetail';
 import ProductList from './pages/product/ProductList';
 import ProductUpdate from './pages/product/ProductUpdate';
-import PropertyCreate from './pages/property/PropertyCreate';
-import PropertyDetail from './pages/property/PropertyDetail';
-import Propertylist from './pages/property/Propertylist';
-import PropertyUpdate from './pages/property/PropertyUpdate';
 import LoginContextProvider from './contexts/LoginContextProvider';
 import MyDealList from './pages/my/MyDealList';
 import ChatList from './pages/chatting/ChatList';
@@ -58,7 +53,6 @@ const CoffeeBeanApp = () => {
                     <Route path = '/Login' Component={LogIn}/>
                     <Route path = '/MyPage' Component={MyPage}/>
                     <Route path = '/MyInformation' Component={MyInformation}/>
-                    <Route path = '/Register' Component={Register}/>
                     <Route path = '/ReviewCreate' Component={ReviewCreate}/>
                     <Route path = '/ReviewDetail' Component={ReviewDetail}/>
                     <Route path = '/ReviewList' Component={ReviewList}/>
@@ -76,11 +70,6 @@ const CoffeeBeanApp = () => {
                     <Route path = '/ProductList/:category/:subcategory' Component={ProductList}/>
                     <Route path = '/ProductList/:category/:subcategory/:subsubcategory' Component={ProductList}/>
                     <Route path = '/ProductUpdate' Component={ProductUpdate}/>
-
-                    <Route path = '/PropertyCreate' Component={PropertyCreate}/>
-                    <Route path = '/PropertyDetail' Component={PropertyDetail}/>
-                    <Route path = '/Propertylist' Component={Propertylist}/>
-                    <Route path = '/PropertyUpdate' Component={PropertyUpdate}/>
 
                     <Route path = '/Join' Component={Join}/>
                 </Routes>

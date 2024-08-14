@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../css/product/ProductCreate.module.css'; 
 import { LoginContext } from '../../contexts/LoginContextProvider'
+import Footer from '../components/Footer';
 
 const categories = {
     "패션의류": ["여성의류", "남성의류"],
@@ -329,6 +330,7 @@ const ProductCreate = () => {
     
                 <button className={styles.registerButton} type='submit'>등록하기</button>
             </Form>
+            <Footer/>
         </>
     );
 };
