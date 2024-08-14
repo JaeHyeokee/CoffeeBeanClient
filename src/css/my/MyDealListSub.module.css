@@ -35,12 +35,13 @@
     display: flex;
     margin-top: 20px;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .sellInfoCard {
     width: 20%;
-    height: 300px;
-    border: 0;
+    height: 300px !important;
+    border: 0 !important;
     cursor: pointer;
 }
 
@@ -50,12 +51,19 @@
 
 .sellInfoCardBody {
     padding: 15px 5px;
+    height: 45%;
 }
 
 .sellInfoTitle {
     font-weight: bold;
     margin-top: 5px;
     margin-bottom: 20px;
+    display: -webkit-box;          /* Flexbox를 사용하여 상자 모델을 정의합니다. */
+    -webkit-line-clamp: 2;         /* 표시할 줄 수를 2로 제한합니다. */
+    -webkit-box-orient: vertical;  /* 상자의 방향을 수직으로 설정합니다. */
+    overflow: hidden;              /* 넘치는 내용은 숨깁니다. */
+    text-overflow: ellipsis;       /* 넘치는 텍스트를 생략 기호로 표시합니다. */
+    height: 50px;
 }
 
 .sellInfoPrice {
