@@ -119,3 +119,11 @@ li {
     cursor: pointer;
     justify-content: space-between; /* 좌우 정렬 */
 }
+.noChatRoom {
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    align-content: center;
+    margin-top: 30px;
+}

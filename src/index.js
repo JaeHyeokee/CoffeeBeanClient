@@ -5,7 +5,7 @@ import CoffeeBeanApp from './CoffeeBeanApp';
 import reportWebVitals from './reportWebVitals';
 
 // 강제 로그인 코드
-localStorage.setItem('userId', '1');
+// localStorage.setItem('userId', '1');
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

@@ -10,7 +10,7 @@ import Chat from '../chatting/Chat';
 import Category from './Category';
 import CarCategory from './CarCategory';
 import { Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
-import { LoginContext } from '../../contexts/LoginContextProvider'
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const Header = () => {
 
@@ -21,16 +21,20 @@ const Header = () => {
     const [selectedChatRoomId, setSelectedChatRoomId] = useState(null); // 선택된 채팅방 상태
 
     const {isLogin, logout, userInfo } = useContext(LoginContext);
+    const userId = userInfo ? userInfo.userId : null; 
+
+    
 
     // 사이드바 스크롤관리 (채팅하기 눌렀을때)
-    useEffect(() => {
+    /* useEffect(() => {
         if (isChatSidebarOpen) {
             document.body.classList.add('no-scroll');
         } else {
             document.body.classList.remove('no-scroll');
         }
         return () => document.body.classList.remove('no-scroll');
-    }, [isChatSidebarOpen]);
+    }, [isChatSidebarOpen]); */
+
     //메뉴 열고 닫는 토글
     const toggleChatSidebar = () => {
         setIsChatSidebarOpen(!isChatSidebarOpen);
@@ -79,9 +83,9 @@ const Header = () => {
                             <Navbar>
                                 <img src={sale} className="nav-icon" alt="아이콘" />
                                 <NavDropdown title="판매하기" id="basic-nav-dropdown" className='drop'>
-                                    <NavDropdown.Item href="/ProductCreate">중고물품</NavDropdown.Item>
+                                    <NavDropdown.Item as={Link} to={`/ProductCreate/${userId}`}>중고물품</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item href="/CarCreate">중고차</NavDropdown.Item>
+                                    <NavDropdown.Item href={`/CarCreate/${userId}`}>중고차</NavDropdown.Item>
                                 </NavDropdown>
                             </Navbar>
                         </div>
