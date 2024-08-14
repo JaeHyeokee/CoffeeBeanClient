@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import { Form, Button, ListGroup, Col, Row } from 'react-bootstrap';
+import Footer from '../components/Footer';
 
 const PostCreate = () => {
     const navigate = useNavigate();
@@ -169,6 +170,7 @@ const PostCreate = () => {
                     <Button variant="secondary" onClick={() => navigate('/PostList')}>목록으로 돌아가기</Button>
                 </Form>
             </div>
+            <Footer/>
         </>
     );
 };

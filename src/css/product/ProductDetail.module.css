@@ -26,18 +26,18 @@
     height: auto;
     border-radius: 20px;
     object-fit: cover;
+    background-color: pink;
 }
 
 .carouselItem {
-    height: auto; /* 슬라이드의 높이를 고정 */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .carouselItem img {
-    max-height: 300px;
-    max-width: 300px;
+    max-height: 500px;
+    max-width: 500px;
 }
 
 /* 상품정보 */

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import { Form, Button, ListGroup, Col, Row, Image } from 'react-bootstrap';
+import Footer from '../components/Footer';
 
 const PostUpdate = () => {
 
@@ -230,6 +231,7 @@ const PostUpdate = () => {
                     <Button variant="secondary" onClick={() => navigate('/PostList')}>목록으로 돌아가기</Button>
                 </Form>
             </div>
+            <Footer/>
         </>
     );
 

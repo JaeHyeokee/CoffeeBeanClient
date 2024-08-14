@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import '../../css/product/ProductList.css';
 import ProductItem from '../components/ProductItem';
+import Footer from '../components/Footer';
 
 const ProductList = () => {
     const [products, setProducts] = useState([]);
@@ -109,6 +110,7 @@ const ProductList = () => {
                     )}
                 </div>
             </div>
+            <Footer/>
         </>
     );
 };

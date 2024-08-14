@@ -7,6 +7,7 @@ import ChatFrame from '../chatting/ChatFrame';
 import x from '../../image/x.svg';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import Footer from '../components/Footer';
 
 const CarDetail = () => {
     const { id } = useParams();
@@ -187,6 +188,7 @@ const CarDetail = () => {
                     </>
                 )}
             </div>
+            <Footer/>
         </>
     );
 };

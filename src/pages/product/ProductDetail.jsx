@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { Carousel } from 'react-bootstrap';
 import styles from '../../css/product/ProductDetail.module.css';
 import Chat from '../chatting/Chat';
+import Footer from '../components/Footer';
 
 const ProductDetail = () => {
     const { id } = useParams();
@@ -111,6 +112,7 @@ const ProductDetail = () => {
                     </>
                 )}
             </div>
+            <Footer/>
         </>
     );
 };

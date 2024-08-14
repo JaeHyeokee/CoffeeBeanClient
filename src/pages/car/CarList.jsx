@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import axios from 'axios';
 import CarItem from '../components/CarItem';
 import styles from '../../css/car/CarList.module.css';
+import Footer from '../components/Footer';
 
 const ITEMS_PER_PAGE = 20;
 const PAGES_PER_GROUP = 10; // 한 번에 표시할 페이지 버튼 수
@@ -120,6 +121,7 @@ const CarList = () => {
                     {renderPagination()}
                 </div>
             </div>
+            <Footer/>
         </>
     );
 };
