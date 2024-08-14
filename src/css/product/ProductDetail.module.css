@@ -17,8 +17,8 @@
 }
 
 .carousel {
-    width: 300px;
-    margin-right: 300px;
+    width: 500px;
+    margin-right: 50px;
 }
 
 .productImage {
@@ -29,15 +29,14 @@
 }
 
 .carouselItem {
-    height: auto; /* 슬라이드의 높이를 고정 */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .carouselItem img {
-    max-height: 300px;
-    max-width: 300px;
+    height: 500px;
+    width: 500px;
 }
 
 /* 상품정보 */

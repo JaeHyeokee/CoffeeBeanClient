@@ -40,7 +40,6 @@ const ProductCreate = () => {
 
     const navigate = useNavigate();
     const { userInfo } = useContext(LoginContext);
-
     const userId = userInfo.userId;
 
     useEffect(() => {
@@ -49,7 +48,6 @@ const ProductCreate = () => {
         }
     },[userId, navigate])
     
-
     const [product, setProduct] = useState({
         name: "",
         description: "",
@@ -61,6 +59,7 @@ const ProductCreate = () => {
         category1: "",
         category2: "",
         category3: "",
+        files: []
     });
 
 
@@ -68,19 +67,16 @@ const ProductCreate = () => {
     //selectedSubCategory -> 카테고리2
     //subCategoryOptions -> 카테고리1에 따라 동적으로 업데이트되는 카테고리2
     //subCategory3Options -> 카테고리2에 따라 동적으로 업데이되는 카테고리3
-
     const [selectedCategory, setSelectedCategory] = useState("");
     const [subCategoryOptions, setSubCategoryOptions] = useState([]);
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
-    const [subCategory3Options, setSubCategory3Options] = useState([]);
+    const [subsubCategoryOptions, setSubSubCategoryOptions] = useState([]);
 
     useEffect(() => {
         if (selectedCategory) {
             setSubCategoryOptions(categories[selectedCategory] || []); // 선택한 카테고리1에 따른 카테고리 2
             setProduct(prevProduct => ({
                 ...prevProduct,
-                category2: "", //카테고리2 초기화
-                category3: "", //카테고리3 초기화
             }));
             setSelectedSubCategory("");
         }
@@ -88,10 +84,9 @@ const ProductCreate = () => {
 
     useEffect(() => {
         if (selectedSubCategory) {
-            setSubCategory3Options(subcategories[selectedSubCategory] || []); // 선택한 카테고리2에 따른 카테고리 3
+            setSubSubCategoryOptions(subcategories[selectedSubCategory] || []); // 선택한 카테고리2에 따른 카테고리 3
             setProduct(prevProduct => ({
                 ...prevProduct,
-                category3: "", //카테고리3 초기화
             }));
         }
     }, [selectedSubCategory]);
@@ -130,7 +125,7 @@ const ProductCreate = () => {
         });
     };
 
-    const handleSubCategory3Change = (e) => {
+    const handleSubSubCategoryChange = (e) => {
         setProduct({
             ...product,
             category3: e.target.value
@@ -228,11 +223,11 @@ const ProductCreate = () => {
                         <Form.Control
                             as="select"
                             value={product.category3}
-                            onChange={handleSubCategory3Change}
+                            onChange={handleSubSubCategoryChange}
                             disabled={!selectedSubCategory}
                         >
                             <option value="">카테고리 선택</option>
-                            {subCategory3Options.map(subCategory => (
+                            {subsubCategoryOptions.map(subCategory => (
                                 <option key={subCategory} value={subCategory}>{subCategory}</option>
                             ))}
                         </Form.Control>

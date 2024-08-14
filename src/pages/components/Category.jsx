@@ -54,7 +54,11 @@ const Category = () => {
                         <div className='dropdown-section' key={category}>
                             {/* 카테고리1 */}
                             <h4 className='dropdown-title'>
-                                <Link to={`/ProductList/${encodeURIComponent(category)}`}>{category}</Link>
+                                <Link to={`/ProductList/${encodeURIComponent(category)}`}>
+                                <div>
+                                {category}
+                                </div>
+                                </Link>
                             </h4>
                             {/* 카테고리2 */}
                             <div className='dropdown-submenu'>
@@ -66,7 +70,9 @@ const Category = () => {
                                             onMouseLeave={handleSubcategoryMouseLeave}
                                         >
                                             <Link to={`/ProductList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}`}>
+                                                <div>
                                                 {subcategory}
+                                                </div>
                                             </Link>
                                             {/* 카태고리3 */}
                                             {activeSubcategory === subcategory && subcategories[subcategory] && subcategories[subcategory].length > 0 && (
@@ -75,7 +81,9 @@ const Category = () => {
                                                         {subcategories[subcategory].map((subsubcategory) => (
                                                             <li key={subsubcategory}>
                                                                 <Link to={`/ProductList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}/${encodeURIComponent(subsubcategory)}`}>
+                                                                    <div>
                                                                     {subsubcategory}
+                                                                    </div>
                                                                 </Link>
                                                             </li>
                                                         ))}

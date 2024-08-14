@@ -7,47 +7,89 @@ import styles from '../../css/car/CarList.module.css';
 import Footer from '../components/Footer';
 
 const ITEMS_PER_PAGE = 20;
+const PAGES_PER_GROUP = 10; // 한 번에 표시할 페이지 버튼 수
 
 const CarList = () => {
     const [cars, setCars] = useState([]);
-    const [filteredCars, setFilteredCars] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(true);
     const { category, subcategory } = useParams();
 
     useEffect(() => {
-        axios.get('http://localhost:8088/car/list')
-            .then(response => {
+        setLoading(true);
+        const fetchCars = async () => {
+            try {
+                console.log(`Fetching cars for category: ${category}, subcategory: ${subcategory}`);
+                const response = await axios.get(`http://localhost:8088/car/filter`, {
+                    params: {
+                        category1: category,
+                        category2: subcategory
+                    }
+                });
+                console.log('Response data:', response.data);
                 if (Array.isArray(response.data)) {
                     setCars(response.data);
+                    setTotalPages(Math.ceil(response.data.length / ITEMS_PER_PAGE));
                 }
-                setLoading(false);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error fetching car list', error);
+            } finally {
                 setLoading(false);
-            });
-    }, []);
-
-    useEffect(() => {
-        if (Array.isArray(cars)) {
-            const filtered = cars.filter(car => {
-                return (
-                    (category ? car.category1 === category : true) &&
-                    (subcategory ? car.category2 === subcategory : true)
-                );
-            });
-            setFilteredCars(filtered);
-            setTotalPages(Math.ceil(filtered.length / ITEMS_PER_PAGE));
-        }
-    }, [cars, category, subcategory]);
+            }
+        };
+        fetchCars();
+    }, [category, subcategory]);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
     };
 
-    const currentItems = filteredCars.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+    const currentItems = cars.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+    const renderPagination = () => {
+        const startPage = Math.floor((currentPage - 1) / PAGES_PER_GROUP) * PAGES_PER_GROUP + 1;
+        const endPage = Math.min(startPage + PAGES_PER_GROUP - 1, totalPages);
+        const pageButtons = [];
+
+        if (startPage > 1) {
+            pageButtons.push(
+                <button
+                    key="prev"
+                    className={styles.pageButton}
+                    onClick={() => handlePageChange(startPage - 1)}
+                >
+                    &laquo;
+                </button>
+            );
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pageButtons.push(
+                <button
+                    key={i}
+                    className={`${styles.pageButton} ${currentPage === i ? styles.active : ''}`}
+                    onClick={() => handlePageChange(i)}
+                >
+                    {i}
+                </button>
+            );
+        }
+
+        if (endPage < totalPages) {
+            pageButtons.push(
+                <button
+                    key="next"
+                    className={styles.pageButton}
+                    onClick={() => handlePageChange(endPage + 1)}
+                >
+                    &raquo;
+                </button>
+            );
+        }
+
+        return pageButtons;
+    };
 
     return (
         <>
@@ -76,15 +118,7 @@ const CarList = () => {
                 </div>
 
                 <div className={styles.pagination}>
-                    {Array.from({ length: totalPages }, (_, index) => (
-                        <button
-                            key={index}
-                            className={`${styles.pageButton} ${currentPage === index + 1 ? styles.active : ''}`}
-                            onClick={() => handlePageChange(index + 1)}
-                        >
-                            {index + 1}
-                        </button>
-                    ))}
+                    {renderPagination()}
                 </div>
             </div>
             <Footer/>
