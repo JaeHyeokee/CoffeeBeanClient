@@ -6,7 +6,7 @@ import DealListTab from './DealListTab';
 
 const DealListFrame = (props) => {
     const { pageType, isProductOrCar, setIsProductOrCar } = props;
-    const [ activatedKey, setActivatedKey ] = useState('all');
+    const [ activatedKey, setActivatedKey ] = useState('전체');
 
     const handleClick = (e) => {
         if(e.target.value !== isProductOrCar) setIsProductOrCar(e.target.value);
