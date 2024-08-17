@@ -157,7 +157,7 @@ header {
 }
 
 /* 사이드바 */
-.chat-sidebar {
+.chatSideBar {
   position: fixed;
   right: 0;
   top: 0;
@@ -171,7 +171,7 @@ header {
   transform: translateX(100%);
 }
 
-.chat-sidebar.open {
+.chatSideBarOpen {
   transform: translateX(0);
   /* 사이드바가 화면에 나타나도록 변환 */
 }
@@ -187,13 +187,13 @@ header {
 }
 
 /* 오버레이가 표시될 때 */
-.overlay.active {
+.overlayActive {
   display: block;
   /* 표시 */
 }
 
 /* 닫기버튼 */
-.close-button {
+.closeButton {
   position: absolute;
   top: 20px;
   right: 20px;

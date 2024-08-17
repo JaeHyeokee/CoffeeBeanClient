@@ -40,16 +40,6 @@ const Header = () => {
         if (isSaleMenuOpen) setIsMyMenuOpen(false);
         if (isMyMenuOpen) setIsMyMenuOpen(false);
     }
-    const toggleSaleMenu = () => {
-        setIsSaleMenuOpen(!isSaleMenuOpen);
-        if (isSaleMenuOpen) setIsMyMenuOpen(false);
-        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
-    };
-    const toggleMyMenu = () => {
-        setIsMyMenuOpen(!isMyMenuOpen);
-        if (isMyMenuOpen) setIsSaleMenuOpen(false);
-        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
-    }
 
     // 채팅방 선택 함수
     const handleSelectChatRoom = (chatRoomId) => {
@@ -126,9 +116,9 @@ const Header = () => {
                 {/* 사이드바 */}
                 {isChatSidebarOpen && (
                     <>
-                        <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
-                        <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
-                            <button className='close-button' onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25} /></button> {/* 사이드바 닫기 버튼 */}
+                        <div className={isChatSidebarOpen ? Style.overlayActive : Style.overlay} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
+                        <div className={isChatSidebarOpen ? Style.chatSideBarOpen : Style.chatSideBar}>
+                            <button className={Style.closeButton} onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25} /></button> {/* 사이드바 닫기 버튼 */}
                             {!selectedChatRoomId ? (
                                 <ChatList onSelectChatRoom={handleSelectChatRoom} />
                             ) : (
