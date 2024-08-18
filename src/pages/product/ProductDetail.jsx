@@ -120,9 +120,9 @@ const ProductDetail = () => {
                  {/* 사이드바 */}
                  {isChatSidebarOpen && (
                     <>
-                        <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
-                        <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
-                            <button className='close-button' onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25} /></button> {/* 사이드바 닫기 버튼 */}
+                        <div className={`${styles.overlay} ${isChatSidebarOpen ? styles.overlayActive : ''}`} onClick={toggleChatSidebar}/>
+                        <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? styles.chatSidebarOpen : ''}`}>
+                            <button className={styles.closeButton} onClick={toggleChatSidebar}> <img src={x} alt='x' height={25} width={25} /> </button>
                             <ChatFrame productId={id} />
                         </div>
                     </>
