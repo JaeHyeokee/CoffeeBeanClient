@@ -41,7 +41,7 @@ const PostCreate = () => {
             method: 'post',
             url: 'http://localhost:8088/post/write/' + userId,
             headers: {
-                "Content-Type": 'application/form-data',
+                "Content-Type": 'multipart/form-data',
             },
             data: formData
         })

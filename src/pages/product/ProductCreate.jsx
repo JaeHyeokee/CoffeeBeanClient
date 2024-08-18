@@ -1,27 +1,31 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect} from 'react';
 import '../../css/product/ProductCreate.module.css'; // Updated import
 import Header from '../components/Header';
 import price from '../../image/ProductPrice.png';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import styles from '../../css/product/ProductCreate.module.css'; // Import CSS Module
+import * as Swal from '../../apis/alert'
+import { LoginContext } from '../../contexts/LoginContextProvider';
+import { useNavigate } from 'react-router-dom';
 
 const ProductCreate = () => {
 
+    const {isLogin,roles} = useContext(LoginContext);
     const navigate = useNavigate();
 
-    // const { isLogin, roles } = useContext(LoginContext);
-    // const navigate = useNavigate();
-
-    // useEffect(() => {
-    //     if (!isLogin) {
-    //         Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") })
-    //         return;
-    //     }
-
-    //     console.log(`/member : ${roles}`);
-    // }, []);
+    useEffect(() => {
+        console.log("Login status: ", isLogin);
+        if (!isLogin) {
+            Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") });
+            return;
+        }
+        if(!roles.isUser){
+            Swal.alert("권한이 없습니다.", "이전 화면으로 이동합니다.", "warning", () => { navigate(-1) })
+            return;
+        }
+    }, [isLogin, navigate]);
+    
 
     const [product, setProduct] = useState({
         name: "",
@@ -68,20 +72,26 @@ const ProductCreate = () => {
             },
             data: JSON.stringify(product),
         })
-        .then(response => {
-            const { data, status } = response;
-            if (status === 201) {
-                console.log('상품생성', data);
-                navigate(`/product/ProductDetail/${data.id}`);
-            } else {
-                alert('등록 실패-');
-            }
-        });
+            .then(response => {
+                const { data, status } = response;
+                if (status === 201) {
+                    console.log('상품생성', data);
+                    navigate(`/product/ProductDetail/${data.id}`);
+                } else {
+                    alert('등록 실패-');
+                }
+            });
     };
+
+
+    
 
     return (
         <>
-        <Header />
+        {
+            isLogin && roles.isUser &&
+            <>
+            <Header /> 
             <Form onSubmit={submitProduct}>
                 <div className={styles.productcreateBody}>
                     <Form.Group className={styles.productName} controlId="formBasicTitle">
@@ -179,6 +189,8 @@ const ProductCreate = () => {
 
                 </div>
             </Form>
+            </>
+        }  
         </>
     );
 };

@@ -106,7 +106,7 @@ const Header = () => {
                                         <NavDropdown title="마이" id="basic-nav-dropdown" >
                                             <NavDropdown.Item href="/MyPage">마이페이지</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item onClick={ () => logout() }>로그아웃 {userInfo.userName}
+                                            <NavDropdown.Item onClick={ () => logout() }>로그아웃( {userInfo.userName}:{userInfo.role} )
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </Navbar>
