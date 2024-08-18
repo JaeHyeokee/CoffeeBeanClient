@@ -69,7 +69,7 @@ const CoffeeBeanApp = () => {
                     <Route path = '/ProductList/:category' Component={ProductList}/>
                     <Route path = '/ProductList/:category/:subcategory' Component={ProductList}/>
                     <Route path = '/ProductList/:category/:subcategory/:subsubcategory' Component={ProductList}/>
-                    <Route path = '/ProductUpdate' Component={ProductUpdate}/>
+                    <Route path = '/ProductUpdate/:id' Component={ProductUpdate}/>
 
                     <Route path = '/Join' Component={Join}/>
                 </Routes>

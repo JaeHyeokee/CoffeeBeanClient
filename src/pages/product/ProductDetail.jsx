@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import ChatFrame from '../chatting/ChatFrame';
@@ -9,12 +9,16 @@ import { Carousel } from 'react-bootstrap';
 import styles from '../../css/product/ProductDetail.module.css';
 import Chat from '../chatting/Chat';
 import Footer from '../components/Footer';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
+
+    const{userInfo} = useContext(LoginContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`http://localhost:8088/product/detail/${id}`)
@@ -43,9 +47,17 @@ const ProductDetail = () => {
         });
     };
 
+    //수정하기
+    const handleUpdate = () => {
+        navigate(`/ProductUpdate/${id}`);
+    }
+
     if (!product) {
         return <p>상품을 찾을 수 없습니다.</p>;
     }
+
+    //상품을 올린 user와 로그인한 user가 같은지 비교
+    const isOwner = userInfo && product.user.userId === userInfo.userId;
 
     return (
         <>
@@ -78,12 +90,16 @@ const ProductDetail = () => {
                                     <p>{product.dealingStatus}</p>
                                 </div>
                             </div>
-                            <div className={styles.chatDipButton}>
-                                <button className={styles.chatButton} onClick={toggleChatSidebar}>
-                                    채팅하기
-                                </button>
-                                <button className={styles.dipButton} onClick={dip}>찜하기</button>
-                            </div>
+                            {isOwner ? (    //상품 올린 user와 로그인한 user가 같다면
+                                <div className={styles.ownerActions}>
+                                    <button className={styles.editButton} onClick={handleUpdate}>수정하기</button>
+                                </div>
+                            ) : (
+                                <div className={styles.chatDipButton}>
+                                    <button className={styles.chatButton} onClick={toggleChatSidebar}>채팅하기</button>
+                                    <button className={styles.dipButton} onClick={dip}>찜하기</button>
+                                </div>
+                            )}
                         </div>
                     </section>
 
