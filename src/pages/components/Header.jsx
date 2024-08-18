@@ -141,12 +141,11 @@ const Header = () => {
                     <Link className={Style.navBarBottomLink} to='/PostList'>게시판</Link>
                 </div>
 
-                {/* 사이드바 */}
                 {isChatSidebarOpen && (
                     <>
-                        <div className={isChatSidebarOpen ? Style.overlayActive : Style.overlay} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
-                        <div className={isChatSidebarOpen ? Style.chatSideBarOpen : Style.chatSideBar}>
-                            <button className={Style.closeButton} onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25} /></button> {/* 사이드바 닫기 버튼 */}
+                        <div className={`${Style.overlay} ${isChatSidebarOpen ? Style.overlayActive : ''}`} onClick={toggleChatSidebar}/>
+                        <div className={`${Style.chatSidebar} ${isChatSidebarOpen ? Style.chatSidebarOpen : ''}`}>
+                            <button className={Style.closeButton} onClick={toggleChatSidebar}> <img src={x} alt='x' height={25} width={25} /> </button>
                             {!selectedChatRoomId ? (
                                 <ChatList onSelectChatRoom={handleSelectChatRoom} />
                             ) : (
