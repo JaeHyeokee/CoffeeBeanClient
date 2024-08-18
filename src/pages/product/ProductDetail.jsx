@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import ChatFrame from '../chatting/ChatFrame';
@@ -7,12 +7,18 @@ import x from '../../image/x.svg';
 import Swal from 'sweetalert2';
 import { Carousel } from 'react-bootstrap';
 import styles from '../../css/product/ProductDetail.module.css';
+import Chat from '../chatting/Chat';
+import Footer from '../components/Footer';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
+
+    const{userInfo} = useContext(LoginContext);
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`http://localhost:8088/product/detail/${id}`)
@@ -30,7 +36,7 @@ const ProductDetail = () => {
 
     const toggleChatSidebar = () => {
         setIsChatSidebarOpen(!isChatSidebarOpen);
-    };
+    }
 
     const dip = () => {
         Swal.fire({
@@ -41,18 +47,17 @@ const ProductDetail = () => {
         });
     };
 
-    useEffect(() => {
-        if (isChatSidebarOpen) {
-            document.body.classList.add('no-scroll');
-        } else {
-            document.body.classList.remove('no-scroll');
-        }
-        return () => document.body.classList.remove('no-scroll');
-    }, [isChatSidebarOpen]);
+    //수정하기
+    const handleUpdate = () => {
+        navigate(`/ProductUpdate/${id}`);
+    }
 
     if (!product) {
         return <p>상품을 찾을 수 없습니다.</p>;
     }
+
+    //상품을 올린 user와 로그인한 user가 같은지 비교
+    const isOwner = userInfo && product.user.userId === userInfo.userId;
 
     return (
         <>
@@ -60,30 +65,11 @@ const ProductDetail = () => {
             <div className={styles.productdetailBody}>
                 <div className={styles.productDetail}>
                     <section className={styles.productdetailTop}>
-                        <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>
-                            <Carousel.Item className={styles.carouselItem}>
-                                <img className={styles.productImage} src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
-                                <Carousel.Caption>
-                                    <h3>First slide label</h3>
-                                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                </Carousel.Caption>
-                            </Carousel.Item>
-                            <Carousel.Item className={styles.carouselItem}>
-                                <img className={styles.productImage} src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
-                                <Carousel.Caption>
-                                    <h3>Second slide label</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </Carousel.Caption>
-                            </Carousel.Item>
-                            <Carousel.Item className={styles.carouselItem}>
-                                <img className={styles.productImage} src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
-                                <Carousel.Caption>
-                                    <h3>Third slide label</h3>
-                                    <p>
-                                        Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                                    </p>
-                                </Carousel.Caption>
-                            </Carousel.Item>
+                        <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>     
+                            {product.fileList.map((file, idx) => 
+                                <Carousel.Item key={idx} className={styles.carouselItem}>
+                                <img className={styles.productImage} src={file.source} alt={''} />
+                            </Carousel.Item>)}
                         </Carousel>
 
                         <div className={styles.productInfo}>
@@ -104,12 +90,16 @@ const ProductDetail = () => {
                                     <p>{product.dealingStatus}</p>
                                 </div>
                             </div>
-                            <div className={styles.chatDipButton}>
-                                <button className={styles.chatButton} onClick={toggleChatSidebar}>
-                                    채팅하기
-                                </button>
-                                <button className={styles.dipButton} onClick={dip}>찜하기</button>
-                            </div>
+                            {isOwner ? (    //상품 올린 user와 로그인한 user가 같다면
+                                <div className={styles.ownerActions}>
+                                    <button className={styles.editButton} onClick={handleUpdate}>수정하기</button>
+                                </div>
+                            ) : (
+                                <div className={styles.chatDipButton}>
+                                    <button className={styles.chatButton} onClick={toggleChatSidebar}>채팅하기</button>
+                                    <button className={styles.dipButton} onClick={dip}>찜하기</button>
+                                </div>
+                            )}
                         </div>
                     </section>
 
@@ -127,18 +117,18 @@ const ProductDetail = () => {
                     </section>
                 </div>
 
-                {isChatSidebarOpen && (
+                 {/* 사이드바 */}
+                 {isChatSidebarOpen && (
                     <>
-                        <div className={`${styles.overlay} ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} />
-                        <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? 'open' : ''}`}>
-                            <button className={styles.closeButton} onClick={toggleChatSidebar}>
-                                <img src={x} alt='닫기' height={25} width={25} />
-                            </button>
+                        <div className={`${styles.overlay} ${isChatSidebarOpen ? styles.overlayActive : ''}`} onClick={toggleChatSidebar}/>
+                        <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? styles.chatSidebarOpen : ''}`}>
+                            <button className={styles.closeButton} onClick={toggleChatSidebar}> <img src={x} alt='x' height={25} width={25} /> </button>
                             <ChatFrame productId={id} />
                         </div>
                     </>
                 )}
             </div>
+            <Footer/>
         </>
     );
 };

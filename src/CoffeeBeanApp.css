@@ -3,11 +3,14 @@ body {
     font-family: 'NanumSquare', sans-serif;
 }
 
-/* MyDealList.jsx */
-.MyDealList_sellStatus__N6Xki {
+/* DealListTab.jsx */
+.DealListTab_sellStatus__Dzvps {
     li {
         button.active {
             border-bottom: 2px solid black !important;
+        }
+        button.active:hover {
+            border-bottom: 2px solid #0DCC5A !important;
         }
     }
 }

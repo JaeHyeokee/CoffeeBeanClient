@@ -1,6 +1,7 @@
 .productdetailBody {
     margin-top: 50px;
     padding: 0 20%;
+    position: relative;
 }
 
 .productDetail {
@@ -16,8 +17,8 @@
 }
 
 .carousel {
-    width: 300px;
-    margin-right: 300px;
+    width: 500px;
+    margin-right: 50px;
 }
 
 .productImage {
@@ -28,15 +29,14 @@
 }
 
 .carouselItem {
-    height: auto; /* 슬라이드의 높이를 고정 */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .carouselItem img {
-    max-height: 300px;
-    max-width: 300px;
+    height: 500px;
+    width: 500px;
 }
 
 /* 상품정보 */
@@ -85,6 +85,50 @@
     background-color: black;
     color: white;
 }
+
+/* 채팅하기 side */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 0.3s ease;
+    z-index: 10;
+  }
+  
+  .overlayActive {
+    background-color: rgba(0, 0, 0, 0.5); /* 사이드바 열었을때 */
+  }
+  
+  /* 사이드바 스타일 */
+  .chatSidebar {
+    position: fixed;
+    top: 0;
+    right: -300px; /* 화면 밖에 배치하여 숨김 */
+    width: 30%;
+    height: 100%;
+    background-color: #fff;
+    transition: right 0.3s ease;
+    z-index: 20;
+  }
+  
+  .chatSidebarOpen {
+    right: 0; /* 오른쪽에 나타나게 */
+  }
+  
+  /* 닫기 버튼 스타일 */
+  .closeButton {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 25;
+  }
+
 
 /* 상품정보, user정보 */
 .productdetailBottom {

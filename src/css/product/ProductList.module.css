@@ -1,0 +1,108 @@
+.productlistBody {
+    padding: 30px 20%;
+}
+
+.searchResult {
+    font-size: x-large;
+}
+
+.categoryContainer {
+    border-top: 2px solid black;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.category1Result,
+.category2Result,
+.category3Result,
+.category4Result {
+    padding: 10px 50px;
+    vertical-align: top;
+    background-color: #ffffff;
+}
+
+.categoryContainer td h2 {
+    padding-left: 30px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.category1,
+.category2,
+.category3,
+.category4 {
+    width: 15%;
+    background-color: #e2e2e2;
+}
+
+.productInputPrice {
+    border-style: none;
+}
+
+.category2Result {
+    display: flex;
+}
+
+.productInputPrice1 {
+    margin-right: 10px;
+    height: 35px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+.productInputPrice2 {
+    margin-left: 10px;
+    height: 35px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+.category1Result {
+    display: flex;
+}
+
+.category1Result p {
+    margin-right: 5px;
+}
+
+.category2ResultButton {
+    margin-left: 30px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    width: 60px;
+}
+
+.productList {
+    margin-top: 20px;
+}
+
+.categoryContainer {
+    width: 100%;
+}
+
+.productList {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pageButton {
+    padding: 10px;
+    margin: 0 5px;
+    border: 1px solid #ddd;
+    background-color: #f0f0f0;
+    cursor: pointer;
+}
+
+.pageButton.active {
+    background-color: #007bff;
+    color: white;
+}

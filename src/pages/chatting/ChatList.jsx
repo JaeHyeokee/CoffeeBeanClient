@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../css/chatting/ChatList.css';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const ChatList = ({ onSelectChatRoom }) => {
   const [chatRooms, setChatRooms] = useState([]);
   const [userId, setUserId] = useState(null);
 
+  const { userInfo } = useContext(LoginContext);
+
   useEffect(() => {
-      const storedUserId = localStorage.getItem('userId');
-      setUserId(storedUserId);
+      const storedUserId = userInfo.userId;
+      setUserId(storedUserId);        
+      console.log(storedUserId);
       if (storedUserId) {
         axios.get(`http://localhost:8088/chatRooms/user/${storedUserId}/with-last-message`)
           .then(response => {
@@ -16,7 +20,7 @@ const ChatList = ({ onSelectChatRoom }) => {
             setChatRooms(response.data);
           })
           .catch(error => {
-            console.error('There was an error fetching the chat rooms!', error);
+            console.error(error);
           });
         }
   }, []);
@@ -51,7 +55,7 @@ const ChatList = ({ onSelectChatRoom }) => {
       <h2 className='chatName'>채팅방</h2>
       <ul>
           {chatRooms.length === 0 ? (
-              <li>참여중인 채팅방이 없습니다.</li>
+              <li className='noChatRoom'>참여중인 채팅방이 없습니다.</li>
           ) : (
               chatRooms.map(chatRoom => (
                 <li key={chatRoom.chatRoomId} className='chatRoomItem'>

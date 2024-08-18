@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import prev from './../image/PrevButton.png'
 import next from './../image/NextButton.png'
+import Footer from './components/Footer.jsx';
 
 
 
@@ -66,7 +67,7 @@ const Home = () => {
                             </button>
                             {currentProductsRecommended.map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
-                                    <img src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
+                                    <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
                                     <p>{product.price.toLocaleString()}원</p>
                                     <p>{product.desiredArea} | {product.time}</p>
@@ -89,7 +90,7 @@ const Home = () => {
                             </button>
                             {currentProductsAdded.map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
-                                    <img src={'//thumbnail10.coupangcdn.com/thumbnails/remote/492x492ex/image/retail/images/2033058241318549-3fb6d002-7ce9-4075-a28d-7d09a1e93795.jpg'} alt={product.name} />
+                                    <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
                                     <p>{product.price.toLocaleString()}원</p>
                                     <p>{product.desiredArea} | {product.time}</p>
@@ -102,6 +103,7 @@ const Home = () => {
                     </div>
                 </section>
             </div>
+            <Footer/>
         </>
     );
 };

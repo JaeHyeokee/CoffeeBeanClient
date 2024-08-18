@@ -1,112 +1,141 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import Header from '../components/Header';
-import '../../css/car/CarList.css';
 import axios from 'axios';
 import CarItem from '../components/CarItem';
+import styles from '../../css/car/CarList.module.css';
+import Footer from '../components/Footer';
+
+const ITEMS_PER_PAGE = 20;
+const PAGES_PER_GROUP = 10; // 한 번에 표시할 페이지 버튼 수
 
 const CarList = () => {
-    const [cars, setCars] = useState([])
-    const [filteredCars, setFilteredCars] = useState([]);
+    const [cars, setCars] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [loading, setLoading] = useState(true);
-    const { category, subcategory } = useParams(); 
+    const { category, subcategory } = useParams();
+
+    const location = useLocation();
+    const keyword = new URLSearchParams(location.search).get('keyword') || '';
 
     useEffect(() => {
-        axios.get('http://localhost:8088/car/list')
-        .then(response => {
-            console.log(response.data);
-            if(Array.isArray(response.data)){
-                setCars(response.data);
-            }else {
-                console.log('에러에ㅓ레어레ㅓㄹ에ㅓㄹ에ㅓㄹ에ㅓ레어레어레어레어레어렌에ㅓㄹ')
+        setLoading(true);
+        const fetchCars = async () => {
+            try {
+                console.log(`Fetching cars for category: ${category}, subcategory: ${subcategory}`);
+                
+                let response;
+
+                if(keyword !== '') {
+                    response = await axios({
+                        method: "get",
+                        url: `http://localhost:8088/car/list/${keyword}`,
+                    });
+                } else {
+                    response = await axios.get(`http://localhost:8088/car/filter`, {
+                        params: {
+                            category1: category,
+                            category2: subcategory
+                        }
+                    });
+                }
+
+                console.log('Response data:', response.data);
+                if (Array.isArray(response.data)) {
+                    setCars(response.data);
+                    setTotalPages(Math.ceil(response.data.length / ITEMS_PER_PAGE));
+                }
+            } catch (error) {
+                console.error('Error fetching car list', error);
+            } finally {
+                setLoading(false);
             }
-            setLoading(false);
-        })
-    }, []);
+        };
+        fetchCars();
+    }, [keyword, category, subcategory]);
 
-    useEffect(() => {
-        if(Array.isArray(cars)){
-            const filterd = cars.filter(car => {
-                return (
-                    (category ? car.category1 === category : true) &&
-                    (subcategory ? car.category2 === subcategory : true)
-                );
-            });
-            setFilteredCars(filterd);
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const currentItems = cars.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
+    const renderPagination = () => {
+        const startPage = Math.floor((currentPage - 1) / PAGES_PER_GROUP) * PAGES_PER_GROUP + 1;
+        const endPage = Math.min(startPage + PAGES_PER_GROUP - 1, totalPages);
+        const pageButtons = [];
+
+        if (startPage > 1) {
+            pageButtons.push(
+                <button
+                    key="prev"
+                    className={styles.pageButton}
+                    onClick={() => handlePageChange(startPage - 1)}
+                >
+                    &laquo;
+                </button>
+            );
         }
-    }, [ cars, category, subcategory]);
+
+        for (let i = startPage; i <= endPage; i++) {
+            pageButtons.push(
+                <button
+                    key={i}
+                    className={`${styles.pageButton} ${currentPage === i ? styles.active : ''}`}
+                    onClick={() => handlePageChange(i)}
+                >
+                    {i}
+                </button>
+            );
+        }
+
+        if (endPage < totalPages) {
+            pageButtons.push(
+                <button
+                    key="next"
+                    className={styles.pageButton}
+                    onClick={() => handlePageChange(endPage + 1)}
+                >
+                    &raquo;
+                </button>
+            );
+        }
+
+        return pageButtons;
+    };
 
     return (
         <>
-            <Header />
-            <div className='carlist-body'>
-                <div className='search-result'>검색결과</div>
+            <Header/>
+            <div className={styles.carListBody}>
+                <div className={styles.searchResult}>검색결과</div>
 
-                <table className='category-container'>
+                <table className={styles.categoryContainer}>
                     <tbody>
-                        <tr>
-                            <td className='category1'>
-                                <h2>카테고리</h2>
-                            </td>
-                            <td>
-                                <div className='category1-result'>
-                                    <p>전체</p>
-                                    {category && <p>&gt; {category}</p>}
-                                    {subcategory && <p>&gt; {subcategory}</p>}
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td className='category2'>
-                                <h2>가격</h2>
-                            </td>
-                            <td>
-                                <div className='category2-result'>
-                                    <input type='text' className='car-input-price1' placeholder=' 최소가격' />
-                                    <p>~</p>
-                                    <input type='text' className='car-input-price2' placeholder=' 최대가격' />
-                                    <button className='category2-result-button'>적용</button>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td className='category3'>
-                                <h2>옵션</h2>
-                            </td>
-                            <td>
-                                <div className='category3-result'>판매완료 상품 포함</div>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td className='category4'>
-                                <h2>선택한 필터</h2>
-                            </td>
-                            <td>
-                                <div className='category4-result'>
-                                    <p>선택한 필터 검색 결과 뽑아내기</p>
-                                </div>
-                            </td>
-                        </tr>
+                        {/* 필터 및 검색 관련 내용 */}
                     </tbody>
                 </table>
 
-                <div className='car-list'>
+                <div className={styles.carList}>
                     {loading ? (
-                        <p>로딩~</p>
+                        <p>로딩 중...</p>
                     ) : (
-                        filteredCars.length > 0 ? (
-                            filteredCars.map(car => (
-                                <CarItem key={car.id} car={car}/>
+                        currentItems.length > 0 ? (
+                            currentItems.map(car => (
+                                <CarItem key={car.id} car={car} />
                             ))
                         ) : (
-                            <p>해당 카테고리 존재하는 제품이 엄슴</p>
+                            <p>해당 카테고리의 차량이 없습니다.</p>
                         )
                     )}
                 </div>
+
+                <div className={styles.pagination}>
+                    {renderPagination()}
+                </div>
             </div>
+            <Footer/>
         </>
     );
 };
