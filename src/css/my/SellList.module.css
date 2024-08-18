@@ -45,12 +45,23 @@
     cursor: pointer;
 }
 
-.sellInfoCardImg {
+.sellInfoCard:hover .sellInfoCardImg{
+    transform: scale(1.1);
+}
+
+.sellInfoCardImgContainer {
+    overflow: hidden;
     height: 55%;
+    border-radius: 5px;
+}
+
+.sellInfoCardImg {
+    height: 100%;
+    transition: transform 0.3s ease;
 }
 
 .sellInfoCardBody {
-    padding: 15px 5px;
+    padding: 15px 5px !important;
     height: 45%;
 }
 
@@ -74,4 +85,10 @@
 .sellInfoExtra {
     color: #9CA3AF;
     font-size: 13px;
+}
+
+.noSellListInfo {
+    margin: 50px 0;
+    text-align: center;
+    color: #9CA3AF;
 }

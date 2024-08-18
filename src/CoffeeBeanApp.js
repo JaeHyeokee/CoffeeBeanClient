@@ -23,7 +23,6 @@ import ProductDetail from './pages/product/ProductDetail';
 import ProductList from './pages/product/ProductList';
 import ProductUpdate from './pages/product/ProductUpdate';
 import LoginContextProvider from './contexts/LoginContextProvider';
-import MyDealList from './pages/my/MyDealList';
 import ChatList from './pages/chatting/ChatList';
 import Chat from './pages/chatting/Chat';
 
@@ -56,7 +55,6 @@ const CoffeeBeanApp = () => {
                     <Route path = '/ReviewCreate' Component={ReviewCreate}/>
                     <Route path = '/ReviewDetail' Component={ReviewDetail}/>
                     <Route path = '/ReviewList' Component={ReviewList}/>
-                    <Route path = '/MyDealList' Component={MyDealList}/>
                     <Route path = '/UnRegister' Component={UnRegister}/>
 
                     <Route path = '/PostCreate/:userId' Component={PostCreate}/>

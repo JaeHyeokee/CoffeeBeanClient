@@ -8,13 +8,20 @@ const MyHome = () => {
     const [progress, setProgress] = useState(0);
 
     useEffect(() => {
+        const targetReliability = Number(userInfo.reliability) || 0;
+
+        if (targetReliability < 0 || targetReliability > 1000) {
+            console.error('Invalid reliability value');
+            return;
+        }
+
         const interval = setInterval(() => {
             setProgress((oldProgress) => {
-                if(oldProgress >= userInfo.reliability) {
+                if(oldProgress >= targetReliability) {
                     clearInterval(interval);
-                    return userInfo.reliability;
+                    return targetReliability;
                 }
-                return Math.min(oldProgress + 10, userInfo.reliability);
+                return Math.min(oldProgress + 10, targetReliability);
             });
         }, 10);
         return () => clearInterval(interval);
