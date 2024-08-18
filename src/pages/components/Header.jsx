@@ -5,7 +5,7 @@ import chat from '../../image/ChatIcon.svg';
 import my from '../../image/MyIcon.svg';
 import sale from '../../image/SaleIcon.svg';
 import x from '../../image/x.svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ChatList from '../chatting/ChatList';
 import Chat from '../chatting/Chat';
 import Category from './Category';
@@ -20,6 +20,10 @@ const Header = () => {
     const [isSaleMenuOpen, setIsSaleMenuOpen] = useState(false);
     const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
     const [selectedChatRoomId, setSelectedChatRoomId] = useState(null); // 선택된 채팅방 상태
+    const [keyword, setKeyword] = useState(''); // 검색어 상태
+    const [searchType, setSearchType] = useState('Product'); // 검색 타입 상태
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const {isLogin, logout, userInfo } = useContext(LoginContext);
     const userId = userInfo ? userInfo.userId : null;
@@ -33,6 +37,15 @@ const Header = () => {
         }
         return () => document.body.classList.remove('no-scroll');
     }, [isChatSidebarOpen]); */
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const savedKeyword = params.get('keyword') || '';
+        const savedSearchType = params.get('searchType') || 'Product';
+        
+        setKeyword(savedKeyword);
+        setSearchType(savedSearchType);
+    }, [location.search]);
 
     //메뉴 열고 닫는 토글
     const toggleChatSidebar = () => {
@@ -51,6 +64,21 @@ const Header = () => {
         setSelectedChatRoomId(null);
     };
 
+    // 검색어 입력 시 상태 업데이트
+    const handleKeywordChange = (e) => {
+        setKeyword(e.target.value);
+    };
+
+    // 검색 타입 선택 시 상태 업데이트
+    const handleSearchTypeChange = (e) => {
+        setSearchType(e.target.value);
+    };
+
+    const submitSearch = (e) => {
+        e.preventDefault();
+        navigate(`/${searchType}List?searchType=${encodeURIComponent(searchType)}&keyword=${encodeURIComponent(keyword)}`);
+    };
+
     return (
         <>
             <header>
@@ -58,12 +86,12 @@ const Header = () => {
                     <Link to='/'>
                         <img src='https://via.placeholder.com/200x50' className={Style.logo} alt='로고' />
                     </Link>
-                    <Form type='text' className={Style.search}>
+                    <Form className={Style.search} onSubmit={submitSearch}>
                         <img className={Style.searchIcon} src={SearchIcon} alt=''/>
-                        <input className={Style.searchInput} placeholder='어떤 상품을 찾으시나요? 키워드를 검색하세요!'/>
-                        <Form.Select className={Style.searchSelect}>
-                            <option value='product'>중고물품</option>
-                            <option value='car'>중고차</option>
+                        <input className={Style.searchInput} placeholder='어떤 상품을 찾으시나요? 키워드를 검색하세요!' value={keyword} onChange={handleKeywordChange}/>
+                        <Form.Select className={Style.searchSelect} value={searchType} onChange={handleSearchTypeChange}>
+                            <option value='Product'>중고물품</option>
+                            <option value='Car'>중고차</option>
                         </Form.Select>
                     </Form>
                     <nav className={Style.nav}>

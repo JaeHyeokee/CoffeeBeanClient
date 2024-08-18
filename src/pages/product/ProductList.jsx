@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import ProductItem from '../components/ProductItem';
 import Footer from '../components/Footer';
@@ -29,16 +29,29 @@ const ProductList = () => {
     
     const { category, subcategory, subsubcategory } = useParams();
 
+    const location = useLocation();
+    const keyword = new URLSearchParams(location.search).get('keyword') || '';
+
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await axios.get('http://localhost:8088/product/category', {
-                    params: {
-                        category1: category || undefined,
-                        category2: subcategory || undefined,
-                        category3: subsubcategory || undefined,
-                    }
-                });
+                let response;
+
+                if(keyword !== '') {
+                    response = await axios({
+                        method: "get",
+                        url: `http://localhost:8088/product/list/${keyword}`,
+                    });
+                } else {
+                    response = await axios.get('http://localhost:8088/product/category', {
+                        params: {
+                            category1: category || undefined,
+                            category2: subcategory || undefined,
+                            category3: subsubcategory || undefined,
+                        }
+                    });
+                }
+
                 console.log('응답데이터: ', response.data)
                 if (Array.isArray(response.data)) {
                     setProducts(response.data);
@@ -64,7 +77,7 @@ const ProductList = () => {
 
         fetchProducts();
         fetchPriceInfo();
-    }, [category, subcategory, subsubcategory]);
+    }, [keyword, category, subcategory, subsubcategory]);
 
     useEffect(() => {
         if (Array.isArray(products)) {
