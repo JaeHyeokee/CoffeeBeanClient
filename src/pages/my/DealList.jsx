@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
-import Style from '../../css/my/SellList.module.css';
+import Style from '../../css/my/DealList.module.css';
 import { Card } from 'react-bootstrap';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { useNavigate } from 'react-router-dom';
 
-const DipsList = (props) => {
-    const { activatedKey, isProductOrCar } = props;
+const DealList = (props) => {
+    const { activatedKey, isProductOrCar, pageType } = props;
     const { userInfo } = useContext(LoginContext);
-    var [ listArr, setListArr ] = useState([]);
+    const [ listArr, setListArr ] = useState([]);
     const [ sortedType, setSortedType ] = useState('1');
     const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ const DipsList = (props) => {
         if (!userInfo || !userInfo.userId) return;
         axios({
             method: "get",
-            url: `http://localhost:8088/${isProductOrCar}/sortedlist/${userInfo.userId}/${sortedType}`,
+            url: `http://localhost:8088/${pageType}/${isProductOrCar}/sortedlist/${userInfo.userId}/${sortedType}/${activatedKey}`,
         })
         .then(response => {
             if(Array.isArray(response.data)) {
@@ -26,22 +26,7 @@ const DipsList = (props) => {
             }
         });
 
-        if(!activatedKey) return;
-        filterDealingStatus();
     }, [userInfo, sortedType, activatedKey]);
-
-    const filterDealingStatus = () => {
-        console.log("활성화 키 : " + activatedKey);
-        console.log(activatedKey === 'onSale');
-        if(activatedKey === 'onSale') {
-            setListArr(listArr.filter(product => product.dealingStatus === '판매중'));
-        } else if(activatedKey === 'booked') {
-            setListArr(listArr.filter(product => product.dealingStatus === '예약중'));
-        } else if(activatedKey === 'outOfSale') {
-            setListArr(listArr.filter(product => product.dealingStatus === '판매완료'));
-        }
-        console.log(listArr);
-    };
 
     const goDetailPage = (elem) => {
         if(isProductOrCar === 'product') navigate('/ProductDetail/' + elem.productId);
@@ -87,4 +72,4 @@ const DipsList = (props) => {
     );
 };
 
-export default DipsList;
+export default DealList;
