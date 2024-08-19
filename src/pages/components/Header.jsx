@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Style from '../../css/components/Header.module.css';
+import MainLogo from '../../image/MainLogo.png';
 import SearchIcon from '../../image/SearchIcon.svg';
 import chat from '../../image/ChatIcon.svg';
 import my from '../../image/MyIcon.svg';
@@ -89,7 +90,7 @@ const Header = () => {
             <header>
                 <div className={Style.headerTop}>
                     <Link to='/'>
-                        <img src='https://via.placeholder.com/200x50' className={Style.logo} alt='로고' />
+                        <img src={MainLogo} className={Style.logo} alt='로고' />
                     </Link>
                     <Form className={Style.search} onSubmit={submitSearch}>
                         <img className={Style.searchIcon} src={SearchIcon} alt=''/>
