@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import MyHome from './MyHome';
 import { Button } from 'react-bootstrap';
-import Style from '../../css/my/MyDealList.module.css';
-import MyDealListTab from './MyDealListTab';
+import Style from '../../css/my/DealListFrame.module.css';
+import DealListTab from './DealListTab';
 
-const MyDealList = (props) => {
+const DealListFrame = (props) => {
     const { pageType, isProductOrCar, setIsProductOrCar } = props;
-    const [ activatedKey, setActivatedKey ] = useState('all');
+    const [ activatedKey, setActivatedKey ] = useState('전체');
 
-     const handleClick = (e) => {
+    const handleClick = (e) => {
         if(e.target.value !== isProductOrCar) setIsProductOrCar(e.target.value);
     }
 
@@ -23,10 +23,10 @@ const MyDealList = (props) => {
                         <Button className={isProductOrCar === 'car' ? Style.categoryFilterButtonActive : Style.categoryFilterButton} onClick={handleClick} value='car'>중고차</Button>
                     </div>
                 </div>
-                <MyDealListTab key={isProductOrCar} activatedKey={activatedKey} setActivatedKey={setActivatedKey} pageType={pageType} isProductOrCar={isProductOrCar}/>
+                <DealListTab key={isProductOrCar} activatedKey={activatedKey} setActivatedKey={setActivatedKey} pageType={pageType} isProductOrCar={isProductOrCar}/>
             </section>
         </>
     );
 };
 
-export default MyDealList;
+export default DealListFrame;

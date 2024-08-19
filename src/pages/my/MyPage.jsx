@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Style from '../../css/my/MyPage.module.css';
-import MyDealList from './MyDealList';
+import DealListFrame from './DealListFrame';
 import MyInformation from './MyInformation';
 import ReviewList from './ReviewList';
 import UnRegister from './UnRegister';
@@ -12,8 +12,6 @@ import UserManagement from '../admin/UserManagement';
 const MyPage = () => {
     const [activePage, setActivePage] = useState('SaleList');
     const [isProductOrCar, setIsProductOrCar] = useState('product');
-
-    useEffect(() => {}, [isProductOrCar]);
 
     const handlePageChange = (page) => {
         setActivePage(page);
@@ -43,9 +41,9 @@ const MyPage = () => {
                     </Nav>
                 </div>
                 <section className={Style.myPageActivated}>
-                    {activePage === 'SaleList' && <MyDealList pageType={'sell'} isProductOrCar={isProductOrCar} setIsProductOrCar={setIsProductOrCar}/>}
-                    {activePage === 'BuyList' && <MyDealList pageType={'buy'} isProductOrCar={isProductOrCar} setIsProductOrCar={setIsProductOrCar}/>}
-                    {activePage === 'DipsList' && <MyDealList pageType={'dips'} isProductOrCar={isProductOrCar} setIsProductOrCar={setIsProductOrCar}/>}
+                    {activePage === 'SaleList' && <DealListFrame pageType={'sell'} isProductOrCar={isProductOrCar} setIsProductOrCar={setIsProductOrCar}/>}
+                    {activePage === 'BuyList' && <DealListFrame pageType={'buy'} isProductOrCar={isProductOrCar} setIsProductOrCar={setIsProductOrCar}/>}
+                    {activePage === 'DipsList' && <DealListFrame pageType={'dips'} isProductOrCar={isProductOrCar} setIsProductOrCar={setIsProductOrCar}/>}
                     {activePage === 'MyInformation' && <MyInformation/>}
                     {activePage === 'ReviewList' && <ReviewList/>}
                     {activePage === 'UnRegister' && <UnRegister/>}

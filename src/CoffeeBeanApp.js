@@ -23,7 +23,6 @@ import ProductDetail from './pages/product/ProductDetail';
 import ProductList from './pages/product/ProductList';
 import ProductUpdate from './pages/product/ProductUpdate';
 import LoginContextProvider from './contexts/LoginContextProvider';
-import MyDealList from './pages/my/MyDealList';
 import ChatList from './pages/chatting/ChatList';
 import Chat from './pages/chatting/Chat';
 
@@ -46,8 +45,9 @@ const CoffeeBeanApp = () => {
 
                     <Route path = '/CarCreate/:userId' Component={CarCreate}/>
                     <Route path = '/CarDetail/:id' Component={CarDetail}/>
-                    <Route path = '/CarLIst/:category' Component={CarList}/>
-                    <Route path = '/CarLIst/:category/:subcategory' Component={CarList}/>
+                    <Route path = '/CarList' Component={CarList}/>
+                    <Route path = '/CarList/:category' Component={CarList}/>
+                    <Route path = '/CarList/:category/:subcategory' Component={CarList}/>
                     <Route path = '/CarUpdate' Component={CarUpdate}/>
 
                     <Route path = '/Login' Component={LogIn}/>
@@ -56,7 +56,6 @@ const CoffeeBeanApp = () => {
                     <Route path = '/ReviewCreate' Component={ReviewCreate}/>
                     <Route path = '/ReviewDetail' Component={ReviewDetail}/>
                     <Route path = '/ReviewList' Component={ReviewList}/>
-                    <Route path = '/MyDealList' Component={MyDealList}/>
                     <Route path = '/UnRegister' Component={UnRegister}/>
 
                     <Route path = '/PostCreate/:userId' Component={PostCreate}/>
@@ -66,10 +65,11 @@ const CoffeeBeanApp = () => {
 
                     <Route path = '/ProductCreate/:userId' Component={ProductCreate}/>
                     <Route path = '/ProductDetail/:id' Component={ProductDetail}/>
+                    <Route path = '/ProductList' Component={ProductList}/>
                     <Route path = '/ProductList/:category' Component={ProductList}/>
                     <Route path = '/ProductList/:category/:subcategory' Component={ProductList}/>
                     <Route path = '/ProductList/:category/:subcategory/:subsubcategory' Component={ProductList}/>
-                    <Route path = '/ProductUpdate' Component={ProductUpdate}/>
+                    <Route path = '/ProductUpdate/:id' Component={ProductUpdate}/>
 
                     <Route path = '/Join' Component={Join}/>
                 </Routes>
