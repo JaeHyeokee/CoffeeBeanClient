@@ -45,8 +45,9 @@ const CoffeeBeanApp = () => {
 
                     <Route path = '/CarCreate/:userId' Component={CarCreate}/>
                     <Route path = '/CarDetail/:id' Component={CarDetail}/>
-                    <Route path = '/CarLIst/:category' Component={CarList}/>
-                    <Route path = '/CarLIst/:category/:subcategory' Component={CarList}/>
+                    <Route path = '/CarList' Component={CarList}/>
+                    <Route path = '/CarList/:category' Component={CarList}/>
+                    <Route path = '/CarList/:category/:subcategory' Component={CarList}/>
                     <Route path = '/CarUpdate' Component={CarUpdate}/>
 
                     <Route path = '/Login' Component={LogIn}/>
@@ -64,6 +65,7 @@ const CoffeeBeanApp = () => {
 
                     <Route path = '/ProductCreate/:userId' Component={ProductCreate}/>
                     <Route path = '/ProductDetail/:id' Component={ProductDetail}/>
+                    <Route path = '/ProductList' Component={ProductList}/>
                     <Route path = '/ProductList/:category' Component={ProductList}/>
                     <Route path = '/ProductList/:category/:subcategory' Component={ProductList}/>
                     <Route path = '/ProductList/:category/:subcategory/:subsubcategory' Component={ProductList}/>

@@ -3,107 +3,133 @@ import '../css/home.css';
 import Header from './components/Header.jsx';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import prev from './../image/PrevButton.png'
-import next from './../image/NextButton.png'
 import Footer from './components/Footer.jsx';
-
-
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
+import main1 from '../image/main1.png';
+import main2 from '../image/main2.png';
+import main3 from '../image/main3.png';
+import main4 from '../image/main4.png';
+import main5 from '../image/main5.png';
 
 const Home = () => {
-    const [products, setProducts] = useState([]);
-    const itemsPerPage = 6;
+    const [topProducts, setTopProducts] = useState([]);
+    const [recentProducts, setRecentProducts] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:8088/product/list')
+        // 인기 상품 가져오기
+        axios.get('http://localhost:8088/product/top10')
             .then(response => {
-                setProducts(response.data);
+                setTopProducts(response.data);
             })
             .catch(error => {
-                console.error('에러에러에러', error);
+                console.error('인기 상품 가져오기 오류', error);
+            });
+
+        // 최근 등록된 상품 가져오기
+        axios.get('http://localhost:8088/product/top10regDate')
+            .then(response => {
+                setRecentProducts(response.data);
+            })
+            .catch(error => {
+                console.error('최근 등록된 상품 가져오기 오류', error);
             });
     }, []);
 
-    /* 추천상품 이전,다음 버튼 */
-    const [currentPageRecommended, setCurrentPageRecommended] = useState(0);
-
-    const handlePrevPageRecommended = () => {
-        setCurrentPageRecommended((prevPage) => Math.max(prevPage - 1, 0));
+    const sliderSettings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        arrows: true, // 좌우 화살표 사용 설정
     };
-
-    const handleNextPageRecommended = () => {
-        const maxPage = Math.ceil(products.length / itemsPerPage) - 1;
-        setCurrentPageRecommended((prevPage) => Math.min(prevPage + 1, maxPage));
-    };
-
-    const startIndexRecommended = currentPageRecommended * itemsPerPage;
-    const currentProductsRecommended = products.slice(startIndexRecommended, startIndexRecommended + itemsPerPage);
-
-    /* 최신순 이전,다음 버튼*/
-    const [currentPageAdded, setCurrentPageAdded] = useState(0); 
-
-    const handlePrevPageAdded = () => {
-        setCurrentPageAdded((prevPage) => Math.max(prevPage - 1, 0));
-    };
-
-    const handleNextPageAdded = () => {
-        const maxPage = Math.ceil(products.length / itemsPerPage) - 1;
-        setCurrentPageAdded((prevPage) => Math.min(prevPage + 1, maxPage));
-    };
-
-    const startIndexAdded = currentPageAdded * itemsPerPage;
-    const currentProductsAdded = products.slice(startIndexAdded, startIndexAdded + itemsPerPage);
 
     return (
         <>
-            <Header/>
+            <Header />
             <div className='home-body'>
-                {/* 추천상품 */}
+                {/* 슬라이더 섹션 */}
+                <section className='slider-section'>
+                    <Slider {...sliderSettings}>
+                        <div className="slider-item">
+                            <img src={main1} alt="slider-img-1" />
+                        </div>
+                        <div className="slider-item">
+                            <a href="https://thecheat.co.kr/rb/?mod=_search" target="_blank" rel="noopener noreferrer">
+                                <img src={main2} alt="slider-img-2" />
+                            </a>
+                        </div>
+                        <div className="slider-item">
+                            <img src={main3} alt="slider-img-3" />
+                        </div>
+                        <div className="slider-item">
+                            <img src={main4} alt="slider-img-4" />
+                        </div>
+                        <div className="slider-item">
+                            <img src={main5} alt="slider-img-5" />
+                        </div>
+                    </Slider>
+                </section>
+
+                {/* 인기 상품 */}
                 <section>
                     <div className="product-list">
-                        <h2>당신을 위한 추천상품!</h2>
+                        <h2 className="maintext">실시간 인기 상품</h2>
                         <div className="product-items">
-                            <button className='pagination-buttons' onClick={handlePrevPageRecommended} disabled={currentPageRecommended === 0}>
-                                <img src={prev} alt='' />
-                            </button>
-                            {currentProductsRecommended.map(product => (
+                            {topProducts.slice(0, 5).map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
                                     <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
-                                    <p>{product.price.toLocaleString()}원</p>
-                                    <p>{product.desiredArea} | {product.time}</p>
+                                    <p className="price">{product.price.toLocaleString()}원</p>
+                                    <p>{product.desiredArea || ' '} | {product.time}</p>
                                 </Link>
                             ))}
-                            <button className='pagination-buttons' onClick={handleNextPageRecommended} disabled={currentPageRecommended >= Math.ceil(products.length / itemsPerPage) - 1}>
-                                <img src={next} alt='' />
-                            </button>
+                        </div>
+                        <div className="product-items">
+                            {topProducts.slice(5, 10).map(product => (
+                                <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
+                                    <img src={product.fileList[0].source} alt={product.name} />
+                                    <h4>{product.name}</h4>
+                                    <p className="price">{product.price.toLocaleString()}원</p>
+                                    <p>{product.desiredArea || ' '} | {product.time}</p>
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </section>
 
-                {/* 방금 등록된 상품 */}
+                {/* 최근 등록 상품 */}
                 <section>
                     <div className="product-list">
-                        <h2>방금 등록된 상품</h2>
+                        <h2 className='maintext2'>방금 등록된 상품</h2>
                         <div className="product-items">
-                        <button className='pagination-buttons' onClick={handlePrevPageAdded} disabled={currentPageAdded === 0}>
-                        <img src={prev} alt='' />
-                            </button>
-                            {currentProductsAdded.map(product => (
+                            {recentProducts.slice(0, 5).map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
                                     <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
-                                    <p>{product.price.toLocaleString()}원</p>
-                                    <p>{product.desiredArea} | {product.time}</p>
+                                    <p className="price">{product.price.toLocaleString()}원</p>
+                                    <p>{product.desiredArea || ' '} | {product.time}</p>
                                 </Link>
                             ))}
-                            <button className='pagination-buttons' onClick={handleNextPageAdded} disabled={currentPageAdded >= Math.ceil(products.length / itemsPerPage) - 1}>
-                            <img src={next} alt='' />
-                            </button>
+                        </div>
+                        <div className="product-items">
+                            {recentProducts.slice(5, 10).map(product => (
+                                <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
+                                    <img src={product.fileList[0].source} alt={product.name} />
+                                    <h4>{product.name}</h4>
+                                    <p className="price">{product.price.toLocaleString()}원</p>
+                                    <p>{product.desiredArea || ' '} | {product.time}</p>
+                                </Link>
+                            ))}
                         </div>
                     </div>
                 </section>
             </div>
-            <Footer/>
+            <Footer />
         </>
     );
 };

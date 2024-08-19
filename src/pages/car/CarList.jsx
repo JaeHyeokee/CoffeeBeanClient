@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import Header from '../components/Header';
 import axios from 'axios';
 import CarItem from '../components/CarItem';
@@ -16,17 +16,31 @@ const CarList = () => {
     const [loading, setLoading] = useState(true);
     const { category, subcategory } = useParams();
 
+    const location = useLocation();
+    const keyword = new URLSearchParams(location.search).get('keyword') || '';
+
     useEffect(() => {
         setLoading(true);
         const fetchCars = async () => {
             try {
                 console.log(`Fetching cars for category: ${category}, subcategory: ${subcategory}`);
-                const response = await axios.get(`http://localhost:8088/car/filter`, {
-                    params: {
-                        category1: category,
-                        category2: subcategory
-                    }
-                });
+                
+                let response;
+
+                if(keyword !== '') {
+                    response = await axios({
+                        method: "get",
+                        url: `http://localhost:8088/car/list/${keyword}`,
+                    });
+                } else {
+                    response = await axios.get(`http://localhost:8088/car/filter`, {
+                        params: {
+                            category1: category,
+                            category2: subcategory
+                        }
+                    });
+                }
+
                 console.log('Response data:', response.data);
                 if (Array.isArray(response.data)) {
                     setCars(response.data);
@@ -39,7 +53,7 @@ const CarList = () => {
             }
         };
         fetchCars();
-    }, [category, subcategory]);
+    }, [keyword, category, subcategory]);
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
@@ -95,7 +109,7 @@ const CarList = () => {
         <>
             <Header/>
             <div className={styles.carListBody}>
-                <div className={styles.searchResult}>검색결과</div>
+                {/* <div className={styles.searchResult}>검색결과</div> */}
 
                 <table className={styles.categoryContainer}>
                     <tbody>

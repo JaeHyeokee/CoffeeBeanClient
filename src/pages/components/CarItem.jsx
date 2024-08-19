@@ -4,7 +4,7 @@ import styles from '../../css/car/CarItem.module.css'; // CSS 모듈을 임포�
 
 const CarItem = (props) => {
     const { car } = props;
-    const { carId, name, price, fileList } = car;
+    const { carId, name, price, fileList, modelYear, carNum, fuel, transmission, distance } = car;
     const navigate = useNavigate();
 
     const handleImageClick = () => {
@@ -18,8 +18,16 @@ const CarItem = (props) => {
             {firstImage && (
                 <img src={firstImage} alt={name} className={styles.carItemImage} />
             )}
-            <h3 className={styles.carItemName}>{name}</h3>
-            <p className={styles.carItemPrice}>{price === 0 ? '가격협의' : `${price} 만원`}</p>
+            <div className={styles.carItemDetails}>
+                <h3 className={styles.carItemName}>{name}</h3>
+                <div className={styles.carItemInfo}>
+                    <span>{modelYear} 년식</span>·<span>{distance} KM</span>·<span>{carNum}</span>
+                </div>
+                <div className={styles.carItemInfo}>
+                    <span>{fuel}</span>·<span>{transmission}</span>
+                </div>
+                <p className={styles.carItemPrice}>{price === 0 ? '가격협의' : `${price} 만원`}</p>
+            </div>
         </div>
     );
 };
