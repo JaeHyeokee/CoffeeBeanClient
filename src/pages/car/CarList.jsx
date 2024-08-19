@@ -109,7 +109,7 @@ const CarList = () => {
         <>
             <Header/>
             <div className={styles.carListBody}>
-                <div className={styles.searchResult}>검색결과</div>
+                {/* <div className={styles.searchResult}>검색결과</div> */}
 
                 <table className={styles.categoryContainer}>
                     <tbody>

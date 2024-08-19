@@ -1,23 +1,17 @@
 .carListBody {
-    width: 1280px;
-    margin: auto;
     padding: 20px;
-
 }
 
 .searchResult {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.categoryContainer {
-    width: 100%;
+    font-size: 1.5em;
+    margin-bottom: 20px;
 }
 
 .carList {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 아이템들을 가운데 정렬 */
+    gap: 20px;
 }
 
 .pagination {
@@ -27,14 +21,20 @@
 }
 
 .pageButton {
-    padding: 10px;
     margin: 0 5px;
+    padding: 10px 15px;
     border: 1px solid #ddd;
-    background-color: #f0f0f0;
+    background-color: #fff;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.pageButton.active {
-    background-color: #007bff;
-    color: white;
+.pageButton:hover {
+    background-color: #f0f0f0;
+}
+
+.active {
+    background-color: #000000;
+    color: #fff;
+    border-color: #828282;
 }

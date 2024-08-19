@@ -8,6 +8,8 @@ import x from '../../image/x.svg';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 import Footer from '../components/Footer';
+import insuranceImage from '../../image/insurance2.png';
+
 
 const CarDetail = () => {
     const { id } = useParams();
@@ -79,25 +81,32 @@ const CarDetail = () => {
         window.scrollTo(0, 0); // 페이지 이동 시 스크롤을 맨 위로 이동
     };
 
+    const handleCarSearchClick = () => {
+        window.open('http://www.naver.com', '_blank');
+    };
+
     return (
         <>
             <Header />
             <div className={styles.cardetailBody}>
                 <section className={styles.cardetailTop}>
-                    <Carousel activeIndex={index} onSelect={handleSelect} interval={null}>
-                        {car.fileList.map((file, idx) => (
-                            <Carousel.Item key={idx} className={styles.carouselItem}>
-                                <img src={file.source} alt={file.filename} />
-                            </Carousel.Item>
-                        ))}
-                    </Carousel>
+                <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>     
+                    {car.fileList.map((file, idx) => 
+                        <Carousel.Item key={idx} className={styles.carouselItem}>
+                            <img className={styles.carImage} src={file.source} alt={''} />
+                        </Carousel.Item>
+                    )}
+                </Carousel>
+
 
                     <div className={styles.carInfo}>
-                        <p>{car.category1} {car.category2}</p>
+                         <p className={styles.carCategory}>{car.category1} &gt; {car.category2}</p>
                         <h2 className={styles.carName}>{car.name}</h2>
+                        <p>{car.modelYear} 년식·{car.distance} KM·{car.fuel}</p>
                         <h1 className={styles.carPrice}>
                             {car.price === 0 ? '가격협의' : `${car.price.toLocaleString()} 만원`}
                         </h1>
+                        <button className={styles.carsearch} onClick={handleCarSearchClick}>보험료 조회</button>
                         <div className={styles.carInfoBottom}>
                             <div>
                                 <p>제품상태</p>
@@ -119,47 +128,97 @@ const CarDetail = () => {
 
                 <section className={styles.cardetailInfo}>
                     <div className={styles.leftPanel}>
+                    <h2 className={styles.infotext}>차량 기본정보</h2>
                         <div className={styles.infoBox}>
-                            <h2>차량 기본정보</h2>
-                            <p>연식: {car.modelYear} 년</p>
-                            <p>차량번호: {car.carNum}</p>
-                            <p>주행거리: {car.distance} KM</p>
-                            <p>배기량: {car.displacement} cc</p>
-                            <p>변속기: {car.transmission}</p>
-                            <p>연료: {car.fuel}</p>
-                        </div>
-                        <div className={styles.infoBox}>
-                            <h2>보험처리</h2>
-                            <p>보험사고(피해) 이력 횟수: {car.insuranceVictim} 회</p>
-                            <p>보험사고(가해) 이력 횟수: {car.insuranceInjurer} 회</p>
-                            <p>소유자 변경 이력 횟수: {car.ownerChange} 회</p>
+                            <div className={styles.leftColumn}>
+                                <p>
+                                    <span className={styles.label}>연식:</span> 
+                                    <span className={styles.value}>{car.modelYear} 년</span>
+                                </p>
+                                <p>
+                                    <span className={styles.label}>주행거리:</span> 
+                                    <span className={styles.value}>{car.distance} KM</span>
+                                </p>
+                                <p>
+                                    <span className={styles.label}>변속기:</span> 
+                                    <span className={styles.value}>{car.transmission}</span>
+                                </p>
+                            </div>
+                            <div className={styles.rightColumn}>
+                                <p>
+                                    <span className={styles.label}>차량번호:</span> 
+                                    <span className={styles.value}>{car.carNum}</span>
+                                </p>
+                                <p>
+                                    <span className={styles.label}>배기량:</span> 
+                                    <span className={styles.value}>{car.displacement} cc</span>
+                                </p>
+                                <p>
+                                    <span className={styles.label}>연료:</span> 
+                                    <span className={styles.value}>{car.fuel}</span>
+                                </p>
+                            </div>
                         </div>
                     </div>
                     <div className={styles.rightPanel}>
-                        <div className={styles.infoBox}>
-                            <h2>가게정보</h2>
+                        <div className={styles.infoBoxuser}>
+                            <h2 className={styles.infotext}>가게정보</h2>
                             <p>이름: {car.user.userName}</p>
                             <p>이메일: {car.user.email}</p>
                         </div>
                     </div>
                 </section>
 
+
+
+
+                
+                <section className={styles.insurance}>
+                    <div className={styles.infoBoxinsurance}>
+                        <h2 className={styles.infotextinsurance}>보험처리 이력</h2>
+                        <div className={styles.insuranceContent}>
+                            <img src={insuranceImage} alt="" className={styles.insuranceImage} />
+                            <span className={styles.insuranceText}>
+                                보험처리 <span className={styles.redText}>{car.insuranceVictim + car.insuranceInjurer}</span> 회
+                            </span>
+                            <p>
+                                보험사고(피해) 이력 횟수: <span className={styles.redText}>{car.insuranceVictim}</span> 회
+                                <span className={styles.separator}></span>
+                                보험사고(가해) 이력 횟수: <span className={styles.redText}>{car.insuranceInjurer}</span> 회
+                                <span className={styles.separator}></span>
+                                소유자 변경 이력 횟수: <span className={styles.redText}>{car.ownerChange}</span> 회
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+
+
+
                 <section className={styles.cardetailBottom}>
-                    <div className={styles.infoBox}>
-                        <h2>상품정보</h2>
+                    <h2 className={styles.infotextBox}>상품정보</h2>
+                    <div className={styles.links}>
+                        <a href="https://www.naver.com" target="_blank" rel="noopener noreferrer">중고차 주의사항</a>
+                        <a href="https://www.naver.com" target="_blank" rel="noopener noreferrer">허위매물 구매사항</a>
+                    </div>
+                    <div className={styles.infoBoxdetail}>
                         {introduceLines.slice(0, showFullIntroduce ? introduceLines.length : maxLinesToShow).map((line, index) => (
                             <p key={index} className={styles.introduce}>{line}</p>
                         ))}
                         {introduceLines.length > maxLinesToShow && (
                             <button onClick={() => setShowFullIntroduce(!showFullIntroduce)} className={styles.moreButton}>
-                                {showFullIntroduce ? '접기' : '더보기'}
+                                {showFullIntroduce ? '접기' : '더보기 +'}
                             </button>
                         )}
                     </div>
                 </section>
 
+
+
+
+
                 <section className={styles.carRecommend}>
-                    <h2>추천 차량</h2>
+                    <h2 className={styles.rectext}>추천 차량</h2>
                     <div className={styles.recommendationContainer}>
                         {recommendedCars.map((recCar) => {
                             const firstImage = recCar.fileList.length > 0 ? recCar.fileList[0].source : '';
@@ -168,13 +227,19 @@ const CarDetail = () => {
                                     {firstImage && (
                                         <img src={firstImage} alt={recCar.name} className={styles.recommendationImage} />
                                     )}
-                                    <h3>{recCar.name}</h3>
-                                    <p>{recCar.price === 0 ? '가격협의' : `${recCar.price} 만원`}</p>
+                                    <h3 className={styles.recommendationName}>{recCar.name}</h3>
+                                    <p className={styles.recommendationPrice}>{recCar.price === 0 ? '가격협의' : `${recCar.price} 만원`}</p>
                                 </div>
                             );
                         })}
                     </div>
                 </section>
+
+
+
+
+
+
 
                 {isChatSidebarOpen && (
                     <>
