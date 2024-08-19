@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import Footer from '../components/Footer';
 import styles from '../../css/car/CarCreate.module.css';
+import * as Swal from '../../apis/alert';
 
 const categories = {
     "국산차": ["현대", "제네시스", "기아", "쉐보레", "르노코리아(삼성)", "KG모빌리티(쌍용)"],
@@ -35,6 +36,13 @@ const CarCreate = () => {
         insuranceInjurer: "",
         ownerChange: "",
     });
+
+    useEffect(() => {
+        if (!userInfo || !userId) {
+            Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") });
+            navigate('/login');
+        }
+    })
 
     const [selectedCategory, setSelectedCategory] = useState("");
     const [subCategoryOptions, setSubCategoryOptions] = useState([]);

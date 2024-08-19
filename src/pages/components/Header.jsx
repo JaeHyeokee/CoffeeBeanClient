@@ -12,7 +12,7 @@ import Category from './Category';
 import CarCategory from './CarCategory';
 import { Form, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-
+import * as Swal from '../../apis/alert'
 const Header = () => {
 
     //상태관리
@@ -49,7 +49,12 @@ const Header = () => {
 
     //메뉴 열고 닫는 토글
     const toggleChatSidebar = () => {
-        setIsChatSidebarOpen(!isChatSidebarOpen);
+        if (isLogin && userId) {
+            setIsChatSidebarOpen(!isChatSidebarOpen);
+        } else {
+            Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") });
+            navigate('/login');
+        }
         if (isSaleMenuOpen) setIsMyMenuOpen(false);
         if (isMyMenuOpen) setIsMyMenuOpen(false);
     }
@@ -120,16 +125,20 @@ const Header = () => {
                                 </a>
                             </div>
                             :
-                            // 마이
-                            <Navbar className={Style.navBarTop}>
-                                <img src={my} alt="아이콘" />
-                                <NavDropdown title={'\u00A0' + userInfo.userName} id="basic-nav-dropdown" className={Style.dropdownMenu}>
-                                    <NavDropdown.Item className={Style.dropdownMenuTab} href="/MyPage">마이페이지</NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item className={Style.dropdownMenuTab} onClick={ () => logout() }>로그아웃
-                                    </NavDropdown.Item>
-                                </NavDropdown>
-                            </Navbar>
+                            <>
+                                {/* 마이 */}
+                                <div>
+                                    <Navbar className={Style.navBarTop}>
+                                        <img src={my} alt="아이콘" />
+                                        <NavDropdown title={'\u00A0' + userInfo.userName} id="basic-nav-dropdown" className={Style.dropdownMenu}>
+                                            <NavDropdown.Item className={Style.dropdownMenuTab} href="/MyPage">마이페이지</NavDropdown.Item>
+                                            <NavDropdown.Divider />
+                                            <NavDropdown.Item className={Style.dropdownMenuTab} onClick={ () => logout() }>로그아웃( {userInfo.userName}:{userInfo.role} )
+                                            </NavDropdown.Item>
+                                        </NavDropdown>
+                                    </Navbar>
+                                </div>
+                            </>
                         }
                     </nav>
                 </div>
