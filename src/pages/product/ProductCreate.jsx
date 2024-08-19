@@ -15,7 +15,6 @@ const categories = {
     "가구/인테리어": ["침실가구", "거실가구", "주방가구", "기타가구"],
     "반려동물/취미": ["반려동물", "키덜트", "핸드메이드/DIY", "악기"],
     "티켓/쿠폰": ["티켓", "상품권/쿠폰"]
-
 };
 
 const subcategories = {
@@ -35,7 +34,6 @@ const subcategories = {
     "악기": ["건반악기", "현악기", "관악기/타악기"],
     "티켓": ["콘서트", "스포츠", "뮤지컬/연극/클래식"],
     "상품권/쿠폰": ["백화점/마트/편의점", "영화/문화/게임", "외식/주유"]
-
 };
 
 const ProductCreate = () => {
@@ -73,6 +71,8 @@ const ProductCreate = () => {
             setSubCategoryOptions(categories[selectedCategory] || []);
             setProduct(prevProduct => ({
                 ...prevProduct,
+                category2: "",
+                category3: ""
             }));
             setSelectedSubCategory("");
         }
@@ -83,6 +83,7 @@ const ProductCreate = () => {
             setSubSubCategoryOptions(subcategories[selectedSubCategory] || []);
             setProduct(prevProduct => ({
                 ...prevProduct,
+                category3: ""
             }));
         }
     }, [selectedSubCategory]);
@@ -108,7 +109,7 @@ const ProductCreate = () => {
     const handleFileChange = (e) => {
         const newFiles = Array.from(e.target.files).map(file => ({
             file: file,
-            name: file.name,
+            filename: file.name,
             id: URL.createObjectURL(file)  // 이미지 미리보기 URL 생성
         }));
 
@@ -210,7 +211,7 @@ const ProductCreate = () => {
             <Header />
             <Form onSubmit={submitProduct} className={styles.productCreateBody}>
                 <Form.Group className="mb-3">
-                    <Form.Label>Attach files:</Form.Label>
+                    <Form.Label>사진 추가:</Form.Label>
                     <Form.Control
                         type="file"
                         multiple
@@ -223,7 +224,8 @@ const ProductCreate = () => {
                             <ListGroup.Item key={file.id}>
                                 <Row>
                                     <Col>
-                                        <span>{file.name}</span>
+                                        <img src={file.id} alt={file.filename} style={{ width: '100px', height: '100px', borderRadius: '5px'}} />
+                                        <div>{file.filename}</div>
                                     </Col>
                                     <Col className="text-end">
                                         <Button
