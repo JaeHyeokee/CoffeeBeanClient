@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../css/components/CarCategory.css';
+import Style from '../../css/components/CarCategory.module.css';
 import { Link } from 'react-router-dom';
 
 const CarCategory = () => {
@@ -18,20 +18,20 @@ const CarCategory = () => {
     const handleSubcategoryMouseLeave = () => setSelectedSubCategory(null);
 
     return (
-        <div className='car-category' onMouseLeave={handleMouseLeave}>
+        <div className={Style.carCategory} onMouseLeave={handleMouseLeave}>
             <div
-                className='car-category-button'
+                className={Style.carCategoryButton}
                 onMouseEnter={handleMouseEnter}
             >
                 중고차
             </div>
 
             {active && (
-                <div className='drop-content'>
+                <div className={Style.dropContent}>
                     {Object.keys(carcategories).map((category) => (
-                        <div className='drop-section' key={category}>
+                        <div className={Style.dropSection} key={category}>
                             {/* 카테고리1 */}
-                            <h4 className='drop-title'>
+                            <h4 className={Style.dropTitle}>
                                 <Link to={`/CarList/${encodeURIComponent(category)}`}>
                                 <div>
                                     {category}
@@ -39,7 +39,7 @@ const CarCategory = () => {
                                 </Link>
                             </h4>
                             {/* 카테고리2 */}
-                            <div className='dropdown-submenu-car'>
+                            <div className={Style.dropdownSubmenuCar}>
                                 <ul>
                                     {carcategories[category].map((subcategory) => (
                                         <li

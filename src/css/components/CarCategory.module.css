@@ -1,8 +1,8 @@
-.car-category {
+.carCategory {
     position: relative;
 }
 
-.car-category-button {
+.carCategoryButton {
     padding: 10px 20px 20px;
     font-size: 18px;
     font-weight: bold;
@@ -13,59 +13,65 @@
     border-bottom: 2px solid transparent;
 }
 
-.car-category-button:hover {
+.carCategoryButton:hover {
     border-bottom: 2px solid black;
 }
 
-.drop-content {
+.dropContent {
     display: flex;
     position: absolute;
-    top: 100%;
-    left: 0;
+    top: 102%;
+    left: -65%;
     background-color: rgb(255, 255, 255);
     width: 230%;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .08);
     z-index: 1000;
     flex-wrap: wrap;
 }
 
-.drop-section {
-    padding: 10px;
+.dropSection {
     flex: 1 1 20%; 
 }
 
-.drop-title {
-    font-size: 16px;
-    margin-bottom: 10px;
+.dropTitle {
+    margin: 0;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
 }
 
-.drop-title a {
+.dropTitle:hover {
+    background-color: #E6E6E6;
+}
+
+.dropTitle a {
     text-decoration: none;
     color: inherit;
 }
 
-.dropdown-submenu-car {
+.dropdownSubmenuCar {
     width: 100%;
 }
 
-.dropdown-submenu-car ul {
+.dropdownSubmenuCar ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
 
-.dropdown-submenu-car li {
-    padding: 10px;
+.dropdownSubmenuCar li {
+    padding: 10px 20px;
+    font-size: 13px;
     cursor: pointer;
     position: relative;
 }
 
-.dropdown-submenu-car a {
+.dropdownSubmenuCar a {
     text-decoration: none;
     color: inherit;
 }
 
-.dropdown-submenu-car li:hover {
-    background-color: #f0f0f0;
+.dropdownSubmenuCar li:hover {
+    background-color: #E6E6E6;
 }

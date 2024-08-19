@@ -4,6 +4,7 @@
     padding: 20px;
 }
 
+
 .cardetailTop {
     margin-top: 30px;
     display: flex;
@@ -36,7 +37,7 @@
 .carCategory {
     text-align: left; /* 텍스트를 왼쪽으로 정렬 */
     width: 100%; /* 부모 요소의 전체 너비를 차지하도록 설정 (선택적) */
-    margin: 0; /* 기본 여백을 제거 (필요시) */
+    margin-top: 10px;
     color: #686868;
 }
 
@@ -52,6 +53,13 @@
     border: 1px solid #bababa;
 }
 
+.carpostinfo {
+    margin-top: 5px;
+    font-size: 15px;
+    align-self: flex-start; /* 자신을 왼쪽으로 정렬 */
+    color: rgb(94, 94, 94);
+}
+
 
 .carInfo p:first-of-type {
     font-size: 16px;
@@ -61,7 +69,7 @@
 .carName {
     font-size: 28px;
     font-weight: 600;
-    margin: 10px 0;
+    margin:0;
 }
 
 .carInfo p:nth-of-type(2) {
@@ -78,10 +86,11 @@
 .carsearch {
     width: 120px;
     border-radius: 30px;
-    color: grey;
+    color: rgb(46, 46, 46);
     border: 0;
     margin-bottom: 30px;
     cursor: pointer;
+    background-color: rgb(225, 225, 225);
 }
 
 .carsearch:hover {
@@ -144,6 +153,41 @@
     background-color: black;
     color: white;
 }
+
+
+.changeButton {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* 버튼들이 중앙에 배치되도록 설정 */
+    gap: 100px; /* 버튼들 사이의 간격 */
+    width: 100%;
+    border: 2px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.imageButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.updateImage,
+.deleteImage {
+    width: 30px;
+    height: 30px;
+}
+
+.buttonText {
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+
+
 
 .cardetailInfo {
     margin: auto;
@@ -208,6 +252,11 @@
 
 
 
+
+
+
+
+/* 가게정보 */
 .infoBoxuser {
     padding: 20px;
     border: 2px solid #ccc; /* 전체 테두리 */
@@ -227,6 +276,15 @@
     margin: 10px 0; /* 문단 사이 여백 */
     font-size: 16px; /* 폰트 크기 조정 */
 }
+
+
+
+
+
+
+
+
+
 
 
 

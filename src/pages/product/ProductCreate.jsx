@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../css/product/ProductCreate.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import Footer from '../components/Footer';
+import * as Swal from '../../apis/alert'
 
 const categories = {
     "패션의류": ["여성의류", "남성의류"],
@@ -37,16 +38,10 @@ const subcategories = {
 };
 
 const ProductCreate = () => {
-    const navigate = useNavigate();
-    const { userInfo } = useContext(LoginContext);
-    const userId = userInfo.userId;
 
-    useEffect(() => {
-        if (userId == null) {
-            navigate('/login');
-        }
-    }, [userId, navigate]);
-
+    const {isLogin,roles,userInfo} = useContext(LoginContext);
+    const navigate = useNavigate();    
+    
     const [product, setProduct] = useState({
         name: "",
         description: "",
@@ -65,6 +60,20 @@ const ProductCreate = () => {
     const [subCategoryOptions, setSubCategoryOptions] = useState([]);
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
     const [subsubCategoryOptions, setSubSubCategoryOptions] = useState([]);
+
+    useEffect(() => {
+        if (!userInfo || !roles) {
+            console.error("사용자 정보 또는 권한 정보가 부족합니다.");
+            Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") });
+            return;
+        }
+
+        if (!isLogin || !roles.isUser) {
+            Swal.alert("접근 권한이 없습니다.", "이전 화면으로 이동합니다.", "warning", () => { navigate(-1) });
+            return;
+        }
+    }, [isLogin, roles, userInfo, navigate]);
+
 
     useEffect(() => {
         if (selectedCategory) {
@@ -87,6 +96,9 @@ const ProductCreate = () => {
             }));
         }
     }, [selectedSubCategory]);
+
+    if(!userInfo) return null;
+    const userId = userInfo.userId;
 
     const changeValue = (e) => {
         const { name, value, type, checked } = e.target;
@@ -206,8 +218,14 @@ const ProductCreate = () => {
         });
     };
 
+
+    
+
     return (
         <>
+        {
+            isLogin && roles.isUser &&
+            <>
             <Header />
             <Form onSubmit={submitProduct} className={styles.productCreateBody}>
                 <Form.Group className="mb-3">
@@ -388,7 +406,9 @@ const ProductCreate = () => {
 
                 <button className={styles.registerButton} type='submit'>등록하기</button>
             </Form>
-            <Footer />
+            <Footer/>
+            </>
+        }
         </>
     );
 };
