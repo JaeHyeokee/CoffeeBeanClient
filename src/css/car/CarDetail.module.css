@@ -272,14 +272,114 @@
     font-size: 24px; /* 폰트 크기 조정 */
 }
 
-.infoBoxuser p {
-    margin: 10px 0; /* 문단 사이 여백 */
-    font-size: 16px; /* 폰트 크기 조정 */
+.nickNameAndProfileImgFrame {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
 }
 
+.sellerNickName {
+    font-size: 22px;
+    font-weight: bold;
+    align-content: center;
+}
 
+.sellerProfileImg {
+    height: 60px;
+    border-radius: 50%;
+}
 
+.trustIndexFrame {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    margin: 0 5px;
+}
 
+.sellerTrustIndex {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    color: #0CB650;
+    font-size: 14px;
+}
+
+.sellerTrustIndexFigure {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.maxTrustIndex {
+    margin: 0;
+    padding-top: 5px;
+    color: gray;
+    font-size: 15px;
+}
+
+.trustIndexBar {
+    width: 100%;
+    height: 10px;
+    margin-bottom: 15px;
+    border-radius: 10px !important;
+    transition: width 0.5s ease-in-out;
+}
+
+.trustIndexBar div {
+    background: linear-gradient(90deg, #0DCC5A, #01A1AD);
+    border-radius: 10px;
+}
+
+.sellListFrame {
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.sellInfoCard {
+    width: 31%;
+    height: 250px !important;
+    border: 0 !important;
+    cursor: pointer;
+}
+
+.sellInfoCard:hover .sellInfoCardImg{
+    transform: scale(1.1);
+}
+
+.sellInfoCardImgContainer {
+    overflow: hidden;
+    height: 65%;
+    border-radius: 5px;
+}
+
+.sellInfoCardImg {
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.sellInfoCardBody {
+    padding: 15px 5px !important;
+    height: 35%;
+}
+
+.sellInfoTitle {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    display: -webkit-box;          /* Flexbox를 사용하여 상자 모델을 정의합니다. */
+    -webkit-line-clamp: 1;         /* 표시할 줄 수를 2로 제한합니다. */
+    -webkit-box-orient: vertical;  /* 상자의 방향을 수직으로 설정합니다. */
+    overflow: hidden;              /* 넘치는 내용은 숨깁니다. */
+    text-overflow: ellipsis;       /* 넘치는 텍스트를 생략 기호로 표시합니다. */
+    height: 18px;
+    font-size: 15px !important;
+    color: #757575;
+}
+
+.sellInfoPrice {
+    font-weight: bold;
+    margin-top: 15px;
+}
 
 
 
