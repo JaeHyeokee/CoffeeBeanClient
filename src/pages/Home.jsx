@@ -67,7 +67,7 @@ const Home = () => {
                             </button>
                             {currentProductsRecommended.map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
-                                    <img src={product.fileList[0].source} alt={product.name} />
+                                    {/* <img src={product.fileList[0].source} alt={product.name} /> */}
                                     <h4>{product.name}</h4>
                                     <p>{product.price.toLocaleString()}원</p>
                                     <p>{product.desiredArea} | {product.time}</p>
@@ -90,7 +90,7 @@ const Home = () => {
                             </button>
                             {currentProductsAdded.map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
-                                    <img src={product.fileList[0].source} alt={product.name} />
+                                    {/* <img src={product.fileList[0].source} alt={product.name} /> */}
                                     <h4>{product.name}</h4>
                                     <p>{product.price.toLocaleString()}원</p>
                                     <p>{product.desiredArea} | {product.time}</p>
