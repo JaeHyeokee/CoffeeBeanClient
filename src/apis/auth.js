@@ -16,3 +16,12 @@ export const authInfo = () => api.get(`${SERVER_HOST}/auth`);
 
 // 회원가입 요청
 export const join = (data) => api.post(`${SERVER_HOST}/user/join`, data);
+
+// 이메일 인증 코드 발송
+export const sendEmail = (email) => api.post(`${SERVER_HOST}/email/send`, {email});
+
+// 이메일 인증코드 검증
+export const verifyCode = (email, verifyCode) => api.post(`${SERVER_HOST}/email/verify`, {email, verifyCode});
+
+// 이메일 중복 검증
+export const checkEmail = (email) => api.post(`${SERVER_HOST}/email/check`, {email})

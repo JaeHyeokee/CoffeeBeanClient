@@ -1,13 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
-import '../../css/product/ProductCreate.module.css'; 
+import '../../css/product/ProductCreate.module.css';
 import Header from '../components/Header';
 import price from '../../image/ProductPrice.png';
-import { Form } from 'react-bootstrap';
+import { Button, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import styles from '../../css/product/ProductCreate.module.css'; 
-import { LoginContext } from '../../contexts/LoginContextProvider'
+import styles from '../../css/product/ProductCreate.module.css';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 import Footer from '../components/Footer';
+import * as Swal from '../../apis/alert'
 
 const categories = {
     "패션의류": ["여성의류", "남성의류"],
@@ -15,6 +16,7 @@ const categories = {
     "가구/인테리어": ["침실가구", "거실가구", "주방가구", "기타가구"],
     "반려동물/취미": ["반려동물", "키덜트", "핸드메이드/DIY", "악기"],
     "티켓/쿠폰": ["티켓", "상품권/쿠폰"]
+
 };
 
 const subcategories = {
@@ -34,19 +36,13 @@ const subcategories = {
     "악기": ["건반악기", "현악기", "관악기/타악기"],
     "티켓": ["콘서트", "스포츠", "뮤지컬/연극/클래식"],
     "상품권/쿠폰": ["백화점/마트/편의점", "영화/문화/게임", "외식/주유"]
+
 };
 
 const ProductCreate = () => {
 
-    const navigate = useNavigate();
-    const { userInfo } = useContext(LoginContext);
-    const userId = userInfo.userId;
-
-    useEffect(() => {
-        if(userId == null){
-            navigate('/login');
-        }
-    },[userId, navigate])
+    const {isLogin,roles,userInfo} = useContext(LoginContext);
+    const navigate = useNavigate();    
     
     const [product, setProduct] = useState({
         name: "",
@@ -62,96 +58,144 @@ const ProductCreate = () => {
         files: []
     });
 
-
-    //selectedCategory -> 카테고리1
-    //selectedSubCategory -> 카테고리2
-    //subCategoryOptions -> 카테고리1에 따라 동적으로 업데이트되는 카테고리2
-    //subCategory3Options -> 카테고리2에 따라 동적으로 업데이되는 카테고리3
     const [selectedCategory, setSelectedCategory] = useState("");
     const [subCategoryOptions, setSubCategoryOptions] = useState([]);
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
     const [subsubCategoryOptions, setSubSubCategoryOptions] = useState([]);
 
     useEffect(() => {
+        if (!userInfo || !roles) {
+            console.error("사용자 정보 또는 권한 정보가 부족합니다.");
+            Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") });
+            return;
+        }
+
+        if (!isLogin || !roles.isUser) {
+            Swal.alert("접근 권한이 없습니다.", "이전 화면으로 이동합니다.", "warning", () => { navigate(-1) });
+            return;
+        }
+    }, [isLogin, roles, userInfo, navigate]);
+
+
+    useEffect(() => {
         if (selectedCategory) {
-            setSubCategoryOptions(categories[selectedCategory] || []); // 선택한 카테고리1에 따른 카테고리 2
+            setSubCategoryOptions(categories[selectedCategory] || []);
             setProduct(prevProduct => ({
                 ...prevProduct,
             }));
             setSelectedSubCategory("");
         }
-    }, [selectedCategory]); //카테고리가 변경될때마다 실행
+    }, [selectedCategory]);
 
     useEffect(() => {
         if (selectedSubCategory) {
-            setSubSubCategoryOptions(subcategories[selectedSubCategory] || []); // 선택한 카테고리2에 따른 카테고리 3
+            setSubSubCategoryOptions(subcategories[selectedSubCategory] || []);
             setProduct(prevProduct => ({
                 ...prevProduct,
             }));
         }
     }, [selectedSubCategory]);
 
+    if(!userInfo) return null;
+    const userId = userInfo.userId;
+
     const changeValue = (e) => {
         const { name, value, type, checked } = e.target;
-    
+
         if (type === 'checkbox') {
             if (name === 'dealingType') {
                 setProduct(prevProduct => ({
-                    ...prevProduct,         //체크되면 배열에 추가                  //체크 풀면 배열에서 빼기
-                    dealingType: checked ? [...prevProduct.dealingType, value] : prevProduct.dealingType.filter(type => type !== value)  
+                    ...prevProduct,
+                    dealingType: checked ? [...prevProduct.dealingType, value] : prevProduct.dealingType.filter(type => type !== value)
                 }));
             }
         } else {
-            setProduct({
-                ...product,
-                [name]: value  
-            });
+            setProduct(prevProduct => ({
+                ...prevProduct,
+                [name]: value
+            }));
         }
     };
 
+    const handleFileChange = (e) => {
+        const newFiles = Array.from(e.target.files).map(file => ({
+            file: file,
+            name: file.name,
+            id: URL.createObjectURL(file)  // 이미지 미리보기 URL 생성
+        }));
+
+        setProduct(prevProduct => ({
+            ...prevProduct,
+            files: [...prevProduct.files, ...newFiles]
+        }));
+    };
+
+    const handleFileRemove = (fileId) => {
+        setProduct(prevProduct => ({
+            ...prevProduct,
+            files: prevProduct.files.filter(file => file.id !== fileId)
+        }));
+    };
+
     const handleCategoryChange = (e) => {
-        setSelectedCategory(e.target.value); //선택한 카테고리1
-        setProduct({
-            ...product,
+        setSelectedCategory(e.target.value);
+        setProduct(prevProduct => ({
+            ...prevProduct,
             category1: e.target.value
-        });
+        }));
     };
 
     const handleSubCategoryChange = (e) => {
-        setSelectedSubCategory(e.target.value); //선택한 카테고리2
-        setProduct({
-            ...product,
-            category2: e.target.value,
-        });
+        setSelectedSubCategory(e.target.value);
+        setProduct(prevProduct => ({
+            ...prevProduct,
+            category2: e.target.value
+        }));
     };
 
     const handleSubSubCategoryChange = (e) => {
-        setProduct({
-            ...product,
+        setProduct(prevProduct => ({
+            ...prevProduct,
             category3: e.target.value
-        });
+        }));
     };
-    
-    //상품상태
+
     const handleStatusChange = (status) => {
-        setProduct({
-            ...product,
+        setProduct(prevProduct => ({
+            ...prevProduct,
             status: status
-        });
+        }));
     };
 
     const submitProduct = (e) => {
         e.preventDefault();
-        
-        console.log('전송할 데이터:', product); // 데이터 확인
-    
+
+        const formData = new FormData();
+        formData.append('name', product.name);
+        formData.append('description', product.description);
+        formData.append('price', product.price);
+        formData.append('dealingStatus', product.dealingStatus);
+        formData.append('status', product.status);
+        formData.append('desiredArea', product.desiredArea);
+        formData.append('category1', product.category1);
+        formData.append('category2', product.category2);
+        formData.append('category3', product.category3);
+
+        product.dealingType.forEach(type => {
+            formData.append('dealingType', type);
+        });
+
+        product.files.forEach(file => {
+            formData.append('files', file.file);
+        });
+
         axios({
             method: 'post',
             url: `http://localhost:8088/product/write/${userId}`,
             headers: {
                 "Content-Type": 'multipart/form-data',
             },
-            data: product, 
+            data: formData,
         })
         .then(response => {
             const { data, status } = response;
@@ -173,10 +217,48 @@ const ProductCreate = () => {
         });
     };
 
+
+    
+
     return (
         <>
+        {
+            isLogin && roles.isUser &&
+            <>
             <Header />
             <Form onSubmit={submitProduct} className={styles.productCreateBody}>
+                <Form.Group className="mb-3">
+                    <Form.Label>Attach files:</Form.Label>
+                    <Form.Control
+                        type="file"
+                        multiple
+                        onChange={handleFileChange}
+                    />
+                </Form.Group>
+                <div className="mb-3">
+                    <ListGroup>
+                        {product.files.map(file => (
+                            <ListGroup.Item key={file.id}>
+                                <Row>
+                                    <Col>
+                                        <span>{file.name}</span>
+                                    </Col>
+                                    <Col className="text-end">
+                                        <Button
+                                            variant="danger"
+                                            onClick={() => handleFileRemove(file.id)}
+                                        >
+                                            삭제
+                                        </Button>
+                                    </Col>
+                                </Row>
+                            </ListGroup.Item>
+                        ))}
+                    </ListGroup>
+                </div>
+
+                {/* 상품명, 카테고리, 가격 등 기존 폼 요소들 */}
+
                 <Form.Group className={styles.productName} controlId="formBasicTitle">
                     <Form.Label>상품명</Form.Label>
                     <Form.Control
@@ -233,7 +315,7 @@ const ProductCreate = () => {
                         </Form.Control>
                     </div>
                 </Form.Group>
-    
+
                 <Form.Group className={styles.productPrice} controlId="formBasicPrice">
                     <Form.Label>가격</Form.Label>
                     <img src={price} alt='가격 아이콘' />
@@ -257,7 +339,7 @@ const ProductCreate = () => {
                         name='desiredArea'
                     />
                 </Form.Group>
-    
+
                 <Form.Group className={styles.productInfo} controlId="formBasicDescription">
                     <Form.Label>상품 설명</Form.Label>
                     <Form.Control
@@ -270,8 +352,7 @@ const ProductCreate = () => {
                     />
                     <Form.Label>0/1000</Form.Label>
                 </Form.Group>
-    
-                {/* 상품 상태 */}
+
                 <div className={styles.statusTitle}>상품상태</div>
                 <div className={styles.statusButtonGroup}>
                     <button
@@ -289,8 +370,6 @@ const ProductCreate = () => {
                         중고
                     </button>
                 </div>
-
-
 
                 <Form.Group>
                     <Form.Label>거래 방법</Form.Label>
@@ -322,10 +401,12 @@ const ProductCreate = () => {
                         </label>
                     </div>
                 </Form.Group>
-    
+
                 <button className={styles.registerButton} type='submit'>등록하기</button>
             </Form>
             <Footer/>
+            </>
+        }
         </>
     );
 };

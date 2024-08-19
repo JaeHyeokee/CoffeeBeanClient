@@ -13,20 +13,17 @@ const ProductList = () => {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [loading, setLoading] = useState(true);
-    //페이지
     const [totalPages, setTotalPages] = useState(1);
     const [currentPage, setCurrentPage] = useState(1);
-    //카테고리 평균, 최소, 최대 가격
     const [priceInfo, setPriceInfo] = useState({
         averagePrice: 0.0,
         minPrice: 0.0,
         maxPrice: 0.0,
         productCount: 0
     });
-    //가격필터 
     const [minPriceFilter, setMinPriceFilter] = useState('');
     const [maxPriceFilter, setMaxPriceFilter] = useState('');
-    
+
     const { category, subcategory, subsubcategory } = useParams();
 
     const location = useLocation();
@@ -57,32 +54,35 @@ const ProductList = () => {
                     setProducts(response.data);
                 }
             } catch (error) {
-                console.error('에러', error);
+                console.error('상품 데이터 가져오기 실패:', error);
             } finally {
                 setLoading(false);
             }
         };
-
+    
         const fetchPriceInfo = async () => {
             try {
                 const response = await axios.get('http://localhost:8088/product/priceInfo', {
-                    params: { category2: subcategory || '' }
+                    params: {
+                        category1: category,
+                        category2: subcategory,
+                        category3: subsubcategory
+                    }
                 });
                 setPriceInfo(response.data);
             } catch (error) {
                 console.error(error);
             }
         };
-
-
+        
+    
         fetchProducts();
         fetchPriceInfo();
     }, [keyword, category, subcategory, subsubcategory]);
 
     useEffect(() => {
         if (Array.isArray(products)) {
-            //가격필터
-            const minPrice = parseFloat(minPriceFilter) || 0 ;
+            const minPrice = parseFloat(minPriceFilter) || 0;
             const maxPrice = parseFloat(maxPriceFilter) || Infinity;
             const filtered = products.filter(product => {
                 const productPrice = product.price;
@@ -90,7 +90,7 @@ const ProductList = () => {
                     (category ? product.category1 === category : true) &&
                     (subcategory ? product.category2 === subcategory : true) &&
                     (subsubcategory ? product.category3 === subsubcategory : true) &&
-                    (productPrice >= minPrice && productPrice <= maxPrice) // 가격범위 필터링
+                    (productPrice >= minPrice && productPrice <= maxPrice)
                 );
             });
             setFilteredProducts(filtered);
@@ -108,8 +108,6 @@ const ProductList = () => {
 
     const currentItems = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
-    
-
     return (
         <>
             <Header />
@@ -125,7 +123,7 @@ const ProductList = () => {
                             <td>
                                 <div className={styles.category1Result}>
                                     <p>전체</p>
-                                    <p>&gt; {category}</p> 
+                                    <p>&gt; {category}</p>
                                     {subcategory && <p>&gt; {subcategory}</p>}
                                     {subsubcategory && <p>&gt; {subsubcategory}</p>}
                                 </div>
@@ -138,10 +136,27 @@ const ProductList = () => {
                             </td>
                             <td>
                                 <div className={styles.category2Result}>
-                                    <input type='number' className={styles.productInputPrice} placeholder=' 최소가격' value={minPriceFilter} onChange={(e) => setMinPriceFilter(e.target.value)}/>
+                                    <input
+                                        type='number'
+                                        className={styles.productInputPrice}
+                                        placeholder=' 최소가격'
+                                        value={minPriceFilter}
+                                        onChange={(e) => setMinPriceFilter(e.target.value)}
+                                    />
                                     <p>~</p>
-                                    <input type='number' className={styles.productInputPrice} placeholder=' 최대가격' value={maxPriceFilter} onChange={(e) => setMaxPriceFilter(e.target.value)}/>
-                                    <button className={styles.category2ResultButton} onClick={handlePriceFilterClick}>적용</button>
+                                    <input
+                                        type='number'
+                                        className={styles.productInputPrice}
+                                        placeholder=' 최대가격'
+                                        value={maxPriceFilter}
+                                        onChange={(e) => setMaxPriceFilter(e.target.value)}
+                                    />
+                                    <button
+                                        className={styles.category2ResultButton}
+                                        onClick={handlePriceFilterClick}
+                                    >
+                                        적용
+                                    </button>
                                 </div>
                             </td>
                         </tr>
@@ -175,8 +190,8 @@ const ProductList = () => {
                 </div>
 
                 <div>
-                    <h1>분포도 - {subcategory}</h1>
-                    <PriceTrendChart category2={subcategory} />
+                    <h1>분포도 - </h1>
+                    <PriceTrendChart category1={category} category2={subcategory} category3={subsubcategory} />
                 </div>
 
                 <div className={styles.productList}>

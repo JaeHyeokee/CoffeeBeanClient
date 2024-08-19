@@ -4,7 +4,7 @@ import axios from 'axios';
 import Header from '../components/Header';
 import ChatFrame from '../chatting/ChatFrame';
 import x from '../../image/x.svg';
-import Swal from 'sweetalert2';
+import * as Swal from '../../apis/alert';
 import { Carousel } from 'react-bootstrap';
 import styles from '../../css/product/ProductDetail.module.css';
 import Chat from '../chatting/Chat';
@@ -17,7 +17,8 @@ const ProductDetail = () => {
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
 
-    const{userInfo} = useContext(LoginContext);
+    const{userInfo ,isLogin} = useContext(LoginContext);
+    const userId = userInfo ? userInfo.userId : null;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,16 +36,21 @@ const ProductDetail = () => {
     };
 
     const toggleChatSidebar = () => {
-        setIsChatSidebarOpen(!isChatSidebarOpen);
+        if (!isLogin) {
+            Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") });
+            navigate('/login');
+        } else {
+            setIsChatSidebarOpen(!isChatSidebarOpen);
+        }
     }
 
     const dip = () => {
-        Swal.fire({
-            title: '찜콩',
-            html: '<div style="display: flex; align-items: center; justify-content: center;"></div>',
-            showConfirmButton: false, // 확인 숨기기
-            width: '400px',
-        });
+        if (!isLogin) {
+            Swal.fire("로그인이 필요합니다.","찜하기 기능을 사용하시려면 로그인이 필요합니다.", "warning", () => { navigate("/login") })
+            navigate('/login');
+        } else{
+            Swal.fire("찜하셨습니다.");
+        }
     };
 
     //수정하기
