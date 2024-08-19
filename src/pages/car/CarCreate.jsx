@@ -42,7 +42,7 @@ const CarCreate = () => {
             Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") });
             navigate('/login');
         }
-    })
+    });
 
     const [selectedCategory, setSelectedCategory] = useState("");
     const [subCategoryOptions, setSubCategoryOptions] = useState([]);
