@@ -29,7 +29,6 @@ import Chat from './pages/chatting/Chat';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CoffeeBeanApp.css';
-import { register } from 'module';
 
 const CoffeeBeanApp = () => {
     return (
@@ -59,7 +58,6 @@ const CoffeeBeanApp = () => {
                     <Route path = '/ReviewDetail/:chatRoomId/:writerId' Component={ReviewDetail}/>
                     <Route path = '/ReviewList/writer/:userId' Component={WriterReviewList}/>
                     <Route path = '/ReviewList/recipient/:userId' Component={RecipientReviewList}/>
-                    <Route path = '/MyDealList' Component={MyDealList}/>
                     <Route path = '/UnRegister' Component={UnRegister}/>
 
                     <Route path = '/PostCreate/:userId' Component={PostCreate}/>
