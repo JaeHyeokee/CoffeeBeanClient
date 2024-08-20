@@ -1,0 +1,94 @@
+.sellListFilterFrame {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    font-size: 15px;
+    color: dimgray;
+}
+
+.filterButtonImg {
+    width: 25px;
+    margin-right: 10px;
+}
+
+.sellListFilter {
+    button {
+        border: 0;
+        color: dimgray;
+        font-size: 13px;
+        background-color: white;
+    }
+    button.active {
+        font-weight: bold;
+    }
+}
+
+.sellFilterButtonActive {
+    font-weight: bold !important;
+}
+
+.sellFilterButton {
+    font-weight: lighter;
+}
+
+.sellListInfo {
+    display: flex;
+    margin-top: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.sellInfoCard {
+    width: 18%;
+    height: 300px !important;
+    border: 0 !important;
+    cursor: pointer;
+}
+
+.sellInfoCard:hover .sellInfoCardImg{
+    transform: scale(1.1);
+}
+
+.sellInfoCardImgContainer {
+    overflow: hidden;
+    height: 55%;
+    border-radius: 5px;
+}
+
+.sellInfoCardImg {
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.sellInfoCardBody {
+    padding: 15px 5px !important;
+    height: 45%;
+}
+
+.sellInfoTitle {
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    display: -webkit-box;          /* Flexbox를 사용하여 상자 모델을 정의합니다. */
+    -webkit-line-clamp: 2;         /* 표시할 줄 수를 2로 제한합니다. */
+    -webkit-box-orient: vertical;  /* 상자의 방향을 수직으로 설정합니다. */
+    overflow: hidden;              /* 넘치는 내용은 숨깁니다. */
+    text-overflow: ellipsis;       /* 넘치는 텍스트를 생략 기호로 표시합니다. */
+    height: 50px;
+}
+
+.sellInfoPrice {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.sellInfoExtra {
+    color: #9CA3AF;
+    font-size: 13px;
+}
+
+.noSellListInfo {
+    margin: 50px 0;
+    text-align: center;
+    color: #9CA3AF;
+}

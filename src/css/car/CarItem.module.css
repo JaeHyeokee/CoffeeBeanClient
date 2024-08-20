@@ -1,0 +1,52 @@
+.carItem {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 0px;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out, filter 0.3s ease-in-out;
+    width: 1150px;
+    background-color: #fff;
+}
+
+.carItem:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    filter: brightness(90%);
+}
+
+.carItemImage {
+    width: 195px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 30px;
+}
+
+.carItemDetails {
+    display: flex;
+    flex-direction: column;
+}
+
+.carItemName {
+    font-size: 22px;
+    font-weight: bold;
+    margin: 15px 0 5px;
+}
+
+.carItemInfo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 550;
+    color: #555;
+}
+
+.carItemPrice {
+    font-size: 20px;
+    color: #e74c3c;
+    margin-top: 10px;
+    font-weight: bold;
+}

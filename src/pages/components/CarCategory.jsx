@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../css/components/CarCategory.css';
+import Style from '../../css/components/CarCategory.module.css';
 import { Link } from 'react-router-dom';
 
 const CarCategory = () => {
@@ -7,8 +7,8 @@ const CarCategory = () => {
     const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
     const carcategories = {
-        "국산차": ["제네시스", "현대", "기아", "쉐보레", "르노코리아"],
-        "수입차": ["벤츠", "BMW", "아우디", "테슬라", "포르쉐"]
+        "국산차": ["현대", "제네시스", "기아", "쉐보레", "르노코리아(삼성)", "KG모빌리티(쌍용)"],
+        "외제차": ["벤츠", "포르쉐", "BMW", "페라리", "롤스로이스", "벤틀리", "람보르기니", "테슬라", "랜드로버"]
     };
 
     const handleMouseEnter = () => setActive(true);
@@ -18,24 +18,28 @@ const CarCategory = () => {
     const handleSubcategoryMouseLeave = () => setSelectedSubCategory(null);
 
     return (
-        <div className='car-category' onMouseLeave={handleMouseLeave}>
+        <div className={Style.carCategory} onMouseLeave={handleMouseLeave}>
             <div
-                className='car-category-button'
+                className={Style.carCategoryButton}
                 onMouseEnter={handleMouseEnter}
             >
                 중고차
             </div>
 
             {active && (
-                <div className='drop-content'>
+                <div className={Style.dropContent}>
                     {Object.keys(carcategories).map((category) => (
-                        <div className='drop-section' key={category}>
+                        <div className={Style.dropSection} key={category}>
                             {/* 카테고리1 */}
-                            <h4 className='drop-title'>
-                                <Link to={`/CarList/${encodeURIComponent(category)}`}>{category}</Link>
+                            <h4 className={Style.dropTitle}>
+                                <Link to={`/CarList/${encodeURIComponent(category)}`}>
+                                <div>
+                                    {category}
+                                </div>
+                                </Link>
                             </h4>
                             {/* 카테고리2 */}
-                            <div className='dropdown-submenu-car'>
+                            <div className={Style.dropdownSubmenuCar}>
                                 <ul>
                                     {carcategories[category].map((subcategory) => (
                                         <li
@@ -44,7 +48,9 @@ const CarCategory = () => {
                                             onMouseLeave={handleSubcategoryMouseLeave}
                                         >
                                             <Link to={`/CarList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}`}>
+                                                <div>
                                                 {subcategory}
+                                                </div>
                                             </Link>
                                         </li>
                                     ))}

@@ -1,17 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
-import '../../css/components/Header.css';
+import Style from '../../css/components/Header.module.css';
+import MainLogo from '../../image/MainLogo.png';
+import SearchIcon from '../../image/SearchIcon.svg';
 import chat from '../../image/ChatIcon.svg';
 import my from '../../image/MyIcon.svg';
 import sale from '../../image/SaleIcon.svg';
 import x from '../../image/x.svg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ChatList from '../chatting/ChatList';
 import Chat from '../chatting/Chat';
 import Category from './Category';
 import CarCategory from './CarCategory';
-import { Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
-import { LoginContext } from '../../contexts/LoginContextProvider'
-
+import { Form, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
+import { LoginContext } from '../../contexts/LoginContextProvider';
+import * as Swal from '../../apis/alert'
 const Header = () => {
 
     //상태관리
@@ -19,11 +21,13 @@ const Header = () => {
     const [isSaleMenuOpen, setIsSaleMenuOpen] = useState(false);
     const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
     const [selectedChatRoomId, setSelectedChatRoomId] = useState(null); // 선택된 채팅방 상태
+    const [keyword, setKeyword] = useState(''); // 검색어 상태
+    const [searchType, setSearchType] = useState('Product'); // 검색 타입 상태
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const {isLogin, logout, userInfo } = useContext(LoginContext);
-    const userId = userInfo ? userInfo.userId : null; 
-
-    
+    const userId = userInfo ? userInfo.userId : null;
 
     // 사이드바 스크롤관리 (채팅하기 눌렀을때)
     /* useEffect(() => {
@@ -35,21 +39,25 @@ const Header = () => {
         return () => document.body.classList.remove('no-scroll');
     }, [isChatSidebarOpen]); */
 
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const savedKeyword = params.get('keyword') || '';
+        const savedSearchType = params.get('searchType') || 'Product';
+        
+        setKeyword(savedKeyword);
+        setSearchType(savedSearchType);
+    }, [location.search]);
+
     //메뉴 열고 닫는 토글
     const toggleChatSidebar = () => {
-        setIsChatSidebarOpen(!isChatSidebarOpen);
+        if (isLogin && userId) {
+            setIsChatSidebarOpen(!isChatSidebarOpen);
+        } else {
+            Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") });
+            navigate('/login');
+        }
         if (isSaleMenuOpen) setIsMyMenuOpen(false);
         if (isMyMenuOpen) setIsMyMenuOpen(false);
-    }
-    const toggleSaleMenu = () => {
-        setIsSaleMenuOpen(!isSaleMenuOpen);
-        if (isSaleMenuOpen) setIsMyMenuOpen(false);
-        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
-    };
-    const toggleMyMenu = () => {
-        setIsMyMenuOpen(!isMyMenuOpen);
-        if (isMyMenuOpen) setIsSaleMenuOpen(false);
-        if (isChatSidebarOpen) setIsChatSidebarOpen(false);
     }
 
     // 채팅방 선택 함수
@@ -62,55 +70,71 @@ const Header = () => {
         setSelectedChatRoomId(null);
     };
 
+    // 검색어 입력 시 상태 업데이트
+    const handleKeywordChange = (e) => {
+        setKeyword(e.target.value);
+    };
+
+    // 검색 타입 선택 시 상태 업데이트
+    const handleSearchTypeChange = (e) => {
+        setSearchType(e.target.value);
+    };
+
+    const submitSearch = (e) => {
+        e.preventDefault();
+        navigate(`/${searchType}List?searchType=${encodeURIComponent(searchType)}&keyword=${encodeURIComponent(keyword)}`);
+    };
+
     return (
         <>
             <header>
-                <div className='header-top'>
+                <div className={Style.headerTop}>
                     <Link to='/'>
-                        <img src='https://via.placeholder.com/200x80' className='logo' alt='로고' />
+                        <img src={MainLogo} className={Style.logo} alt='로고' />
                     </Link>
-                    <input type='text' className='search' placeholder='어떤 상품을 찾으시나요?' />
-                    <nav className="nav">
+                    <Form className={Style.search} onSubmit={submitSearch}>
+                        <img className={Style.searchIcon} src={SearchIcon} alt=''/>
+                        <input className={Style.searchInput} placeholder='어떤 상품을 찾으시나요? 키워드를 검색하세요!' value={keyword} onChange={handleKeywordChange}/>
+                        <Form.Select className={Style.searchSelect} value={searchType} onChange={handleSearchTypeChange}>
+                            <option value='Product'>중고물품</option>
+                            <option value='Car'>중고차</option>
+                        </Form.Select>
+                    </Form>
+                    <nav className={Style.nav}>
                         {/* 채팅하기 */}
-                        <div className='chat-menu'>
-                            <button className="nav-item" onClick={toggleChatSidebar}>
-                                <img src={chat} className="nav-icon" alt="아이콘" /> 채팅하기
+                        <div className={Style.navBarTop}>
+                            <button className={Style.navItem} onClick={toggleChatSidebar}>
+                                <img src={chat} alt="아이콘" />&nbsp;채팅하기
                             </button>
                         </div>
 
                         {/* 판매하기 */}
-                        <div>
-                            <Navbar>
-                                <img src={sale} className="nav-icon" alt="아이콘" />
-                                <NavDropdown title="판매하기" id="basic-nav-dropdown" className='drop'>
-                                    <NavDropdown.Item as={Link} to={`/ProductCreate/${userId}`}>중고물품</NavDropdown.Item>
-                                    <NavDropdown.Divider />
-                                    <NavDropdown.Item href={`/CarCreate/${userId}`}>중고차</NavDropdown.Item>
-                                </NavDropdown>
-                            </Navbar>
-                        </div>
+                        <Navbar className={Style.navBarTop}>
+                            <img src={sale} alt="아이콘" />
+                            <NavDropdown title="&nbsp;판매하기" id="basic-nav-dropdown" className={Style.dropdownMenu}>
+                                <NavDropdown.Item className={Style.dropdownMenuTab} as={Link} to={`/ProductCreate/${userId}`}>중고물품</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item className={Style.dropdownMenuTab} href={`/CarCreate/${userId}`}>중고차</NavDropdown.Item>
+                            </NavDropdown>
+                        </Navbar>
                         
                         { !isLogin ?
-                            <>
-                                {/* 로그인 */}
-                                <div>
-                                    <div className='chat-menu'>
-                                    <a className="nav-item" href="/Login">
-                                        <img src={my} className="nav-icon" alt="아이콘" /> 로그인
-                                    </a>
-                                </div>
-                                </div>
-                            </>
+                            // 로그인
+                            <div className={Style.navBarTop}>
+                                <a className={Style.navItem} href="/Login">
+                                    <img src={my} alt="아이콘" />&nbsp;로그인
+                                </a>
+                            </div>
                             :
                             <>
                                 {/* 마이 */}
                                 <div>
-                                    <Navbar>
-                                        <img src={my} className="nav-icon" alt="아이콘" />
-                                        <NavDropdown title="마이" id="basic-nav-dropdown" >
-                                            <NavDropdown.Item href="/MyPage">마이페이지</NavDropdown.Item>
+                                    <Navbar className={Style.navBarTop}>
+                                        <img src={my} alt="아이콘" />
+                                        <NavDropdown title={'\u00A0' + userInfo.userName} id="basic-nav-dropdown" className={Style.dropdownMenu}>
+                                            <NavDropdown.Item className={Style.dropdownMenuTab} href="/MyPage">마이페이지</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item onClick={ () => logout() }>로그아웃 {userInfo.userName}
+                                            <NavDropdown.Item className={Style.dropdownMenuTab} onClick={ () => logout() }>로그아웃( {userInfo.userName}:{userInfo.role} )
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </Navbar>
@@ -121,18 +145,17 @@ const Header = () => {
                 </div>
 
 
-                <div className='category-car-post'>
+                <div className={Style.navBarBottom}>
                     <Category />
                     <CarCategory />
-                    <Link to='/PostList'>게시판</Link>
+                    <Link className={Style.navBarBottomLink} to='/PostList'>게시판</Link>
                 </div>
 
-                {/* 사이드바 */}
                 {isChatSidebarOpen && (
                     <>
-                        <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
-                        <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
-                            <button className='close-button' onClick={toggleChatSidebar}><img src={x} alt='x' height={25} width={25} /></button> {/* 사이드바 닫기 버튼 */}
+                        <div className={`${Style.overlay} ${isChatSidebarOpen ? Style.overlayActive : ''}`} onClick={toggleChatSidebar}/>
+                        <div className={`${Style.chatSidebar} ${isChatSidebarOpen ? Style.chatSidebarOpen : ''}`}>
+                            <button className={Style.closeButton} onClick={toggleChatSidebar}> <img src={x} alt='x' height={25} width={25} /> </button>
                             {!selectedChatRoomId ? (
                                 <ChatList onSelectChatRoom={handleSelectChatRoom} />
                             ) : (

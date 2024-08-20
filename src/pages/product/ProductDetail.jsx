@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import x from '../../image/x.svg';
@@ -8,15 +8,20 @@ import { Carousel } from 'react-bootstrap';
 import styles from '../../css/product/ProductDetail.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import Chat from '../chatting/Chat';
+import Footer from '../components/Footer';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const ProductDetail = () => {
     const { id } = useParams();  // productId
     const [product, setProduct] = useState(null);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
+
+    const{userInfo ,isLogin} = useContext(LoginContext);
+    const userId = userInfo ? userInfo.userId : null;
+    const navigate = useNavigate();
     const [chatRoomExists, setChatRoomExists] = useState(false);
     const [chatRoomId, setChatRoomId] = useState(null); // 채팅방 ID 상태 추가
-    const { userInfo } = useContext(LoginContext);
 
     useEffect(() => {
         axios.get(`http://localhost:8088/product/detail/${id}`)
@@ -37,6 +42,7 @@ const ProductDetail = () => {
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
     };
+
 
     const checkChatRoomExists = async () => {
         try {
@@ -85,17 +91,54 @@ const ProductDetail = () => {
     };
 
     const dip = () => {
-        Swal.fire({
-            title: '찜콩',
-            html: '<div style="display: flex; align-items: center; justify-content: center;"></div>',
-            showConfirmButton: false,
-            width: '400px',
-        });
+        if (!isLogin) {
+            Swal.fire("로그인이 필요합니다.","찜하기 기능을 사용하시려면 로그인이 필요합니다.", "warning", () => { navigate("/login") })
+            navigate('/login');
+        } else{
+            Swal.fire("찜하셨습니다.");
+        }
     };
+
+    //수정하기
+    const handleUpdate = () => {
+        navigate(`/ProductUpdate/${id}`);
+    }
 
     if (!product) {
         return <p>상품을 찾을 수 없습니다.</p>;
     }
+
+    //상품을 올린 user와 로그인한 user가 같은지 비교
+    const isOwner = userInfo && product.user.userId === userInfo.userId;
+
+    const deleteProduct = () => {
+        Swal.fire({
+            title: '상품을 삭제하시겠습니까?',
+            text: '삭제된 상품은 복구되지 않습니다.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#000000',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`http://localhost:8088/product/delete/${id}`)
+                    .then((response) => {
+                        console.log('삭제 성공:', response);
+                        navigate(`/MyPage`);
+                    })
+                    .catch((error) => {
+                        Swal.fire('삭제 실패', '상품 삭제에 실패했습니다.', 'error');
+                        console.error('삭제 실패:', error);
+                    });
+            }
+        }).catch((error) => {
+            console.error('Swal.fire error:', error);
+        });
+    };
+    
+    
 
     return (
         <>
@@ -128,12 +171,17 @@ const ProductDetail = () => {
                                     <p>{product.dealingStatus}</p>
                                 </div>
                             </div>
-                            <div className={styles.chatDipButton}>
-                                <button className={styles.chatButton} onClick={toggleChatSidebar}>
-                                    채팅하기
-                                </button>
-                                <button className={styles.dipButton} onClick={dip}>찜하기</button>
-                            </div>
+                            {isOwner ? (    //상품 올린 user와 로그인한 user가 같다면
+                                <div className={styles.ownerActions}>
+                                    <button className={styles.editButton} onClick={handleUpdate}>수정하기</button>
+                                    <button className={styles.deleteButton} onClick={deleteProduct}>삭제하기</button>
+                                </div>
+                            ) : (
+                                <div className={styles.chatDipButton}>
+                                    <button className={styles.chatButton} onClick={toggleChatSidebar}>채팅하기</button>
+                                    <button className={styles.dipButton} onClick={dip}>찜하기</button>
+                                </div>
+                            )}
                         </div>
                     </section>
 
@@ -164,6 +212,7 @@ const ProductDetail = () => {
                     </>
                 )}
             </div>
+            <Footer/>
         </>
     );
 };
