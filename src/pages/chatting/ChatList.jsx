@@ -9,26 +9,25 @@ const ChatList = ({ onSelectChatRoom }) => {
 
   const { userInfo } = useContext(LoginContext);
 
-  useEffect(() => {
-      const storedUserId = userInfo.userId;
-      setUserId(storedUserId);        
-      console.log(storedUserId);
-      if (storedUserId) {
+useEffect(() => {
+    const storedUserId = userInfo.userId;
+    setUserId(storedUserId);        
+    if (storedUserId) {
         axios.get(`http://localhost:8088/chatRooms/user/${storedUserId}/with-last-message`)
-          .then(response => {
-            console.log(response.data); // 데이터 구조를 콘솔에 출력
-            setChatRooms(response.data);
-          })
-          .catch(error => {
-            console.error(error);
-          });
-        }
-  }, []);
+            .then(response => {
+                console.log(response.data); // 데이터 구조를 확인
+                setChatRooms(response.data);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+}, [userInfo.userId]);
 
   const getChatUserName = (chatRoom) => {
     const names = [];
     if (chatRoom.sellerId && chatRoom.sellerId.userName) {
-        names.push(chatRoom.sellerId.userName);
+        names.push(chatRoom.sellerId);
     }
     return names.length > 0 ? names.join(', ') : `비활성화 대화방`;
   };
@@ -46,10 +45,15 @@ const ChatList = ({ onSelectChatRoom }) => {
     } else {
         console.log("채팅방 나가기를 취소했습니다.");
     }
-};
+  };
 
-  
-
+  // 첫 번째 상품 이미지를 가져오는 함수
+  const firstProductImage = (chatRoom) => {
+    if (chatRoom.attachments && chatRoom.attachments.length > 0) {
+      return chatRoom.attachments[0].source;
+    }
+    return null;
+  }
   return (
     <div>
       <h2 className='chatName'>채팅방</h2>
@@ -62,9 +66,14 @@ const ChatList = ({ onSelectChatRoom }) => {
                     <div className='chatRoomContent'>
                         <button className='list' onClick={() => onSelectChatRoom(chatRoom.chatRoomId)}>
                             <div className='profile1'>
-                              <h5>프로필 사진</h5>
+                            <div>
+                              {firstProductImage(chatRoom) ? (
+                                  <img className='profile2'src={firstProductImage(chatRoom)} alt="상품 이미지" />
+                              ) : (
+                                  <p>상품 정보를 로드하는 중입니다...</p>
+                              )}
                             </div>
-                            <div>{chatRoom.isJoin}</div>
+                            </div>
                             <div className='chatList'>
                               <div className='userNameAndMessage'>
                                 <div className='userName'>
