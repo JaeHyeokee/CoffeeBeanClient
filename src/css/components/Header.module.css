@@ -1,0 +1,210 @@
+header {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #ddd;
+  padding: 0 20%;
+}
+
+.headerTop {
+  display: flex;
+  align-items: center;
+  padding: 30px 0 15px 0;
+  position: relative;
+}
+
+.logo {
+  width: 200px;
+  height: 50px;
+  margin-right: 20px;
+}
+
+/* 검색 */
+.search {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0 10px 15px;
+  border: 1px solid #f0f0f0;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  margin-right: 20px;
+  outline: none;
+  height: 50px;
+}
+
+.searchIcon {
+  padding: 3px 0 3px 0;
+}
+
+.searchInput {
+  border: 0;
+  flex: 1;
+  margin: 0 7px;
+  background-color: transparent;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: #9CA3AF;
+}
+
+.searchSelect {
+  border: 0 !important;
+  background-color: transparent !important;
+  width: 100px !important;
+  padding: 3px 0 3px 12px !important;
+  font-size: 15px !important;
+  align-items: center !important;
+  color: #9CA3AF !important;
+  option {
+    color: black;
+    padding: 5px 0;
+  }
+  option:hover {
+    background-color: #0DCC5A !important;
+  }
+}
+
+.searchSelect:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.navBarTop {
+  padding: 15px 0 !important;
+}
+
+.navItem {
+  display: flex;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  color: black;
+  background-color: white;
+  text-decoration: none;
+  align-items: center !important;
+}
+
+/* 드롭다운 */
+/* 드롭다운 화살표 없애기 */
+.navBarTop a::after {
+  display: none; 
+}
+
+.navBarTop .dropdownMenu {
+  font-weight: bold;
+  font-size: 15px;
+  div {
+    position: absolute;
+    left: -50px !important;
+    top: 30px !important;
+    max-width: 50px !important;
+    justify-content: center;
+    width: 70px !important;
+    hr {
+      margin-right: 10%;
+      margin-left: 10%;
+      border-color: #EBEBEB;
+    }
+  }
+}
+
+.navBarTop .dropdownMenu .dropdownMenuTab {
+  color: black;
+  text-align: center;
+  font-size: 13px;
+  padding: 0;
+}
+
+.navBarTop .dropdownMenu .dropdownMenuTab:hover {
+  color: #0DCC5A;
+  background-color: white;
+}
+
+.navBarBottom {
+  display: flex;
+  gap: 50px;
+  justify-content: center;
+}
+
+.navBarBottomLink {
+  width: 120px;
+  text-align: center;
+  align-content: center;
+  text-decoration: none;
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+  padding-bottom: 10px;
+  border-bottom: 2px solid transparent;
+}
+
+.navBarBottomLink:hover {
+  border-bottom: 2px solid black;
+}
+
+/* 채팅 */
+/* 사이드바 */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease;
+  z-index: 10;
+}
+
+.overlayActive {
+  background-color: rgba(0, 0, 0, 0.5); /* 사이드바 열었을때 */
+}
+
+/* 사이드바 스타일 */
+.chatSidebar {
+  position: fixed;
+  top: 0;
+  right: -300px; /* 화면 밖에 배치하여 숨김 */
+  width: 30%;
+  height: 100%;
+  background-color: #fff;
+  transition: right 0.3s ease;
+  z-index: 20;
+}
+
+.chatSidebarOpen {
+  right: 0; /* 오른쪽에 나타나게 */
+}
+
+/* 닫기 버튼 스타일 */
+.closeButton {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 25;
+}
+
+.loadingBar {
+  display: block;
+  border-radius: 0 !important;
+  height: 2px !important;
+  background-color: white !important;
+}
+
+.loadedBar {
+  display: none;
+}
+
+.loadingBar div {
+  background: #0DCC5A;
+}

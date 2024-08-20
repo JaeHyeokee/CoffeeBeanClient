@@ -1,0 +1,117 @@
+.category {
+    position: relative;
+}
+
+.categoryButton {
+    padding: 10px 20px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    width: 120px;
+    text-align: center;
+    border-bottom: 2px solid transparent;
+}
+
+.categoryButton:hover {
+    border-bottom: 2px solid black;
+}
+
+.dropdownContent {
+    display: flex;
+    position: absolute;
+    top: 102%;
+    left: -285%;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .08);
+    width: 955%;
+    border: 0;
+    z-index: 1000;
+    flex-wrap: wrap;
+}
+
+.dropdownSection {
+    flex: 1 1 20%;
+}
+
+.dropdownSectionBet {
+    flex: 1 1 20%;
+    background-color: #F4F4F4;
+}
+
+.dropdownTitle {
+    margin: 0;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.dropdownTitle:hover {
+    background-color: #E6E6E6;
+}
+
+.dropdownTitle a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.dropdownSubmenu {
+    width: 100%;
+}
+
+.dropdownSubmenu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdownSubmenu .dropdownSubmenuLi {
+    padding-top: 11px;
+    padding-bottom: 11px;
+    font-size: 13px;
+    font-weight: bold;
+    text-indent: 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdownSubmenu a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.dropdownSubmenu .dropdownSubmenuLi:hover {
+    background-color: #E6E6E6;
+}
+
+.dropdownSubmenu3 {
+    position: relative;
+    top: 0;
+    background-color: white;
+    display: none;
+    margin-top: 11px;
+}
+
+.dropdownSubmenu3 ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdownSubmenu3 li {
+    padding: 10px;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.dropdownSubmenu3 li:hover {
+    background-color: #E6E6E6;
+}
+
+.dropdownSubmenu .dropdownSubmenuLi:hover {
+    padding-bottom: 0;
+    .dropdownSubmenu3 {
+        display: block;
+    }
+}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../../css/components/Category.css';
+import Style from '../../css/components/Category.module.css';
 import { Link } from 'react-router-dom';
 
 const Category = () => {
@@ -41,41 +41,50 @@ const Category = () => {
     const handleSubcategoryMouseLeave = () => setActiveSubcategory(null);
 
     return (
-        <div className='category' onMouseLeave={handleMouseLeave}>
+        <div className={Style.category} onMouseLeave={handleMouseLeave}>
             <div
-                className='category-button'
+                className={Style.categoryButton}
                 onMouseEnter={handleMouseEnter}
             >
                 중고물품
             </div>
             {active && (
-                <div className='dropdown-content' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-                    {Object.keys(categories).map((category) => (
-                        <div className='dropdown-section' key={category}>
+                <div className={Style.dropdownContent} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                    {Object.keys(categories).map((category, index) => (
+                        <div className={index % 2 === 0 ? Style.dropdownSection : Style.dropdownSectionBet} key={category}>
                             {/* 카테고리1 */}
-                            <h4 className='dropdown-title'>
-                                <Link to={`/ProductList/${encodeURIComponent(category)}`}>{category}</Link>
+                            <h4 className={Style.dropdownTitle}>
+                                <Link to={`/ProductList/${encodeURIComponent(category)}`}>
+                                <div>
+                                {category}
+                                </div>
+                                </Link>
                             </h4>
                             {/* 카테고리2 */}
-                            <div className='dropdown-submenu'>
+                            <div className={Style.dropdownSubmenu}>
                                 <ul>
                                     {categories[category].map((subcategory) => (
                                         <li
+                                            className={Style.dropdownSubmenuLi}
                                             key={subcategory}
                                             onMouseEnter={() => handleSubcategoryMouseEnter(subcategory)}
                                             onMouseLeave={handleSubcategoryMouseLeave}
                                         >
                                             <Link to={`/ProductList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}`}>
+                                                <div>
                                                 {subcategory}
+                                                </div>
                                             </Link>
                                             {/* 카태고리3 */}
                                             {activeSubcategory === subcategory && subcategories[subcategory] && subcategories[subcategory].length > 0 && (
-                                                <div className='dropdown-submenu-3'>
+                                                <div className={Style.dropdownSubmenu3}>
                                                     <ul>
                                                         {subcategories[subcategory].map((subsubcategory) => (
                                                             <li key={subsubcategory}>
                                                                 <Link to={`/ProductList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}/${encodeURIComponent(subsubcategory)}`}>
+                                                                    <div>
                                                                     {subsubcategory}
+                                                                    </div>
                                                                 </Link>
                                                             </li>
                                                         ))}

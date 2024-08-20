@@ -4,6 +4,7 @@ import '../../css/post/PostList.css'
 import { Link, useLocation } from 'react-router-dom';
 import PostItem from '../components/PostItem';
 import axios from 'axios';
+import Footer from '../components/Footer';
 
 const PostList = ({ initialContentType }) => {
     const location = useLocation(); //현재 URL 정보
@@ -66,6 +67,7 @@ const PostList = ({ initialContentType }) => {
 </div>
             <Link to={`/PostCreate/${userId}`}>게시물 작성하기</Link>
         </div>
+        <Footer/>
         </>
     );
 };

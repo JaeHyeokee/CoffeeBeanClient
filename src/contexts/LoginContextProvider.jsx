@@ -17,13 +17,16 @@ const LoginContextProvider = ({children}) => {
   // Context 에서 다룰 '상태'
 
   // 로그인 여부
-  const [isLogin, setIsLogin] = useState(false);
+  // const [isLogin, setIsLogin] = useState(false);
+  const [ isLogin, setIsLogin ] = useState(JSON.parse(localStorage.getItem("isLogin")) || false);
 
   // 유저 정보
-  const [userInfo, setUserInfo] = useState({});
+  // const [userInfo, setUserInfo] = useState({});
+  const [ userInfo, setUserInfo ] = useState(JSON.parse(localStorage.getItem("userInfo")) || {});
 
   // 권한 정보
-  const [roles, setRoles] = useState({ isUser: false, isAdmin: false}); 
+  // const [roles, setRoles] = useState({ isMember: false, isAdmin: false });
+  const [ roles, setRoles ] = useState(JSON.parse(localStorage.getItem("roles")) || {isUser: false, isAdmin: false});
 
   // 로그인 체크
   const loginCheck = async (isAuthPage = false) => {
@@ -180,7 +183,8 @@ const LoginContextProvider = ({children}) => {
     setIsLogin(true);
 
     // 유저 정보 세팅
-    setUserInfo({userId, userName, nickName, email, regDate, reliability, role});
+    const updatedUserInfo = {userId, userName, nickName, email, regDate, reliability, role}
+    setUserInfo(updatedUserInfo);
 
     // 권한정보 세팅
     // role => 'ROLE_USER', 'ROLE_USER,ROLE_ADMIN'  <- 하나의 문자열로 되어 있는 형태
@@ -190,6 +194,11 @@ const LoginContextProvider = ({children}) => {
       role === 'ROLE_ADMIN' && (updatedRoles.isAdmin = true);
     });
     setRoles(updatedRoles);
+
+    // 새로고침시 Context로 리로딩
+    localStorage.setItem("isLogin", "true");
+    localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
+    localStorage.setItem("roles", JSON.stringify(updatedRoles));
 
   };
 

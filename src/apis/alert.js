@@ -35,12 +35,16 @@ export const alert = (title, text, icon, callback) => {
     
   };
 
-  // 로그인 모달 만들어 보자!
-  export const login = (title, text, icon, callback) => {
+  // fire 
+  export const fire = (title, text, icon, callback) => {
     MySwal.fire({
-        
-    })
-} 
+      title: title,
+      text: text,
+      icon: icon,
+      cancelButtonColor: '#d33',
+      confirmButtonColor: '#3085d6',
+    }).then(callback);
+  };
 
   
   

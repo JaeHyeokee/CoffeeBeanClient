@@ -1,0 +1,77 @@
+.carCategory {
+    position: relative;
+}
+
+.carCategoryButton {
+    padding: 10px 20px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    width: 120px;
+    text-align: center;
+    border-bottom: 2px solid transparent;
+}
+
+.carCategoryButton:hover {
+    border-bottom: 2px solid black;
+}
+
+.dropContent {
+    display: flex;
+    position: absolute;
+    top: 102%;
+    left: -65%;
+    background-color: rgb(255, 255, 255);
+    width: 230%;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, .08);
+    z-index: 1000;
+    flex-wrap: wrap;
+}
+
+.dropSection {
+    flex: 1 1 20%; 
+}
+
+.dropTitle {
+    margin: 0;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.dropTitle:hover {
+    background-color: #E6E6E6;
+}
+
+.dropTitle a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.dropdownSubmenuCar {
+    width: 100%;
+}
+
+.dropdownSubmenuCar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdownSubmenuCar li {
+    padding: 10px 20px;
+    font-size: 13px;
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdownSubmenuCar a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.dropdownSubmenuCar li:hover {
+    background-color: #E6E6E6;
+}
