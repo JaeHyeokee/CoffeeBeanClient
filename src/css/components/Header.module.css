@@ -172,7 +172,7 @@ header {
   position: fixed;
   top: 0;
   right: -300px; /* 화면 밖에 배치하여 숨김 */
-  width: 30%;
+  width: 40%;
   height: 100%;
   background-color: #fff;
   transition: right 0.3s ease;

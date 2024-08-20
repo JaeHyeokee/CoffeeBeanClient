@@ -9,7 +9,6 @@ import styles from '../../css/product/ProductDetail.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import Chat from '../chatting/Chat';
 import Footer from '../components/Footer';
-import { LoginContext } from '../../contexts/LoginContextProvider';
 import moment from 'moment';
 
 const ProductDetail = () => {
@@ -274,22 +273,15 @@ const ProductDetail = () => {
                     </section>
                 </div>
 
-
-
-
-                {/* 사이드바 */}
                 {isChatSidebarOpen && (
                     <>
-                        <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={() => setIsChatSidebarOpen(false)} />
-                        <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
-                            <button className='close-button' onClick={() => setIsChatSidebarOpen(false)}>
-                                <img src={x} alt='x' height={25} width={25} />
-                            </button>
-                            <Chat chatRoomId={chatRoomId} /> {/* 채팅방 ID를 Chat 컴포넌트에 전달 */}
+                        <div className={`${styles.overlay} ${isChatSidebarOpen ? styles.overlayActive : ''}`} onClick={() => setIsChatSidebarOpen(false)}/>
+                        <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? styles.chatSidebarOpen : ''}`}>
+                            <button className={styles.closeButton} onClick={() => setIsChatSidebarOpen(false)}> <img src={x} alt='x' height={25} width={25} /> </button>
+                            <Chat chatRoomId={chatRoomId} />
                         </div>
                     </>
                 )}
-
 
 
             </div>
