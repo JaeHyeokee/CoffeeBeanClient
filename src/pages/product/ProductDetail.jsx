@@ -5,21 +5,22 @@ import Header from '../components/Header';
 import ChatFrame from '../chatting/ChatFrame';
 import x from '../../image/x.svg';
 import Swal from 'sweetalert2';
-import { Carousel } from 'react-bootstrap';
+import { Card, Carousel, ProgressBar } from 'react-bootstrap';
 import styles from '../../css/product/ProductDetail.module.css';
 import Chat from '../chatting/Chat';
 import Footer from '../components/Footer';
 import { LoginContext } from '../../contexts/LoginContextProvider';
+import moment from 'moment';
 
 const ProductDetail = () => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
-
     const{userInfo ,isLogin} = useContext(LoginContext);
-    const userId = userInfo ? userInfo.userId : null;
+    const userId = userInfo ?.userId;
     const navigate = useNavigate();
+    const [ listArr, setListArr ] = useState([]);
 
     useEffect(() => {
         axios.get(`http://localhost:8088/product/detail/${id}`)
@@ -30,6 +31,29 @@ const ProductDetail = () => {
                 console.error('실패', error);
             });
     }, [id]);
+
+    useEffect(() => {
+        if (product) {
+            /* axios.get(`http://localhost:8088/car/category2/${car.category2}`)
+                .then(response => {
+                    setRecommendedCars(response.data);
+                })
+                .catch(error => {
+                    console.error('추천 차량 불러오기 실패', error);
+                }); */
+            axios({
+                method: "get",
+                url: `http://localhost:8088/sell/product/sortedlist/${product.user.userId}/1/판매중`,
+            })
+            .then(response => {
+                if(Array.isArray(response.data)) {
+                    setListArr(response.data.slice(0, 3));
+                } else {
+                    console.log('데이터 로드 실패');
+                }
+            });
+        }
+    }, [product]);
 
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
@@ -91,8 +115,32 @@ const ProductDetail = () => {
             console.error('Swal.fire error:', error);
         });
     };
-    
-    
+
+    const formatRegDate = (regDate) => {
+        const now = moment();
+        const date = moment(regDate);
+
+        const diffSeconds = now.diff(date, 'seconds');
+        const diffMinutes = now.diff(date, 'minutes');
+        const diffHours = now.diff(date, 'hours');
+        const diffDays = now.diff(date, 'days');
+
+        if (diffSeconds < 60) {
+            return `${diffSeconds}초전`;
+        } else if (diffMinutes < 60) {
+            return `${diffMinutes}분전`;
+        } else if (diffHours < 24) {
+            return `${diffHours}시간전`;
+        } else if (diffDays < 30) {
+            return `${diffDays}일전`;
+        } else {
+            return date.format('YYYY-MM-DD');
+        }
+    };
+
+    const goDetailPage = (elem) => {
+        navigate('/ProductDetail/' + elem.carId);
+    };
 
     return (
         <>
@@ -111,6 +159,7 @@ const ProductDetail = () => {
                             <p>{product.category1} &gt; {product.category2} &gt; {product.category3} </p>
                             <h1>{product.name}</h1>
                             <h1>가격: {product.price.toLocaleString()}원</h1>
+                            <h5 className={styles.productpostinfo}>{formatRegDate(product.regDate)}·조회{product.viewCount}</h5>
                             <div className={styles.productInfoBottom}>
                                 <div className={styles.productInfoBottomDiv}>
                                     <p>제품상태</p>
@@ -139,19 +188,53 @@ const ProductDetail = () => {
                         </div>
                     </section>
 
+
+
                     <section className={styles.productdetailBottom}>
                         <div className={styles.productInfoDetail}>
                             <p>상품정보</p>
                             <div>{product.description}</div>
                         </div>
 
+
+
+
+
                         <div className={styles.userInfo}>
-                            <p>가게정보</p>
-                            <div>id:{product.user.userId}</div>
-                            <div>name:{product.user.userName}</div>
+                            <div className={styles.userInfodiv}>가게정보</div>
+                            <div className={styles.nickNameAndProfileImgFrame}>
+                                <span className={styles.sellerNickName}>{product.user.userName}</span>
+                                <img className={styles.sellerProfileImg} src={'https://img2.joongna.com/common/Profile/Default/profile_f.png'} alt='프로필'/>
+                            </div>
+                            <div>
+                                <div className={styles.trustIndexFrame}>
+                                    <div className={styles.sellerTrustIndex}>
+                                        <p className={styles.sellerTrustIndexLabel}>신뢰지수</p>
+                                        <p className={styles.sellerTrustIndexFigure}>{product.user.reliability}</p>
+                                    </div>
+                                    <p className={styles.maxTrustIndex}>1,000</p>
+                                </div>
+                                <ProgressBar className={styles.trustIndexBar} now={product.user.reliability / 10}/>
+                            </div>
+                            <div className={styles.sellListFrame}>
+                                {listArr.map(elem => (
+                                    <Card className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
+                                        <div className={styles.sellInfoCardImgContainer}>
+                                            <Card.Img className={styles.sellInfoCardImg} src={elem.fileList[0].source}/>
+                                        </div>
+                                        <Card.Body className={styles.sellInfoCardBody}>
+                                            <Card.Title className={styles.sellInfoTitle}>{elem.name}</Card.Title>
+                                            <Card.Text className={styles.sellInfoPrice}>{elem.price.toLocaleString()}원</Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                ))}
+                            </div>
                         </div>
                     </section>
                 </div>
+
+
+
 
                  {/* 사이드바 */}
                  {isChatSidebarOpen && (
@@ -163,6 +246,9 @@ const ProductDetail = () => {
                         </div>
                     </>
                 )}
+
+
+
             </div>
             <Footer/>
         </>
