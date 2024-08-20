@@ -120,6 +120,16 @@
     margin-right: 10px;
 }
 
+.toggleButton {
+    background-color: white;
+    border-style: none;
+}
+
+.icon {
+    width: 20px;
+    margin-right: 10px;
+}
+
 .productList {
     margin-top: 20px;
 }

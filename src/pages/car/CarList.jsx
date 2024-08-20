@@ -5,6 +5,8 @@ import axios from 'axios';
 import CarItem from '../components/CarItem';
 import styles from '../../css/car/CarList.module.css';
 import Footer from '../components/Footer';
+import Soldout from '../../image/Soldout.png'
+import UnSoldout from '../../image/UnSoldout.png'
 
 const ITEMS_PER_PAGE = 20;
 const PAGES_PER_GROUP = 10; // 한 번에 표시할 페이지 버튼 수
@@ -22,8 +24,9 @@ const CarList = () => {
         maxPrice: 0.0,
         carCount: 0    
     });
-    const [minPriceFilter, setMinPriceFilter] = useState('');   //최소가격 필터 저장 
-    const [maxPriceFilter, setMaxPriceFilter] = useState('');   //최대가격 필터 저장
+    const [minPriceFilter, setMinPriceFilter] = useState('');   //최소가격 필터 상태 저장 
+    const [maxPriceFilter, setMaxPriceFilter] = useState('');   //최대가격 필터 상태 저장
+    const [includeSoldOut, setIncludeSoldOut] = useState(false); //판매완료 상품 포함 상태 저장
 
     const location = useLocation();
     const keyword = new URLSearchParams(location.search).get('keyword') || '';
@@ -91,26 +94,41 @@ const CarList = () => {
     }, [keyword, category, subcategory]);
 
     //사용자가 설정하는 가격 필터
-    const handlePriceFilterClick = () => {
-        setCurrentPage(1);
+    useEffect(() => {
         const minPrice = parseFloat(minPriceFilter) || 0;
         const maxPrice = parseFloat(maxPriceFilter) || Infinity;
-        
+
         const filtered = cars.filter(car => {
             const carPrice = car.price;
+            const isSoldOut = car.dealingStatus === '판매완료';
+
             return (
                 (category ? car.category1 === category : true) &&
                 (subcategory ? car.category2 === subcategory : true) &&
-                (carPrice >= minPrice && carPrice <= maxPrice)
+                (carPrice >= minPrice && carPrice <= maxPrice) &&
+                (includeSoldOut || !isSoldOut)
             );
         });
-        
+
         setFilteredCars(filtered);
         setTotalPages(Math.ceil(filtered.length / ITEMS_PER_PAGE));
+        setCurrentPage(1); // 필터링 시 페이지를 1로 리셋
+    }, [cars, minPriceFilter, maxPriceFilter, includeSoldOut, category, subcategory]);
+
+    const handlePriceFilterClick = () => {
+        setCurrentPage(1);
     };
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // 부드럽게 스크롤 이동
+        });
+    };
+
+    const handleToggleSoldOut = () => {
+        setIncludeSoldOut(prev => !prev);
     };
 
     const currentItems = filteredCars.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
@@ -216,7 +234,20 @@ const CarList = () => {
                                 <h2>옵션</h2>
                             </td>
                             <td>
-                                <div className={styles.category3Result}>판매완료 상품 포함</div>
+                                <div className={styles.category3Result}>
+                                <button 
+                                    className={styles.toggleButton}
+                                    onClick={handleToggleSoldOut}
+                                >
+                                    <img 
+                                        src={includeSoldOut ? Soldout : UnSoldout} 
+                                        alt={includeSoldOut ? 'Exclude Sold Out' : 'Include Sold Out'} 
+                                        className={styles.icon}
+                                    />
+                                    {includeSoldOut ? '판매완료 상품 제외' : '판매완료 상품 포함'}
+                                </button>
+
+                                </div>
                             </td>
                         </tr>
 
