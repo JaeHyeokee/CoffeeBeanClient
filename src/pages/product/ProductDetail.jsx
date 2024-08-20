@@ -2,17 +2,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
-import ChatFrame from '../chatting/ChatFrame';
 import x from '../../image/x.svg';
-import * as Swal from '../../apis/alert';
+import Swal from 'sweetalert2';
 import { Carousel } from 'react-bootstrap';
 import styles from '../../css/product/ProductDetail.module.css';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 import Chat from '../chatting/Chat';
 import Footer from '../components/Footer';
-import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const ProductDetail = () => {
-    const { id } = useParams();
+    const { id } = useParams();  // productId
     const [product, setProduct] = useState(null);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
@@ -20,6 +19,8 @@ const ProductDetail = () => {
     const{userInfo ,isLogin} = useContext(LoginContext);
     const userId = userInfo ? userInfo.userId : null;
     const navigate = useNavigate();
+    const [chatRoomExists, setChatRoomExists] = useState(false);
+    const [chatRoomId, setChatRoomId] = useState(null); // 채팅방 ID 상태 추가
 
     useEffect(() => {
         axios.get(`http://localhost:8088/product/detail/${id}`)
@@ -27,22 +28,66 @@ const ProductDetail = () => {
                 setProduct(response.data);
             })
             .catch(error => {
-                console.error('실패', error);
+                console.error('상품 조회 실패', error);
             });
     }, [id]);
+
+    useEffect(() => {
+        if (product) {
+            checkChatRoomExists();
+        }
+    }, [product]);
 
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
     };
 
-    const toggleChatSidebar = () => {
-        if (!isLogin) {
-            Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") });
-            navigate('/login');
-        } else {
-            setIsChatSidebarOpen(!isChatSidebarOpen);
+
+    const checkChatRoomExists = async () => {
+        try {
+            const sellerId = product.user.userId;
+            const buyerId = userInfo.userId;
+
+            const response = await axios.get(`http://localhost:8088/chatRooms/check`, {
+                params: { buyerId, sellerId, productId: id } // productId 추가
+            });
+
+            setChatRoomExists(response.data.exists);
+            if (response.data.exists) {
+                setChatRoomId(response.data.chatRoomId); // 채팅방 ID 저장
+            }
+        } catch (error) {
+            console.error("채팅방 존재 여부 확인 실패", error);
         }
-    }
+    };
+
+    const toggleChatSidebar = async () => {
+        if (chatRoomExists) {
+            setIsChatSidebarOpen(true);
+            return;
+        }
+
+        try {
+            const sellerId = product.user.userId;
+            const buyerId = userInfo.userId;
+
+            const response = await axios.post(`http://localhost:8088/chatRooms`, null, {
+                params: { 
+                    sellerId, 
+                    buyerId, 
+                    productId: id, // productId 추가
+                },
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            console.log("채팅방 생성 성공", response.data);
+            setChatRoomExists(true);
+            setChatRoomId(response.data.chatRoomId); // 생성된 채팅방 ID 저장
+            setIsChatSidebarOpen(true);
+        } catch (error) {
+            console.error("채팅방 생성 실패", error.response ? error.response.data : error.message);
+        }
+    };
 
     const dip = () => {
         if (!isLogin) {
@@ -65,6 +110,35 @@ const ProductDetail = () => {
     //상품을 올린 user와 로그인한 user가 같은지 비교
     const isOwner = userInfo && product.user.userId === userInfo.userId;
 
+    const deleteProduct = () => {
+        Swal.fire({
+            title: '상품을 삭제하시겠습니까?',
+            text: '삭제된 상품은 복구되지 않습니다.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#000000',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`http://localhost:8088/product/delete/${id}`)
+                    .then((response) => {
+                        console.log('삭제 성공:', response);
+                        navigate(`/MyPage`);
+                    })
+                    .catch((error) => {
+                        Swal.fire('삭제 실패', '상품 삭제에 실패했습니다.', 'error');
+                        console.error('삭제 실패:', error);
+                    });
+            }
+        }).catch((error) => {
+            console.error('Swal.fire error:', error);
+        });
+    };
+    
+    
+
     return (
         <>
             <Header />
@@ -74,8 +148,8 @@ const ProductDetail = () => {
                         <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>     
                             {product.fileList.map((file, idx) => 
                                 <Carousel.Item key={idx} className={styles.carouselItem}>
-                                <img className={styles.productImage} src={file.source} alt={''} />
-                            </Carousel.Item>)}
+                                    <img className={styles.productImage} src={file.source} alt={''} />
+                                </Carousel.Item>)}
                         </Carousel>
 
                         <div className={styles.productInfo}>
@@ -99,6 +173,7 @@ const ProductDetail = () => {
                             {isOwner ? (    //상품 올린 user와 로그인한 user가 같다면
                                 <div className={styles.ownerActions}>
                                     <button className={styles.editButton} onClick={handleUpdate}>수정하기</button>
+                                    <button className={styles.deleteButton} onClick={deleteProduct}>삭제하기</button>
                                 </div>
                             ) : (
                                 <div className={styles.chatDipButton}>
@@ -117,19 +192,21 @@ const ProductDetail = () => {
 
                         <div className={styles.userInfo}>
                             <p>가게정보</p>
-                            <div>id:{product.user.userId}</div>
-                            <div>name:{product.user.userName}</div>
+                            <div>id: {product.user.userId}</div>
+                            <div>name: {product.user.userName}</div>
                         </div>
                     </section>
                 </div>
 
-                 {/* 사이드바 */}
-                 {isChatSidebarOpen && (
+                {/* 사이드바 */}
+                {isChatSidebarOpen && (
                     <>
-                        <div className={`${styles.overlay} ${isChatSidebarOpen ? styles.overlayActive : ''}`} onClick={toggleChatSidebar}/>
-                        <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? styles.chatSidebarOpen : ''}`}>
-                            <button className={styles.closeButton} onClick={toggleChatSidebar}> <img src={x} alt='x' height={25} width={25} /> </button>
-                            <ChatFrame productId={id} />
+                        <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={() => setIsChatSidebarOpen(false)} />
+                        <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
+                            <button className='close-button' onClick={() => setIsChatSidebarOpen(false)}>
+                                <img src={x} alt='x' height={25} width={25} />
+                            </button>
+                            <Chat chatRoomId={chatRoomId} /> {/* 채팅방 ID를 Chat 컴포넌트에 전달 */}
                         </div>
                     </>
                 )}
