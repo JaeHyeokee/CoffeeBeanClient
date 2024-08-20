@@ -1,6 +1,7 @@
 import api from './api'
 
 import { SERVER_HOST } from './api'
+//serverhost는 : http://localhost:8088
 
 // 요청하는 동작들에 대하여 함수로 만들어 export 해둔다.
 
@@ -25,3 +26,6 @@ export const verifyCode = (email, verifyCode) => api.post(`${SERVER_HOST}/email/
 
 // 이메일 중복 검증
 export const checkEmail = (email) => api.post(`${SERVER_HOST}/email/check`, {email})
+
+// 카카오 로그인 요청
+export const kakaoLogin = (username, password) => api.post(`${SERVER_HOST}/kakaologin`, {username,password} )

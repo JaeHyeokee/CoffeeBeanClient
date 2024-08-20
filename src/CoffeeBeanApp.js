@@ -25,6 +25,9 @@ import ProductUpdate from './pages/product/ProductUpdate';
 import LoginContextProvider from './contexts/LoginContextProvider';
 import ChatList from './pages/chatting/ChatList';
 import Chat from './pages/chatting/Chat';
+import KaKaoLogin from './pages/components/Kakao/KaKaoLogin'; //카카오로그인
+import KakaoCallback from './pages/components/Kakao/KaKaoCallBack';
+import UserProfile from './pages/components/Kakao/UserProfile';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CoffeeBeanApp.css';
@@ -72,6 +75,9 @@ const CoffeeBeanApp = () => {
                     <Route path = '/ProductUpdate/:id' Component={ProductUpdate}/>
 
                     <Route path = '/Join' Component={Join}/>
+
+                    <Route path = '/Kakao' Component={KaKaoLogin}/>
+                    <Route path="/callback/kakao" element={<KakaoCallback />} />
                 </Routes>
             </LoginContextProvider>
         </BrowserRouter>

@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import * as Swal from '../apis/alert';
 import * as auth from '../apis/auth';
 import api from '../apis/api';
+import { SERVER_HOST } from '../apis/api'
 
 export const LoginContext = createContext();
 LoginContext.displayName = 'LoginContextName';
@@ -138,6 +139,24 @@ const LoginContextProvider = ({children}) => {
     }
   };
 
+  const kakaoLogin = async (code) => {
+    console.log("kakaoLogin 시작");
+    try {
+        const response = await api.post(`${SERVER_HOST}/oauth2/kakao/callback`, { code });
+        console.log("kakaoLogin API 호출 완료");
+        
+        const { accessToken, user } = response.data;
+        Cookies.set("accessToken", accessToken);
+        console.log("쿠키에 저장된 accessToken:", Cookies.get("accessToken"));
+
+        loginSetting(user, accessToken);
+        await Swal.fire("카카오 로그인 성공", "메인화면으로 이동", "success");
+        navigate("/");
+    } catch (error) {
+        await Swal.fire('카카오 로그인 실패', '로그인에 실패했습니다.', 'error');
+    }
+};
+
   // 로그아웃
   const logout = (force = false) => {
     
@@ -180,26 +199,39 @@ const LoginContextProvider = ({children}) => {
     api.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
     // 로그인 여부
-    setIsLogin(true);
+    if (!isLogin) {
+      setIsLogin(true);
+      console.log(isLogin);
+    }
 
     // 유저 정보 세팅
     const updatedUserInfo = {userId, userName, nickName, email, regDate, reliability, role}
-    setUserInfo(updatedUserInfo);
+    if (JSON.stringify(userInfo) !== JSON.stringify(updatedUserInfo)) {
+      setUserInfo(updatedUserInfo);
+    }
 
     // 권한정보 세팅
-    // role => 'ROLE_USER', 'ROLE_USER,ROLE_ADMIN'  <- 하나의 문자열로 되어 있는 형태
     const updatedRoles = {isUser: false, isAdmin: false};
     role.split(',').forEach((role) => {
       role === 'ROLE_USER' && (updatedRoles.isUser = true);
       role === 'ROLE_ADMIN' && (updatedRoles.isAdmin = true);
     });
-    setRoles(updatedRoles);
+    if (JSON.stringify(roles) !== JSON.stringify(updatedRoles)) {
+      setRoles(updatedRoles);
+    }
+
+    // 쿠키에 accessToken 저장
+    Cookies.set("accessToken", accessToken);
+    console.log("loginsetting에서 찍어봅니다. 쿠키에 저장된 accessToken:", Cookies.get("accessToken"));
 
     // 새로고침시 Context로 리로딩
     localStorage.setItem("isLogin", "true");
     localStorage.setItem("userInfo", JSON.stringify(updatedUserInfo));
     localStorage.setItem("roles", JSON.stringify(updatedRoles));
 
+    console.log("loginSetting에서 로컬 스토리지에 저장된 isLogin:", localStorage.getItem("isLogin"));
+    console.log("loginSetting에서 로컬 스토리지에 저장된 userInfo:", localStorage.getItem("userInfo"));
+    console.log("loginSetting에서 로컬 스토리지에 저장된 roles:", localStorage.getItem("roles"));
   };
 
   // 로그아웃 세팅
@@ -221,7 +253,7 @@ const LoginContextProvider = ({children}) => {
   };
 
   return (
-    <LoginContext.Provider value={ { isLogin, userInfo, roles, loginCheck, login, logout }}>
+    <LoginContext.Provider value={ { isLogin, userInfo, roles, loginCheck, login, logout, kakaoLogin }}>
         {children}
     </LoginContext.Provider>
   );

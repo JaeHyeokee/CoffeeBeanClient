@@ -4,6 +4,10 @@ import * as Swal from '../../apis/alert'
 
 const JoinForm = ({ join }) => {
 
+  const KAKAO_CLIENT_ID = 'YOUR_KAKAO_CLIENT_ID';  // 카카오에서 발급받은 앱의 REST API 키
+  const REDIRECT_URI = 'http://localhost:8088/oauth/callback/kakao';  // 카카오에서 설정한 리다이렉트 URI
+
+
   const [emailSent, setEmailSent] = useState(false);
   const [email, setEmail] = useState('');
   const [emailVerified, setEmailVerified] = useState(false);
