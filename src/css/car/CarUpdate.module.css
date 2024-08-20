@@ -1,0 +1,54 @@
+.productCreateBody {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.productImg {
+    margin-bottom: 20px;
+}
+
+.productName,
+.productCategory,
+.productDetail,
+.productStatus,
+.productSubmit {
+    margin-bottom: 20px;
+}
+
+.previewContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.previewImageContainer {
+    position: relative;
+    margin: 10px;
+}
+
+.previewImage {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.removeButton {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.submitButton {
+    background-color: #007bff;
+    color: white;
+}
