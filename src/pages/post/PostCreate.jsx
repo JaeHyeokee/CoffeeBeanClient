@@ -67,9 +67,13 @@ const PostCreate = () => {
         formData.append('title', post.title);
         formData.append('content', post.content);
     
-        post.files.forEach((file) => {
-            formData.append('files', file.file);
-        });
+        if (post.files.length > 0) {
+            post.files.forEach((file) => {
+                formData.append('files', file.file);
+            });
+        } else {
+            formData.append('files', null);
+        }
     
         axios({
             method: 'post',
@@ -83,14 +87,14 @@ const PostCreate = () => {
             const { data, status, statusText } = response;
             if (status === 201) {
                 window.alert('등록 완료');
-                navigate(`/PostList`);
+                navigate(`/PostDetail/${data.id}`);
             } else {
                 window.alert('등록 실패');
             }
         })
         .catch(error => {
             console.error('Failed to submit post', error);
-            window.alert('실패');
+            window.alert('최소 한 장의 첨부파일은 필수입니다.');
         });
     };
 
