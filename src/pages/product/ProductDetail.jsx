@@ -9,7 +9,6 @@ import styles from '../../css/product/ProductDetail.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import Chat from '../chatting/Chat';
 import Footer from '../components/Footer';
-import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const ProductDetail = () => {
     const { id } = useParams();  // productId
