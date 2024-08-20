@@ -6,6 +6,7 @@ import ProductItem from '../components/ProductItem';
 import Footer from '../components/Footer';
 import styles from '../../css/product/ProductList.module.css';
 import PriceTrendChart from '../priceTrend/PriceTrendChart';
+import { Button, Modal } from 'react-bootstrap';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -23,6 +24,7 @@ const ProductList = () => {
     });
     const [minPriceFilter, setMinPriceFilter] = useState('');
     const [maxPriceFilter, setMaxPriceFilter] = useState('');
+    const [showModal, setShowModal] = useState(false);
 
     const { category, subcategory, subsubcategory } = useParams();
 
@@ -106,6 +108,9 @@ const ProductList = () => {
         setCurrentPage(page);
     };
 
+    const handleOpenModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
+
     const currentItems = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
     return (
@@ -181,18 +186,32 @@ const ProductList = () => {
                     </tbody>
                 </table>
 
-                <div className={styles.priceInfo}>
-                    <h2>현재 페이지의 상품 가격을 비교해봤어요</h2>
-                    <p>평균 가격: {priceInfo.averagePrice.toFixed(2)}</p>
-                    <p>최저 가격: {priceInfo.minPrice.toFixed(2)}</p>
-                    <p>최고 가격: {priceInfo.maxPrice.toFixed(2)}</p>
-                    <p>상품 수: {priceInfo.productCount}</p>
+            
+                <div className={styles.price}>
+                    <h4>현재 카테고리의 상품 가격 비교</h4>
+                    <h6 onClick={handleOpenModal}> 그래프 보기</h6>
+                    <div className={styles.priceInfo}>
+                    <p>평균 가격: {priceInfo.averagePrice.toFixed(2)}원</p>
+                    <p>최저 가격: {priceInfo.minPrice.toFixed(2)}원</p>
+                    <p>최고 가격: {priceInfo.maxPrice.toFixed(2)}원</p>
+                    <p>상품 수: {priceInfo.productCount}개</p>
+                    </div>
                 </div>
 
-                <div>
-                    <h1>분포도 - </h1>
-                    <PriceTrendChart category1={category} category2={subcategory} category3={subsubcategory} />
-                </div>
+                {/* 그래프 모달 */}
+                <Modal show={showModal} onHide={handleCloseModal} centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>가격 분포 그래프</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <PriceTrendChart category1={category} category2={subcategory} category3={subsubcategory} />
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleCloseModal}>
+                            닫기
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
 
                 <div className={styles.productList}>
                     {loading ? (
@@ -203,7 +222,7 @@ const ProductList = () => {
                                 <ProductItem key={product.id} product={product} />
                             ))
                         ) : (
-                            <p>해당 카테고리에 대한 제품이 없습니다.</p>
+                            <p></p>
                         )
                     )}
                 </div>

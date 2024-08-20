@@ -4,7 +4,7 @@ import axios from 'axios';
 import Header from '../components/Header';
 import ChatFrame from '../chatting/ChatFrame';
 import x from '../../image/x.svg';
-import * as Swal from '../../apis/alert';
+import Swal from 'sweetalert2';
 import { Carousel } from 'react-bootstrap';
 import styles from '../../css/product/ProductDetail.module.css';
 import Chat from '../chatting/Chat';
@@ -65,6 +65,35 @@ const ProductDetail = () => {
     //상품을 올린 user와 로그인한 user가 같은지 비교
     const isOwner = userInfo && product.user.userId === userInfo.userId;
 
+    const deleteProduct = () => {
+        Swal.fire({
+            title: '상품을 삭제하시겠습니까?',
+            text: '삭제된 상품은 복구되지 않습니다.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#000000',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`http://localhost:8088/product/delete/${id}`)
+                    .then((response) => {
+                        console.log('삭제 성공:', response);
+                        navigate(`/MyPage`);
+                    })
+                    .catch((error) => {
+                        Swal.fire('삭제 실패', '상품 삭제에 실패했습니다.', 'error');
+                        console.error('삭제 실패:', error);
+                    });
+            }
+        }).catch((error) => {
+            console.error('Swal.fire error:', error);
+        });
+    };
+    
+    
+
     return (
         <>
             <Header />
@@ -99,6 +128,7 @@ const ProductDetail = () => {
                             {isOwner ? (    //상품 올린 user와 로그인한 user가 같다면
                                 <div className={styles.ownerActions}>
                                     <button className={styles.editButton} onClick={handleUpdate}>수정하기</button>
+                                    <button className={styles.deleteButton} onClick={deleteProduct}>삭제하기</button>
                                 </div>
                             ) : (
                                 <div className={styles.chatDipButton}>

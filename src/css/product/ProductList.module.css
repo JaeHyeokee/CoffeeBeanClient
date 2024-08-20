@@ -78,9 +78,33 @@
     margin-top: 20px;
 }
 
-.categoryContainer {
-    width: 100%;
+.price {
+    margin: 60px 0;
 }
+
+.priceInfo {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center; /* 가로축에서 가운데 정렬 */
+    gap: 20px; /* 각 항목 사이에 20px 간격 */
+    background-color: #e2e2e2;
+    height: 70px;
+    border-radius: 7px;
+}
+
+.priceInfo p {
+    margin: 0;
+    padding: 0 55px; /* 각 p 태그에 좌우 여백 추가 */
+    border-right: 1px solid #ccc; /* 구분선 추가 */
+}
+
+.priceInfo p:last-child {
+    border-right: none; /* 마지막 항목에 구분선 제거 */
+}
+
+
+
+
 
 .productList {
     display: grid;
