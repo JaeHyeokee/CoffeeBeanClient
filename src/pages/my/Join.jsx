@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as auth from '../../apis/auth';
-import * as Swal from '../../apis/alert';
+import * as auth from '../../apis/Auth';
+import * as Swal from '../../apis/Alert';
 import JoinForm from '../components/JoinForm';
 
 const Join = () => {

@@ -8,6 +8,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import moment from 'moment';
+import { SERVER_HOST } from '../apis/Api';
 
 import main1 from '../image/main1.png';
 import main2 from '../image/main2.png';
@@ -20,8 +21,9 @@ const Home = () => {
     const [recentProducts, setRecentProducts] = useState([]);
 
     useEffect(() => {
+        console.log(SERVER_HOST);
         // 인기 상품 가져오기
-        axios.get('http://localhost:8088/product/top10')
+        axios.get(`http://${SERVER_HOST}/product/top10`)
             .then(response => {
                 setTopProducts(response.data);
             })
@@ -30,7 +32,7 @@ const Home = () => {
             });
 
         // 최근 등록된 상품 가져오기
-        axios.get('http://localhost:8088/product/top10regDate')
+        axios.get(`http://${SERVER_HOST}/product/top10regDate`)
             .then(response => {
                 setRecentProducts(response.data);
             })
@@ -106,7 +108,7 @@ const Home = () => {
                         <div className="product-items">
                             {topProducts.slice(0, 5).map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
-                                    {/* <img src={product.fileList[0].source} alt={product.name} /> */}
+                                    <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
                                     <p className="price">{product.price.toLocaleString()}원</p>
                                     <p>
@@ -139,7 +141,7 @@ const Home = () => {
                         <div className="product-items">
                             {recentProducts.slice(0, 5).map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
-                                    {/* <img src={product.fileList[0].source} alt={product.name} /> */}
+                                    <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
                                     <p className="price">{product.price.toLocaleString()}원</p>
                                     <p>

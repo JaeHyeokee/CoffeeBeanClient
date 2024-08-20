@@ -5,6 +5,7 @@ import { Stomp } from '@stomp/stompjs';
 import '../../css/chatting/Chat.css';
 import TextareaAutosize from 'react-textarea-autosize';
 import { LoginContext } from '../../contexts/LoginContextProvider';
+import { SERVER_HOST } from '../../apis/Api';
 
 const Chat = ({ chatRoomId, onBack }) => {
     const [messages, setMessages] = useState([]);
@@ -22,7 +23,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         const fetchIsJoin = async () => {
             if (userId && chatRoomId) {
                 try {
-                    const response = await axios.get(`http://localhost:8088/chatRooms/leave/${chatRoomId}/${userId}`);
+                    const response = await axios.get(`http://${SERVER_HOST}/chatRooms/leave/${chatRoomId}/${userId}`);
                     setIsJoin(response.data);
                 } catch (error) {
                     console.error("isJoin 값을 가져오는 중 오류 발생:", error);
@@ -38,7 +39,7 @@ const Chat = ({ chatRoomId, onBack }) => {
 
         const fetchMessages = async () => {
             try {
-                const response = await axios.get(`http://localhost:8088/api/messages/${chatRoomId}`);
+                const response = await axios.get(`http://${SERVER_HOST}/api/messages/${chatRoomId}`);
                 if (Array.isArray(response.data)) {
                     setMessages(response.data);
                 } else {
@@ -52,7 +53,7 @@ const Chat = ({ chatRoomId, onBack }) => {
 
         fetchMessages();
 
-        const socket = new SockJS('http://localhost:8088/ws');
+        const socket = new SockJS(`http://${SERVER_HOST}/ws`);
         stompClient.current = Stomp.over(socket);
         
         stompClient.current.connect({}, (frame) => {
@@ -69,7 +70,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         const markMessagesAsRead = async () => {
             if (userId && chatRoomId) {
                 try {
-                    await axios.post(`http://localhost:8088/api/messages/read/${chatRoomId}/${userId}`);
+                    await axios.post(`http://${SERVER_HOST}/api/messages/read/${chatRoomId}/${userId}`);
                     console.log('메시지가 읽음으로 표시되었습니다');
                 } catch (error) {
                     console.error('메시지를 읽음으로 표시하는 중 오류 발생:', error);
@@ -135,7 +136,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         
         if ((currentTime - messageTime) <= 60000) {
             try {
-                const response = await axios.delete(`http://localhost:8088/api/messages/${messageId}`);
+                const response = await axios.delete(`http://${SERVER_HOST}/api/messages/${messageId}`);
                 if (response.status === 200) {
                     setMessages(prevMessages => prevMessages.filter(message => message.messageId !== messageId));
                     window.alert("메시지가 삭제되었습니다.");
@@ -169,7 +170,7 @@ const Chat = ({ chatRoomId, onBack }) => {
             if (chatRoomId) {
                 try {
                     console.log(`Fetching product with ChatRoom ID: ${chatRoomId}`);
-                    const response = await axios.get(`http://localhost:8088/chatRooms/chatRoom/${chatRoomId}/product`);
+                    const response = await axios.get(`http://${SERVER_HOST}/chatRooms/chatRoom/${chatRoomId}/product`);
                     const product = response.data;
                     console.log('Received product:', product);
                     if (product) {

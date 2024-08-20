@@ -11,6 +11,7 @@ import Footer from '../components/Footer';
 import insuranceImage from '../../image/insurance2.png';
 import updateImage from '../../image/icon-update.png';
 import deleteImage from '../../image/icon-delete.png';
+import { SERVER_HOST } from '../../apis/Api';
 
 
 import { LoginContext } from '../../contexts/LoginContextProvider';
@@ -30,7 +31,7 @@ const CarDetail = () => {
     const [ listArr, setListArr ] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:8088/car/detail/${id}`)
+        axios.get(`http://${SERVER_HOST}/car/detail/${id}`)
             .then(response => {
                 setCar(response.data);
                 window.scrollTo(0, 0); // 페이지 로드 시 스크롤을 맨 위로 이동
@@ -42,7 +43,7 @@ const CarDetail = () => {
 
     useEffect(() => {
         if (car) {
-            axios.get(`http://localhost:8088/car/category2/${car.category2}`)
+            axios.get(`http://${SERVER_HOST}/car/category2/${car.category2}`)
                 .then(response => {
                     setRecommendedCars(response.data);
                 })
@@ -51,7 +52,7 @@ const CarDetail = () => {
                 });
             axios({
                 method: "get",
-                url: `http://localhost:8088/sell/car/sortedlist/${car.user.userId}/1/판매중`,
+                url: `http://${SERVER_HOST}/sell/car/sortedlist/${car.user.userId}/1/판매중`,
             })
             .then(response => {
                 if(Array.isArray(response.data)) {
@@ -121,7 +122,7 @@ const CarDetail = () => {
             cancelButtonText: '취소'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`http://localhost:8088/car/delete/${id}`)
+                axios.delete(`http://${SERVER_HOST}/car/delete/${id}`)
                     .then(response => {
                         navigate(`/MyPage`);
                     })

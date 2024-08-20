@@ -13,7 +13,7 @@ import Category from './Category';
 import CarCategory from './CarCategory';
 import { Form, Nav, Navbar, NavDropdown, NavItem, ProgressBar } from 'react-bootstrap';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import * as Swal from '../../apis/alert'
+import * as Swal from '../../apis/Alert'
 const Header = () => {
 
     //상태관리

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Scatter } from 'react-chartjs-2';
 import axios from 'axios';
+import { SERVER_HOST } from '../../apis/Api';
 import { Chart as ChartJS, Title, Tooltip, Legend, LinearScale, CategoryScale, PointElement, LineElement } from 'chart.js';
 
 ChartJS.register(Title, Tooltip, Legend, LinearScale, CategoryScale, PointElement, LineElement);
@@ -9,7 +10,7 @@ const PriceTrendChart = ({ category1, category2, category3 }) => {
     const [priceInfo, setPriceInfo] = useState(null);
 
     useEffect(() => {
-        axios.get('http://localhost:8088/product/priceInfo', {
+        axios.get(`http://${SERVER_HOST}/product/priceInfo`, {
             params: { category1, category2, category3 }
         })
         .then(response => {
