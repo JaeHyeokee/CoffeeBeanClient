@@ -4,10 +4,11 @@ import axios from 'axios';
 import price from '../../image/ProductPrice.png';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import * as Swal from '../../apis/alert';
+import * as Swal from '../../apis/Alert';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import styles from '../../css/car/CarCreate.module.css';
+import { SERVER_HOST } from '../../apis/Api';
 
 const categories = {
     "국산차": ["현대", "제네시스", "기아", "쉐보레", "르노코리아(삼성)", "KG모빌리티(쌍용)"],
@@ -194,7 +195,7 @@ const CarCreate = () => {
 
         axios({
             method: 'post',
-            url: `http://localhost:8088/car/write/${userId}`,
+            url: `http://${SERVER_HOST}/car/write/${userId}`,
             headers: {
                 "Content-Type": 'multipart/form-data',
             },

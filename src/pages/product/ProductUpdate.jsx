@@ -8,6 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../css/product/ProductCreate.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import price from '../../image/ProductPrice.png';
+import { SERVER_HOST } from '../../apis/Api';
 
 const categories = {
     "패션의류": ["여성의류", "남성의류"],
@@ -139,7 +140,7 @@ const ProductUpdate = () => {
     const [subSubCategoryOptions, setSubSubCategoryOptions] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:8088/product/detail/${id}`)
+        axios.get(`http://${SERVER_HOST}/product/detail/${id}`)
             .then(response => {
                 const productData = response.data;
                 setProduct({
@@ -274,7 +275,7 @@ const ProductUpdate = () => {
             formData.append('delfile', attachmentId);
         });
 
-        axios.put(`http://localhost:8088/product/update/${id}`, formData, {
+        axios.put(`http://${SERVER_HOST}/product/update/${id}`, formData, {
             headers: {
                 "Content-Type": 'multipart/form-data',
             }

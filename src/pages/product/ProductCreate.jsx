@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../css/product/ProductCreate.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import Footer from '../components/Footer';
-import * as Swal from '../../apis/alert'
+import * as Swal from '../../apis/Alert';
+import { SERVER_HOST } from '../../apis/Api';
 
 const categories = {
     "패션의류": ["여성의류", "남성의류"],
@@ -269,7 +270,7 @@ const ProductCreate = () => {
 
         axios({
             method: 'post',
-            url: `http://localhost:8088/product/write/${userId}`,
+            url: `http://${SERVER_HOST}/product/write/${userId}`,
             headers: {
                 "Content-Type": 'multipart/form-data',
             },

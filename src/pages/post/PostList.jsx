@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 import PostItem from '../components/PostItem';
 import axios from 'axios';
 import Footer from '../components/Footer';
+import { SERVER_HOST } from '../../apis/Api';
 
 const PostList = ({ initialContentType }) => {
     const location = useLocation(); //현재 URL 정보
@@ -26,7 +27,7 @@ const PostList = ({ initialContentType }) => {
     useEffect(() => {
         axios({
             method: "get",
-            url: "http://localhost:8088/post/list"
+            url: `http://${SERVER_HOST}/post/list`
         })
         .then(response => {
             const { data, status, statusText } = response;

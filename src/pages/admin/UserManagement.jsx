@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Chart as ChartJs, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, plugins} from 'chart.js'
 import { Bar } from 'react-chartjs-2';
 import styles from '../../css/admin/UserManagement.module.css';
+import { SERVER_HOST } from '../../apis/Api';
 ChartJs.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const UserManagement = () => {
@@ -19,7 +20,7 @@ const UserManagement = () => {
     })
 
     useEffect(() => {
-        axios.get('http://localhost:8088/quit/list')
+        axios.get(`http://${SERVER_HOST}/quit/list`)
         .then(response => {
             const data = response.data;
             console.log(data);
