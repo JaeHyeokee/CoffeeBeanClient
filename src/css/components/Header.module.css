@@ -193,3 +193,18 @@ header {
   cursor: pointer;
   z-index: 25;
 }
+
+.loadingBar {
+  display: block;
+  border-radius: 0 !important;
+  height: 2px !important;
+  background-color: white !important;
+}
+
+.loadedBar {
+  display: none;
+}
+
+.loadingBar div {
+  background: #0DCC5A;
+}

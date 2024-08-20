@@ -2,18 +2,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
-import ChatFrame from '../chatting/ChatFrame';
 import x from '../../image/x.svg';
 import Swal from 'sweetalert2';
 import { Card, Carousel, ProgressBar } from 'react-bootstrap';
 import styles from '../../css/product/ProductDetail.module.css';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 import Chat from '../chatting/Chat';
 import Footer from '../components/Footer';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import moment from 'moment';
 
 const ProductDetail = () => {
-    const { id } = useParams();
+    const { id } = useParams();  // productId
     const [product, setProduct] = useState(null);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
@@ -21,6 +21,8 @@ const ProductDetail = () => {
     const userId = userInfo ?.userId;
     const navigate = useNavigate();
     const [ listArr, setListArr ] = useState([]);
+    const [chatRoomExists, setChatRoomExists] = useState(false);
+    const [chatRoomId, setChatRoomId] = useState(null); // 채팅방 ID 상태 추가
 
     useEffect(() => {
         axios.get(`http://localhost:8088/product/detail/${id}`)
@@ -28,7 +30,7 @@ const ProductDetail = () => {
                 setProduct(response.data);
             })
             .catch(error => {
-                console.error('실패', error);
+                console.error('상품 조회 실패', error);
             });
     }, [id]);
 
@@ -52,6 +54,7 @@ const ProductDetail = () => {
                     console.log('데이터 로드 실패');
                 }
             });
+            checkChatRoomExists();
         }
     }, [product]);
 
@@ -59,14 +62,52 @@ const ProductDetail = () => {
         setIndex(selectedIndex);
     };
 
-    const toggleChatSidebar = () => {
-        if (!isLogin) {
-            Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") });
-            navigate('/login');
-        } else {
-            setIsChatSidebarOpen(!isChatSidebarOpen);
+
+    const checkChatRoomExists = async () => {
+        try {
+            const sellerId = product.user.userId;
+            const buyerId = userInfo.userId;
+
+            const response = await axios.get(`http://localhost:8088/chatRooms/check`, {
+                params: { buyerId, sellerId, productId: id } // productId 추가
+            });
+
+            setChatRoomExists(response.data.exists);
+            if (response.data.exists) {
+                setChatRoomId(response.data.chatRoomId); // 채팅방 ID 저장
+            }
+        } catch (error) {
+            console.error("채팅방 존재 여부 확인 실패", error);
         }
-    }
+    };
+
+    const toggleChatSidebar = async () => {
+        if (chatRoomExists) {
+            setIsChatSidebarOpen(true);
+            return;
+        }
+
+        try {
+            const sellerId = product.user.userId;
+            const buyerId = userInfo.userId;
+
+            const response = await axios.post(`http://localhost:8088/chatRooms`, null, {
+                params: { 
+                    sellerId, 
+                    buyerId, 
+                    productId: id, // productId 추가
+                },
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            console.log("채팅방 생성 성공", response.data);
+            setChatRoomExists(true);
+            setChatRoomId(response.data.chatRoomId); // 생성된 채팅방 ID 저장
+            setIsChatSidebarOpen(true);
+        } catch (error) {
+            console.error("채팅방 생성 실패", error.response ? error.response.data : error.message);
+        }
+    };
 
     const dip = () => {
         if (!isLogin) {
@@ -151,8 +192,8 @@ const ProductDetail = () => {
                         <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>     
                             {product.fileList.map((file, idx) => 
                                 <Carousel.Item key={idx} className={styles.carouselItem}>
-                                <img className={styles.productImage} src={file.source} alt={''} />
-                            </Carousel.Item>)}
+                                    <img className={styles.productImage} src={file.source} alt={''} />
+                                </Carousel.Item>)}
                         </Carousel>
 
                         <div className={styles.productInfo}>
@@ -236,13 +277,15 @@ const ProductDetail = () => {
 
 
 
-                 {/* 사이드바 */}
-                 {isChatSidebarOpen && (
+                {/* 사이드바 */}
+                {isChatSidebarOpen && (
                     <>
-                        <div className={`${styles.overlay} ${isChatSidebarOpen ? styles.overlayActive : ''}`} onClick={toggleChatSidebar}/>
-                        <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? styles.chatSidebarOpen : ''}`}>
-                            <button className={styles.closeButton} onClick={toggleChatSidebar}> <img src={x} alt='x' height={25} width={25} /> </button>
-                            <ChatFrame productId={id} />
+                        <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={() => setIsChatSidebarOpen(false)} />
+                        <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>
+                            <button className='close-button' onClick={() => setIsChatSidebarOpen(false)}>
+                                <img src={x} alt='x' height={25} width={25} />
+                            </button>
+                            <Chat chatRoomId={chatRoomId} /> {/* 채팅방 ID를 Chat 컴포넌트에 전달 */}
                         </div>
                     </>
                 )}

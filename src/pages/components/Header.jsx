@@ -11,7 +11,7 @@ import ChatList from '../chatting/ChatList';
 import Chat from '../chatting/Chat';
 import Category from './Category';
 import CarCategory from './CarCategory';
-import { Form, Nav, Navbar, NavDropdown, NavItem } from 'react-bootstrap';
+import { Form, Nav, Navbar, NavDropdown, NavItem, ProgressBar } from 'react-bootstrap';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import * as Swal from '../../apis/alert'
 const Header = () => {
@@ -28,6 +28,7 @@ const Header = () => {
 
     const {isLogin, logout, userInfo } = useContext(LoginContext);
     const userId = userInfo ? userInfo.userId : null;
+    const [progress, setProgress] = useState(0);
 
     // 사이드바 스크롤관리 (채팅하기 눌렀을때)
     /* useEffect(() => {
@@ -38,6 +39,24 @@ const Header = () => {
         }
         return () => document.body.classList.remove('no-scroll');
     }, [isChatSidebarOpen]); */
+
+    useEffect(() => {
+        const startLoading = () => {
+            setProgress(0);
+            let value = 0;
+            const interval = setInterval(() => {
+                value += 10;
+                setProgress(prev => Math.min(prev + 10, 100));
+                if (value >= 100) {
+                    clearInterval(interval);
+                    requestAnimationFrame(() => {
+                        setProgress(0);
+                    });
+                }
+            }, 100);
+        };
+        startLoading();
+    }, [location.pathname]);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
@@ -165,6 +184,7 @@ const Header = () => {
                     </>
                 )}
             </header>
+            <ProgressBar className={Style.loadingBar} now={progress} animated={false}/>
         </>
     );
 };

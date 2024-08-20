@@ -24,23 +24,39 @@
 }
 
 .productPicture {
+    display: flex;
     width: 100%;
-    height: 8%;
-    margin: 0;
-    padding: 0;
+    height: 10%;
     color: black;
-    align-content: center;
     text-align: center;
+    margin-top: 10px;
+}
+.productPicture2 {
+    width: 21%;
+    height: 100%; /* 부모의 높이에 맞춤 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.productImage {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    padding: 5px;
+}
+.productInfo {
+    /* text-align: center; */
+}
+.AA {
+    text-align: left;
+    font-weight: bold;
+    color: black;
+    margin: 5px 0 0 10px;
 }
 
-.productPicture2 {
+.carouselItem {
     width: 100%;
-    height: 8%;
-    margin: 0;
-    padding: 0;
-    color: black;
-    align-content: center;
-    text-align: center;
+    height: 100%;
 }
 
 .me {
@@ -49,17 +65,22 @@
     font-size: 10px; /* 폰트 크기 조정 */
 }
 
-.own-message1 {
-    align-self: flex-end; /* 오른쪽 정렬 */
-    max-width: 80%;
+
+.own-message {
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    max-width: 100%;
 }
 
-.own-message2 {
-    align-self: flex-start; /* 왼쪽 정렬 */
+.other-message {
+    justify-content: flex-start; /* 왼쪽 정렬 */
     max-width: 80%;
 }
-
-.own-message1 .messageText {
+.message {
+    display: flex;
+    width: 100%;
+    margin-bottom: 5px; /* 각 메시지 사이의 간격 */
+}
+.own-message .messageText {
     background-color: yellow;
     border-radius: 10px;
     padding: 7px 9px;
@@ -68,7 +89,7 @@
     font-weight: bold;
 }
 
-.own-message2 .messageText {
+.other-message .messageText {
     background-color: white; /* 원하는 배경색 */
     border-radius: 10px; /* 모서리 둥글게 */
     padding: 7px 9px;
@@ -134,9 +155,9 @@
     font-weight: bo;
 }
 
-.own-message {
+/* .own-message {
     text-align: right;
-}
+} */
 .message {
     display: flex;
 }
