@@ -4,7 +4,6 @@ import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import price from '../../image/ProductPrice.png';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import * as Swal from '../../apis/alert';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import styles from '../../css/car/CarUpdate.module.css';
@@ -45,6 +44,61 @@ const CarUpdate = () => {
     const [selectedCategory, setSelectedCategory] = useState("");
     const [subCategoryOptions, setSubCategoryOptions] = useState([]);
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
+
+    const [errors, setErrors] = useState({
+        name: "",
+        price: "",
+        introduce: "",
+        category1: "",
+        category2: "",
+        files: []
+    });
+
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const validateForm = () => {
+        let formIsValid = true;
+        const newErrors = {
+            name: "",
+            price: "",
+            introduce: "",
+            category1: "",
+            category2: "",
+            files: []
+        };
+
+        if (!car.name) {
+            newErrors.name = "상품명을 입력해주세요.";
+            formIsValid = false;
+        }
+
+        if (!car.price) {
+            newErrors.price = "상품 가격을 입력해주세요.";
+            formIsValid = false;
+        }
+
+        if (!car.introduce) {
+            newErrors.introduce = "상품 설명을 입력해주세요.";
+            formIsValid = false;
+        }
+
+        if (!car.category1) {
+            newErrors.category1 = "카테고리1을 선택해주세요";
+            formIsValid = false;
+        }
+
+        if (!car.category2) {
+            newErrors.category2 = "카테고리2를 선택해주세요";
+            formIsValid = false;
+        }
+        if (!Array.isArray(car.fileList) || car.fileList.length === 0) {
+            newErrors.files = "사진을 1장 이상 첨부해주세요.";
+            formIsValid = false;
+        }
+
+        setErrors(newErrors);
+        return formIsValid;
+    };
 
     useEffect(() => {
         axios.get(`http://localhost:8088/car/detail/${carId}`)
@@ -121,6 +175,12 @@ const CarUpdate = () => {
 
     const submitCar = (e) => {
         e.preventDefault();
+        setIsSubmitted(true);
+
+        if(!validateForm()){
+            return;
+        }
+
         const formData = new FormData();
         
         // 필드 추가
@@ -170,13 +230,27 @@ const CarUpdate = () => {
                     <Form.Label>이미지 첨부</Form.Label>
                     <Form.Control type="file" multiple onChange={handleFileChange} />
                     <div className={styles.previewContainer}>
-                        {car.fileList.map(file => (
-                            <div key={file.fileId} className={styles.previewImageContainer}>
-                                <img src={file.source} alt={`Preview ${file.filename}`} className={styles.previewImage} />
-                                <Button variant="danger" onClick={() => handleFileRemove(file.fileId)}>X</Button>
+                    {car.fileList.length > 0 && (
+                            <div className={styles.previewContainer}>
+                                {car.fileList.map((file, index) => (
+                                    <div key={index} className={styles.previewImageContainer}>
+                                        <img
+                                            src={file.source}
+                                            alt={`Preview ${file.filename}`}
+                                            className={styles.previewImage}
+                                        />
+                                        <Button
+                                            variant="danger"
+                                            onClick={() => handleFileRemove(file.filename, file.fileId)}
+                                        >
+                                            X
+                                        </Button>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+                        )}
                     </div>
+                    {isSubmitted && errors.files && <p className={styles.errorText}>{errors.files}</p>}
                 </Form.Group>
     
                 <Form.Group className={styles.productName} controlId="formBasicTitle">
@@ -188,6 +262,7 @@ const CarUpdate = () => {
                         name="name"
                         onChange={handleInputChange}
                     />
+                    {isSubmitted && errors.files && <p className={styles.errorText}>{errors.name}</p>}
                 </Form.Group>
     
                 <Form.Group className={styles.productCategory} controlId="formBasicCategory1">
@@ -202,6 +277,7 @@ const CarUpdate = () => {
                                         <option key={category} value={category}>{category}</option>
                                     ))}
                                 </Form.Control>
+                                {isSubmitted && errors.files && <p className={styles.errorText}>{errors.category1}</p>}
                             </div>
 
                             <div>
@@ -216,6 +292,7 @@ const CarUpdate = () => {
                                         <option key={subCategory} value={subCategory}>{subCategory}</option>
                                     ))}
                                 </Form.Control>
+                                {isSubmitted && errors.files && <p className={styles.errorText}>{errors.category2}</p>}
                             </div>
                 </Form.Group>
     
@@ -229,6 +306,7 @@ const CarUpdate = () => {
                                 onChange={handleInputChange}
                                 className={styles.productInputPrice}
                             />
+                             {isSubmitted && errors.files && <p className={styles.errorText}>{errors.price}</p>}
                         </Form.Group>
     
                 <Form.Group className={styles.productDetail} controlId="formBasicModelYear">
@@ -339,6 +417,7 @@ const CarUpdate = () => {
                         onChange={handleInputChange}
                         className={styles.productInputIntroduce}
                     />
+                     {isSubmitted && errors.files && <p className={styles.errorText}>{errors.introduce}</p>}
                 </Form.Group>
 
                 <Form.Group className={styles.productSubmit}>

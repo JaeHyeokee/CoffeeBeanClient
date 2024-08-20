@@ -42,6 +42,63 @@ const CarCreate = () => {
     const [selectedCategory, setSelectedCategory] = useState("");
     const [subCategoryOptions, setSubCategoryOptions] = useState([]);
 
+     //유효성 검사
+     const [errors, setErrors] = useState({
+        name: "",
+        price: "",
+        introduce: "",
+        category1: "",
+        category2: "",
+        files: []
+    });
+
+    const [isSubmitted, setIsSubmitted] = useState(false);
+    
+    const validateForm = () => {
+        let formIsValid = true;
+        const newErrors = {
+            name: "",
+            price: "",
+            introduce: "",
+            category1: "",
+            category2: "",
+            files: []
+        };
+
+        if (!car.name) {
+            newErrors.name = "상품명을 입력해주세요.";
+            formIsValid = false;
+        }
+
+        if (!car.price) {
+            newErrors.price = "상품 가격을 입력해주세요.";
+            formIsValid = false;
+        }
+
+        if (!car.introduce) {
+            newErrors.introduce = "상품 설명을 입력해주세요.";
+            formIsValid = false;
+        }
+
+        if (!car.category1) {
+            newErrors.category1 = "카테고리1을 선택해주세요";
+            formIsValid = false;
+        }
+
+        if (!car.category2) {
+            newErrors.category2 = "카테고리2를 선택해주세요";
+            formIsValid = false;
+        }
+
+        if (car.files.length === 0) {
+            newErrors.files = "사진을 1장 이상 첨부해주세요.";
+            formIsValid = false;
+        }
+
+        setErrors(newErrors);
+        return formIsValid;
+    };
+
     useEffect(() => {
         if (!userInfo || !roles) {
             console.error("사용자 정보 또는 권한 정보가 부족합니다.");
@@ -115,6 +172,11 @@ const CarCreate = () => {
 
     const submitCar = (e) => {
         e.preventDefault();
+        setIsSubmitted(true);
+
+        if (!validateForm()) {
+            return;
+        }
 
         const formData = new FormData();
 
@@ -181,6 +243,7 @@ const CarCreate = () => {
                                     </div>
                                 ))}
                             </div>
+                            {isSubmitted && errors.files && <p className={styles.errorText}>{errors.files}</p>}
                         </Form.Group>
 
                         <Form.Group className={styles.productName} controlId="formBasicTitle">
@@ -191,6 +254,7 @@ const CarCreate = () => {
                                 onChange={changeValue}
                                 name='name'
                             />
+                            {isSubmitted && errors.files && <p className={styles.errorText}>{errors.name}</p>}
                         </Form.Group>
 
                         <Form.Group className={styles.productCategory} controlId="formBasicCategory1">
@@ -205,6 +269,7 @@ const CarCreate = () => {
                                         <option key={category} value={category}>{category}</option>
                                     ))}
                                 </Form.Control>
+                            {isSubmitted && errors.files && <p className={styles.errorText}>{errors.category1}</p>}
                             </div>
 
                             <div>
@@ -219,6 +284,7 @@ const CarCreate = () => {
                                         <option key={subCategory} value={subCategory}>{subCategory}</option>
                                     ))}
                                 </Form.Control>
+                            {isSubmitted && errors.files && <p className={styles.errorText}>{errors.category2}</p>}
                             </div>
                         </Form.Group>
 
@@ -232,6 +298,7 @@ const CarCreate = () => {
                                 className={styles.productInputPrice}
                                 name='price'
                             />
+                            {isSubmitted && errors.files && <p className={styles.errorText}>{errors.price}</p>}
                         </Form.Group>
 
                         <Form.Group className={styles.productDetail} controlId="formBasicModelYear">
@@ -333,6 +400,7 @@ const CarCreate = () => {
                                 onChange={changeValue}
                                 name='introduce'
                             />
+                            {isSubmitted && errors.files && <p className={styles.errorText}>{errors.introduce}</p>}
                         </Form.Group>
 
                         <Form.Group className={styles.productSubmit}>
