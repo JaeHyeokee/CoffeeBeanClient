@@ -166,7 +166,7 @@
     content: '';
     width: 25px;
     height: 25px;
-    background: url('../../image/Uncheck.png') no-repeat center center;
+    background: url('../../image/UnSoldout.png') no-repeat center center;
     background-size: cover;
     display: inline-block;
     margin-right: 15px;
@@ -174,7 +174,7 @@
 }
 
 .customCheckbox:checked + .customCheckboxLabel::before {
-    background: url('../../image/Check.png') no-repeat center center;
+    background: url('../../image/Soldout.png') no-repeat center center;
     background-size: cover;
 }
 

@@ -65,7 +65,7 @@ const CoffeeBeanApp = () => {
                     <Route path = "/PostList" element={<PostList initialContentType="contentType1" />} />
                     <Route path = '/PostUpdate/:postId' element={<PostUpdate/>}/>
 
-                    <Route path = '/ProductCreate/:id' Component={ProductCreate}/>
+                    <Route path = '/ProductCreate/:userId' Component={ProductCreate}/>
                     <Route path = '/ProductDetail/:id' Component={ProductDetail}/>
                     <Route path = '/ProductList' Component={ProductList}/>
                     <Route path = '/ProductList/:category' Component={ProductList}/>

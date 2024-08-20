@@ -4,6 +4,7 @@ import axios from 'axios';
 import Header from '../components/Header';
 import { Form, Button, ListGroup, Col, Row } from 'react-bootstrap';
 import Footer from '../components/Footer';
+import { SERVER_HOST } from '../../apis/Api';
 
 const PostCreate = () => {
     const navigate = useNavigate();
@@ -77,7 +78,7 @@ const PostCreate = () => {
     
         axios({
             method: 'post',
-            url: `http://localhost:8088/post/write/${userId}`,
+            url: `http://${SERVER_HOST}/post/write/${userId}`,
             headers: {
                 "Content-Type": 'multipart/form-data',
             },

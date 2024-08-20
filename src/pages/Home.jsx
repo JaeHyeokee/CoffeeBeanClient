@@ -8,6 +8,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import moment from 'moment';
+import { SERVER_HOST } from '../apis/Api.js';
 
 import main1 from '../image/main1.png';
 import main2 from '../image/main2.png';
@@ -20,8 +21,9 @@ const Home = () => {
     const [recentProducts, setRecentProducts] = useState([]);
 
     useEffect(() => {
+        console.log(SERVER_HOST);
         // 인기 상품 가져오기
-        axios.get('http://localhost:8088/product/top10')
+        axios.get(`http://${SERVER_HOST}/product/top10`)
             .then(response => {
                 setTopProducts(response.data);
             })
@@ -30,7 +32,7 @@ const Home = () => {
             });
 
         // 최근 등록된 상품 가져오기
-        axios.get('http://localhost:8088/product/top10regDate')
+        axios.get(`http://${SERVER_HOST}/product/top10regDate`)
             .then(response => {
                 setRecentProducts(response.data);
             })

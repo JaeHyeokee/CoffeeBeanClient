@@ -2,9 +2,9 @@ import Cookies from 'js-cookie';
 import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import * as Swal from '../apis/alert';
-import * as auth from '../apis/auth';
-import api from '../apis/api';
+import * as Swal from '../apis/Alert';
+import * as auth from '../apis/Auth';
+import api from '../apis/Api';
 
 export const LoginContext = createContext();
 LoginContext.displayName = 'LoginContextName';

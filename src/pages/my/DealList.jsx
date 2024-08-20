@@ -4,6 +4,7 @@ import Style from '../../css/my/DealList.module.css';
 import { Card } from 'react-bootstrap';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { useNavigate } from 'react-router-dom';
+import { SERVER_HOST } from '../../apis/Api';
 
 const DealList = (props) => {
     const { activatedKey, isProductOrCar, pageType } = props;
@@ -16,7 +17,7 @@ const DealList = (props) => {
         if (!userInfo || !userInfo.userId) return;
         axios({
             method: "get",
-            url: `http://localhost:8088/${pageType}/${isProductOrCar}/sortedlist/${userInfo.userId}/${sortedType}/${activatedKey}`,
+            url: `http://${SERVER_HOST}/${pageType}/${isProductOrCar}/sortedlist/${userInfo.userId}/${sortedType}/${activatedKey}`,
         })
         .then(response => {
             if(Array.isArray(response.data)) {

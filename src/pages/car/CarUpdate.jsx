@@ -4,10 +4,11 @@ import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import price from '../../image/ProductPrice.png';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import * as Swal from '../../apis/alert';
+import * as Swal from '../../apis/Alert';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import styles from '../../css/car/CarUpdate.module.css';
+import { SERVER_HOST } from '../../apis/Api';
 
 const categories = {
     "국산차": ["현대", "제네시스", "기아", "쉐보레", "르노코리아(삼성)", "KG모빌리티(쌍용)"],
@@ -47,7 +48,7 @@ const CarUpdate = () => {
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
     useEffect(() => {
-        axios.get(`http://localhost:8088/car/detail/${carId}`)
+        axios.get(`http://${SERVER_HOST}/car/detail/${carId}`)
             .then(response => {
                 const carData = response.data;
                 setCar({
@@ -140,9 +141,9 @@ const CarUpdate = () => {
             formData.append('delfile', attachmentId);
         });
         
-        console.log("URL:", `http://localhost:8088/car/update/${carId}`);  // URL 확인
+        console.log("URL:", `http://${SERVER_HOST}/car/update/${carId}`);  // URL 확인
     
-        axios.put(`http://localhost:8088/car/update/${carId}`, formData, {
+        axios.put(`http://${SERVER_HOST}/car/update/${carId}`, formData, {
             headers: {
                 "Content-Type": 'multipart/form-data',
             }

@@ -10,6 +10,7 @@ import { LoginContext } from '../../contexts/LoginContextProvider';
 import Chat from '../chatting/Chat';
 import Footer from '../components/Footer';
 import moment from 'moment';
+import { SERVER_HOST } from '../../apis/Api';
 
 const ProductDetail = () => {
     const { id } = useParams();  // productId
@@ -24,7 +25,7 @@ const ProductDetail = () => {
     const [chatRoomId, setChatRoomId] = useState(null); // 채팅방 ID 상태 추가
 
     useEffect(() => {
-        axios.get(`http://localhost:8088/product/detail/${id}`)
+        axios.get(`http://${SERVER_HOST}/product/detail/${id}`)
             .then(response => {
                 setProduct(response.data);
             })
@@ -35,7 +36,7 @@ const ProductDetail = () => {
 
     useEffect(() => {
         if (product) {
-            /* axios.get(`http://localhost:8088/car/category2/${car.category2}`)
+            /* axios.get(`http://${SERVER_HOST}/car/category2/${car.category2}`)
                 .then(response => {
                     setRecommendedCars(response.data);
                 })
@@ -44,7 +45,7 @@ const ProductDetail = () => {
                 }); */
             axios({
                 method: "get",
-                url: `http://localhost:8088/sell/product/sortedlist/${product.user.userId}/1/판매중`,
+                url: `http://${SERVER_HOST}/sell/product/sortedlist/${product.user.userId}/1/판매중`,
             })
             .then(response => {
                 if(Array.isArray(response.data)) {
@@ -67,7 +68,7 @@ const ProductDetail = () => {
             const sellerId = product.user.userId;
             const buyerId = userInfo.userId;
 
-            const response = await axios.get(`http://localhost:8088/chatRooms/check`, {
+            const response = await axios.get(`http://${SERVER_HOST}/chatRooms/check`, {
                 params: { buyerId, sellerId, productId: id } // productId 추가
             });
 
@@ -90,7 +91,7 @@ const ProductDetail = () => {
             const sellerId = product.user.userId;
             const buyerId = userInfo.userId;
 
-            const response = await axios.post(`http://localhost:8088/chatRooms`, null, {
+            const response = await axios.post(`http://${SERVER_HOST}/chatRooms`, null, {
                 params: { 
                     sellerId, 
                     buyerId, 
@@ -141,7 +142,7 @@ const ProductDetail = () => {
             cancelButtonText: '취소'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`http://localhost:8088/product/delete/${id}`)
+                axios.delete(`http://${SERVER_HOST}/product/delete/${id}`)
                     .then((response) => {
                         console.log('삭제 성공:', response);
                         navigate(`/MyPage`);
@@ -179,8 +180,14 @@ const ProductDetail = () => {
     };
 
     const goDetailPage = (elem) => {
-        navigate('/ProductDetail/' + elem.carId);
+        const productId = elem.productId || elem.carId;
+        navigate(`/ProductDetail/${productId}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // 부드럽게 스크롤 이동
+        });
     };
+    
 
     return (
         <>
@@ -257,17 +264,18 @@ const ProductDetail = () => {
                                 <ProgressBar className={styles.trustIndexBar} now={product.user.reliability / 10}/>
                             </div>
                             <div className={styles.sellListFrame}>
-                                {listArr.map(elem => (
-                                    <Card className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
-                                        <div className={styles.sellInfoCardImgContainer}>
-                                            <Card.Img className={styles.sellInfoCardImg} src={elem.fileList[0].source}/>
-                                        </div>
-                                        <Card.Body className={styles.sellInfoCardBody}>
-                                            <Card.Title className={styles.sellInfoTitle}>{elem.name}</Card.Title>
-                                            <Card.Text className={styles.sellInfoPrice}>{elem.price.toLocaleString()}원</Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                ))}
+                            {listArr.map((elem, idx) => (
+                                <Card key={idx} className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
+                                    <div className={styles.sellInfoCardImgContainer}>
+                                        <Card.Img className={styles.sellInfoCardImg} src={elem.fileList[0]?.source || ''} />
+                                    </div>
+                                    <Card.Body className={styles.sellInfoCardBody}>
+                                        <Card.Title className={styles.sellInfoTitle}>{elem.name}</Card.Title>
+                                        <Card.Text className={styles.sellInfoPrice}>{elem.price.toLocaleString()}원</Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            ))}
+
                             </div>
                             <br/>
                     <img src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/ProductDetail/${id}`} style={{ width: '150px', height: '150px' }}
