@@ -179,8 +179,14 @@ const ProductDetail = () => {
     };
 
     const goDetailPage = (elem) => {
-        navigate('/ProductDetail/' + elem.carId);
+        const productId = elem.productId || elem.carId;
+        navigate(`/ProductDetail/${productId}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // 부드럽게 스크롤 이동
+        });
     };
+    
 
     return (
         <>
@@ -257,17 +263,18 @@ const ProductDetail = () => {
                                 <ProgressBar className={styles.trustIndexBar} now={product.user.reliability / 10}/>
                             </div>
                             <div className={styles.sellListFrame}>
-                                {listArr.map(elem => (
-                                    <Card className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
-                                        <div className={styles.sellInfoCardImgContainer}>
-                                            <Card.Img className={styles.sellInfoCardImg} src={elem.fileList[0].source}/>
-                                        </div>
-                                        <Card.Body className={styles.sellInfoCardBody}>
-                                            <Card.Title className={styles.sellInfoTitle}>{elem.name}</Card.Title>
-                                            <Card.Text className={styles.sellInfoPrice}>{elem.price.toLocaleString()}원</Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                ))}
+                            {listArr.map((elem, idx) => (
+                                <Card key={idx} className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
+                                    <div className={styles.sellInfoCardImgContainer}>
+                                        <Card.Img className={styles.sellInfoCardImg} src={elem.fileList[0]?.source || ''} />
+                                    </div>
+                                    <Card.Body className={styles.sellInfoCardBody}>
+                                        <Card.Title className={styles.sellInfoTitle}>{elem.name}</Card.Title>
+                                        <Card.Text className={styles.sellInfoPrice}>{elem.price.toLocaleString()}원</Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            ))}
+
                             </div>
                             <br/>
                     <img src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/ProductDetail/${id}`} style={{ width: '150px', height: '150px' }}

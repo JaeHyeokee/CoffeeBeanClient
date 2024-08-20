@@ -142,10 +142,10 @@
 }
 
 .productInfoDetail {
-    flex: 6; 
     padding: 10px;
     box-sizing: border-box;
     margin-right: 100px;
+    width: 90%;
 }
 
 .productInfoDetail p {
@@ -156,12 +156,14 @@
 
 .userInfo {
     padding: 10px;
+    width: 80%;
 }
 
 .userInfodiv {
-    flex: 4;
     padding-bottom: 10px;
     border-bottom: 2px solid #ccc;
+    font-size: medium;
+    font-weight: bold;
 }
 
 
@@ -178,6 +180,7 @@
 }
 
 .sellerProfileImg {
+    margin-top: 20px;
     height: 50px;
     border-radius: 50%;
 }
@@ -272,4 +275,23 @@
 .sellInfoPrice {
     font-weight: bold;
     margin-top: 15px;
+}
+
+/* 수정하기, 삭제하기  버튼 */
+.ownerActions {
+    display: flex;
+    gap: 80px;
+    padding: 0 50px;
+}
+
+.editButton,
+.deleteButton {
+    background-color: black;
+    border-style: none;
+    font-size: large;
+    font-weight:bold;
+    color: white;
+    border-radius: 5px;
+    width: 200px;
+    height: 50px;
 }
