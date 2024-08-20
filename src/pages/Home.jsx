@@ -7,6 +7,9 @@ import Footer from './components/Footer.jsx';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import moment from 'moment';
+import { SERVER_HOST } from '../apis/Api.js';
+
 import main1 from '../image/main1.png';
 import main2 from '../image/main2.png';
 import main3 from '../image/main3.png';
@@ -18,8 +21,9 @@ const Home = () => {
     const [recentProducts, setRecentProducts] = useState([]);
 
     useEffect(() => {
+        console.log(SERVER_HOST);
         // 인기 상품 가져오기
-        axios.get('http://localhost:8088/product/top10')
+        axios.get(`http://${SERVER_HOST}/product/top10`)
             .then(response => {
                 setTopProducts(response.data);
             })
@@ -28,7 +32,7 @@ const Home = () => {
             });
 
         // 최근 등록된 상품 가져오기
-        axios.get('http://localhost:8088/product/top10regDate')
+        axios.get(`http://${SERVER_HOST}/product/top10regDate`)
             .then(response => {
                 setRecentProducts(response.data);
             })
@@ -37,14 +41,36 @@ const Home = () => {
             });
     }, []);
 
+    const formatRegDate = (regDate) => {
+        const now = moment();
+        const date = moment(regDate);
+
+        const diffSeconds = now.diff(date, 'seconds');
+        const diffMinutes = now.diff(date, 'minutes');
+        const diffHours = now.diff(date, 'hours');
+        const diffDays = now.diff(date, 'days');
+
+        if (diffSeconds < 60) {
+            return `${diffSeconds}초전`;
+        } else if (diffMinutes < 60) {
+            return `${diffMinutes}분전`;
+        } else if (diffHours < 24) {
+            return `${diffHours}시간전`;
+        } else if (diffDays < 30) {
+            return `${diffDays}일전`;
+        } else {
+            return date.format('YYYY-MM-DD');
+        }
+    };
+
     const sliderSettings = {
         dots: true,
         infinite: true,
-        speed: 500,
+        speed: 1000,
         slidesToShow: 3,
         slidesToScroll: 1,
         autoplay: true,
-        autoplaySpeed: 3000,
+        autoplaySpeed: 2000,
         arrows: true, // 좌우 화살표 사용 설정
     };
 
@@ -85,7 +111,10 @@ const Home = () => {
                                     <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
                                     <p className="price">{product.price.toLocaleString()}원</p>
-                                    <p>{product.desiredArea || ' '} | {product.time}</p>
+                                    <p>
+                                        {product.desiredArea ? product.desiredArea + ' | ' : ''}
+                                        {formatRegDate(product.regDate)}
+                                    </p>
                                 </Link>
                             ))}
                         </div>
@@ -95,7 +124,10 @@ const Home = () => {
                                     <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
                                     <p className="price">{product.price.toLocaleString()}원</p>
-                                    <p>{product.desiredArea || ' '} | {product.time}</p>
+                                    <p>
+                                        {product.desiredArea ? product.desiredArea + ' | ' : ''}
+                                        {formatRegDate(product.regDate)}
+                                    </p>
                                 </Link>
                             ))}
                         </div>
@@ -112,7 +144,10 @@ const Home = () => {
                                     <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
                                     <p className="price">{product.price.toLocaleString()}원</p>
-                                    <p>{product.desiredArea || ' '} | {product.time}</p>
+                                    <p>
+                                        {product.desiredArea ? product.desiredArea + ' | ' : ''}
+                                        {formatRegDate(product.regDate)}
+                                    </p>
                                 </Link>
                             ))}
                         </div>
@@ -122,7 +157,10 @@ const Home = () => {
                                     <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
                                     <p className="price">{product.price.toLocaleString()}원</p>
-                                    <p>{product.desiredArea || ' '} | {product.time}</p>
+                                    <p>
+                                        {product.desiredArea ? product.desiredArea + ' | ' : ''}
+                                        {formatRegDate(product.regDate)}
+                                    </p>
                                 </Link>
                             ))}
                         </div>

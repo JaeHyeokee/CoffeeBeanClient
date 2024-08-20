@@ -2,47 +2,112 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
-import ChatFrame from '../chatting/ChatFrame';
 import x from '../../image/x.svg';
-import * as Swal from '../../apis/alert';
-import { Carousel } from 'react-bootstrap';
+import Swal from 'sweetalert2';
+import { Card, Carousel, ProgressBar } from 'react-bootstrap';
 import styles from '../../css/product/ProductDetail.module.css';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 import Chat from '../chatting/Chat';
 import Footer from '../components/Footer';
-import { LoginContext } from '../../contexts/LoginContextProvider';
+import moment from 'moment';
+import { SERVER_HOST } from '../../apis/Api';
 
 const ProductDetail = () => {
-    const { id } = useParams();
+    const { id } = useParams();  // productId
     const [product, setProduct] = useState(null);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
-
     const{userInfo ,isLogin} = useContext(LoginContext);
-    const userId = userInfo ? userInfo.userId : null;
+    const userId = userInfo ?.userId;
     const navigate = useNavigate();
+    const [ listArr, setListArr ] = useState([]);
+    const [chatRoomExists, setChatRoomExists] = useState(false);
+    const [chatRoomId, setChatRoomId] = useState(null); // 채팅방 ID 상태 추가
 
     useEffect(() => {
-        axios.get(`http://localhost:8088/product/detail/${id}`)
+        axios.get(`http://${SERVER_HOST}/product/detail/${id}`)
             .then(response => {
                 setProduct(response.data);
             })
             .catch(error => {
-                console.error('실패', error);
+                console.error('상품 조회 실패', error);
             });
     }, [id]);
+
+    useEffect(() => {
+        if (product) {
+            /* axios.get(`http://${SERVER_HOST}/car/category2/${car.category2}`)
+                .then(response => {
+                    setRecommendedCars(response.data);
+                })
+                .catch(error => {
+                    console.error('추천 차량 불러오기 실패', error);
+                }); */
+            axios({
+                method: "get",
+                url: `http://${SERVER_HOST}/sell/product/sortedlist/${product.user.userId}/1/판매중`,
+            })
+            .then(response => {
+                if(Array.isArray(response.data)) {
+                    setListArr(response.data.slice(0, 3));
+                } else {
+                    console.log('데이터 로드 실패');
+                }
+            });
+            checkChatRoomExists();
+        }
+    }, [product]);
 
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
     };
 
-    const toggleChatSidebar = () => {
-        if (!isLogin) {
-            Swal.alert("로그인이 필요합니다.", "로그인 화면으로 이동합니다.", "warning", () => { navigate("/login") });
-            navigate('/login');
-        } else {
-            setIsChatSidebarOpen(!isChatSidebarOpen);
+
+    const checkChatRoomExists = async () => {
+        try {
+            const sellerId = product.user.userId;
+            const buyerId = userInfo.userId;
+
+            const response = await axios.get(`http://${SERVER_HOST}/chatRooms/check`, {
+                params: { buyerId, sellerId, productId: id } // productId 추가
+            });
+
+            setChatRoomExists(response.data.exists);
+            if (response.data.exists) {
+                setChatRoomId(response.data.chatRoomId); // 채팅방 ID 저장
+            }
+        } catch (error) {
+            console.error("채팅방 존재 여부 확인 실패", error);
         }
-    }
+    };
+
+    const toggleChatSidebar = async () => {
+        if (chatRoomExists) {
+            setIsChatSidebarOpen(true);
+            return;
+        }
+
+        try {
+            const sellerId = product.user.userId;
+            const buyerId = userInfo.userId;
+
+            const response = await axios.post(`http://${SERVER_HOST}/chatRooms`, null, {
+                params: { 
+                    sellerId, 
+                    buyerId, 
+                    productId: id, // productId 추가
+                },
+                headers: { 'Content-Type': 'application/json' }
+            });
+
+            console.log("채팅방 생성 성공", response.data);
+            setChatRoomExists(true);
+            setChatRoomId(response.data.chatRoomId); // 생성된 채팅방 ID 저장
+            setIsChatSidebarOpen(true);
+        } catch (error) {
+            console.error("채팅방 생성 실패", error.response ? error.response.data : error.message);
+        }
+    };
 
     const dip = () => {
         if (!isLogin) {
@@ -65,14 +130,73 @@ const ProductDetail = () => {
     //상품을 올린 user와 로그인한 user가 같은지 비교
     const isOwner = userInfo && product.user.userId === userInfo.userId;
 
+    const deleteProduct = () => {
+        Swal.fire({
+            title: '상품을 삭제하시겠습니까?',
+            text: '삭제된 상품은 복구되지 않습니다.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#000000',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '확인',
+            cancelButtonText: '취소'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axios.delete(`http://${SERVER_HOST}/product/delete/${id}`)
+                    .then((response) => {
+                        console.log('삭제 성공:', response);
+                        navigate(`/MyPage`);
+                    })
+                    .catch((error) => {
+                        Swal.fire('삭제 실패', '상품 삭제에 실패했습니다.', 'error');
+                        console.error('삭제 실패:', error);
+                    });
+            }
+        }).catch((error) => {
+            console.error('Swal.fire error:', error);
+        });
+    };
+
+    const formatRegDate = (regDate) => {
+        const now = moment();
+        const date = moment(regDate);
+
+        const diffSeconds = now.diff(date, 'seconds');
+        const diffMinutes = now.diff(date, 'minutes');
+        const diffHours = now.diff(date, 'hours');
+        const diffDays = now.diff(date, 'days');
+
+        if (diffSeconds < 60) {
+            return `${diffSeconds}초전`;
+        } else if (diffMinutes < 60) {
+            return `${diffMinutes}분전`;
+        } else if (diffHours < 24) {
+            return `${diffHours}시간전`;
+        } else if (diffDays < 30) {
+            return `${diffDays}일전`;
+        } else {
+            return date.format('YYYY-MM-DD');
+        }
+    };
+
+    const goDetailPage = (elem) => {
+        const productId = elem.productId || elem.carId;
+        navigate(`/ProductDetail/${productId}`);
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth' // 부드럽게 스크롤 이동
+        });
+    };
+    
+
     return (
         <>
             <Header />
             <div className={styles.productdetailBody}>
                 <div className={styles.productDetail}>
                     <section className={styles.productdetailTop}>
-                        <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>     
-                            {product.fileList.map((file, idx) => 
+                        <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>
+                            {product.fileList.map((file, idx) =>
                                 <Carousel.Item key={idx} className={styles.carouselItem}>
                                 <img className={styles.productImage} src={file.source} alt={''} />
                             </Carousel.Item>)}
@@ -82,6 +206,7 @@ const ProductDetail = () => {
                             <p>{product.category1} &gt; {product.category2} &gt; {product.category3} </p>
                             <h1>{product.name}</h1>
                             <h1>가격: {product.price.toLocaleString()}원</h1>
+                            <h5 className={styles.productpostinfo}>{formatRegDate(product.regDate)}·조회{product.viewCount}</h5>
                             <div className={styles.productInfoBottom}>
                                 <div className={styles.productInfoBottomDiv}>
                                     <p>제품상태</p>
@@ -99,6 +224,7 @@ const ProductDetail = () => {
                             {isOwner ? (    //상품 올린 user와 로그인한 user가 같다면
                                 <div className={styles.ownerActions}>
                                     <button className={styles.editButton} onClick={handleUpdate}>수정하기</button>
+                                    <button className={styles.deleteButton} onClick={deleteProduct}>삭제하기</button>
                                 </div>
                             ) : (
                                 <div className={styles.chatDipButton}>
@@ -109,30 +235,68 @@ const ProductDetail = () => {
                         </div>
                     </section>
 
+
+
                     <section className={styles.productdetailBottom}>
                         <div className={styles.productInfoDetail}>
                             <p>상품정보</p>
                             <div>{product.description}</div>
                         </div>
 
+
+
+
+
                         <div className={styles.userInfo}>
-                            <p>가게정보</p>
-                            <div>id:{product.user.userId}</div>
-                            <div>name:{product.user.userName}</div>
+                            <div className={styles.userInfodiv}>가게정보</div>
+                            <div className={styles.nickNameAndProfileImgFrame}>
+                                <span className={styles.sellerNickName}>{product.user.userName}</span>
+                                <img className={styles.sellerProfileImg} src={'https://img2.joongna.com/common/Profile/Default/profile_f.png'} alt='프로필'/>
+                            </div>
+                            <div>
+                                <div className={styles.trustIndexFrame}>
+                                    <div className={styles.sellerTrustIndex}>
+                                        <p className={styles.sellerTrustIndexLabel}>신뢰지수</p>
+                                        <p className={styles.sellerTrustIndexFigure}>{product.user.reliability}</p>
+                                    </div>
+                                    <p className={styles.maxTrustIndex}>1,000</p>
+                                </div>
+                                <ProgressBar className={styles.trustIndexBar} now={product.user.reliability / 10}/>
+                            </div>
+                            <div className={styles.sellListFrame}>
+                            {listArr.map((elem, idx) => (
+                                <Card key={idx} className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
+                                    <div className={styles.sellInfoCardImgContainer}>
+                                        <Card.Img className={styles.sellInfoCardImg} src={elem.fileList[0]?.source || ''} />
+                                    </div>
+                                    <Card.Body className={styles.sellInfoCardBody}>
+                                        <Card.Title className={styles.sellInfoTitle}>{elem.name}</Card.Title>
+                                        <Card.Text className={styles.sellInfoPrice}>{elem.price.toLocaleString()}원</Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            ))}
+
+                            </div>
+                            <br/>
+                    <img src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/ProductDetail/${id}`} style={{ width: '150px', height: '150px' }}
+                        alt="QR Code"></img>
                         </div>
                     </section>
                 </div>
 
+
                  {/* 사이드바 */}
                  {isChatSidebarOpen && (
                     <>
-                        <div className={`${styles.overlay} ${isChatSidebarOpen ? styles.overlayActive : ''}`} onClick={toggleChatSidebar}/>
+                        <div className={`${styles.overlay} ${isChatSidebarOpen ? styles.overlayActive : ''}`} onClick={() => setIsChatSidebarOpen(false)}/>
                         <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? styles.chatSidebarOpen : ''}`}>
-                            <button className={styles.closeButton} onClick={toggleChatSidebar}> <img src={x} alt='x' height={25} width={25} /> </button>
-                            <ChatFrame productId={id} />
+                            <button className={styles.closeButton} onClick={() => setIsChatSidebarOpen(false)}> <img src={x} alt='x' height={25} width={25} /> </button>
+                            <Chat chatRoomId={chatRoomId} />
                         </div>
                     </>
                 )}
+
+
             </div>
             <Footer/>
         </>

@@ -4,6 +4,7 @@ import '../../css/post/PostDetail.css'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../components/Footer';
+import { SERVER_HOST } from '../../apis/Api';
 
 const PostDetail = () => {
 
@@ -27,7 +28,7 @@ const imageUrl = `/upload/${encodedFileName}`;
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://localhost:8088/post/detail/" + postId
+      url: "http://${SERVER_HOST}/post/detail/" + postId
     })
       .then(response => {
         const { data, status } = response;
@@ -44,7 +45,7 @@ const imageUrl = `/upload/${encodedFileName}`;
 
     axios({
       method: "delete",
-      url: `http://localhost:8088/post/delete/${postId}`,
+      url: `http://${SERVER_HOST}/post/delete/${postId}`,
     })
       .then(response => {
         const { data, status, statusText } = response;
