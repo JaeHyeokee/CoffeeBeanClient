@@ -1,54 +1,154 @@
+.productImg{
+    margin-top: 30px;
+}
 .productCreateBody {
-    padding: 20px;
-    max-width: 800px;
+    width: 728px;
     margin: auto;
 }
 
-.productImg {
-    margin-bottom: 20px;
-}
-
-.productName,
-.productCategory,
-.productDetail,
-.productStatus,
-.productSubmit {
-    margin-bottom: 20px;
-}
-
 .previewContainer {
+
+    width: 728px; /* 전체 가로 길이 설정 */
     display: flex;
     flex-wrap: wrap;
+    gap: 12px;
+    margin: 10px 0 50px 0;
 }
 
 .previewImageContainer {
     position: relative;
-    margin: 10px;
+    width: 136px;
+    height: 136px;
 }
 
 .previewImage {
-    width: 100px;
-    height: 100px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.removeButton {
+.previewImageContainer button {
     position: absolute;
     top: 5px;
     right: 5px;
-    background-color: red;
-    color: white;
+    background-color: #ffffff;
     border: none;
-    border-radius: 50%;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+    border-radius: 50%; /* 원형 버튼 */
+    width: 25px;
+    height: 25px;
+    font-size: 16px;
+    line-height: 25px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    padding: 0; /* 타원형 모양 방지를 위해 padding 제거 */
+}
+
+.previewImageContainer button:hover {
+    background-color: #000000;
+}
+
+
+
+
+
+
+/* 차량명 */
+.productName {
+    margin-bottom: 40px;
+}
+
+.productName input {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    padding: 13px;
+}
+
+/* 카테고리 */
+.productCategory {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start; /* 중앙에 배치하도록 수정 */
+    gap: 2rem; /* 적당한 간격 부여 */
+    margin-bottom: 1.5rem;
+}
+
+.productCategory div {
+    width: 230px;
+}
+
+/* 가격 */
+.productPrice {
+    position: relative;
+}
+
+.productPrice img {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     width: 20px;
     height: 20px;
+}
+
+.productPrice input {
+    width: 100%;
+    padding-left: 40px;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    box-sizing: border-box;
+    font-size: large;
+    margin-bottom: 20px;
+}
+
+/* 차량 상세정보 */
+.productDetail {
+    margin-bottom: 30px;
+}
+
+.productDetail input,
+.productDetail textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    padding: 13px;
+    box-sizing: border-box;
+}
+
+.productDetail textarea {
+    resize: vertical;
+    height: 400px;
+}
+
+
+/* 등록 버튼 */
+.productSubmit {
     display: flex;
-    align-items: center;
     justify-content: center;
-    cursor: pointer;
+    margin-top: 20px;
 }
 
 .submitButton {
-    background-color: #007bff;
+    background-color: #000000;
+    border: none;
     color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 50px;
+}
+
+.submitButton:hover {
+    background-color: #000000c4;
 }

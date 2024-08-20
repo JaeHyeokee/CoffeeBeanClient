@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Form, ListGroup, Button, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
+import price from '../../image/ProductPrice.png';
 import { useNavigate } from 'react-router-dom';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import * as Swal from '../../apis/alert';
@@ -164,7 +165,7 @@ const CarCreate = () => {
                     <Header />
                     <Form onSubmit={submitCar} className={styles.productCreateBody}>
                         <Form.Group className={styles.productImg} controlId="formBasicImage">
-                            <Form.Label>이미지</Form.Label>
+                            <Form.Label>이미지 첨부</Form.Label>
                             <div>
                                 <Form.Control
                                     type="file"
@@ -176,14 +177,13 @@ const CarCreate = () => {
                                 {car.files.map(file => (
                                     <div key={file.id} className={styles.previewImageContainer}>
                                         <img src={file.id} alt={`Preview ${file.name}`} className={styles.previewImage} />
-                                        <Button variant="danger" onClick={() => handleFileRemove(file.id)}>삭제</Button>
+                                        <Button variant="danger" onClick={() => handleFileRemove(file.id)}>X</Button>
                                     </div>
                                 ))}
                             </div>
                         </Form.Group>
 
                         <Form.Group className={styles.productName} controlId="formBasicTitle">
-                            <Form.Label>차량명</Form.Label>
                             <Form.Control
                                 type='text'
                                 value={car.name}
@@ -195,13 +195,12 @@ const CarCreate = () => {
 
                         <Form.Group className={styles.productCategory} controlId="formBasicCategory1">
                             <div>
-                                <Form.Label>카테고리1</Form.Label>
                                 <Form.Control
                                     as="select"
                                     value={car.category1}
                                     onChange={handleCategoryChange}
                                 >
-                                    <option value="">카테고리 선택</option>
+                                    <option value="">카테고리1 선택</option>
                                     {Object.keys(categories).map(category => (
                                         <option key={category} value={category}>{category}</option>
                                     ))}
@@ -209,14 +208,13 @@ const CarCreate = () => {
                             </div>
 
                             <div>
-                                <Form.Label>카테고리2</Form.Label>
                                 <Form.Control
                                     as="select"
                                     value={car.category2}
                                     onChange={handleSubCategoryChange}
                                     disabled={!selectedCategory}
                                 >
-                                    <option value="">카테고리 선택</option>
+                                    <option value="">카테고리2 선택</option>
                                     {subCategoryOptions.map(subCategory => (
                                         <option key={subCategory} value={subCategory}>{subCategory}</option>
                                     ))}
@@ -225,10 +223,10 @@ const CarCreate = () => {
                         </Form.Group>
 
                         <Form.Group className={styles.productPrice} controlId="formBasicPrice">
-                            <Form.Label>가격 (만원)</Form.Label>
+                            <img src={price} alt='가격 아이콘' />
                             <Form.Control
                                 type='number'
-                                placeholder='가격 (만원)'
+                                placeholder='판매가격(만원)'
                                 value={car.price}
                                 onChange={changeValue}
                                 className={styles.productInputPrice}
@@ -237,7 +235,6 @@ const CarCreate = () => {
                         </Form.Group>
 
                         <Form.Group className={styles.productDetail} controlId="formBasicModelYear">
-                            <Form.Label>연식</Form.Label>
                             <Form.Control
                                 type='number'
                                 placeholder='연식'
@@ -248,7 +245,6 @@ const CarCreate = () => {
                         </Form.Group>
 
                         <Form.Group className={styles.productDetail} controlId="formBasicCarNum">
-                            <Form.Label>차량 번호</Form.Label>
                             <Form.Control
                                 type='text'
                                 placeholder='차량 번호'
@@ -259,7 +255,6 @@ const CarCreate = () => {
                         </Form.Group>
 
                         <Form.Group className={styles.productDetail} controlId="formBasicDistance">
-                            <Form.Label>주행 거리</Form.Label>
                             <Form.Control
                                 type='number'
                                 placeholder='주행 거리'
@@ -270,7 +265,6 @@ const CarCreate = () => {
                         </Form.Group>
 
                         <Form.Group className={styles.productDetail} controlId="formBasicDisplacement">
-                            <Form.Label>배기량</Form.Label>
                             <Form.Control
                                 type='number'
                                 placeholder='배기량'
@@ -281,7 +275,6 @@ const CarCreate = () => {
                         </Form.Group>
 
                         <Form.Group className={styles.productDetail} controlId="formBasicFuel">
-                            <Form.Label>연료</Form.Label>
                             <Form.Control
                                 type='text'
                                 placeholder='연료'
@@ -292,7 +285,6 @@ const CarCreate = () => {
                         </Form.Group>
 
                         <Form.Group className={styles.productDetail} controlId="formBasicTransmission">
-                            <Form.Label>변속기</Form.Label>
                             <Form.Control
                                 type='text'
                                 placeholder='변속기'
@@ -303,10 +295,9 @@ const CarCreate = () => {
                         </Form.Group>
 
                         <Form.Group className={styles.productDetail} controlId="formBasicInsuranceVictim">
-                            <Form.Label>보험 이력 (피해자)</Form.Label>
                             <Form.Control
                                 type='number'
-                                placeholder='보험 이력 (피해자)'
+                                placeholder='보험 이력 (피해자) 횟수'
                                 value={car.insuranceVictim}
                                 onChange={changeValue}
                                 name='insuranceVictim'
@@ -314,10 +305,9 @@ const CarCreate = () => {
                         </Form.Group>
 
                         <Form.Group className={styles.productDetail} controlId="formBasicInsuranceInjurer">
-                            <Form.Label>보험 이력 (가해자)</Form.Label>
                             <Form.Control
                                 type='number'
-                                placeholder='보험 이력 (가해자)'
+                                placeholder='보험 이력 (가해자) 횟수'
                                 value={car.insuranceInjurer}
                                 onChange={changeValue}
                                 name='insuranceInjurer'
@@ -325,45 +315,21 @@ const CarCreate = () => {
                         </Form.Group>
 
                         <Form.Group className={styles.productDetail} controlId="formBasicOwnerChange">
-                            <Form.Label>소유자 변경 이력</Form.Label>
                             <Form.Control
                                 type='number'
-                                placeholder='소유자 변경 이력'
+                                placeholder='소유자 변경 이력 횟수'
                                 value={car.ownerChange}
                                 onChange={changeValue}
                                 name='ownerChange'
                             />
                         </Form.Group>
 
-                        <Form.Group className={styles.productStatus}>
-                            <Form.Label>상태</Form.Label>
-                            <Form.Check
-                                inline
-                                label="중고"
-                                type="radio"
-                                name="status"
-                                value="중고"
-                                checked={car.status === '중고'}
-                                onChange={() => handleStatusChange('중고')}
-                            />
-                            <Form.Check
-                                inline
-                                label="새 상품"
-                                type="radio"
-                                name="status"
-                                value="새상품"
-                                checked={car.status === '새상품'}
-                                onChange={() => handleStatusChange('새상품')}
-                            />
-                        </Form.Group>
-
                         <Form.Group className={styles.productDetail} controlId="formBasicIntroduce">
-                            <Form.Label>소개</Form.Label>
                             <Form.Control
                                 as='textarea'
                                 rows={5}
                                 value={car.introduce}
-                                placeholder='소개'
+                                placeholder='실제 촬영한 사진과 함께 상세 정보를 입력해주세요.'
                                 onChange={changeValue}
                                 name='introduce'
                             />

@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import '../../css/product/ProductCreate.module.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { Form } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../../css/product/ProductCreate.module.css';
@@ -211,33 +211,37 @@ const ProductUpdate = () => {
         <>
             <Header />
             <Form onSubmit={submitProduct} className={styles.productCreateBody}>
-                <div className="mb-3">
+            <Form.Group className={styles.productImg} controlId="formFile">
+        <Form.Label>파일 업로드</Form.Label>
+                <Form.Control 
+                    type="file" 
+                    multiple 
+                    onChange={handleFileChange}
+                   
+                />
+                {/* 파일 미리보기 영역 */}
+                <div className={styles.previewContainer}>
                     {product.fileList.length > 0 && (
-                        <ul>
+                        <ul className={styles.previewContainer}>
                             {product.fileList.map((file, index) => (
-                                <li key={index}>
-                                    <img src={file.source} alt={file.filename} style={{ width: '100px', height: '100px' }} />
-                                    <div>{file.filename}</div>
-                                    <button
-                                        type="button"
+                                <li key={index} className={styles.previewImageContainer}>
+                                    <img 
+                                        src={file.source} 
+                                        alt={`Preview ${file.filename}`} 
+                                        className={styles.previewImage} 
+                                    />
+                                    <Button 
+                                        variant="danger" 
                                         onClick={() => handleFileRemove(file.filename, file.fileId)}
                                     >
-                                        삭제
-                                    </button>
+                                        X
+                                    </Button>
                                 </li>
                             ))}
                         </ul>
                     )}
                 </div>
-
-                <Form.Group controlId="formFile" className="mb-3">
-                    <Form.Label>파일 업로드</Form.Label>
-                    <Form.Control
-                        type="file"
-                        multiple
-                        onChange={handleFileChange}
-                    />
-                </Form.Group>
+            </Form.Group>
 
                 <Form.Group className={styles.productInfo} controlId="formBasicName">
                     <Form.Label>상품명</Form.Label>

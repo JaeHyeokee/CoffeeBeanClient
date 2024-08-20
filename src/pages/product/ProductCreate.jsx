@@ -228,36 +228,24 @@ const ProductCreate = () => {
             <>
             <Header />
             <Form onSubmit={submitProduct} className={styles.productCreateBody}>
-                <Form.Group className="mb-3">
-                    <Form.Label>사진 추가:</Form.Label>
-                    <Form.Control
-                        type="file"
-                        multiple
-                        onChange={handleFileChange}
-                    />
-                </Form.Group>
-                <div className="mb-3">
-                    <ListGroup>
-                        {product.files.map(file => (
-                            <ListGroup.Item key={file.id}>
-                                <Row>
-                                    <Col>
-                                        <img src={file.id} alt={file.filename} style={{ width: '100px', height: '100px', borderRadius: '5px'}} />
-                                        <div>{file.filename}</div>
-                                    </Col>
-                                    <Col className="text-end">
-                                        <Button
-                                            variant="danger"
-                                            onClick={() => handleFileRemove(file.id)}
-                                        >
-                                            삭제
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </ListGroup.Item>
-                        ))}
-                    </ListGroup>
-                </div>
+                <Form.Group className={styles.productImg} controlId="formBasicImage">
+                            <Form.Label>이미지 첨부</Form.Label>
+                            <div>
+                                <Form.Control
+                                    type="file"
+                                    multiple
+                                    onChange={handleFileChange}
+                                />
+                            </div>
+                            <div className={styles.previewContainer}>
+                                {product.files.map(file => (
+                                    <div key={file.id} className={styles.previewImageContainer}>
+                                        <img src={file.id} alt={`Preview ${file.name}`} className={styles.previewImage} />
+                                        <Button variant="danger" onClick={() => handleFileRemove(file.id)}>X</Button>
+                                    </div>
+                                ))}
+                            </div>
+                        </Form.Group>
 
                 {/* 상품명, 카테고리, 가격 등 기존 폼 요소들 */}
 
