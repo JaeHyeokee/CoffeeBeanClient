@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import Style from '../../css/my/MyPage.module.css';
 import DealListFrame from './DealListFrame';
 import MyInformation from './MyInformation';
-import ReviewList from './ReviewList';
+import ReviewList from './WriterReviewList';
 import UnRegister from './UnRegister';
 import { Nav } from 'react-bootstrap';
 import UserManagement from '../admin/UserManagement';

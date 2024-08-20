@@ -188,11 +188,11 @@ const ProductDetail = () => {
             <div className={styles.productdetailBody}>
                 <div className={styles.productDetail}>
                     <section className={styles.productdetailTop}>
-                        <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>     
-                            {product.fileList.map((file, idx) => 
+                        <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>
+                            {product.fileList.map((file, idx) =>
                                 <Carousel.Item key={idx} className={styles.carouselItem}>
-                                    <img className={styles.productImage} src={file.source} alt={''} />
-                                </Carousel.Item>)}
+                                <img className={styles.productImage} src={file.source} alt={''} />
+                            </Carousel.Item>)}
                         </Carousel>
 
                         <div className={styles.productInfo}>
@@ -269,11 +269,16 @@ const ProductDetail = () => {
                                     </Card>
                                 ))}
                             </div>
+                            <br/>
+                    <img src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/ProductDetail/${id}`} style={{ width: '150px', height: '150px' }}
+                        alt="QR Code"></img>
                         </div>
                     </section>
                 </div>
 
-                {isChatSidebarOpen && (
+
+                 {/* 사이드바 */}
+                 {isChatSidebarOpen && (
                     <>
                         <div className={`${styles.overlay} ${isChatSidebarOpen ? styles.overlayActive : ''}`} onClick={() => setIsChatSidebarOpen(false)}/>
                         <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? styles.chatSidebarOpen : ''}`}>

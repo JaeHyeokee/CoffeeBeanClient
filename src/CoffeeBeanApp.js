@@ -7,7 +7,8 @@ import Join from './pages/my/Join';
 import LogIn from './pages/my/LogIn';
 import ReviewCreate from './pages/my/ReviewCreate';
 import ReviewDetail from './pages/my/ReviewDetail';
-import ReviewList from './pages/my/ReviewList';
+import WriterReviewList from './pages/my/WriterReviewList';
+import RecipientReviewList from './pages/my/RecipientReviewList';
 import UnRegister from './pages/my/UnRegister';
 import UserManagement from './pages/admin/UserManagement';
 import CarCreate from './pages/car/CarCreate';
@@ -53,9 +54,10 @@ const CoffeeBeanApp = () => {
                     <Route path = '/Login' Component={LogIn}/>
                     <Route path = '/MyPage' Component={MyPage}/>
                     <Route path = '/MyInformation' Component={MyInformation}/>
-                    <Route path = '/ReviewCreate' Component={ReviewCreate}/>
-                    <Route path = '/ReviewDetail' Component={ReviewDetail}/>
-                    <Route path = '/ReviewList' Component={ReviewList}/>
+                    <Route path = '/ReviewCreate/:chatRoomId/:writerId' Component={ReviewCreate}/>
+                    <Route path = '/ReviewDetail/:chatRoomId/:writerId' Component={ReviewDetail}/>
+                    <Route path = '/ReviewList/writer/:userId' Component={WriterReviewList}/>
+                    <Route path = '/ReviewList/recipient/:userId' Component={RecipientReviewList}/>
                     <Route path = '/UnRegister' Component={UnRegister}/>
 
                     <Route path = '/PostCreate/:userId' Component={PostCreate}/>
