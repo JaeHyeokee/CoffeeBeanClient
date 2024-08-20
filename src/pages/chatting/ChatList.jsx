@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../css/chatting/ChatList.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import { SERVER_HOST } from '../../apis/Apie';
+import { SERVER_HOST } from '../../apis/Api';
 
 const ChatList = ({ onSelectChatRoom }) => {
   const [chatRooms, setChatRooms] = useState([]);

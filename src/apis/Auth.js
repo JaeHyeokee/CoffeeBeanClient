@@ -1,6 +1,6 @@
-import api from './Apie'
+import api from './Api'
 
-import { SERVER_HOST } from './Apie'
+import { SERVER_HOST } from './Api'
 
 // 요청하는 동작들에 대하여 함수로 만들어 export 해둔다.
 

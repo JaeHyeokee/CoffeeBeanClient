@@ -3,8 +3,8 @@ import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import * as Swal from '../apis/Alert';
-import * as auth from '../apis/Authe';
-import api from '../apis/Apie';
+import * as auth from '../apis/Auth';
+import api from '../apis/Api';
 
 export const LoginContext = createContext();
 LoginContext.displayName = 'LoginContextName';
