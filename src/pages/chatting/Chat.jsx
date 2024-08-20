@@ -5,7 +5,7 @@ import { Stomp } from '@stomp/stompjs';
 import '../../css/chatting/Chat.css';
 import TextareaAutosize from 'react-textarea-autosize';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import { SERVER_HOST } from '../../apis/Api';
+import { SERVER_HOST } from '../../apis/Apie';
 
 const Chat = ({ chatRoomId, onBack }) => {
     const [messages, setMessages] = useState([]);

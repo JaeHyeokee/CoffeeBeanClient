@@ -8,7 +8,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import moment from 'moment';
-import { SERVER_HOST } from '../apis/Api';
+import { SERVER_HOST } from '../apis/Apie.js';
 
 import main1 from '../image/main1.png';
 import main2 from '../image/main2.png';
