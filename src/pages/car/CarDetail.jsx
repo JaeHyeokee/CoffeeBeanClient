@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import styles from '../../css/car/CarDetail.module.css';
-import { Carousel } from 'react-bootstrap';
+import { Card, Carousel, ProgressBar } from 'react-bootstrap';
 import ChatFrame from '../chatting/ChatFrame';
 import x from '../../image/x.svg';
 import Swal from 'sweetalert2';
@@ -27,6 +27,7 @@ const CarDetail = () => {
     const userId = userInfo?.userId;
     const navigate = useNavigate();
     const isSeller = userId === car?.user?.userId;
+    const [ listArr, setListArr ] = useState([]);
 
     useEffect(() => {
         axios.get(`http://localhost:8088/car/detail/${id}`)
@@ -48,8 +49,23 @@ const CarDetail = () => {
                 .catch(error => {
                     console.error('추천 차량 불러오기 실패', error);
                 });
+            axios({
+                method: "get",
+                url: `http://localhost:8088/sell/car/sortedlist/${car.user.userId}/1/판매중`,
+            })
+            .then(response => {
+                if(Array.isArray(response.data)) {
+                    setListArr(response.data.slice(0, 3));
+                } else {
+                    console.log('데이터 로드 실패');
+                }
+            });
         }
     }, [car]);
+
+    const goDetailPage = (elem) => {
+        navigate('/CarDetail/' + elem.carId);
+    };
 
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
@@ -236,8 +252,33 @@ const CarDetail = () => {
                     <div className={styles.rightPanel}>
                         <div className={styles.infoBoxuser}>
                             <h2 className={styles.infotext}>가게정보</h2>
-                            <p>이름: {car.user.userName}</p>
-                            <p>이메일: {car.user.email}</p>
+                            <div className={styles.nickNameAndProfileImgFrame}>
+                                <span className={styles.sellerNickName}>{car.user.userName}</span>
+                                <img className={styles.sellerProfileImg} src={'https://img2.joongna.com/common/Profile/Default/profile_f.png'} alt='프로필'/>
+                            </div>
+                            <div>
+                                <div className={styles.trustIndexFrame}>
+                                    <div className={styles.sellerTrustIndex}>
+                                        <p className={styles.sellerTrustIndexLabel}>신뢰지수</p>
+                                        <p className={styles.sellerTrustIndexFigure}>{car.user.reliability}</p>
+                                    </div>
+                                    <p className={styles.maxTrustIndex}>1,000</p>
+                                </div>
+                                <ProgressBar className={styles.trustIndexBar} now={car.user.reliability / 10}/>
+                            </div>
+                            <div className={styles.sellListFrame}>
+                                {listArr.map(elem => (
+                                    <Card className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
+                                        <div className={styles.sellInfoCardImgContainer}>
+                                            <Card.Img className={styles.sellInfoCardImg} src={elem.fileList[0].source}/>
+                                        </div>
+                                        <Card.Body className={styles.sellInfoCardBody}>
+                                            <Card.Title className={styles.sellInfoTitle}>{elem.name}</Card.Title>
+                                            <Card.Text className={styles.sellInfoPrice}>{elem.price.toLocaleString()}만원</Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                ))}
+                            </div>
                         </div>
                     </div>
 
