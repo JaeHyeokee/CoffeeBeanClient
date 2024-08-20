@@ -1,5 +1,5 @@
 .carListBody {
-    padding: 20px;
+    padding: 30px 20%;
 }
 
 .searchResult {
@@ -37,4 +37,127 @@
     background-color: #000000;
     color: #fff;
     border-color: #828282;
+}
+
+/* 카테고리 필터 */
+.categoryContainer {
+    border-top: 2px solid black;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.category1Result,
+.category2Result,
+.category3Result,
+.category4Result {
+    padding: 10px 50px;
+    vertical-align: top;
+    background-color: #ffffff;
+}
+
+.categoryContainer td h2 {
+    padding-left: 30px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.category1,
+.category2,
+.category3,
+.category4 {
+    width: 15%;
+    background-color: #e2e2e2;
+}
+
+.productInputPrice {
+    border-style: none;
+}
+
+.category2Result {
+    display: flex;
+}
+
+.productInputPrice1 {
+    margin-right: 10px;
+    height: 35px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+.productInputPrice2 {
+    margin-left: 10px;
+    height: 35px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+
+.category1Result {
+    display: flex;
+}
+
+.category1Result p {
+    margin-right: 5px;
+}
+
+.category2ResultButton {
+    margin-left: 30px;
+    border-radius: 5px;
+    background-color: black;
+    color: white;
+    width: 60px;
+    height: 40px;
+    margin-top: 10px;
+}
+
+.category2Result input {
+    margin-top: 10px;
+    height: 40px;
+}
+
+.category2Result p {
+    margin-top: 20px;
+    margin-right: 10px;
+}
+
+.toggleButton {
+    background-color: white;
+    border-style: none;
+}
+
+.icon {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.productList {
+    margin-top: 20px;
+}
+
+.categoryContainer {
+    width: 100%;
+}
+
+.price {
+    margin: 60px 0;
+}
+
+.priceInfo {
+    padding: 20px 0;
+    display: flex;
+    justify-content: center; /* 가로축에서 가운데 정렬 */
+    gap: 20px; /* 각 항목 사이에 20px 간격 */
+    background-color: #e2e2e2;
+    height: 70px;
+    border-radius: 7px;
+}
+
+.priceInfo p {
+    margin: 0;
+    padding: 0 55px; /* 각 p 태그에 좌우 여백 추가 */
+    border-right: 1px solid #ccc; /* 구분선 추가 */
+}
+
+.priceInfo p:last-child {
+    border-right: none; /* 마지막 항목에 구분선 제거 */
 }

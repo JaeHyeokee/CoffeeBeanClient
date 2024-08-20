@@ -7,7 +7,8 @@ import Join from './pages/my/Join';
 import LogIn from './pages/my/LogIn';
 import ReviewCreate from './pages/my/ReviewCreate';
 import ReviewDetail from './pages/my/ReviewDetail';
-import ReviewList from './pages/my/ReviewList';
+import WriterReviewList from './pages/my/WriterReviewList';
+import RecipientReviewList from './pages/my/RecipientReviewList';
 import UnRegister from './pages/my/UnRegister';
 import UserManagement from './pages/admin/UserManagement';
 import CarCreate from './pages/car/CarCreate';
@@ -40,8 +41,8 @@ const CoffeeBeanApp = () => {
                     <Route path = '/UserManagement' Component={UserManagement}/>
                     <Route path = '/UserManagement' Component={UserManagement}/>
 
-                    <Route path='/Chat' Component={Chat} />
-                    <Route path='/ChatList' Component={ChatList} />
+                    <Route path='/Chat/:id' element={<Chat />} />
+                    <Route path='/ChatList' element={<ChatList />} />
 
                     <Route path = '/CarCreate/:userId' Component={CarCreate}/>
                     <Route path = '/CarDetail/:id' Component={CarDetail}/>
@@ -53,9 +54,10 @@ const CoffeeBeanApp = () => {
                     <Route path = '/Login' Component={LogIn}/>
                     <Route path = '/MyPage' Component={MyPage}/>
                     <Route path = '/MyInformation' Component={MyInformation}/>
-                    <Route path = '/ReviewCreate' Component={ReviewCreate}/>
-                    <Route path = '/ReviewDetail' Component={ReviewDetail}/>
-                    <Route path = '/ReviewList' Component={ReviewList}/>
+                    <Route path = '/ReviewCreate/:chatRoomId/:writerId' Component={ReviewCreate}/>
+                    <Route path = '/ReviewDetail/:chatRoomId/:writerId' Component={ReviewDetail}/>
+                    <Route path = '/ReviewList/writer/:userId' Component={WriterReviewList}/>
+                    <Route path = '/ReviewList/recipient/:userId' Component={RecipientReviewList}/>
                     <Route path = '/UnRegister' Component={UnRegister}/>
 
                     <Route path = '/PostCreate/:userId' Component={PostCreate}/>
@@ -63,7 +65,7 @@ const CoffeeBeanApp = () => {
                     <Route path = "/PostList" element={<PostList initialContentType="contentType1" />} />
                     <Route path = '/PostUpdate/:postId' element={<PostUpdate/>}/>
 
-                    <Route path = '/ProductCreate/:userId' Component={ProductCreate}/>
+                    <Route path = '/ProductCreate' Component={ProductCreate}/>
                     <Route path = '/ProductDetail/:id' Component={ProductDetail}/>
                     <Route path = '/ProductList' Component={ProductList}/>
                     <Route path = '/ProductList/:category' Component={ProductList}/>
