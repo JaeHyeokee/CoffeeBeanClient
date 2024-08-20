@@ -52,11 +52,11 @@ const ProductDetail = () => {
             <div className={styles.productdetailBody}>
                 <div className={styles.productDetail}>
                     <section className={styles.productdetailTop}>
-                        <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>     
-                            {product.fileList.map((file, idx) => 
+                        <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>
+                            {product.fileList.map((file, idx) =>
                                 <Carousel.Item key={idx} className={styles.carouselItem}>
-                                <img className={styles.productImage} src={file.source} alt={''} />
-                            </Carousel.Item>)}
+                                    <img className={styles.productImage} src={file.source} alt={''} />
+                                </Carousel.Item>)}
                         </Carousel>
 
                         <div className={styles.productInfo}>
@@ -91,17 +91,19 @@ const ProductDetail = () => {
                             <p>상품정보</p>
                             <div>{product.description}</div>
                         </div>
-
                         <div className={styles.userInfo}>
                             <p>가게정보</p>
                             <div>id:{product.user.userId}</div>
                             <div>name:{product.user.userName}</div>
+                            <br/>
+                    <img src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/ProductDetail/${id}`} style={{ width: '150px', height: '150px' }}
+                        alt="QR Code"></img>
                         </div>
                     </section>
                 </div>
 
-                 {/* 사이드바 */}
-                 {isChatSidebarOpen && (
+                {/* 사이드바 */}
+                {isChatSidebarOpen && (
                     <>
                         <div className={`overlay ${isChatSidebarOpen ? 'active' : ''}`} onClick={toggleChatSidebar} /> {/* 채팅 사이드바 나왔을때 뒷 배경 반투명하게 */}
                         <div className={`chat-sidebar ${isChatSidebarOpen ? 'open' : ''}`}>

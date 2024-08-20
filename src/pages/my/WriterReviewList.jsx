@@ -4,36 +4,23 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 
-const ReviewDetail = () => {
+const ReviewList = () => {
 
     const navigate = useNavigate();
-    const { chatRoomId, writerId } = useParams();
+    const { userId } = useParams();
 
-    const [review, setReivew] = useState({
-        reviewId: "",
-        writer: null,
-        recipient: null,
-        content: "",
-        regDate: "",
-    });
-
-    const [product, setProduct] = useState({
-        name: "",
-        price: "",
-        fileList: [],
-    });
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         axios({
             method: "get",
-            url: `http://localhost:8088/review/detail/${chatRoomId}/${writerId}`
+            url: `http://localhost:8088/review/list/writer/${userId}`
         })
             .then(response => {
                 const { data, status } = response;
                 if (status == 200) {
                     console.log(data);
-                    setReivew(data.review);
-                    setProduct(data.product);
+                    setReviews(data);
                 } else {
                     window.alert('읽어오기 실패');
                 }
@@ -44,46 +31,46 @@ const ReviewDetail = () => {
         return recipient.userId === seller.userId;
     };
 
-
-
-
     return (
-        <div>
-            <Header />
-            <Button variant="secondary" onClick={() => navigate(`/WriterReviewList/${writerId}`)}>이전</Button>
-            <h3>후기 상세</h3>
-            <div style={{ padding: '20px' }}>
+        <>
+        <Header />
+        <Link to={'/ReviewList/recipient/' + userId}>내 후기</Link> | 
+        <h3>내가 쓴 후기</h3>
+        {reviews.map((item, index) => (
+            <div key={index} style={{ padding: '20px', borderBottom: '1px solid #ccc', marginBottom: '20px' }}>
                 <div style={{ flex: '1' }}>
-                    {product.fileList && product.fileList.length > 0 && (
+                    {item.product.fileList && item.product.fileList.length > 0 && (
                         <img
-                            src={product.fileList[0].source}
+                            src={item.product.fileList[0].source}
                             alt="product"
+                            style={{ maxWidth: '200px', height: 'auto' }}
                         />
                     )}
                 </div>
                 <div style={{ flex: '2', paddingLeft: '20px' }}>
-                    <div>{product.name}</div>
-                    {review.recipient && review.writer && (
-                        isSeller(review.recipient, review.writer) ? (
+                    <div>{item.product.name}</div>
+                    {item.review.recipient && item.review.writer && (
+                        isSeller(item.review.recipient, item.review.writer) ? (
                             <div>판매자</div>
                         ) : (
                             <div>구매자</div>
                         )
                     )}
-                    {review.recipient ? (
-                        <p>{review.recipient.nickName}</p>
+                    {item.review.recipient ? (
+                        <p>{item.review.recipient.nickName}</p>
                     ) : (
                         <p>정보가 없습니다</p>
                     )}
-                    <div>{product.price}원</div>
-                    <div>{review.regDate}</div>
+                    <div>{item.product.price}원</div>
+                    <div>{item.review.regDate}</div>
                 </div>
                 <div>
-                    {review.content}
+                    {item.review.content}
                 </div>
             </div>
-        </div>
+        ))}
+    </>
     );
 };
 
-export default ReviewDetail;
+export default ReviewList;

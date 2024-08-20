@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import Style from '../../css/my/MyPage.module.css';
 import MyDealList from './MyDealList';
 import MyInformation from './MyInformation';
-import ReviewList from './ReviewList';
+import ReviewList from './WriterReviewList';
 import UnRegister from './UnRegister';
 import { Nav } from 'react-bootstrap';
 
