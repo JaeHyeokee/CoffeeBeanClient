@@ -33,7 +33,7 @@ const MyHome = () => {
             <div className={Style.myHomeProfileContent}>
                 <div>
                     <span className={Style.nickNamePrint}>{userInfo.userName}</span>
-                    <p className={Style.oneLineIntro}>안녕하세요! 키티에요~</p>
+                    <p className={Style.oneLineIntro}>ㅁㅁㅁㅁㅁㅁㅁㅁ</p>
                 </div>
                 <div>
                     <div className={Style.trustIndexInfo}>
