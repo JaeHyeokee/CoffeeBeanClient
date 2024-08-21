@@ -6,8 +6,10 @@ import '../../css/chatting/Chat.css';
 import TextareaAutosize from 'react-textarea-autosize';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { SERVER_HOST } from '../../apis/Api';
+import { useParams } from 'react-router-dom';
 
 const Chat = ({ chatRoomId, onBack }) => {
+    const { id } = useParams(); // productId
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
     const [isConnected, setIsConnected] = useState(false);
@@ -189,6 +191,20 @@ const Chat = ({ chatRoomId, onBack }) => {
         fetchProduct();
     }, [chatRoomId]);
 
+    
+    const proStatus = async (status) => {
+        try {
+            await axios.put(`http://localhost:8088/product/update/status/${product.productId}`, null, {
+                params: {
+                    dealingStatus: status
+                }
+            });
+            setProduct(prevProduct => ({ ...prevProduct, dealingStatus: status }));
+        } catch (error) {
+            console.error("상품 상태를 업데이트하는 중 오류 발생:", error.response ? error.response.data : error.message);
+        }
+    }
+
     const firstProductImage = product && product.fileList && product.fileList.length > 0 ? product.fileList[0].source : null;
 
     if (userId === null) {
@@ -222,27 +238,38 @@ const Chat = ({ chatRoomId, onBack }) => {
                         {product ? product.name : '상품명을 불러오지 못했습니다.'}
                     </div>
                 </div>
+                <div className='status'>
+                    <div className='status1'>
+                        <select onChange={(e) => proStatus(e.target.value)} defaultValue="">
+                            <option value="" disabled>상태 선택</option>
+                            <option value="판매중">판매중</option>
+                            <option value="예약중">예약중</option>
+                            <option value="판매완료">판매완료</option>
+                        </select>
+                    </div>
+                    <div>
+                        {product ? (product.dealingStatus === '판매중' ? '판매중' :
+                            product.dealingStatus === '예약중' ? '예약중' : '판매완료') : '상품 상태를 로드하는 중'}
+                    </div>
+                </div>
             </div>
             <div className={`messages ${isJoin === 1 ? 'gray-background' : ''}`}>
-            {messages.map((message, index) => {
-    const isOwnMessage = userId !== null && message.sender && message.sender.userId === parseInt(userId, 10);
+                {messages.map((message, index) => {
+                    const isOwnMessage = userId !== null && message.sender && message.sender.userId === parseInt(userId, 10);
 
-    // 디버깅: userId와 message.sender.userId를 콘솔에 출력
-    console.log('User ID:', userId);
-
-    return (
-        <div key={index} className={`message ${isOwnMessage ? 'own-message' : 'other-message'}`}>
-            <div className='messageText'>{message.messageText}</div>
-            <div className='messageDetails'>
-                <div className={`isRead${isOwnMessage ? '1' : '2'}`}>{message.isRead ? '' : '안읽음'}</div>
-                <div className={`sendTime${isOwnMessage ? '1' : '2'}`}>{formatTime(message.sendTime)}</div>
-            </div>
-            {isOwnMessage && (
-                <button className='messageDelete' onClick={() => handleDelete(message.messageId, message.sendTime)}>x</button>
-            )}
-        </div>
-    );
-})}
+                    return (
+                        <div key={index} className={`message ${isOwnMessage ? 'own-message' : 'other-message'}`}>
+                            <div className='messageText'>{message.messageText}</div>
+                            <div className='messageDetails'>
+                                <div className={`isRead${isOwnMessage ? '1' : '2'}`}>{message.isRead ? '' : '안읽음'}</div>
+                                <div className={`sendTime${isOwnMessage ? '1' : '2'}`}>{formatTime(message.sendTime)}</div>
+                            </div>
+                            {isOwnMessage && (
+                                <button className='messageDelete' onClick={() => handleDelete(message.messageId, message.sendTime)}>x</button>
+                            )}
+                        </div>
+                    );
+                })}
 
                 <div ref={messagesEndRef} />
                 <div className='joinDiv'>

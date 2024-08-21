@@ -11,6 +11,7 @@ import Footer from '../components/Footer';
 import insuranceImage from '../../image/insurance2.png';
 import updateImage from '../../image/icon-update.png';
 import deleteImage from '../../image/icon-delete.png';
+import shareImage from "../../image/share-icon.png";
 import { SERVER_HOST } from '../../apis/Api';
 
 
@@ -29,6 +30,7 @@ const CarDetail = () => {
     const navigate = useNavigate();
     const isSeller = userId === car?.user?.userId;
     const [ listArr, setListArr ] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
     useEffect(() => {
         axios.get(`http://${SERVER_HOST}/car/detail/${id}`)
@@ -107,7 +109,7 @@ const CarDetail = () => {
     };
 
     const handleCarSearchClick = () => {
-        window.open('http://www.naver.com', '_blank');
+        window.open('https://direct.samsungfire.com/ria/pc/product/car/?state=Front', '_blank');
     };
 
     const deletecar = () => {
@@ -156,6 +158,15 @@ const CarDetail = () => {
         }
     };
 
+
+    const handleShareClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <>
             <Header />
@@ -168,31 +179,66 @@ const CarDetail = () => {
                             </Carousel.Item>
                         )}
                     </Carousel>
+
                     <div className={styles.carInfo}>
-                        <p className={styles.carCategory}>{car.category1} &gt; {car.category2}</p>
-                        <h2 className={styles.carName}>{car.name}</h2>
-                        <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회{car.viewCount}</h2>
+                        <div className={styles.carHeader}>
+                            <p className={styles.carCategory}>{car.category1} &gt; {car.category2}</p>
+                            <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회 {car.viewCount}</h2>
+                        </div>
+
+                        <div className={styles.carNameContainer}>
+                            <h1 className={styles.carName}>{car.name}</h1>
+                            <img
+                                src={shareImage}
+                                alt="Share"
+                                style={{ width: '20px', height: '20px', cursor: 'pointer', marginLeft: '50px'}}
+                                onClick={handleShareClick}
+                            />
+                        </div>
+
+                        {isModalOpen && (
+                            <div className={styles.modalOverlay} onClick={handleCloseModal}>
+                                <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                                    <h3 className={styles.modaltitle}>공유하기</h3>
+                                    <img className={styles.modalqrimg}
+                                        src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/carDetail/${id}`}
+                                        alt="QR Code"
+                                    />
+                                    <button onClick={handleCloseModal} className={styles.closeModalButton}>닫기</button>
+                                </div>
+                            </div>
+                        )}
+
+
+
+
+
+
+                        {/* <h2 className={styles.carName}>{car.name}</h2> */}
+                        {/* <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회{car.viewCount}</h2> */}
                         <h1 className={styles.carPrice}>
                             {car.price === 0 ? '가격협의' : `${car.price.toLocaleString()} 만원`}
                         </h1>
                         <p>{car.modelYear} 년식·{car.distance} KM·{car.fuel}</p>
                         <button className={styles.carsearch} onClick={handleCarSearchClick}>보험료 조회</button>
                         <div className={styles.carInfoBottom}>
-                            <div>
+                            <div className={styles.carInfoBottomDiv}>
                                 <p>제품상태</p>
                                 <p>{car.status}</p>
                             </div>
-                            <div>
+                            <div className={styles.carInfoBottomDiv}>
                                 <p>판매상태</p>
                                 <p>{car.dealingStatus}</p>
                             </div>
                         </div>
+                        {!isSeller && (
                         <div className={styles.chatDipButton}>
                             <button className={styles.chatButton} onClick={toggleChatSidebar}>
                                 채팅하기
                             </button>
                             <button className={styles.dipButton} onClick={dip}>찜하기</button>
                         </div>
+                        )}
                         {isSeller && (
                             <div className={styles.changeButton}>
                                 <button className={styles.imageButton} onClick={() => navigate(`/CarUpdate/${id}`)}>
@@ -204,10 +250,11 @@ const CarDetail = () => {
                                     <span className={styles.buttonText}>상품삭제</span>
                                 </button>
                             </div>
-                
                         )}
                     </div>
                 </section>
+
+
 
                 <section className={styles.cardetailInfo}>
                     <div className={styles.leftPanel}>
