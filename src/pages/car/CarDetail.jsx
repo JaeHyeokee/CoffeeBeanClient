@@ -107,7 +107,7 @@ const CarDetail = () => {
     };
 
     const handleCarSearchClick = () => {
-        window.open('http://www.naver.com', '_blank');
+        window.open('https://direct.samsungfire.com/ria/pc/product/car/?state=Front', '_blank');
     };
 
     const deletecar = () => {
@@ -169,9 +169,12 @@ const CarDetail = () => {
                         )}
                     </Carousel>
                     <div className={styles.carInfo}>
-                        <p className={styles.carCategory}>{car.category1} &gt; {car.category2}</p>
+                        <div className={styles.carHeader}>
+                            <p className={styles.carCategory}>{car.category1} &gt; {car.category2}</p>
+                            <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회 {car.viewCount}</h2>
+                        </div>
                         <h2 className={styles.carName}>{car.name}</h2>
-                        <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회{car.viewCount}</h2>
+                        {/* <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회{car.viewCount}</h2> */}
                         <h1 className={styles.carPrice}>
                             {car.price === 0 ? '가격협의' : `${car.price.toLocaleString()} 만원`}
                         </h1>
