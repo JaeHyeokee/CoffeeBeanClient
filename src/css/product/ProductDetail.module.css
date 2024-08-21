@@ -1,49 +1,112 @@
 .productdetailBody {
-    margin-top: 50px;
-    padding: 0 20%;
-    position: relative;
+    width: 1280px;
+    margin: auto;
+    padding: 20px;
 }
 
-.productDetail {
+/* .productDetail {
     display: flex;
     flex-direction: column; 
-}
+} */
 
 .productdetailTop {
+    margin-top: 30px;
     display: flex;
-    margin-bottom: 50px; 
-    align-items: flex-start; 
-    gap: 20px; 
+    gap: 20px;
+    margin-bottom: 50px;
 }
 
 .carousel {
-    width: 500px;
-    margin-right: 50px;
-}
-
-.productImage {
-    width: 100%;
-    height: auto;
-    border-radius: 20px;
-    object-fit: cover;
+    width: 630px; /* 슬라이더의 전체 너비 설정 */
 }
 
 .carouselItem {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%; /* 전체 너비를 100%로 설정하여 컨테이너에 맞게 조정 */
 }
 
-.carouselItem img {
-    height: 500px;
-    width: 500px;
+.productImage {
+    width: 630px; /* 고정된 가로 크기 */
+    height: 550px; /* 고정된 세로 크기 */
+    border-radius: 10px; /* 둥근 모서리 설정 */
+    object-fit: cover; /* 이미지가 부모 요소에 맞게 조정되도록 설정 */
 }
+
+.productHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+}
+
+.productCategory {
+    text-align: left; /* 텍스트를 왼쪽으로 정렬 */
+    margin-top: 30px;
+    color: #686868;
+}
+
 
 /* 상품정보 */
+.productpostinfo {
+    margin-top: 10px;
+    font-size: 15px;
+    color: rgb(94, 94, 94);
+}
+
+
+
+
 .productInfo {
-    flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    justify-content: flex-start; /* 요소를 위쪽에 붙게 함 */
+    width: 630px;
+    padding: 20px;
+    padding-top: 0;
+    /* border: 1px solid #bababa; */
+}
+
+
+.productInfo p:first-of-type {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.productName {
+    font-size: 28px;
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+.productInfo p:nth-of-type(2) {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.productPrice {
+    font-size: 40px;
+    font-weight: 700;
+    margin: 20px 0;
+    margin-bottom: 50px;
+}
+
+.productsearch {
+    width: 120px;
+    border-radius: 30px;
+    color: rgb(46, 46, 46);
+    border: 0;
+    margin-bottom: 30px;
+    cursor: pointer;
+    background-color: rgb(225, 225, 225);
+}
+
+.productsearch:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    filter: brightness(90%);
 }
 
 .productInfoBottom {
@@ -51,15 +114,35 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border: 2px solid lightgray;
+    border: 2px solid #ccc;
     border-radius: 10px;
-    margin-bottom: 30px; 
-    margin-top: 30px;
+    width: 100%;
+    margin-bottom: 30px;
+    position: relative;
 }
+
+/* .productInfoBottom::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 50%;
+    background-color: #ccc;
+} */
 
 .productInfoBottom div {
     text-align: center;
+    width: 45%;
 }
+
+.productInfoBottomText {
+    font-weight: bold;
+}
+
+
+
 
 /* 채팅하기, 찜하기 버튼 */
 .chatDipButton {
@@ -82,9 +165,48 @@
 }
 
 .dipButton {
-    background-color: black;
+    background-color: #000000;
     color: white;
 }
+
+.changeButton {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center; /* 버튼들이 중앙에 배치되도록 설정 */
+    gap: 100px; /* 버튼들 사이의 간격 */
+    width: 100%;
+    border: 2px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.imageButton {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.updateImage,
+.deleteImage {
+    width: 30px;
+    height: 30px;
+}
+
+.buttonText {
+    font-size: 15px;
+    margin-top: 5px;
+}
+
+
+
+
+
+
+
+
 
 /* 채팅하기 side */
 .overlay {
@@ -101,13 +223,13 @@
   .overlayActive {
     background-color: rgba(0, 0, 0, 0.5); /* 사이드바 열었을때 */
   }
-  
+
   /* 사이드바 스타일 */
   .chatSidebar {
     position: fixed;
     top: 0;
     right: -300px; /* 화면 밖에 배치하여 숨김 */
-    width: 30%;
+    width: 40%;
     height: 100%;
     background-color: #fff;
     transition: right 0.3s ease;
@@ -130,6 +252,17 @@
   }
 
 
+
+
+
+
+
+
+
+
+
+
+
 /* 상품정보, user정보 */
 .productdetailBottom {
     display: flex;
@@ -138,24 +271,250 @@
 }
 
 .productInfoDetail {
-    flex: 6; 
     padding: 10px;
     box-sizing: border-box;
     margin-right: 100px;
+    width: 90%;
 }
 
 .productInfoDetail p {
-    font-size: large;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #ccc;
+    font-size: 15px
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 .userInfo {
-    flex: 4;
     padding: 10px;
+    width: 80%;
 }
 
-.userInfo p {
+
+
+
+
+
+
+
+
+.userInfodiv {
     padding-bottom: 10px;
     border-bottom: 2px solid #ccc;
+    font-size: medium;
+    font-weight: bold;
 }
+
+
+.nickNameAndProfileImgFrame {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.sellerNickName {
+    font-size: 22px;
+    font-weight: bold;
+    align-content: center;
+}
+
+.sellerProfileImg {
+    margin-top: 20px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.trustIndexFrame {
+    display: flex;
+    justify-content: space-between;
+    height: 30px;
+    margin: 0 5px;
+}
+
+.sellerTrustIndex {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    color: #0CB650;
+    font-size: 14px;
+}
+
+.sellerTrustIndexFigure {
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.maxTrustIndex {
+    margin: 0;
+    padding-top: 5px;
+    color: gray;
+    font-size: 15px;
+}
+
+.trustIndexBar {
+    width: 100%;
+    height: 10px;
+    margin-bottom: 15px;
+    border-radius: 10px !important;
+    transition: width 0.5s ease-in-out;
+}
+
+.trustIndexBar div {
+    background: linear-gradient(90deg, #0DCC5A, #01A1AD);
+    border-radius: 10px;
+}
+
+.sellListFrame {
+    display: flex;
+    margin-top: 20px;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.sellInfoCard {
+    padding: 5px;
+    width: 31%;
+    height: 250px !important;
+    border: 0 !important;
+    cursor: pointer;
+}
+
+.sellInfoCard:hover .sellInfoCardImg{
+    transform: scale(1.1);
+}
+
+.sellInfoCardImgContainer {
+    overflow: hidden;
+    height: 65%;
+    border-radius: 5px;
+}
+
+.sellInfoCardImg {
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.sellInfoCardBody {
+    padding: 15px 5px !important;
+    height: 35%;
+}
+
+.sellInfoTitle {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    display: -webkit-box;          /* Flexbox를 사용하여 상자 모델을 정의합니다. */
+    -webkit-line-clamp: 1;         /* 표시할 줄 수를 2로 제한합니다. */
+    -webkit-box-orient: vertical;  /* 상자의 방향을 수직으로 설정합니다. */
+    overflow: hidden;              /* 넘치는 내용은 숨깁니다. */
+    text-overflow: ellipsis;       /* 넘치는 텍스트를 생략 기호로 표시합니다. */
+    height: 18px;
+    font-size: 15px !important;
+    color: #757575;
+}
+
+.sellInfoPrice {
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.infotext{
+    width: 580px;
+    font-weight: bold;
+    font-size: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.moreButton {
+    width: 180px;
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #0DCC5A;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.moreButton:hover {
+    background-color: #0db851;
+}
+
+.productInfoBottomDiv p:nth-of-type(2) {
+    font-size: 17px; /* 원하는 크기로 설정 */
+    font-weight: bold;
+    color: #757575;
+}
+
+
+
+
+
+
+.productNameContainer {
+    display: flex;
+    align-items: center;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background-color: white;
+    width: 500px;
+    height: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 가운데 정렬 */
+    justify-content: center; /* 세로 가운데 정렬 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.modaltitle{
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.modalqrimg {
+    width: 200px;
+    height: 200px;
+    margin: 20px 0; /* 위아래 여백 추가 */
+}
+
+.closeModalButton {
+    padding: 10px 20px;
+    background-color: #0DCC5A;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.closeModalButton:hover {
+    background-color: #0db851;
+}
+

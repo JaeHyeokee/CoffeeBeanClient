@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../components/Footer';
 import styles from '../../css/post/PostDetail.module.css';
 import { FaSave, FaTimes } from 'react-icons/fa';
+import { SERVER_HOST } from '../../apis/Api';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const PostDetail = () => {
   const navigate = useNavigate();
   const { postId } = useParams();
+  const { roles } = useContext(LoginContext);
 
   const [post, setPost] = useState({
     postId: "",
@@ -27,7 +30,7 @@ const PostDetail = () => {
   useEffect(() => {
     axios({
       method: "get",
-      url: `http://localhost:8088/post/detail/${postId}`
+      url: `http://${SERVER_HOST}/post/detail/${postId}`
     })
       .then(response => {
         const { data } = response;
@@ -70,7 +73,7 @@ const PostDetail = () => {
 
     axios({
       method: "delete",
-      url: `http://localhost:8088/post/delete/${postId}`,
+      url: `http://${SERVER_HOST}/post/delete/${postId}`,
     })
       .then(response => {
         if (response.data === 1) {
@@ -154,11 +157,14 @@ const PostDetail = () => {
             </div>
           )}
         </div>
+        {roles?.isAdmin && (
+            <>
         <div className={styles.navigationButtons}>
           <button className={styles.deleteButton} onClick={deletePost}>삭제</button>
           <button className={styles.editButton} onClick={() => navigate(`/PostUpdate/${postId}`)}>수정</button>
-          <button className={styles.backButton} onClick={() => navigate('/PostList')}>목록으로 돌아가기</button>
         </div>
+        </>
+          )}
         <div className={styles.bottomNavButtons}>
           {prevPost ? (
             <Link to={`/PostDetail/${prevPost.postId}`} className={styles.navButton}>이전 글</Link>

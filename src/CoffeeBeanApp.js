@@ -26,6 +26,9 @@ import ProductUpdate from './pages/product/ProductUpdate';
 import LoginContextProvider from './contexts/LoginContextProvider';
 import ChatList from './pages/chatting/ChatList';
 import Chat from './pages/chatting/Chat';
+import KaKaoLogin from './pages/components/Kakao/KaKaoLogin'; //카카오로그인
+import KakaoCallback from './pages/components/Kakao/KaKaoCallBack';
+import UserProfile from './pages/components/Kakao/UserProfile';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './CoffeeBeanApp.css';
@@ -41,7 +44,7 @@ const CoffeeBeanApp = () => {
                     <Route path = '/UserManagement' Component={UserManagement}/>
                     <Route path = '/UserManagement' Component={UserManagement}/>
 
-                    <Route path='/Chat/:id' element={<Chat />} />
+                    <Route path='/Chat/:chatRoomId' element={<Chat />} />
                     <Route path='/ChatList' element={<ChatList />} />
 
                     <Route path = '/CarCreate/:userId' Component={CarCreate}/>
@@ -49,7 +52,7 @@ const CoffeeBeanApp = () => {
                     <Route path = '/CarList' Component={CarList}/>
                     <Route path = '/CarList/:category' Component={CarList}/>
                     <Route path = '/CarList/:category/:subcategory' Component={CarList}/>
-                    <Route path = '/CarUpdate/:id' Component={CarUpdate}/>
+                    <Route path = '/CarUpdate/:carId' Component={CarUpdate}/>
 
                     <Route path = '/Login' Component={LogIn}/>
                     <Route path = '/MyPage' Component={MyPage}/>
@@ -65,7 +68,7 @@ const CoffeeBeanApp = () => {
                     <Route path = "/PostList" element={<PostList initialContentType="contentType1" />} />
                     <Route path = '/PostUpdate/:postId' element={<PostUpdate/>}/>
 
-                    <Route path = '/ProductCreate' Component={ProductCreate}/>
+                    <Route path = '/ProductCreate/:userId' Component={ProductCreate}/>
                     <Route path = '/ProductDetail/:id' Component={ProductDetail}/>
                     <Route path = '/ProductList' Component={ProductList}/>
                     <Route path = '/ProductList/:category' Component={ProductList}/>
@@ -74,6 +77,9 @@ const CoffeeBeanApp = () => {
                     <Route path = '/ProductUpdate/:id' Component={ProductUpdate}/>
 
                     <Route path = '/Join' Component={Join}/>
+
+                    <Route path = '/Kakao' Component={KaKaoLogin}/>
+                    <Route path="/callback/kakao" element={<KakaoCallback />} />
                 </Routes>
             </LoginContextProvider>
         </BrowserRouter>

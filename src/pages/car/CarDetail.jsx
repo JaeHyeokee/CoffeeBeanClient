@@ -11,6 +11,8 @@ import Footer from '../components/Footer';
 import insuranceImage from '../../image/insurance2.png';
 import updateImage from '../../image/icon-update.png';
 import deleteImage from '../../image/icon-delete.png';
+import shareImage from "../../image/share-icon.png";
+import { SERVER_HOST } from '../../apis/Api';
 
 
 import { LoginContext } from '../../contexts/LoginContextProvider';
@@ -23,14 +25,16 @@ const CarDetail = () => {
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
     const [showFullIntroduce, setShowFullIntroduce] = useState(false); // 더보기 버튼 상태
-    const { userInfo } = useContext(LoginContext);
+    const { userInfo,isLogin } = useContext(LoginContext);
     const userId = userInfo?.userId;
     const navigate = useNavigate();
     const isSeller = userId === car?.user?.userId;
     const [ listArr, setListArr ] = useState([]);
+    const [isDipped, setIsDipped] = useState(false); 
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
     useEffect(() => {
-        axios.get(`http://localhost:8088/car/detail/${id}`)
+        axios.get(`http://${SERVER_HOST}/car/detail/${id}`)
             .then(response => {
                 setCar(response.data);
                 window.scrollTo(0, 0); // 페이지 로드 시 스크롤을 맨 위로 이동
@@ -42,7 +46,7 @@ const CarDetail = () => {
 
     useEffect(() => {
         if (car) {
-            axios.get(`http://localhost:8088/car/category2/${car.category2}`)
+            axios.get(`http://${SERVER_HOST}/car/category2/${car.category2}`)
                 .then(response => {
                     setRecommendedCars(response.data);
                 })
@@ -51,7 +55,7 @@ const CarDetail = () => {
                 });
             axios({
                 method: "get",
-                url: `http://localhost:8088/sell/car/sortedlist/${car.user.userId}/1/판매중`,
+                url: `http://${SERVER_HOST}/sell/car/sortedlist/${car.user.userId}/1/판매중`,
             })
             .then(response => {
                 if(Array.isArray(response.data)) {
@@ -75,14 +79,19 @@ const CarDetail = () => {
         setIsChatSidebarOpen(!isChatSidebarOpen);
     };
 
-    const dip = () => {
-        Swal.fire({
-            title: '찜콩',
-            html: '<div style="display: flex; align-items: center; justify-content: center;"></div>',
-            showConfirmButton: false,
-            width: '400px',
-        });
-    };
+    useEffect(() => {
+        if (car && userId) {
+            axios.get(`http://${SERVER_HOST}/dips/status/car`, {
+                params: { userId, carId: id}
+            })
+            .then(response => {
+                setIsDipped(response.data.isDipped);
+            })
+            .catch(error => {
+                console.error('찜 상태 확인 실패', error);
+            });
+        }
+    }, [car, userId]);   
 
     useEffect(() => {
         if (isChatSidebarOpen) {
@@ -106,7 +115,7 @@ const CarDetail = () => {
     };
 
     const handleCarSearchClick = () => {
-        window.open('http://www.naver.com', '_blank');
+        window.open('https://direct.samsungfire.com/ria/pc/product/car/?state=Front', '_blank');
     };
 
     const deletecar = () => {
@@ -121,7 +130,7 @@ const CarDetail = () => {
             cancelButtonText: '취소'
         }).then((result) => {
             if (result.isConfirmed) {
-                axios.delete(`http://localhost:8088/car/delete/${id}`)
+                axios.delete(`http://${SERVER_HOST}/car/delete/${id}`)
                     .then(response => {
                         navigate(`/MyPage`);
                     })
@@ -155,6 +164,42 @@ const CarDetail = () => {
         }
     };
 
+    const dip = async () => {
+        if (!isLogin) {
+            Swal.fire("로그인이 필요합니다.", "찜하기 기능을 사용하시려면 로그인이 필요합니다.", "warning");
+            navigate('/login');
+            return;
+        }
+
+        try {
+            if (isDipped) {
+                // 찜 취소 요청
+                await axios.delete(`http://${SERVER_HOST}/delete/car/${userId}/${id}`);
+                setIsDipped(false);
+                Swal.fire("찜 상품에서 제외 했습니다.", "", "success");
+            } else {
+                // 찜 추가 요청
+                await axios.post(`http://${SERVER_HOST}/dips/write/car/${userId}/${id}`);
+                setIsDipped(true);
+                Swal.fire("찜 상품에 추가 되었습니다.", "", "success");
+            }
+        } catch (error) {
+            console.error("찜하기/찜 취소하기 실패:", error);
+            Swal.fire("작업 실패", "다시 시도해주세요.", "error");
+        }
+    };
+
+    
+
+
+    const handleShareClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <>
             <Header />
@@ -167,31 +212,68 @@ const CarDetail = () => {
                             </Carousel.Item>
                         )}
                     </Carousel>
+
                     <div className={styles.carInfo}>
-                        <p className={styles.carCategory}>{car.category1} &gt; {car.category2}</p>
-                        <h2 className={styles.carName}>{car.name}</h2>
-                        <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회{car.viewCount}</h2>
+                        <div className={styles.carHeader}>
+                            <p className={styles.carCategory}>{car.category1} &gt; {car.category2}</p>
+                            <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회 {car.viewCount}</h2>
+                        </div>
+
+                        <div className={styles.carNameContainer}>
+                            <h1 className={styles.carName}>{car.name}</h1>
+                            <img
+                                src={shareImage}
+                                alt="Share"
+                                style={{ width: '20px', height: '20px', cursor: 'pointer', marginLeft: '50px'}}
+                                onClick={handleShareClick}
+                            />
+                        </div>
+
+                        {isModalOpen && (
+                            <div className={styles.modalOverlay} onClick={handleCloseModal}>
+                                <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                                    <h3 className={styles.modaltitle}>공유하기</h3>
+                                    <img className={styles.modalqrimg}
+                                        src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/carDetail/${id}`}
+                                        alt="QR Code"
+                                    />
+                                    <button onClick={handleCloseModal} className={styles.closeModalButton}>닫기</button>
+                                </div>
+                            </div>
+                        )}
+
+
+
+
+
+
+                        {/* <h2 className={styles.carName}>{car.name}</h2> */}
+                        {/* <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회{car.viewCount}</h2> */}
                         <h1 className={styles.carPrice}>
                             {car.price === 0 ? '가격협의' : `${car.price.toLocaleString()} 만원`}
                         </h1>
                         <p>{car.modelYear} 년식·{car.distance} KM·{car.fuel}</p>
                         <button className={styles.carsearch} onClick={handleCarSearchClick}>보험료 조회</button>
                         <div className={styles.carInfoBottom}>
-                            <div>
+                            <div className={styles.carInfoBottomDiv}>
                                 <p>제품상태</p>
                                 <p>{car.status}</p>
                             </div>
-                            <div>
+                            <div className={styles.carInfoBottomDiv}>
                                 <p>판매상태</p>
                                 <p>{car.dealingStatus}</p>
                             </div>
                         </div>
+                        {!isSeller && (
                         <div className={styles.chatDipButton}>
                             <button className={styles.chatButton} onClick={toggleChatSidebar}>
                                 채팅하기
                             </button>
-                            <button className={styles.dipButton} onClick={dip}>찜하기</button>
+                            <button className={styles.dipButton} onClick={dip}>
+                                        {isDipped ? '찜 취소하기' : '찜하기'}
+                                    </button>
                         </div>
+                        )}
                         {isSeller && (
                             <div className={styles.changeButton}>
                                 <button className={styles.imageButton} onClick={() => navigate(`/CarUpdate/${id}`)}>
@@ -203,10 +285,11 @@ const CarDetail = () => {
                                     <span className={styles.buttonText}>상품삭제</span>
                                 </button>
                             </div>
-                
                         )}
                     </div>
                 </section>
+
+
 
                 <section className={styles.cardetailInfo}>
                     <div className={styles.leftPanel}>

@@ -6,6 +6,7 @@ import { Form, Button } from 'react-bootstrap';
 import Footer from '../components/Footer';
 import styles from '../../css/post/PostUpdate.module.css';
 import { FaPlus } from 'react-icons/fa';
+import { SERVER_HOST } from '../../apis/Api';
 
 const PostUpdate = () => {
 
@@ -75,7 +76,7 @@ const PostUpdate = () => {
     useEffect(() => {
         axios({
             method: "get",
-            url: "http://localhost:8088/post/detail/" + postId
+            url: `http://${SERVER_HOST}/post/detail/${postId}`
         })
             .then(response => {
                 const { data, status } = response;
@@ -116,7 +117,7 @@ const PostUpdate = () => {
     
         axios({
             method: 'put',
-            url: `http://localhost:8088/post/update/${post.postId}`,
+            url: `http://${SERVER_HOST}/post/update/${post.postId}`,
             headers: {
                 "Content-Type": 'multipart/form-data',
             },

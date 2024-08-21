@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import { Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../components/Footer';
 import styles from '../../css/post/PostList.module.css';
+import { SERVER_HOST } from '../../apis/Api';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const PostList = ({ initialContentType }) => {
     const location = useLocation();
@@ -17,6 +19,8 @@ const PostList = ({ initialContentType }) => {
 
     const userId = 1;
 
+    const { roles } = useContext(LoginContext);
+
     const contentTypeMapping = {
         contentType1: '커피빈 소식',
         contentType2: '중고거래 팁',
@@ -26,12 +30,13 @@ const PostList = ({ initialContentType }) => {
     useEffect(() => {
         axios({
             method: "get",
-            url: "http://localhost:8088/post/list"
+            url: `http://${SERVER_HOST}/post/list`
         })
-        .then(response => {
-            const { data } = response;
-            setPosts(data.filter(post => post.type === contentTypeMapping[selectedContentType]));
-        });
+            .then(response => {
+                const { data, status, statusText } = response;
+                console.log(data);
+                setPosts(data.filter(post => post.type === contentTypeMapping[selectedContentType]));
+            })
     }, [selectedContentType]);
 
     const handlePageChange = (pageNumber) => {
@@ -54,77 +59,80 @@ const PostList = ({ initialContentType }) => {
 
     return (
         <>
-        <Header/>
-        <div className={styles.postlistBody}>
-        <h1 className={styles.postListTitle}>콘텐츠</h1>
-            <hr/>
-            <div className={styles.postList}>
-                <Link 
-                    to='/PostList?contentType=contentType1' 
-                    className={selectedContentType === 'contentType1' ? styles.activeLink : ''}
-                    onClick={() => setSelectedContentType('contentType1')} >
+            <Header />
+            <div className={styles.postlistBody}>
+                <h1 className={styles.postListTitle}>콘텐츠</h1>
+                <hr />
+                <div className={styles.postList}>
+                    <Link
+                        to='/PostList?contentType=contentType1'
+                        className={selectedContentType === 'contentType1' ? styles.activeLink : ''}
+                        onClick={() => setSelectedContentType('contentType1')} >
                         커피빈 소식
-                </Link>
-                <Link 
-                    to='/PostList?contentType=contentType2' 
-                    className={selectedContentType === 'contentType2' ? styles.activeLink : ''}
-                    onClick={() => setSelectedContentType('contentType2')}>
+                    </Link>
+                    <Link
+                        to='/PostList?contentType=contentType2'
+                        className={selectedContentType === 'contentType2' ? styles.activeLink : ''}
+                        onClick={() => setSelectedContentType('contentType2')}>
                         중고거래 팁
-                </Link>
-                <Link 
-                    to='/PostList?contentType=contentType3' 
-                    className={selectedContentType === 'contentType3' ? styles.activeLink : ''}
-                    onClick={() => setSelectedContentType('contentType3')}>
+                    </Link>
+                    <Link
+                        to='/PostList?contentType=contentType3'
+                        className={selectedContentType === 'contentType3' ? styles.activeLink : ''}
+                        onClick={() => setSelectedContentType('contentType3')}>
                         사기예방
-                </Link>
-            </div>
-            <hr/>
-            <div className={styles.postTitle}>
-                {currentPosts.length > 0 ? (
-                    currentPosts.map((post) => (
-                        <p key={post.postId}>
-                            <Link to={`/PostDetail/${post.postId}`}>
-                                {post.title}
-                            <hr/>
-                            </Link>
-                        </p>
-                    ))
-                ) : (
-                    <p>해당 카테고리에 대한 게시물이 없습니다.</p>
-                )}
-            </div>
+                    </Link>
+                </div>
+                <hr />
+                <div className={styles.postTitle}>
+                    {currentPosts.length > 0 ? (
+                        currentPosts.map((post) => (
+                            <p key={post.postId}>
+                                <Link to={`/PostDetail/${post.postId}`}>
+                                    {post.title}
+                                    <hr />
+                                </Link>
+                            </p>
+                        ))
+                    ) : (
+                        <p>해당 카테고리에 대한 게시물이 없습니다.</p>
+                    )}
+                </div>
 
-            <div className={styles.pagination}>
-                {startPage > 1 && (
-                    <button
-                        onClick={() => handlePageChange(startPage - 1)}
-                        className={styles.pageButton}
-                    >
-                        이전
-                    </button>
-                )}
-                {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
-                    <button
-                        key={startPage + index}
-                        onClick={() => handlePageChange(startPage + index)}
-                        className={startPage + index === currentPage ? styles.activePage : styles.pageButton}
-                    >
-                        {startPage + index}
-                    </button>
-                ))}
-                {endPage < totalPages && (
-                    <button
-                        onClick={() => handlePageChange(endPage + 1)}
-                        className={styles.pageButton}
-                    >
-                        다음
-                    </button>
+                <div className={styles.pagination}>
+                    {startPage > 1 && (
+                        <button
+                            onClick={() => handlePageChange(startPage - 1)}
+                            className={styles.pageButton}
+                        >
+                            이전
+                        </button>
+                    )}
+                    {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
+                        <button
+                            key={startPage + index}
+                            onClick={() => handlePageChange(startPage + index)}
+                            className={startPage + index === currentPage ? styles.activePage : styles.pageButton}
+                        >
+                            {startPage + index}
+                        </button>
+                    ))}
+                    {endPage < totalPages && (
+                        <button
+                            onClick={() => handlePageChange(endPage + 1)}
+                            className={styles.pageButton}
+                        >
+                            다음
+                        </button>
+                    )}
+                </div>
+                {roles?.isAdmin && (
+                    <>
+                        <Link to={`/PostCreate/${userId}`} className={styles.createPostButton}>게시물 작성하기</Link>
+                    </>
                 )}
             </div>
-
-            <Link to={`/PostCreate/${userId}`} className={styles.createPostButton}>게시물 작성하기</Link>
-        </div>
-        <Footer/>
+            <Footer />
         </>
     );
 };

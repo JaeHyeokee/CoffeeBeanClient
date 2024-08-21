@@ -13,7 +13,7 @@ import Category from './Category';
 import CarCategory from './CarCategory';
 import { Form, Nav, Navbar, NavDropdown, NavItem, ProgressBar } from 'react-bootstrap';
 import { LoginContext } from '../../contexts/LoginContextProvider';
-import * as Swal from '../../apis/alert'
+import * as Swal from '../../apis/Alert'
 const Header = () => {
 
     //상태관리
@@ -150,10 +150,10 @@ const Header = () => {
                                 <div>
                                     <Navbar className={Style.navBarTop}>
                                         <img src={my} alt="아이콘" />
-                                        <NavDropdown title={'\u00A0' + userInfo.userName} id="basic-nav-dropdown" className={Style.dropdownMenu}>
+                                        <NavDropdown title={'\u00A0' + userInfo.nickName} id="basic-nav-dropdown" className={Style.dropdownMenu}>
                                             <NavDropdown.Item className={Style.dropdownMenuTab} href="/MyPage">마이페이지</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item className={Style.dropdownMenuTab} onClick={ () => logout() }>로그아웃( {userInfo.userName}:{userInfo.role} )
+                                            <NavDropdown.Item className={Style.dropdownMenuTab} onClick={ () => logout() }>로그아웃
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </Navbar>

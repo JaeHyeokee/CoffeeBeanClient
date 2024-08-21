@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { FaArrowLeft } from 'react-icons/fa';
 import styles from '../../css/my/ReviewDetail.module.css';
+import { Button } from 'react-bootstrap';
+import { SERVER_HOST } from '../../apis/Api';
 
 const ReviewDetail = () => {
 
@@ -28,7 +30,7 @@ const ReviewDetail = () => {
     useEffect(() => {
         axios({
             method: "get",
-            url: `http://localhost:8088/review/detail/${chatRoomId}/${writerId}`
+            url: `http://${SERVER_HOST}/review/detail/${chatRoomId}/${writerId}`
         })
             .then(response => {
                 const { data, status } = response;

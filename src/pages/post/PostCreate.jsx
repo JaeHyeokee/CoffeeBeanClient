@@ -6,6 +6,7 @@ import { Form, Button, Col, Row } from 'react-bootstrap';
 import Footer from '../components/Footer';
 import styles from '../../css/post/PostCreate.module.css';
 import { FaPlus } from 'react-icons/fa';
+import { SERVER_HOST } from '../../apis/Api';
 
 const PostCreate = () => {
     const navigate = useNavigate();
@@ -79,7 +80,7 @@ const PostCreate = () => {
 
         axios({
             method: 'post',
-            url: `http://localhost:8088/post/write/${userId}`,
+            url: `http://${SERVER_HOST}/post/write/${userId}`,
             headers: {
                 "Content-Type": 'multipart/form-data',
             },

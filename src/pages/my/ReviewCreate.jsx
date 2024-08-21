@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Button, ListGroup, Col, Row } from 'react-bootstrap';
 import { FaStar, FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
+import { SERVER_HOST } from '../../apis/Api';
 
 const ReviewCreate = () => {
 
@@ -53,7 +54,7 @@ const ReviewCreate = () => {
     useEffect(() => {
         axios({
             method: "get",
-            url: `http://localhost:8088/review/checkInfo/${chatRoomId}/${writerId}`
+            url: `http://${SERVER_HOST}/review/checkInfo/${chatRoomId}/${writerId}`
         })
             .then(response => {
                 const { data, status } = response;
@@ -80,7 +81,7 @@ const ReviewCreate = () => {
 
         axios({
             method: 'post',
-            url: `http://localhost:8088/review/write/${chatRoomId}/${writerId}`,
+            url: `http://${SERVER_HOST}/review/write/${chatRoomId}/${writerId}`,
             headers: {
                 "Content-Type": 'application/json',
             },
@@ -91,7 +92,7 @@ const ReviewCreate = () => {
                 if (status === 201) {
                     axios({
                         method: 'post',
-                        url: `http://localhost:8088/user/reliabilityUpdate/${review.recipientId}`,
+                        url: `http://${SERVER_HOST}/user/reliabilityUpdate/${review.recipientId}`,
                         headers: {
                             "Content-Type": 'multipart/form-data',
                         },

@@ -3,6 +3,8 @@ import Header from '../components/Header';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../../css/my/RecipientReviewList.module.css';
+import { Button } from 'react-bootstrap';
+import { SERVER_HOST } from '../../apis/Api';
 
 const ReviewList = () => {
     const { userId } = useParams();
@@ -18,7 +20,7 @@ const ReviewList = () => {
     useEffect(() => {
         axios({
             method: "get",
-            url: `http://localhost:8088/review/list/recipient/${userId}`
+            url: `http://${SERVER_HOST}/review/list/recipient/${userId}`
         }).then(response => {
             const { data, status } = response;
             if (status === 200) {
@@ -32,7 +34,7 @@ const ReviewList = () => {
     useEffect(() => {
         axios({
             method: "get",
-            url: `http://localhost:8088/user/sampleReview/${userId}`
+            url: `http://${SERVER_HOST}/user/sampleReview/${userId}`
         }).then(response => {
             const { data, status } = response;
             if (status === 200) {

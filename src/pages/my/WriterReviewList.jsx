@@ -3,6 +3,8 @@ import Header from '../components/Header';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../../css/my/WriterReviewList.module.css';
+import { Button } from 'react-bootstrap';
+import { SERVER_HOST } from '../../apis/Api';
 
 const ReviewList = () => {
     const navigate = useNavigate();
@@ -12,7 +14,7 @@ const ReviewList = () => {
     useEffect(() => {
         axios({
             method: "get",
-            url: `http://localhost:8088/review/list/writer/${userId}`
+            url: `http://${SERVER_HOST}/review/list/writer/${userId}`
         })
             .then(response => {
                 const { data, status } = response;
