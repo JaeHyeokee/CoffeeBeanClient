@@ -5,8 +5,9 @@ import axios from 'axios';
 import CarItem from '../components/CarItem';
 import styles from '../../css/car/CarList.module.css';
 import Footer from '../components/Footer';
-import Soldout from '../../image/Soldout.png'
-import UnSoldout from '../../image/UnSoldout.png'
+import Soldout from '../../image/Soldout.png';
+import UnSoldout from '../../image/UnSoldout.png';
+import { SERVER_HOST } from '../../apis/Api';
 
 const ITEMS_PER_PAGE = 20;
 const PAGES_PER_GROUP = 10; // 한 번에 표시할 페이지 버튼 수
@@ -42,10 +43,10 @@ const CarList = () => {
                 if(keyword !== '') {
                     response = await axios({
                         method: "get",
-                        url: `http://localhost:8088/car/list/${keyword}`,
+                        url: `http://${SERVER_HOST}/car/list/${keyword}`,
                     });
                 } else {
-                    response = await axios.get(`http://localhost:8088/car/filter`, {
+                    response = await axios.get(`http://${SERVER_HOST}/car/filter`, {
                         params: {
                             category1: category,
                             category2: subcategory

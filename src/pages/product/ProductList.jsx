@@ -7,8 +7,9 @@ import Footer from '../components/Footer';
 import styles from '../../css/product/ProductList.module.css';
 import PriceTrendChart from '../priceTrend/PriceTrendChart';
 import { Button, Modal } from 'react-bootstrap';
-import Soldout from '../../image/Soldout.png'
-import UnSoldout from '../../image/UnSoldout.png'
+import Soldout from '../../image/Soldout.png';
+import UnSoldout from '../../image/UnSoldout.png';
+import { SERVER_HOST } from '../../apis/Api';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -42,10 +43,10 @@ const ProductList = () => {
                 if(keyword !== '') {
                     response = await axios({
                         method: "get",
-                        url: `http://localhost:8088/product/list/${keyword}`,
+                        url: `http://${SERVER_HOST}/product/list/${keyword}`,
                     });
                 } else {
-                    response = await axios.get('http://localhost:8088/product/category', {
+                    response = await axios.get(`http://${SERVER_HOST}/product/category`, {
                         params: {
                             category1: category || undefined,
                             category2: subcategory || undefined,
@@ -67,7 +68,7 @@ const ProductList = () => {
     
         const fetchPriceInfo = async () => {
             try {
-                const response = await axios.get('http://localhost:8088/product/priceInfo', {
+                const response = await axios.get(`http://${SERVER_HOST}/product/priceInfo`, {
                     params: {
                         category1: category,
                         category2: subcategory,

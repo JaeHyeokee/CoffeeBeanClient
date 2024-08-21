@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../css/chatting/ChatList.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
+import { SERVER_HOST } from '../../apis/Api';
 
 const ChatList = ({ onSelectChatRoom }) => {
   const [chatRooms, setChatRooms] = useState([]);
@@ -13,7 +14,7 @@ useEffect(() => {
     const storedUserId = userInfo.userId;
     setUserId(storedUserId);        
     if (storedUserId) {
-        axios.get(`http://localhost:8088/chatRooms/user/${storedUserId}/with-last-message`)
+        axios.get(`http://${SERVER_HOST}/chatRooms/user/${storedUserId}/with-last-message`)
             .then(response => {
                 console.log(response.data); // 데이터 구조를 확인
                 setChatRooms(response.data);
@@ -36,7 +37,7 @@ useEffect(() => {
     const confirmLeave = window.confirm("채팅방을 나가시겠습니까?");
     if (confirmLeave) {
         try {
-            await axios.post(`http://localhost:8088/chatRooms/leave/${chatRoomId}/${userId}`);
+            await axios.post(`http://${SERVER_HOST}/chatRooms/leave/${chatRoomId}/${userId}`);
             setChatRooms(prevRooms => prevRooms.filter(room => room.chatRoomId !== chatRoomId));
             console.log("채팅방 나가기 성공.");
         } catch (error) {

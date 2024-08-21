@@ -8,7 +8,8 @@ import { useNavigate } from 'react-router-dom';
 import styles from '../../css/product/ProductCreate.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import Footer from '../components/Footer';
-import * as Swal from '../../apis/alert'
+import * as Swal from '../../apis/Alert';
+import { SERVER_HOST } from '../../apis/Api';
 
 const categories = {
     "패션의류": ["여성의류", "남성의류"],
@@ -39,15 +40,15 @@ const subcategories = {
 
 const ProductCreate = () => {
 
-    const {isLogin,roles,userInfo} = useContext(LoginContext);
-    const navigate = useNavigate();    
-    
+    const { isLogin, roles, userInfo } = useContext(LoginContext);
+    const navigate = useNavigate();
+
     const [product, setProduct] = useState({
         name: "",
         description: "",
         price: "",
         dealingStatus: "판매중",
-        status: "중고",
+        status: "중고",         
         dealingType: [],
         desiredArea: "",
         category1: "",
@@ -60,6 +61,79 @@ const ProductCreate = () => {
     const [subCategoryOptions, setSubCategoryOptions] = useState([]);
     const [selectedSubCategory, setSelectedSubCategory] = useState("");
     const [subsubCategoryOptions, setSubSubCategoryOptions] = useState([]);
+
+    //유효성 검사
+    const [errors, setErrors] = useState({
+        name: "",
+        description: "",
+        price: "",
+        dealingType: "",
+        desiredArea: "",
+        category1: "",
+        category2: "",
+        files: []
+    });
+
+    const [isSubmitted, setIsSubmitted] = useState(false)
+
+    const validateForm = () => {
+        let formIsValid = true;
+        const newErrors = {
+            name: "",
+            description: "",
+            price: "",
+            dealingType: "",
+            desiredArea: "",
+            category1: "",
+            category2: "",
+            files: []
+        };
+
+        if (!product.name) {
+            newErrors.name = "상품명을 입력해주세요.";
+            formIsValid = false;
+        }
+
+        if (!product.description) {
+            newErrors.description = "상품 설명을 입력해주세요.";
+            formIsValid = false;
+        }
+
+        if (!product.price) {
+            newErrors.price = "상품 가격을 입력해주세요.";
+            formIsValid = false;
+        }
+
+        if (product.dealingType.length === 0) {
+            newErrors.dealingType = "거래 방법을 선택해주세요.";
+            formIsValid = false;
+        }
+
+        if (!product.desiredArea) {
+            newErrors.desiredArea = "희망 거래 지역을 입력해주세요.";
+            formIsValid = false;
+        }
+
+        if (!product.category1) {
+            newErrors.category1 = "카테고리1을 선택해주세요.";
+            formIsValid = false;
+        }
+
+        if (!product.category2) {
+            newErrors.category2 = "카테고리2를 선택해주세요.";
+            formIsValid = false;
+        }
+
+        if (product.files.length === 0) {
+            newErrors.files = "사진을 1장 이상 첨부해주세요.";
+            formIsValid = false;
+        }
+
+        setErrors(newErrors);
+        return formIsValid;
+    };
+
+
 
     useEffect(() => {
         if (!userInfo || !roles) {
@@ -97,7 +171,7 @@ const ProductCreate = () => {
         }
     }, [selectedSubCategory]);
 
-    if(!userInfo) return null;
+    if (!userInfo) return null;
     const userId = userInfo.userId;
 
     const changeValue = (e) => {
@@ -170,7 +244,11 @@ const ProductCreate = () => {
 
     const submitProduct = (e) => {
         e.preventDefault();
+        setIsSubmitted(true);
 
+        if (!validateForm()) {
+            return;
+        }
         const formData = new FormData();
         formData.append('name', product.name);
         formData.append('description', product.description);
@@ -192,223 +270,222 @@ const ProductCreate = () => {
 
         axios({
             method: 'post',
-            url: `http://localhost:8088/product/write/${userId}`,
+            url: `http://${SERVER_HOST}/product/write/${userId}`,
             headers: {
                 "Content-Type": 'multipart/form-data',
             },
             data: formData,
         })
-        .then(response => {
-            const { data, status } = response;
-            if (status === 201) {
-                console.log('상품 생성 성공:', data);
-                navigate(`/ProductDetail/${data}`);
-            } else {
-                alert('등록 실패');
-            }
-        })
-        .catch(error => {
-            if (error.response) {
-                console.error('서버 응답 오류:', error.response.data);
-            } else if (error.request) {
-                console.error('요청 오류:', error.request);
-            } else {
-                console.error('설정 오류:', error.message);
-            }
-        });
+            .then(response => {
+                const { data, status } = response;
+                if (status === 201) {
+                    console.log('상품 생성 성공:', data);
+                    navigate(`/ProductDetail/${data}`);
+                } else {
+                    alert('등록 실패');
+                }
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.error('서버 응답 오류:', error.response.data);
+                } else if (error.request) {
+                    console.error('요청 오류:', error.request);
+                } else {
+                    console.error('설정 오류:', error.message);
+                }
+            });
     };
 
 
-    
+
 
     return (
         <>
-        {
-            isLogin && roles.isUser &&
-            <>
-            <Header />
-            <Form onSubmit={submitProduct} className={styles.productCreateBody}>
-                <Form.Group className="mb-3">
-                    <Form.Label>사진 추가:</Form.Label>
-                    <Form.Control
-                        type="file"
-                        multiple
-                        onChange={handleFileChange}
-                    />
-                </Form.Group>
-                <div className="mb-3">
-                    <ListGroup>
-                        {product.files.map(file => (
-                            <ListGroup.Item key={file.id}>
-                                <Row>
-                                    <Col>
-                                        <img src={file.id} alt={file.filename} style={{ width: '100px', height: '100px', borderRadius: '5px'}} />
-                                        <div>{file.filename}</div>
-                                    </Col>
-                                    <Col className="text-end">
-                                        <Button
-                                            variant="danger"
-                                            onClick={() => handleFileRemove(file.id)}
-                                        >
-                                            삭제
-                                        </Button>
-                                    </Col>
-                                </Row>
-                            </ListGroup.Item>
-                        ))}
-                    </ListGroup>
-                </div>
+            {
+                isLogin && roles.isUser &&
+                <>
+                    <Header />
+                    <Form onSubmit={submitProduct} className={styles.productCreateBody}>
+                        <Form.Group className={styles.productImg} controlId="formBasicImage">
+                            <Form.Label>이미지 첨부</Form.Label>
+                            <div>
+                                <Form.Control
+                                    type="file"
+                                    multiple
+                                    onChange={handleFileChange}
+                                />
+                            </div>
+                            <div className={styles.previewContainer}>
+                                {product.files.map(file => (
+                                    <div key={file.id} className={styles.previewImageContainer}>
+                                        <img src={file.id} alt={`Preview ${file.name}`} className={styles.previewImage} />
+                                        <Button variant="danger" onClick={() => handleFileRemove(file.id)}>X</Button>
+                                    </div>
+                                ))}
+                            </div>
+                            {isSubmitted && errors.files && <p className={styles.errorText}>{errors.files}</p>}
+                        </Form.Group>
 
-                {/* 상품명, 카테고리, 가격 등 기존 폼 요소들 */}
+                        {/* 상품명, 카테고리, 가격 등 기존 폼 요소들 */}
 
-                <Form.Group className={styles.productName} controlId="formBasicTitle">
-                    <Form.Label>상품명</Form.Label>
-                    <Form.Control
-                        type='text'
-                        value={product.name}
-                        placeholder='상품명'
-                        onChange={changeValue}
-                        name='name'
-                    />
-                </Form.Group>
+                        <Form.Group className={styles.productName} controlId="formBasicTitle">
+                            {/* <Form.Label>상품명</Form.Label> */}
+                            <Form.Control
+                                type='text'
+                                value={product.name}
+                                placeholder='상품명'
+                                onChange={changeValue}
+                                name='name'
+                            />
+                            {isSubmitted && errors.name && <p className={styles.errorText}>{errors.name}</p>}
+                        </Form.Group>
 
-                <Form.Group className={styles.productCategory} controlId="formBasicCategory1">
-                    <div>
-                        <Form.Label>카테고리1</Form.Label>
-                        <Form.Control
-                            as="select"
-                            value={product.category1}
-                            onChange={handleCategoryChange}
-                        >
-                            <option value="">카테고리 선택</option>
-                            {Object.keys(categories).map(category => (
-                                <option key={category} value={category}>{category}</option>
-                            ))}
-                        </Form.Control>
-                    </div>
+                        <Form.Group className={styles.productCategory} controlId="formBasicCategory1">
+                            <div>
+                                <Form.Label>카테고리1</Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    value={product.category1}
+                                    onChange={handleCategoryChange}
+                                >
+                                    <option value="">카테고리 선택</option>
+                                    {Object.keys(categories).map(category => (
+                                        <option key={category} value={category}>{category}</option>
+                                    ))}
+                                </Form.Control>
+                                {isSubmitted && errors.category1 && <p className={styles.errorText}>{errors.category1}</p>}
+                            </div>
 
-                    <div>
-                        <Form.Label>카테고리2</Form.Label>
-                        <Form.Control
-                            as="select"
-                            value={product.category2}
-                            onChange={handleSubCategoryChange}
-                            disabled={!selectedCategory}
-                        >
-                            <option value="">카테고리 선택</option>
-                            {subCategoryOptions.map(subCategory => (
-                                <option key={subCategory} value={subCategory}>{subCategory}</option>
-                            ))}
-                        </Form.Control>
-                    </div>
+                            <div>
+                                <Form.Label>카테고리2</Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    value={product.category2}
+                                    onChange={handleSubCategoryChange}
+                                    disabled={!selectedCategory}
+                                >
+                                    <option value="">카테고리 선택</option>
+                                    {subCategoryOptions.map(subCategory => (
+                                        <option key={subCategory} value={subCategory}>{subCategory}</option>
+                                    ))}
+                                </Form.Control>
+                                {isSubmitted && errors.category2 && <p className={styles.errorText}>{errors.category2}</p>}
+                            </div>
 
-                    <div>
-                        <Form.Label>카테고리3</Form.Label>
-                        <Form.Control
-                            as="select"
-                            value={product.category3}
-                            onChange={handleSubSubCategoryChange}
-                            disabled={!selectedSubCategory}
-                        >
-                            <option value="">카테고리 선택</option>
-                            {subsubCategoryOptions.map(subCategory => (
-                                <option key={subCategory} value={subCategory}>{subCategory}</option>
-                            ))}
-                        </Form.Control>
-                    </div>
-                </Form.Group>
+                            <div>
+                                <Form.Label>카테고리3</Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    value={product.category3}
+                                    onChange={handleSubSubCategoryChange}
+                                    disabled={!selectedSubCategory}
+                                >
+                                    <option value="">카테고리 선택</option>
+                                    {subsubCategoryOptions.map(subCategory => (
+                                        <option key={subCategory} value={subCategory}>{subCategory}</option>
+                                    ))}
+                                </Form.Control>
+                            </div>
+                        </Form.Group>
 
-                <Form.Group className={styles.productPrice} controlId="formBasicPrice">
-                    <Form.Label>가격</Form.Label>
-                    <img src={price} alt='가격 아이콘' />
-                    <Form.Control
-                        type='number'
-                        placeholder='가격'
-                        value={product.price}
-                        onChange={changeValue}
-                        className={styles.productInputPrice}
-                        name='price'
-                    />
-                </Form.Group>
+                        <Form.Group className={styles.productPrice} controlId="formBasicPrice">
+                            {/* <Form.Label>가격</Form.Label> */}
+                            <img src={price} alt='가격 아이콘' />
+                            <Form.Control
+                                type='number'
+                                placeholder='가격'
+                                value={product.price}
+                                onChange={changeValue}
+                                className={styles.productInputPrice}
+                                name='price'
+                            />
+                            {isSubmitted && errors.price && <p className={styles.errorText}>{errors.price}</p>}
+                        </Form.Group>
 
-                <Form.Group className={styles.productDesiredArea} controlId="formBasicDesiredArea">
-                    <Form.Label>거래희망지역</Form.Label>
-                    <Form.Control
-                        type='text'
-                        placeholder='거래희망지역'
-                        value={product.desiredArea}
-                        onChange={changeValue}
-                        name='desiredArea'
-                    />
-                </Form.Group>
+                        <Form.Group className={styles.productDesiredArea} controlId="formBasicDesiredArea">
+                            {/* <Form.Label>거래희망지역</Form.Label> */}
+                            <Form.Control
+                                type='text'
+                                placeholder='거래희망지역'
+                                value={product.desiredArea}
+                                onChange={changeValue}
+                                name='desiredArea'
+                            />
+                            {isSubmitted && errors.desiredArea && <p className={styles.errorText}>{errors.desiredArea}</p>}
+                        </Form.Group>
 
-                <Form.Group className={styles.productInfo} controlId="formBasicDescription">
-                    <Form.Label>상품 설명</Form.Label>
-                    <Form.Control
-                        as='textarea'
-                        placeholder="상품 설명"
-                        value={product.description}
-                        onChange={changeValue}
-                        className={styles.productInputInfo}
-                        name='description'
-                    />
-                    <Form.Label>0/1000</Form.Label>
-                </Form.Group>
+                        <Form.Group className={styles.productInfo} controlId="formBasicDescription">
+                            {/* <Form.Label>상품 설명</Form.Label> */}
+                            <Form.Control
+                                as='textarea'
+                                placeholder="상품 설명"
+                                value={product.description}
+                                onChange={changeValue}
+                                className={styles.productInputInfo}
+                                name='description'
+                            />
+                            <Form.Label>0/1000</Form.Label>
+                            {isSubmitted && errors.description && <p className={styles.errorText}>{errors.description}</p>}
+                        </Form.Group>
 
-                <div className={styles.statusTitle}>상품상태</div>
-                <div className={styles.statusButtonGroup}>
-                    <button
-                        type="button"
-                        className={`${styles.statusButton} ${product.status === '새상품' ? styles.selected : ''}`}
-                        onClick={() => handleStatusChange('새상품')}
-                    >
-                        새상품
-                    </button>
-                    <button
-                        type="button"
-                        className={`${styles.statusButton} ${product.status === '중고' ? styles.selected : ''}`}
-                        onClick={() => handleStatusChange('중고')}
-                    >
-                        중고
-                    </button>
-                </div>
+                        <Form.Group className={styles.statusTitle} controlId="formBasicDescription">
+                            <div className={styles.statusTitle}>상품상태</div>
+                            <div className={styles.statusButtonGroup}>
+                                <button
+                                    type="button"
+                                    className={`${styles.statusButton} ${product.status === '새상품' ? styles.selected : ''}`}
+                                    onClick={() => handleStatusChange('새상품')}
+                                >
+                                    새상품
+                                </button>
+                                <button
+                                    type="button"
+                                    className={`${styles.statusButton} ${product.status === '중고' ? styles.selected : ''}`}
+                                    onClick={() => handleStatusChange('중고')}
+                                >
+                                    중고
+                                </button>
+                            </div>
+                            {isSubmitted && errors.dealingStatus && <p className={styles.errorText}>{errors.dealingStatus}</p>}
+                        </Form.Group>
 
-                <Form.Group>
-                    <Form.Label>거래 방법</Form.Label>
-                    <div className={styles.dealingTypeGroup}>
-                        <input
-                            type="checkbox"
-                            id="dealing-type-direct"
-                            name="dealingType"
-                            value="직거래"
-                            checked={product.dealingType.includes("직거래")}
-                            onChange={changeValue}
-                            className={styles.customCheckbox}
-                        />
-                        <label htmlFor="dealing-type-direct" className={styles.customCheckboxLabel}>
-                            <span className={styles.customCheckboxText}>직거래</span>
-                        </label>
+                        <Form.Group>
+                            <Form.Label>거래 방법</Form.Label>
+                            <div className={styles.dealingTypeGroup}>
+                                <input
+                                    type="checkbox"
+                                    id="dealing-type-direct"
+                                    name="dealingType"
+                                    value="직거래"
+                                    checked={product.dealingType.includes("직거래")}
+                                    onChange={changeValue}
+                                    className={styles.customCheckbox}
+                                />
+                                <label htmlFor="dealing-type-direct" className={styles.customCheckboxLabel}>
+                                    <span className={styles.customCheckboxText}>직거래</span>
+                                </label>
 
-                        <input
-                            type="checkbox"
-                            id="dealing-type-shipping"
-                            name="dealingType"
-                            value="배송"
-                            checked={product.dealingType.includes("배송")}
-                            onChange={changeValue}
-                            className={styles.customCheckbox}
-                        />
-                        <label htmlFor="dealing-type-shipping" className={styles.customCheckboxLabel}>
-                            <span className={styles.customCheckboxText}>배송</span>
-                        </label>
-                    </div>
-                </Form.Group>
+                                <input
+                                    type="checkbox"
+                                    id="dealing-type-shipping"
+                                    name="dealingType"
+                                    value="배송"
+                                    checked={product.dealingType.includes("배송")}
+                                    onChange={changeValue}
+                                    className={styles.customCheckbox}
+                                />
+                                <label htmlFor="dealing-type-shipping" className={styles.customCheckboxLabel}>
+                                    <span className={styles.customCheckboxText}>배송</span>
+                                </label>
+                            </div>
+                            {isSubmitted && errors.dealingType && <p className={styles.errorText}>{errors.dealingType}</p>}
+                        </Form.Group>
 
-                <button className={styles.registerButton} type='submit'>등록하기</button>
-            </Form>
-            <Footer/>
-            </>
-        }
+                        <button className={styles.registerButton} type='submit'>등록하기</button>
+                    </Form>
+                    <Footer />
+                </>
+            }
         </>
     );
 };
