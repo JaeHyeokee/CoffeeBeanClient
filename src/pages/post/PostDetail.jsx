@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import '../../css/post/PostDetail.css'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../components/Footer';
 import { SERVER_HOST } from '../../apis/Api';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const PostDetail = () => {
 
   const navigate = useNavigate();
   const { postId } = useParams();
+  const { roles } = useContext(LoginContext);
 
   const [post, setPost] = useState({
     postId: "",
@@ -28,7 +30,7 @@ const imageUrl = `/upload/${encodedFileName}`;
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://${SERVER_HOST}/post/detail/" + postId
+      url: `http://${SERVER_HOST}/post/detail/` + postId
     })
       .then(response => {
         const { data, status } = response;
@@ -98,8 +100,12 @@ const imageUrl = `/upload/${encodedFileName}`;
               ))}
             </div>
           </div>
-          <button className="btn btn-danger" onClick={deletePost}>삭제</button>
-          <button className="btn btn-secondary ms-2" onClick={() => navigate(`/PostUpdate/${postId}`)}>수정</button>
+          {roles?.isAdmin && (
+            <>
+            <button className="btn btn-danger" onClick={deletePost}>삭제</button>
+            <button className="btn btn-secondary ms-2" onClick={() => navigate(`/PostUpdate/${postId}`)}>수정</button>
+            </>
+          )}
           <button className="btn btn-secondary ms-2" onClick={() => navigate('/PostList')}>목록으로 돌아가기</button>
         </div>
       </div>

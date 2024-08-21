@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Style from '../../css/my/MyPage.module.css';
@@ -8,10 +8,13 @@ import ReviewList from './WriterReviewList';
 import UnRegister from './UnRegister';
 import { Nav } from 'react-bootstrap';
 import UserManagement from '../admin/UserManagement';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const MyPage = () => {
     const [activePage, setActivePage] = useState('SaleList');
     const [isProductOrCar, setIsProductOrCar] = useState('product');
+
+    const { roles } = useContext(LoginContext);
 
     const handlePageChange = (page) => {
         setActivePage(page);
@@ -35,10 +38,14 @@ const MyPage = () => {
                         <Nav.Item className={activePage === 'ReviewList' ? `${Style.active}` : ''} onClick={() => handlePageChange('ReviewList')}>나의 후기</Nav.Item>
                         <Nav.Item className={activePage === 'UnRegister' ? `${Style.active}` : ''} onClick={() => handlePageChange('UnRegister')}>탈퇴하기</Nav.Item>
                     </Nav>
-                    <div className={Style.myAccountInfo}>관리자</div>
-                    <Nav className={`flex-column ${Style.myNavBox}`}>
-                        <Nav.Item className={activePage === 'MyInformation' ? `${Style.active}` : ''} onClick={() => handlePageChange('UserManagement')}>회원탈퇴 차트</Nav.Item>
-                    </Nav>
+                    {roles.isAdmin && (
+                        <>
+                            <div className={Style.myAccountInfo}>관리자</div>
+                            <Nav className={`flex-column ${Style.myNavBox}`}>
+                                <Nav.Item className={activePage === 'UserManagement' ? `${Style.active}` : ''} onClick={() => handlePageChange('UserManagement')}>회원탈퇴 차트</Nav.Item>
+                            </Nav>
+                        </>
+                    )}
                 </div>
                 <section className={Style.myPageActivated}>
                     {activePage === 'SaleList' && <DealListFrame pageType={'sell'} isProductOrCar={isProductOrCar} setIsProductOrCar={setIsProductOrCar}/>}
