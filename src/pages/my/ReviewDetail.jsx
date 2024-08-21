@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Button } from 'react-bootstrap';
+import { FaArrowLeft } from 'react-icons/fa';
+import styles from '../../css/my/ReviewDetail.module.css';
 
 const ReviewDetail = () => {
 
     const navigate = useNavigate();
     const { chatRoomId, writerId } = useParams();
 
-    const [review, setReivew] = useState({
+    const [review, setReview] = useState({
         reviewId: "",
         writer: null,
         recipient: null,
@@ -20,6 +21,7 @@ const ReviewDetail = () => {
     const [product, setProduct] = useState({
         name: "",
         price: "",
+        user: "",
         fileList: [],
     });
 
@@ -30,59 +32,64 @@ const ReviewDetail = () => {
         })
             .then(response => {
                 const { data, status } = response;
-                if (status == 200) {
-                    console.log(data);
-                    setReivew(data.review);
+                if (status === 200) {
+                    setReview(data.review);
                     setProduct(data.product);
                 } else {
                     window.alert('읽어오기 실패');
                 }
             });
-    }, []);
+    }, [chatRoomId, writerId]);
 
     const isSeller = (recipient, seller) => {
         return recipient.userId === seller.userId;
     };
 
-
-
-
     return (
-        <div>
+        <>
             <Header />
-            <Button variant="secondary" onClick={() => navigate(`/WriterReviewList/${writerId}`)}>이전</Button>
-            <h3>후기 상세</h3>
-            <div style={{ padding: '20px' }}>
-                <div style={{ flex: '1' }}>
-                    {product.fileList && product.fileList.length > 0 && (
-                        <img
-                            src={product.fileList[0].source}
-                            alt="product"
-                        />
-                    )}
+            <div className={styles.reviewDetailContainer}>
+                <div className={styles.header}>
+                    <button className={styles.backButton} onClick={() => navigate(`/WriterReviewList/${writerId}`)}>
+                        <FaArrowLeft />
+                    </button>
+                    <div className={styles.title}>후기 상세</div>
+                    <div></div> {/* Placeholder for alignment */}
                 </div>
-                <div style={{ flex: '2', paddingLeft: '20px' }}>
-                    <div>{product.name}</div>
-                    {review.recipient && review.writer && (
-                        isSeller(review.recipient, review.writer) ? (
-                            <div>판매자</div>
-                        ) : (
-                            <div>구매자</div>
-                        )
-                    )}
-                    {review.recipient ? (
-                        <p>{review.recipient.nickName}</p>
-                    ) : (
-                        <p>정보가 없습니다</p>
-                    )}
-                    <div>{product.price}원</div>
-                    <div>{review.regDate}</div>
+                <div className={styles.contentContainer}>
+                    <div className={styles.imageContainer}>
+                        {product.fileList && product.fileList.length > 0 && (
+                            <img
+                                src={product.fileList[0].source}
+                                alt="product"
+                                className={styles.productImage}
+                            />
+                        )}
+                    </div>
+                    <div className={styles.detailsContainer}>
+                        <div className={styles.productName}>{product.name}</div>
+                        {review.recipient && review.writer && (
+                            isSeller(review.recipient, product.user) ? (
+                                <div className={styles.sellerInfo}>
+                                    <span className={styles.sellerTag}>판매자</span>
+                                    <span className={styles.sellerName}>{review.recipient.nickName}</span>
+                                </div>
+                            ) : (
+                                <div className={styles.sellerInfo}>
+                                    <span className={styles.sellerTag}>구매자</span>
+                                    <span className={styles.sellerName}>{review.recipient.nickName}</span>
+                                </div>
+                            )
+                        )}
+                        <div className={styles.price}>{product.price}원</div>
+                        <div className={styles.date}>{review.regDate}</div>
+                    </div>
                 </div>
-                <div>
+                <div className={styles.reviewContent}>
                     {review.content}
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

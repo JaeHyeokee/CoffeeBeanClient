@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import { Form, Button } from 'react-bootstrap';
 import Footer from '../components/Footer';
 import styles from '../../css/post/PostUpdate.module.css';
-import { FaPlus } from 'react-icons/fa'; // 플러스 아이콘
+import { FaPlus } from 'react-icons/fa';
 
 const PostUpdate = () => {
 

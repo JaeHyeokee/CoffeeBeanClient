@@ -1,0 +1,100 @@
+.reviewContainer {
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.link {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    padding: 10px;
+    transition: color 0.3s ease;
+}
+
+.link:not(:last-child) {
+    margin-right: 30px;
+}
+
+.link:hover {
+    color: #0DCC5A;
+}
+
+.activeLink {
+    color: #0DCC5A;
+    border-bottom: 2px solid #0DCC5A;
+}
+
+.divider {
+    margin: 0;
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+
+.positivePoints {
+    margin-top: 20px;
+}
+
+.positivePoints h4 {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.positivePoints ul {
+    list-style: none;
+    padding: 0;
+}
+
+.positivePoints li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.reviewCount {
+    font-weight: bold;
+    color: #0DCC5A;
+}
+
+.detailedReviews {
+    margin-top: 30px;
+}
+
+.detailedReviews h4 {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #0DCC5A;
+}
+
+.reviewItem {
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    margin-bottom: 15px;
+}
+
+.reviewHeader {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.nickname {
+    font-weight: bold;
+}
+
+.date {
+    font-size: 0.9em;
+    color: #888;
+}
+
+.reviewContent {
+    background-color: #f4f4f4;
+    padding: 15px;
+    border-radius: 10px;
+}
