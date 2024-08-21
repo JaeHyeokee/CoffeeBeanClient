@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState} from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
@@ -9,6 +9,9 @@ import styles from '../../css/product/ProductDetail.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import Chat from '../chatting/Chat';
 import Footer from '../components/Footer';
+import updateImage from '../../image/icon-update.png';
+import deleteImage from '../../image/icon-delete.png';
+import shareImage from "../../image/share-icon.png";
 import moment from 'moment';
 import { SERVER_HOST } from '../../apis/Api';
 
@@ -23,6 +26,8 @@ const ProductDetail = () => {
     const [ listArr, setListArr ] = useState([]);
     const [chatRoomExists, setChatRoomExists] = useState(false);
     const [chatRoomId, setChatRoomId] = useState(null); // 채팅방 ID 상태 추가
+    const [showFullIntroduce, setShowFullIntroduce] = useState(false); // 더보기 버튼 상태
+    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
     useEffect(() => {
         axios.get(`http://${SERVER_HOST}/product/detail/${id}`)
@@ -187,83 +192,143 @@ const ProductDetail = () => {
             behavior: 'smooth' // 부드럽게 스크롤 이동
         });
     };
+
+    const introduceLines = product.description.split(/(?<=니다|입니다|습니다|있어요|해요)\s*/);
+    const maxLinesToShow = 8;
+
+    const handleShareClick = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
     
 
     return (
         <>
             <Header />
             <div className={styles.productdetailBody}>
-                <div className={styles.productDetail}>
-                    <section className={styles.productdetailTop}>
-                        <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>
-                            {product.fileList.map((file, idx) =>
-                                <Carousel.Item key={idx} className={styles.carouselItem}>
-                                <img className={styles.productImage} src={file.source} alt={''} />
-                            </Carousel.Item>)}
-                        </Carousel>
-
-                        <div className={styles.productInfo}>
-                            <p>{product.category1} &gt; {product.category2} &gt; {product.category3} </p>
-                            <h1>{product.name}</h1>
-                            <h1>가격: {product.price.toLocaleString()}원</h1>
-                            <h5 className={styles.productpostinfo}>{formatRegDate(product.regDate)}·조회{product.viewCount}</h5>
-                            <div className={styles.productInfoBottom}>
-                                <div className={styles.productInfoBottomDiv}>
-                                    <p>제품상태</p>
-                                    <p>{product.status}</p>
-                                </div>
-                                <div className={styles.productInfoBottomDiv}>
-                                    <p>거래방식</p>
-                                    <p>{product.dealingType}</p>
-                                </div>
-                                <div className={styles.productInfoBottomDiv}>
-                                    <p>판매상태</p>
-                                    <p>{product.dealingStatus}</p>
-                                </div>
-                            </div>
-                            {isOwner ? (    //상품 올린 user와 로그인한 user가 같다면
-                                <div className={styles.ownerActions}>
-                                    <button className={styles.editButton} onClick={handleUpdate}>수정하기</button>
-                                    <button className={styles.deleteButton} onClick={deleteProduct}>삭제하기</button>
-                                </div>
-                            ) : (
-                                <div className={styles.chatDipButton}>
-                                    <button className={styles.chatButton} onClick={toggleChatSidebar}>채팅하기</button>
-                                    <button className={styles.dipButton} onClick={dip}>찜하기</button>
-                                </div>
-                            )}
-                        </div>
-                    </section>
-
-
-
-                    <section className={styles.productdetailBottom}>
-                        <div className={styles.productInfoDetail}>
-                            <p>상품정보</p>
-                            <div>{product.description}</div>
+                <section className={styles.productdetailTop}>
+                    <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>
+                        {product.fileList.map((file, idx) => (
+                            <Carousel.Item key={idx} className={styles.carouselItem}>
+                                <img className={styles.productImage} src={file.source} alt="" />
+                            </Carousel.Item>
+                        ))}
+                    </Carousel>
+    
+                    <div className={styles.productInfo}>
+                        <div className={styles.productHeader}>
+                            <p className={styles.productCategory}>
+                                {product.category1} &gt; {product.category2} &gt; {product.category3}
+                            </p>
+                            <h5 className={styles.productpostinfo}>
+                                {formatRegDate(product.regDate)}·조회 {product.viewCount}
+                            </h5>
                         </div>
 
 
+                        <div className={styles.productNameContainer}>
+                            <h1 className={styles.productName}>{product.name}</h1>
+                            <img
+                                src={shareImage}
+                                alt="Share"
+                                style={{ width: '20px', height: '20px', cursor: 'pointer', marginLeft: '50px', marginTop: '10px'}}
+                                onClick={handleShareClick}
+                            />
+                        </div>
 
-
-
-                        <div className={styles.userInfo}>
-                            <div className={styles.userInfodiv}>가게정보</div>
-                            <div className={styles.nickNameAndProfileImgFrame}>
-                                <span className={styles.sellerNickName}>{product.user.userName}</span>
-                                <img className={styles.sellerProfileImg} src={'https://img2.joongna.com/common/Profile/Default/profile_f.png'} alt='프로필'/>
-                            </div>
-                            <div>
-                                <div className={styles.trustIndexFrame}>
-                                    <div className={styles.sellerTrustIndex}>
-                                        <p className={styles.sellerTrustIndexLabel}>신뢰지수</p>
-                                        <p className={styles.sellerTrustIndexFigure}>{product.user.reliability}</p>
-                                    </div>
-                                    <p className={styles.maxTrustIndex}>1,000</p>
+                        {isModalOpen && (
+                            <div className={styles.modalOverlay} onClick={handleCloseModal}>
+                                <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                                    <h3 className={styles.modaltitle}>공유하기</h3>
+                                    <img className={styles.modalqrimg}
+                                        src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/ProductDetail/${id}`}
+                                        alt="QR Code"
+                                    />
+                                    <button onClick={handleCloseModal} className={styles.closeModalButton}>닫기</button>
                                 </div>
-                                <ProgressBar className={styles.trustIndexBar} now={product.user.reliability / 10}/>
                             </div>
-                            <div className={styles.sellListFrame}>
+                        )}
+                
+                        <h2 className={styles.productPrice}>
+                            {product.price === 0 ? '가격협의' : `${product.price.toLocaleString()} 원`}
+                        </h2>
+                        <div className={styles.productInfoBottom}>
+                            <div className={styles.productInfoBottomDiv}>
+                                <p>제품상태</p>
+                                <p>{product.status}</p>
+                            </div>
+                            <div className={styles.productInfoBottomDiv}>
+                                <p>거래방식</p>
+                                <p>{product.dealingType}</p>
+                            </div>
+                            <div className={styles.productInfoBottomDiv}>
+                                <p>판매상태</p>
+                                <p>{product.dealingStatus}</p>
+                            </div>
+                        </div>
+                        
+                        {!isOwner && (
+                        <div className={styles.chatDipButton}>
+                            <button className={styles.chatButton} onClick={toggleChatSidebar}>
+                                채팅하기
+                            </button>
+                            <button className={styles.dipButton} onClick={dip}>찜하기</button>
+                        </div>
+                        )}
+                        {isOwner && (
+                            <div className={styles.changeButton}>
+                                <button className={styles.imageButton} onClick={handleUpdate}>
+                                    <img src={updateImage} alt="상품수정" className={styles.updateImage} />
+                                    <span className={styles.buttonText}>상품수정</span>
+                                </button>
+                                <button className={styles.imageButton} onClick={deleteProduct}>
+                                    <img src={deleteImage} alt="상품삭제" className={styles.deleteImage} />
+                                    <span className={styles.buttonText}>상품삭제</span>
+                                </button>
+                            </div>
+                        )}
+
+                    </div>
+                </section>
+    
+                <section className={styles.productdetailBottom}>
+                    <div className={styles.productInfoDetail}>
+                        <h2 className={styles.infotext}>상품정보</h2>
+                        {/* <div>{product.description}</div> */}
+
+
+                        <div className={styles.infoBoxdetail}>
+                        {introduceLines.slice(0, showFullIntroduce ? introduceLines.length : maxLinesToShow).map((line, index) => (
+                            <p key={index} className={styles.introduce}>{line}</p>
+                        ))}
+                        {introduceLines.length > maxLinesToShow && (
+                            <button onClick={() => setShowFullIntroduce(!showFullIntroduce)} className={styles.moreButton}>
+                                {showFullIntroduce ? '접기' : '더보기 +'}
+                            </button>
+                        )}
+                        </div>
+                    </div>
+    
+                    <div className={styles.userInfo}>
+                        <h2 className={styles.infotext}>가게정보</h2>
+                        <div className={styles.nickNameAndProfileImgFrame}>
+                            <span className={styles.sellerNickName}>{product.user.userName}</span>
+                            <img className={styles.sellerProfileImg} src={'https://img2.joongna.com/common/Profile/Default/profile_f.png'} alt='프로필'/>
+                        </div>
+                        <div>
+                            <div className={styles.trustIndexFrame}>
+                                <div className={styles.sellerTrustIndex}>
+                                    <p className={styles.sellerTrustIndexLabel}>신뢰지수</p>
+                                    <p className={styles.sellerTrustIndexFigure}>{product.user.reliability}</p>
+                                </div>
+                                <p className={styles.maxTrustIndex}>1,000</p>
+                            </div>
+                            <ProgressBar className={styles.trustIndexBar} now={product.user.reliability / 10}/>
+                        </div>
+                        <div className={styles.sellListFrame}>
                             {listArr.map((elem, idx) => (
                                 <Card key={idx} className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
                                     <div className={styles.sellInfoCardImgContainer}>
@@ -275,32 +340,32 @@ const ProductDetail = () => {
                                     </Card.Body>
                                 </Card>
                             ))}
-
-                            </div>
-                            <br/>
-                    <img src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/ProductDetail/${id}`} style={{ width: '150px', height: '150px' }}
-                        alt="QR Code"></img>
                         </div>
-                    </section>
-                </div>
-
-
-                 {/* 사이드바 */}
-                 {isChatSidebarOpen && (
+                        <br/>
+                        <img
+                            src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/ProductDetail/${id}`}
+                            style={{ width: '150px', height: '150px' }}
+                            alt="QR Code"
+                        />
+                    </div>
+                </section>
+    
+                {/* 사이드바 */}
+                {isChatSidebarOpen && (
                     <>
                         <div className={`${styles.overlay} ${isChatSidebarOpen ? styles.overlayActive : ''}`} onClick={() => setIsChatSidebarOpen(false)}/>
                         <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? styles.chatSidebarOpen : ''}`}>
-                            <button className={styles.closeButton} onClick={() => setIsChatSidebarOpen(false)}> <img src={x} alt='x' height={25} width={25} /> </button>
+                            <button className={styles.closeButton} onClick={() => setIsChatSidebarOpen(false)}>
+                                <img src={x} alt='x' height={25} width={25} />
+                            </button>
                             <Chat chatRoomId={chatRoomId} />
                         </div>
                     </>
                 )}
-
-
             </div>
             <Footer/>
         </>
     );
-};
+};    
 
 export default ProductDetail;

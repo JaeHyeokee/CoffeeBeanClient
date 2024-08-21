@@ -44,7 +44,7 @@
 
 .carCategory {
     text-align: left; /* 텍스트를 왼쪽으로 정렬 */
-    /* margin-top: 10px; */
+    margin-top: 30px;
     color: #686868;
 }
 
@@ -59,11 +59,11 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    justify-content: flex-start; /* 요소를 위쪽에 붙게 함 */
     width: 630px;
     padding: 20px;
     padding-top: 0;
-    border: 1px solid #bababa;
+    /* border: 1px solid #bababa; */
 }
 
 
@@ -84,7 +84,7 @@
 }
 
 .carPrice {
-    font-size: 32px;
+    font-size: 40px;
     font-weight: 700;
     margin: 20px 0;
 }
@@ -136,6 +136,9 @@
     font-weight: bold;
 }
 
+
+
+/* 채팅하기, 찜하기 버튼 */
 .chatDipButton {
     display: flex;
     justify-content: space-between;
@@ -159,6 +162,13 @@
     background-color: black;
     color: white;
 }
+
+
+
+
+
+
+
 
 
 .changeButton {
@@ -191,6 +201,13 @@
     font-size: 15px;
     margin-top: 5px;
 }
+
+
+
+
+
+
+
 
 
 
@@ -255,6 +272,9 @@
     font-weight: 550;
     color: #757575;
 }
+
+
+
 
 
 
@@ -604,4 +624,119 @@
     color: red; 
     font-weight: bold;
 }
+
+
+
+
+
+
+/* 채팅하기 side */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 0.3s ease;
+    z-index: 10;
+  }
+  
+  .overlayActive {
+    background-color: rgba(0, 0, 0, 0.5); /* 사이드바 열었을때 */
+  }
+
+  /* 사이드바 스타일 */
+  .chatSidebar {
+    position: fixed;
+    top: 0;
+    right: -300px; /* 화면 밖에 배치하여 숨김 */
+    width: 40%;
+    height: 100%;
+    background-color: #fff;
+    transition: right 0.3s ease;
+    z-index: 20;
+  }
+  
+  .chatSidebarOpen {
+    right: 0; /* 오른쪽에 나타나게 */
+  }
+  
+  /* 닫기 버튼 스타일 */
+  .closeButton {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 25;
+  }
+
+  .carInfoBottomDiv p:nth-of-type(2) {
+    font-size: 18px; /* 원하는 크기로 설정 */
+    font-weight: bold;
+    color: #979797;
+}
+
+
+
+
+.carNameContainer {
+    display: flex;
+    align-items: center;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background-color: white;
+    width: 500px;
+    height: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 가운데 정렬 */
+    justify-content: center; /* 세로 가운데 정렬 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+}
+
+.modaltitle{
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.modalqrimg {
+    width: 200px;
+    height: 200px;
+    margin: 20px 0; /* 위아래 여백 추가 */
+}
+
+.closeModalButton {
+    padding: 10px 20px;
+    background-color: #0DCC5A;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.closeModalButton:hover {
+    background-color: #0db851;
+}
+
 

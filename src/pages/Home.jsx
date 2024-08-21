@@ -20,6 +20,8 @@ const Home = () => {
     const [topProducts, setTopProducts] = useState([]);
     const [recentProducts, setRecentProducts] = useState([]);
     const [topCars, setTopCars] = useState([]); // 중고차 상태 추가
+    const [firstPost, setFirstPost] = useState(null); // 첫 번째 게시글 상태 추가
+
 
     useEffect(() => {
         console.log(SERVER_HOST);
@@ -49,6 +51,17 @@ const Home = () => {
             .catch(error => {
                 console.error('중고차 목록 가져오기 오류', error);
             });
+
+            // 게시글 리스트 가져오기
+        axios.get('http://localhost:8088/post/list')
+        .then(response => {
+            if (response.data.length > 0) {
+                setFirstPost(response.data[0]); // 첫 번째 게시글 저장
+            }
+        })
+        .catch(error => {
+            console.error('게시글 리스트 가져오기 오류', error);
+        });
     }, []);
 
     const formatRegDate = (regDate) => {
@@ -110,6 +123,17 @@ const Home = () => {
                         </div>
                     </Slider>
                 </section>
+
+                {/* 첫 번째 게시글 타이틀 출력 */}
+                {firstPost && (
+                    <section className="first-post-section">
+                        <Link to={`/PostDetail/${firstPost.id}`} className="first-post-title">
+                            {firstPost.title}
+                        </Link>
+                    </section>
+                )}
+
+
 
                 {/* 인기 상품 */}
                 <section>
