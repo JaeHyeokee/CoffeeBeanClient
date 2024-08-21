@@ -1,0 +1,192 @@
+.postCreateBody {
+    padding: 30px 10%;
+    border-radius: 10px;
+}
+
+.postCreateTitle {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 32px;
+    color: #0DCC5A;
+    text-align: center;
+}
+
+.postList {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.postList a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    padding-bottom: 5px;
+    border-bottom: 3px solid transparent;
+    transition: border-bottom 0.3s ease;
+}
+
+.postList a:hover {
+    border-bottom: 3px solid #0DCC5A;
+}
+
+hr {
+    margin: 10px 0;
+}
+
+.mainContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.categoryContainer {
+    width: 25%;
+    padding-right: 20px;
+    padding-left: 10px;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.categoryContainer h3 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #0DCC5A;
+}
+
+.categoryList {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.categoryList li {
+    padding: 12px 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.categoryList li:hover {
+    background-color: #0DCC5A;
+    border-color: #0DCC5A;
+    color: white;
+}
+
+.activeCategory {
+    background-color: #0dcc5923;
+    color: #0DCC5A;
+    border-color: #0DCC5A !important;
+}
+
+.formContainer {
+    width: 70%;
+}
+
+.inputGroup {
+    margin-bottom: 20px;
+}
+
+.inputTitle,
+.inputContent {
+    width: 100%;
+    padding: 15px;
+    border-radius: 5px;
+    border: 2px solid #ddd !important;
+    transition: border-color 0.3s ease;
+}
+
+.inputTitle:focus,
+.inputContent:focus {
+    border-color: #0DCC5A !important;
+    box-shadow: none !important;
+}
+
+.fileUploadContainer {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.fileUploadLabel {
+    display: inline-block;
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.fileUploadLabel:hover {
+    background-color: #d0ebd7;
+    border-color: #0DCC5A;
+}
+
+.plusIcon {
+    font-size: 2em;
+    color: #0DCC5A;
+}
+
+.imagePreviewContainer {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.imageWrapper {
+    position: relative;
+}
+
+.imagePreview {
+    max-width: 170px;
+    max-height: 170px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    object-fit: cover;
+}
+
+.removeButton {
+    position: absolute !important;
+    top: -5px !important;
+    right: -5px !important;
+    font-size: 0.8em !important;
+    padding: 5px 8px !important;
+    background-color: #ff5c5c !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 20% !important;
+    cursor: pointer !important;
+    transition: background-color 0.3s ease, transform 0.2s ease !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+}
+
+.removeButton:hover {
+    background-color: #e04b4b !important;
+    transform: scale(1.1) !important;
+}
+
+.removeButton:active {
+    background-color: #c43f3f !important;
+    transform: scale(1.05) !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+
+.submitButton {
+    display: block !important;
+    margin: 20px auto 0 !important;
+    padding: 10px 20px !important;
+    font-size: 1.2em !important;
+    border-radius: 5px !important;
+    background-color: #0DCC5A !important;
+    border: none !important;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.submitButton:hover {
+    background-color: #0aaa45 !important;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1) !important;
+}

@@ -43,6 +43,9 @@ const ReviewCreate = () => {
         if (!saveReview.reviewContent) {
             window.alert('후기를 입력해 주세요.');
             return false;
+        } else if (!rating){
+            window.alert('평가를 선택해 주세요.');
+            return false;
         }
         return true;
     };
@@ -120,19 +123,6 @@ const ReviewCreate = () => {
     const handleRatingClick = (selectedRating) => {
         setRating(selectedRating);
     };
-
-    // const handleRating = (rating) => {
-    //     axios.post('/update-reliability', {
-    //         userId: selectedUserId,
-    //         rating: rating,
-    //     })
-    //     .then(response => {
-    //         console.log('Reliability updated successfully');
-    //     })
-    //     .catch(error => {
-    //         console.error('There was an error updating reliability!', error);
-    //     });
-    // };
 
     return (
         <>
