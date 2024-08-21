@@ -67,13 +67,11 @@ useEffect(() => {
                     <div className='chatRoomContent'>
                         <button className='list' onClick={() => onSelectChatRoom(chatRoom.chatRoomId)}>
                             <div className='profile1'>
-                            <div>
                               {firstProductImage(chatRoom) ? (
                                   <img className='profile2'src={firstProductImage(chatRoom)} alt="상품 이미지" />
                               ) : (
                                   <p>상품 정보를 로드하는 중입니다...</p>
                               )}
-                            </div>
                             </div>
                             <div className='chatList'>
                               <div className='userNameAndMessage'>

@@ -232,7 +232,7 @@ const CarUpdate = () => {
                     <Form.Label>이미지 첨부</Form.Label>
                     <Form.Control type="file" multiple onChange={handleFileChange} />
                     <div className={styles.previewContainer}>
-                    {car.fileList.length > 0 && (
+                        {car.fileList.length > 0 && (
                             <div className={styles.previewContainer}>
                                 {car.fileList.map((file, index) => (
                                     <div key={index} className={styles.previewImageContainer}>
@@ -243,7 +243,7 @@ const CarUpdate = () => {
                                         />
                                         <Button
                                             variant="danger"
-                                            onClick={() => handleFileRemove(file.filename, file.fileId)}
+                                            onClick={() => handleFileRemove(file.fileId)}
                                         >
                                             X
                                         </Button>

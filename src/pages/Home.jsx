@@ -19,6 +19,9 @@ import main5 from '../image/main5.png';
 const Home = () => {
     const [topProducts, setTopProducts] = useState([]);
     const [recentProducts, setRecentProducts] = useState([]);
+    const [topCars, setTopCars] = useState([]); // 중고차 상태 추가
+    const [firstPost, setFirstPost] = useState(null); // 첫 번째 게시글 상태 추가
+
 
     useEffect(() => {
         console.log(SERVER_HOST);
@@ -39,6 +42,26 @@ const Home = () => {
             .catch(error => {
                 console.error('최근 등록된 상품 가져오기 오류', error);
             });
+
+        // 중고차 목록 가져오기
+        axios.get(`http://${SERVER_HOST}/car/top10`)
+            .then(response => {
+                setTopCars(response.data);
+            })
+            .catch(error => {
+                console.error('중고차 목록 가져오기 오류', error);
+            });
+
+            // 게시글 리스트 가져오기
+        axios.get('http://localhost:8088/post/list')
+        .then(response => {
+            if (response.data.length > 0) {
+                setFirstPost(response.data[0]); // 첫 번째 게시글 저장
+            }
+        })
+        .catch(error => {
+            console.error('게시글 리스트 가져오기 오류', error);
+        });
     }, []);
 
     const formatRegDate = (regDate) => {
@@ -101,6 +124,17 @@ const Home = () => {
                     </Slider>
                 </section>
 
+                {/* 첫 번째 게시글 타이틀 출력 */}
+                {firstPost && (
+                    <section className="first-post-section">
+                        <Link to={`/PostDetail/${firstPost.id}`} className="first-post-title">
+                            {firstPost.title}
+                        </Link>
+                    </section>
+                )}
+
+
+
                 {/* 인기 상품 */}
                 <section>
                     <div className="product-list">
@@ -160,6 +194,44 @@ const Home = () => {
                                     <p>
                                         {product.desiredArea ? product.desiredArea + ' | ' : ''}
                                         {formatRegDate(product.regDate)}
+                                    </p>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                {/* 최근 등록 중고차 */}
+                <section>
+                    <div className="product-list">
+                        <h2 className='maintext2'>방금 등록된 중고차</h2>
+                        <div className="product-items">
+                            {topCars.slice(0, 5).map(car => (
+                                <Link key={car.carId} to={`/CarDetail/${car.carId}`} className="product-item">
+                                    <img src={car.fileList[0].source} alt={car.name} />
+                                    <h4>{car.name}</h4>
+                                    <p className="price">
+                                        {car.price === 0 ? "가격협의" : `${car.price.toLocaleString()} 만원`}
+                                    </p>
+
+                                    <p>
+                                        {car.location ? car.location + ' | ' : ''}
+                                        {formatRegDate(car.regDate)}
+                                    </p>
+                                </Link>
+                            ))}
+                        </div>
+                        <div className="product-items">
+                            {topCars.slice(5, 10).map(car => (
+                                <Link key={car.carId} to={`/CarDetail/${car.carId}`} className="product-item">
+                                    <img src={car.fileList[0].source} alt={car.name} />
+                                    <h4>{car.name}</h4>
+                                    <p className="price">
+                                        {car.price === 0 ? "가격협의" : `${car.price.toLocaleString()} 만원`}
+                                    </p>
+                                    <p>
+                                        {car.location ? car.location + ' | ' : ''}
+                                        {formatRegDate(car.regDate)}
                                     </p>
                                 </Link>
                             ))}

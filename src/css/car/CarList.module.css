@@ -143,6 +143,7 @@
 }
 
 .priceInfo {
+    margin-top: 20px;
     padding: 20px 0;
     display: flex;
     justify-content: center; /* 가로축에서 가운데 정렬 */
@@ -153,6 +154,7 @@
 }
 
 .priceInfo p {
+    font-weight: bold;
     margin: 0;
     padding: 0 55px; /* 각 p 태그에 좌우 여백 추가 */
     border-right: 1px solid #ccc; /* 구분선 추가 */

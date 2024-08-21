@@ -25,3 +25,5 @@ export const verifyCode = (email, verifyCode) => api.post(`http://${SERVER_HOST}
 
 // 이메일 중복 검증
 export const checkEmail = (email) => api.post(`http://${SERVER_HOST}/email/check`, {email})
+
+// 카카오 로그인 요청
