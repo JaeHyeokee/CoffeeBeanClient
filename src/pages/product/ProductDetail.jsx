@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
 import x from '../../image/x.svg';
@@ -17,12 +17,12 @@ const ProductDetail = () => {
     const [product, setProduct] = useState(null);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
-    const{userInfo ,isLogin} = useContext(LoginContext);
-    const userId = userInfo ?.userId;
+    const { userInfo, isLogin } = useContext(LoginContext);
+    const userId = userInfo?.userId;
     const navigate = useNavigate();
-    const [ listArr, setListArr ] = useState([]);
-    const [chatRoomExists, setChatRoomExists] = useState(false);
-    const [chatRoomId, setChatRoomId] = useState(null); // 채팅방 ID 상태 추가
+    const [listArr, setListArr] = useState([]);
+    const [chatRoomId, setChatRoomId] = useState(null);
+    const [isDipped, setIsDipped] = useState(false);
 
     useEffect(() => {
         axios.get(`http://${SERVER_HOST}/product/detail/${id}`)
@@ -36,45 +36,49 @@ const ProductDetail = () => {
 
     useEffect(() => {
         if (product) {
-            /* axios.get(`http://${SERVER_HOST}/car/category2/${car.category2}`)
+            axios.get(`http://${SERVER_HOST}/sell/product/sortedlist/${product.user.userId}/1/판매중`)
                 .then(response => {
-                    setRecommendedCars(response.data);
+                    if (Array.isArray(response.data)) {
+                        setListArr(response.data.slice(0, 3));
+                    } else {
+                        console.log('데이터 로드 실패');
+                    }
                 })
                 .catch(error => {
-                    console.error('추천 차량 불러오기 실패', error);
-                }); */
-            axios({
-                method: "get",
-                url: `http://${SERVER_HOST}/sell/product/sortedlist/${product.user.userId}/1/판매중`,
-            })
-            .then(response => {
-                if(Array.isArray(response.data)) {
-                    setListArr(response.data.slice(0, 3));
-                } else {
-                    console.log('데이터 로드 실패');
-                }
-            });
+                    console.error('판매중 상품 리스트 조회 실패', error);
+                });
+            
             checkChatRoomExists();
         }
     }, [product]);
+
+    useEffect(() => {
+        if (product && userId) {
+            axios.get(`http://${SERVER_HOST}/dips/status`, {
+                params: { userId, productId: id }
+            })
+            .then(response => {
+                setIsDipped(response.data.isDipped);
+            })
+            .catch(error => {
+                console.error('찜 상태 확인 실패', error);
+            });
+        }
+    }, [product, userId]);
 
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
     };
 
-
     const checkChatRoomExists = async () => {
         try {
             const sellerId = product.user.userId;
-            const buyerId = userInfo.userId;
-
             const response = await axios.get(`http://${SERVER_HOST}/chatRooms/check`, {
-                params: { buyerId, sellerId, productId: id } // productId 추가
+                params: { buyerId: userId, sellerId, productId: id }
             });
 
-            setChatRoomExists(response.data.exists);
             if (response.data.exists) {
-                setChatRoomId(response.data.chatRoomId); // 채팅방 ID 저장
+                setChatRoomId(response.data.chatRoomId);
             }
         } catch (error) {
             console.error("채팅방 존재 여부 확인 실패", error);
@@ -82,53 +86,52 @@ const ProductDetail = () => {
     };
 
     const toggleChatSidebar = async () => {
-        if (chatRoomExists) {
+        if (chatRoomId) {
             setIsChatSidebarOpen(true);
             return;
         }
 
         try {
-            const sellerId = product.user.userId;
-            const buyerId = userInfo.userId;
-
             const response = await axios.post(`http://${SERVER_HOST}/chatRooms`, null, {
-                params: { 
-                    sellerId, 
-                    buyerId, 
-                    productId: id, // productId 추가
-                },
+                params: { sellerId: product.user.userId, buyerId: userId, productId: id },
                 headers: { 'Content-Type': 'application/json' }
             });
 
-            console.log("채팅방 생성 성공", response.data);
-            setChatRoomExists(true);
-            setChatRoomId(response.data.chatRoomId); // 생성된 채팅방 ID 저장
+            setChatRoomId(response.data.chatRoomId);
             setIsChatSidebarOpen(true);
         } catch (error) {
             console.error("채팅방 생성 실패", error.response ? error.response.data : error.message);
         }
     };
 
-    const dip = () => {
+    const dip = async () => {
         if (!isLogin) {
-            Swal.fire("로그인이 필요합니다.","찜하기 기능을 사용하시려면 로그인이 필요합니다.", "warning", () => { navigate("/login") })
+            Swal.fire("로그인이 필요합니다.", "찜하기 기능을 사용하시려면 로그인이 필요합니다.", "warning");
             navigate('/login');
-        } else{
-            Swal.fire("찜하셨습니다.");
+            return;
+        }
+
+        try {
+            if (isDipped) {
+                // 찜 취소 요청
+                await axios.delete(`http://${SERVER_HOST}/delete/product/${userId}/${id}`);
+                setIsDipped(false);
+                Swal.fire("찜 상품에서 제외 했습니다.", "", "success");
+            } else {
+                // 찜 추가 요청
+                await axios.post(`http://${SERVER_HOST}/dips/write/product/${userId}/${id}`);
+                setIsDipped(true);
+                Swal.fire("찜 상품에 추가 되었습니다.", "", "success");
+            }
+        } catch (error) {
+            console.error("찜하기/찜 취소하기 실패:", error);
+            Swal.fire("작업 실패", "다시 시도해주세요.", "error");
         }
     };
 
-    //수정하기
     const handleUpdate = () => {
         navigate(`/ProductUpdate/${id}`);
-    }
-
-    if (!product) {
-        return <p>상품을 찾을 수 없습니다.</p>;
-    }
-
-    //상품을 올린 user와 로그인한 user가 같은지 비교
-    const isOwner = userInfo && product.user.userId === userInfo.userId;
+    };
 
     const deleteProduct = () => {
         Swal.fire({
@@ -143,16 +146,16 @@ const ProductDetail = () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 axios.delete(`http://${SERVER_HOST}/product/delete/${id}`)
-                    .then((response) => {
+                    .then(response => {
                         console.log('삭제 성공:', response);
                         navigate(`/MyPage`);
                     })
-                    .catch((error) => {
+                    .catch(error => {
                         Swal.fire('삭제 실패', '상품 삭제에 실패했습니다.', 'error');
                         console.error('삭제 실패:', error);
                     });
             }
-        }).catch((error) => {
+        }).catch(error => {
             console.error('Swal.fire error:', error);
         });
     };
@@ -182,12 +185,14 @@ const ProductDetail = () => {
     const goDetailPage = (elem) => {
         const productId = elem.productId || elem.carId;
         navigate(`/ProductDetail/${productId}`);
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth' // 부드럽게 스크롤 이동
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
-    
+
+    if (!product) {
+        return <p></p>;
+    }
+
+    const isOwner = userInfo && product.user.userId === userInfo.userId;
 
     return (
         <>
@@ -198,8 +203,8 @@ const ProductDetail = () => {
                         <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>
                             {product.fileList.map((file, idx) =>
                                 <Carousel.Item key={idx} className={styles.carouselItem}>
-                                <img className={styles.productImage} src={file.source} alt={''} />
-                            </Carousel.Item>)}
+                                    <img className={styles.productImage} src={file.source} alt={''} />
+                                </Carousel.Item>)}
                         </Carousel>
 
                         <div className={styles.productInfo}>
@@ -221,7 +226,7 @@ const ProductDetail = () => {
                                     <p>{product.dealingStatus}</p>
                                 </div>
                             </div>
-                            {isOwner ? (    //상품 올린 user와 로그인한 user가 같다면
+                            {isOwner ? (
                                 <div className={styles.ownerActions}>
                                     <button className={styles.editButton} onClick={handleUpdate}>수정하기</button>
                                     <button className={styles.deleteButton} onClick={deleteProduct}>삭제하기</button>
@@ -229,23 +234,19 @@ const ProductDetail = () => {
                             ) : (
                                 <div className={styles.chatDipButton}>
                                     <button className={styles.chatButton} onClick={toggleChatSidebar}>채팅하기</button>
-                                    <button className={styles.dipButton} onClick={dip}>찜하기</button>
+                                    <button className={styles.dipButton} onClick={dip}>
+                                        {isDipped ? '찜 취소하기' : '찜하기'}
+                                    </button>
                                 </div>
                             )}
                         </div>
                     </section>
-
-
 
                     <section className={styles.productdetailBottom}>
                         <div className={styles.productInfoDetail}>
                             <p>상품정보</p>
                             <div>{product.description}</div>
                         </div>
-
-
-
-
 
                         <div className={styles.userInfo}>
                             <div className={styles.userInfodiv}>가게정보</div>
@@ -264,29 +265,26 @@ const ProductDetail = () => {
                                 <ProgressBar className={styles.trustIndexBar} now={product.user.reliability / 10}/>
                             </div>
                             <div className={styles.sellListFrame}>
-                            {listArr.map((elem, idx) => (
-                                <Card key={idx} className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
-                                    <div className={styles.sellInfoCardImgContainer}>
-                                        <Card.Img className={styles.sellInfoCardImg} src={elem.fileList[0]?.source || ''} />
-                                    </div>
-                                    <Card.Body className={styles.sellInfoCardBody}>
-                                        <Card.Title className={styles.sellInfoTitle}>{elem.name}</Card.Title>
-                                        <Card.Text className={styles.sellInfoPrice}>{elem.price.toLocaleString()}원</Card.Text>
-                                    </Card.Body>
-                                </Card>
-                            ))}
-
+                                {listArr.map((elem, idx) => (
+                                    <Card key={idx} className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
+                                        <div className={styles.sellInfoCardImgContainer}>
+                                            <Card.Img className={styles.sellInfoCardImg} src={elem.fileList[0]?.source || ''} />
+                                        </div>
+                                        <Card.Body className={styles.sellInfoCardBody}>
+                                            <Card.Title className={styles.sellInfoTitle}>{elem.name}</Card.Title>
+                                            <Card.Text className={styles.sellInfoPrice}>{elem.price.toLocaleString()}원</Card.Text>
+                                        </Card.Body>
+                                    </Card>
+                                ))}
                             </div>
                             <br/>
-                    <img src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/ProductDetail/${id}`} style={{ width: '150px', height: '150px' }}
-                        alt="QR Code"></img>
+                            <img src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/ProductDetail/${id}`} style={{ width: '150px', height: '150px' }}
+                                alt="QR Code"></img>
                         </div>
                     </section>
                 </div>
 
-
-                 {/* 사이드바 */}
-                 {isChatSidebarOpen && (
+                {isChatSidebarOpen && (
                     <>
                         <div className={`${styles.overlay} ${isChatSidebarOpen ? styles.overlayActive : ''}`} onClick={() => setIsChatSidebarOpen(false)}/>
                         <div className={`${styles.chatSidebar} ${isChatSidebarOpen ? styles.chatSidebarOpen : ''}`}>
@@ -295,8 +293,6 @@ const ProductDetail = () => {
                         </div>
                     </>
                 )}
-
-
             </div>
             <Footer/>
         </>
