@@ -153,7 +153,7 @@ const Header = () => {
                                         <NavDropdown title={'\u00A0' + userInfo.nickName} id="basic-nav-dropdown" className={Style.dropdownMenu}>
                                             <NavDropdown.Item className={Style.dropdownMenuTab} href="/MyPage">마이페이지</NavDropdown.Item>
                                             <NavDropdown.Divider />
-                                            <NavDropdown.Item className={Style.dropdownMenuTab} onClick={ () => logout() }>로그아웃( {userInfo.userName}:{userInfo.role} )
+                                            <NavDropdown.Item className={Style.dropdownMenuTab} onClick={ () => logout() }>로그아웃
                                             </NavDropdown.Item>
                                         </NavDropdown>
                                     </Navbar>

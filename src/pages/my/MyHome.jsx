@@ -2,10 +2,28 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ProgressBar } from 'react-bootstrap';
 import Style from '../../css/my/MyHome.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
+import axios from 'axios';
+import { SERVER_HOST } from '../../apis/Api';
 
 const MyHome = () => {
     const { userInfo } = useContext(LoginContext);
+    const [profileImg, setProfileImg] = useState('https://img2.joongna.com/common/Profile/Default/profile_f.png'); // 기본 프로필 이미지
     const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        const fetchProfileImage = async () => {
+            try {
+                const response = await axios.get(`http://${SERVER_HOST}/user/profile/${userInfo.userId}`);
+                const imageUrl = response.data;
+                setProfileImg(imageUrl); // 서버에서 가져온 이미지 URL로 프로필 이미지 설정
+            } catch (error) {
+                console.error('Failed to fetch profile image:', error);
+                // 이미지 불러오기 실패 시 기본 이미지 유지
+            }
+        };
+
+        fetchProfileImage();
+    }, [userInfo.userId]);
 
     useEffect(() => {
         const targetReliability = Number(userInfo.reliability) || 0;
@@ -29,11 +47,11 @@ const MyHome = () => {
 
     return (
         <section className={Style.myHomeInfo}>
-            <img className={Style.myHomeProfileImg} src={'https://img2.joongna.com/common/Profile/Default/profile_f.png'} alt='프로필'/>
+            <img className={Style.myHomeProfileImg} src={profileImg} alt='프로필' />
             <div className={Style.myHomeProfileContent}>
                 <div>
                     <span className={Style.nickNamePrint}>{userInfo.userName}</span>
-                    <p className={Style.oneLineIntro}>안녕하세요! 키티에요~</p>
+                    <p className={Style.oneLineIntro}>{userInfo.introduction || '안녕하세요!'}</p>
                 </div>
                 <div>
                     <div className={Style.trustIndexInfo}>
@@ -43,7 +61,7 @@ const MyHome = () => {
                         </div>
                         <p className={Style.maxTrustIndex}>1,000</p>
                     </div>
-                    <ProgressBar className={Style.trustIndexBar} now={progress / 10}/>
+                    <ProgressBar className={Style.trustIndexBar} now={progress / 10} />
                 </div>
             </div>
         </section>

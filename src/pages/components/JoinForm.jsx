@@ -83,7 +83,7 @@ const JoinForm = ({ join }) => {
         <form className="login-form" onSubmit={(e) => onJoin(e)}>
           {/* 유저 이름 */}
           <div>
-            <label htmlFor="userName">Username</label>
+            <label htmlFor="userName">ID</label>
             <input
               id="userName"
               type="text"

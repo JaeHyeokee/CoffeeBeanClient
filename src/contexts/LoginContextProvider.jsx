@@ -2,10 +2,12 @@ import Cookies from 'js-cookie';
 import React, { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import * as Swal from '../apis/alert';
-import * as auth from '../apis/auth';
-import api from '../apis/api';
-import { SERVER_HOST } from '../apis/api'
+import * as Swal from '../apis/Alert';
+import * as auth from '../apis/Auth';
+// import * as Swal from '../apis/alert';
+// import * as auth from '../apis/auth';
+import api from '../apis/Api';
+import { SERVER_HOST } from '../apis/Api'
 
 export const LoginContext = createContext();
 LoginContext.displayName = 'LoginContextName';
@@ -142,7 +144,7 @@ const LoginContextProvider = ({children}) => {
   const kakaoLogin = async (code) => {
     console.log("kakaoLogin 시작");
     try {
-        const response = await api.post(`${SERVER_HOST}/oauth2/kakao/callback`, { code });
+        const response = await api.post(`http://${SERVER_HOST}/oauth2/kakao/callback`, { code });
         console.log("kakaoLogin API 호출 완료");
         
         const { accessToken, user } = response.data;
