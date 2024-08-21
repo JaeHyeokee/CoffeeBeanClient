@@ -5,6 +5,7 @@ import { Card } from 'react-bootstrap';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { useNavigate } from 'react-router-dom';
 import { SERVER_HOST } from '../../apis/Api';
+import moment from 'moment';
 
 const DealList = (props) => {
     const { activatedKey, isProductOrCar, pageType } = props;
@@ -40,6 +41,28 @@ const DealList = (props) => {
         if(e.target.value === '3' && sortedType !== '3') setSortedType('3');
     };
 
+    const formatRegDate = (regDate) => {
+        const now = moment();
+        const date = moment(regDate);
+
+        const diffSeconds = now.diff(date, 'seconds');
+        const diffMinutes = now.diff(date, 'minutes');
+        const diffHours = now.diff(date, 'hours');
+        const diffDays = now.diff(date, 'days');
+
+        if (diffSeconds < 60) {
+            return `${diffSeconds}초전`;
+        } else if (diffMinutes < 60) {
+            return `${diffMinutes}분전`;
+        } else if (diffHours < 24) {
+            return `${diffHours}시간전`;
+        } else if (diffDays < 30) {
+            return `${diffDays}일전`;
+        } else {
+            return date.format('YYYY-MM-DD');
+        }
+    };
+
     return (
         <>
             <div className={Style.sellListFilterFrame}>
@@ -62,7 +85,7 @@ const DealList = (props) => {
                         <Card.Body className={Style.sellInfoCardBody}>
                             <Card.Title className={Style.sellInfoTitle}>{elem.name}</Card.Title>
                             <Card.Text className={Style.sellInfoPrice}>{elem.price.toLocaleString()}{isProductOrCar === 'product' ? '원' : '만원'}</Card.Text>
-                            <Card.Text className={Style.sellInfoExtra}>{isProductOrCar === 'product' && elem.desiredArea !== '' ? elem.desiredArea + ' | ' : ''}{Math.floor((new Date() - new Date(elem.regDate)) / (1000 * 60 * 60 * 24)) === 0 ? '오늘' : Math.floor((new Date() - new Date(elem.regDate)) / (1000 * 60 * 60 * 24)) + '일 전'}</Card.Text>
+                            <Card.Text className={Style.sellInfoExtra}>{isProductOrCar === 'product' && elem.desiredArea !== '' ? elem.desiredArea + ' | ' : ''}{formatRegDate(elem.regDate)}</Card.Text>
                         </Card.Body>
                     </Card>
                 ))}
