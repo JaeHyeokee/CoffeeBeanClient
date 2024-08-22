@@ -7,6 +7,7 @@ import { SERVER_HOST } from '../../apis/Api';
 const ChatList = ({ onSelectChatRoom }) => {
   const [chatRooms, setChatRooms] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
 
   const { userInfo } = useContext(LoginContext);
 
@@ -29,20 +30,26 @@ const getChatUserName = (chatRoom) => {
   return chatRoom.sellerUserName || '비활성화 대화방';
 };
 
-  const deleteChatList = async (chatRoomId) => {
-    const confirmLeave = window.confirm("채팅방을 나가시겠습니까?");
-    if (confirmLeave) {
-        try {
-            await axios.post(`http://${SERVER_HOST}/chatRooms/leave/${chatRoomId}/${userId}`);
-            setChatRooms(prevRooms => prevRooms.filter(room => room.chatRoomId !== chatRoomId));
-            console.log("채팅방 나가기 성공.");
-        } catch (error) {
-            console.log('채팅방 나가기 실패.', error);
-        }
-    } else {
-        console.log("채팅방 나가기를 취소했습니다.");
-    }
-  };
+const deleteChatList = async (chatRoomId) => {
+  const confirmLeave = window.confirm("채팅방을 나가시겠습니까?");
+  if (confirmLeave) {
+      try {
+          await axios.post(`http://${SERVER_HOST}/chatRooms/leave/${chatRoomId}/${userId}`);
+          setChatRooms(prevRooms => prevRooms.filter(room => room.chatRoomId !== chatRoomId));
+          console.log("채팅방 나가기 성공.");
+      } catch (error) {
+          console.log('채팅방 나가기 실패.', error);
+      }
+  } else {
+      console.log("채팅방 나가기를 취소했습니다.");
+  }
+};
+
+useEffect(() => {
+  const profileImages = async (writeId) => {
+
+  }
+})  
 
   // 첫 번째 상품 이미지를 가져오는 함수
   const firstProductImage = (chatRoom) => {
@@ -51,6 +58,7 @@ const getChatUserName = (chatRoom) => {
     }
     return null;
   }
+
   return (
     <div>
       <h2 className='chatName'>채팅방</h2>
