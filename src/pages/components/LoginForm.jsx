@@ -31,7 +31,6 @@ const LoginForm = () => {
 
     return (
       <div className={styles.form}>
-      <h2 className={styles.loginTitle}>로그인</h2>
 
       <form className={styles.loginForm} onSubmit={(e) => onLogin(e)}>
         <div>
@@ -76,7 +75,7 @@ const LoginForm = () => {
 
         <div>
           아직 회원이 아니신가요?
-          <a href='/Join' className={styles.signUpLink}>회원가입</a>
+          <a href='/Join' className={styles.signUpLink}> 회원가입</a>
           을 지금 하세요!
         </div>
       </form>

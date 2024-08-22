@@ -8,12 +8,10 @@ import Footer from '../components/Footer';
 const LogIn = () => {
     return (
         <>
-            <Header />
             <div className='container'>
                 <LoginForm/>
                 <KaKaoLogin/>
             </div>
-            <Footer />
         </>
 
     );
