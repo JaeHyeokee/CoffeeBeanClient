@@ -7,6 +7,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { SERVER_HOST } from '../../apis/Api';
 import ProductItem from '../components/ProductItem';
+import { useNavigate } from 'react-router-dom';
 
 const Chat = ({ chatRoomId, onBack }) => {
     const [messages, setMessages] = useState([]);
@@ -19,8 +20,11 @@ const Chat = ({ chatRoomId, onBack }) => {
         sellerId: null,
         sellerUserName: '',
         sellerReliability: null
-    });    const stompClient = useRef(null);
+    });    
+    const stompClient = useRef(null);
     const messagesEndRef = useRef(null);
+    const navigate = useNavigate();
+
 
     const { userInfo } = useContext(LoginContext);
     const userId = userInfo ? userInfo.userId : null;
@@ -67,8 +71,10 @@ const Chat = ({ chatRoomId, onBack }) => {
         stompClient.current.connect({}, (frame) => {
             console.log('STOMP 연결됨: ' + frame);
             setIsConnected(true);
+
             stompClient.current.subscribe(`/topic/public/${chatRoomId}`, (message) => {
-                showMessage(JSON.parse(message.body));
+                console.log('실시간 message: ', JSON.parse(message.body));  // 메세지가 올 때 마다 console
+                showMessage(JSON.parse(message.body));  // 받은 메세지 화면에 표시
             });
         }, (error) => {
             console.error('STOMP 오류: ' + error);
@@ -227,8 +233,8 @@ const Chat = ({ chatRoomId, onBack }) => {
                     });
                     console.log('채팅방 정보: ', response.data);
 
-                    console.log('Buyer ID:', sellerId);
-                    console.log('Seller ID:', sellerId);
+                    // console.log('Buyer ID:', sellerId);
+                    // console.log('Seller ID:', sellerId);
                 })
                 .catch(error => {
                     console.error("Error fetching chat room details:", error);
@@ -236,7 +242,11 @@ const Chat = ({ chatRoomId, onBack }) => {
         }
     }, [chatRoomId]);
 
-    console.log('유저유저 :', userInfo.userId);
+    // const handleImageClick = () => {
+    //     navigate(`/ProductDetail/${product.productId}`, null);
+    // };
+
+    // console.log('유저유저 :', userInfo.userId);
 
     const firstProductImage = product && product.fileList && product.fileList.length > 0 ? product.fileList[0].source : null;
 
