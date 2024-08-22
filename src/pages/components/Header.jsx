@@ -11,7 +11,8 @@ import ChatList from '../chatting/ChatList';
 import Chat from '../chatting/Chat';
 import Category from './Category';
 import CarCategory from './CarCategory';
-import { Form, Nav, Navbar, NavDropdown, NavItem, ProgressBar } from 'react-bootstrap';
+import LogIn from '../my/LogIn';
+import { Form, Modal, Nav, Navbar, NavDropdown, NavItem, ProgressBar } from 'react-bootstrap';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import * as Swal from '../../apis/Alert'
 const Header = () => {
@@ -20,6 +21,7 @@ const Header = () => {
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
     const [isSaleMenuOpen, setIsSaleMenuOpen] = useState(false);
     const [isMyMenuOpen, setIsMyMenuOpen] = useState(false);
+    const [loginShow, setLoginShow] = useState(false);
     const [selectedChatRoomId, setSelectedChatRoomId] = useState(null); // 선택된 채팅방 상태
     const [keyword, setKeyword] = useState(''); // 검색어 상태
     const [searchType, setSearchType] = useState('Product'); // 검색 타입 상태
@@ -140,9 +142,9 @@ const Header = () => {
                         { !isLogin ?
                             // 로그인
                             <div className={Style.navBarTop}>
-                                <a className={Style.navItem} href="/Login">
+                                <button className={Style.navItem} onClick={() => setLoginShow(true)}>
                                     <img src={my} alt="아이콘" />&nbsp;로그인
-                                </a>
+                                </button>
                             </div>
                             :
                             <>
@@ -183,6 +185,16 @@ const Header = () => {
                         </div>
                     </>
                 )}
+
+            <Modal show={loginShow} onHide={() => setLoginShow(false)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>로그인</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <LogIn/>
+                </Modal.Body>
+            </Modal>
+
             </header>
             <ProgressBar className={Style.loadingBar} now={progress} animated={false}/>
         </>

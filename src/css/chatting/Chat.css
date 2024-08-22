@@ -32,7 +32,7 @@
     margin-top: 10px;
 }
 .productPicture2 {
-    width: 21%;
+    width: 17%;
     height: 100%; /* 부모의 높이에 맞춤 */
     display: flex;
     align-items: center;
@@ -46,6 +46,7 @@
 }
 .productInfo {
     /* text-align: center; */
+    width: 60%;
 }
 .AA {
     text-align: left;
@@ -260,14 +261,29 @@
     font-size: 24px;
 }
 .status {
+    width: 19%;
     float: right;
 }
 .status1 {
 
 }
 .status2 {
-
+    margin-top: 8px;
+    font-size: 20px;
+    font-weight: bold;
 }
-.status3 {
-
+.header {
+    margin-top: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.reliability {
+    border-radius: 20px;
+    border: 1px solid #0CB650;
+    align-content: center;
+    color: #0CB650;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 5px 12px; 
 }

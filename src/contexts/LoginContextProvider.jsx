@@ -137,7 +137,15 @@ const LoginContextProvider = ({children}) => {
 
     } catch(error){
       console.log(`로그인 error: ${error}`);
-      Swal.alert('로그인 실패', '아이디 또는 비밀번호가 일치하지 않습니다.', 'error');
+
+        if (error.response && error.response.status === 401) {
+            const errorMessage = error.response.data;
+            if (errorMessage === "Account is deactivated") {
+                Swal.alert('로그인 실패', '계정이 비활성화되었습니다. 관리자에게 문의하세요', 'error');
+            } else {
+                Swal.alert('로그인 실패', '아이디 또는 비밀번호가 일치하지 않습니다.', 'error');
+            }
+        }
     }
   };
 
@@ -171,7 +179,30 @@ const LoginContextProvider = ({children}) => {
       return;
     }
 
-    Swal.confirm("로그아웃 하시겠습니까", "로그아웃을 진행합니다", "warning", 
+    Swal.confirm("로그아웃 하시겠습니까?", "로그아웃을 진행합니다", "warning", 
+      (result) => {
+        if(result.isConfirmed){
+          logoutSetting();  // 로그아웃 세팅
+          navigate("/");
+        } 
+      }
+    );
+
+  };
+
+  // 로그아웃
+  const unRegister = (force = false) => {
+    
+    // confirm 없이 강제 로그아웃.
+    if(force){
+      logoutSetting();  // 로그아웃 세팅
+
+      // 페이이 지동 -> "/"
+      navigate("/");
+      return;
+    }
+
+    Swal.alert("계정이 탈퇴되었습니다.", "로그아웃 후 홈 화면으로 돌아갑니다", "info", 
       (result) => {
         if(result.isConfirmed){
           logoutSetting();  // 로그아웃 세팅
@@ -255,7 +286,7 @@ const LoginContextProvider = ({children}) => {
   };
 
   return (
-    <LoginContext.Provider value={ { isLogin, userInfo, roles, loginCheck, login, logout, kakaoLogin }}>
+    <LoginContext.Provider value={ { isLogin, userInfo, roles, loginCheck, login, logout, kakaoLogin, unRegister }}>
         {children}
     </LoginContext.Provider>
   );

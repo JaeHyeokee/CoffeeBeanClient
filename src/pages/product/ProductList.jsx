@@ -200,33 +200,26 @@ const ProductList = () => {
                                 </div>
                             </td>
                         </tr>
-
-                        <tr>
-                            <td className={styles.category4}>
-                                <h2>선택한 필터</h2>
-                            </td>
-                            <td>
-                                <div className={styles.category4Result}>위에 선택한 필터 검색 결과 뽑아내기</div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
 
                 <div className={styles.price}>
+                    <div className={styles.priceTitle}>
                     <h4>현재 카테고리의 상품 가격 비교</h4>
                     <h6 onClick={handleOpenModal}> 그래프 보기</h6>
+                    </div>
                     <div className={styles.priceInfo}>
-                        <p>평균 가격: {priceInfo.averagePrice.toFixed(2)}원</p>
-                        <p>최저 가격: {priceInfo.minPrice.toFixed(2)}원</p>
-                        <p>최고 가격: {priceInfo.maxPrice.toFixed(2)}원</p>
-                        <p>상품 수: {priceInfo.productCount}개</p>
+                        <p1>평균 가격</p1> <p>{priceInfo.averagePrice.toLocaleString()}원</p>
+                        <p1>최저 가격</p1> <p>{priceInfo.minPrice.toLocaleString()}원</p>
+                        <p1>최고 가격</p1> <p>{priceInfo.maxPrice.toLocaleString()}원</p>
+                        {/* <p1>상품 수</p1> <p>{priceInfo.productCount}개</p> */}
                     </div>
                 </div>
 
                 {/* 그래프 모달 */}
                 <Modal show={showModal} onHide={handleCloseModal} centered>
                     <Modal.Header closeButton>
-                        <Modal.Title>가격 분포 그래프</Modal.Title>
+                        <Modal.Title>가격 분포도</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <PriceTrendChart category1={category} category2={subcategory} category3={subsubcategory} />
@@ -247,7 +240,7 @@ const ProductList = () => {
                                 <ProductItem key={product.id} product={product} />
                             ))
                         ) : (
-                            <p>상품이 없습니다.</p>
+                            <p></p>
                         )
                     )}
                 </div>

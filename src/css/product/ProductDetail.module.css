@@ -91,23 +91,16 @@
     font-size: 40px;
     font-weight: 700;
     margin: 20px 0;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
-.productsearch {
-    width: 120px;
-    border-radius: 30px;
-    color: rgb(46, 46, 46);
-    border: 0;
-    margin-bottom: 30px;
-    cursor: pointer;
-    background-color: rgb(225, 225, 225);
+.area {
+    margin-bottom: 40px;
+    display: flex;
+    gap: 20px;
+    
 }
 
-.productsearch:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    filter: brightness(90%);
-}
 
 .productInfoBottom {
     display: flex;
@@ -151,22 +144,19 @@
     width: 100%; 
 }
 
-.chatButton,
-.dipButton {
+.chatButton {
     width: 48%; 
     height: 50px;
     border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.chatButton {
-    background-color: white;
+    background-color: black;
+    color: white;
 }
 
 .dipButton {
-    background-color: #000000;
-    color: white;
+    background-color: white;
+    border-style: none;
 }
 
 .changeButton {

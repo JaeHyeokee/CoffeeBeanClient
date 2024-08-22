@@ -13,25 +13,49 @@ const MyInformation = () => {
     const userId = userInfo.userId;
     const [file, setFile] = useState(null);
     const [profileImg, setProfileImg] = useState(null); // 프로필 이미지 상태
+    const [userData, setUserData] = useState({
+        nickName: '',
+        introduction: '',
+        userName: '',
+        email: ''
+    });
     const defaultProfileImg = 'https://img2.joongna.com/common/Profile/Default/profile_f.png'; // 기본 이미지 URL
 
     console.log("userid : " + userId);
 
-    useEffect(() => {
-        // 프로필 이미지 불러오기
-        const fetchProfileImage = async () => {
-            try {
-                const response = await axios.get(`http://${SERVER_HOST}/user/profile/${userId}`);
-                const imageUrl = response.data;
-                setProfileImg(imageUrl);
-            } catch (error) {
-                console.error('Failed to fetch profile image:', error);
-                // 이미지가 없거나 에러가 발생하면 기본 이미지로 설정
-                setProfileImg(defaultProfileImg);
-            }
-        };
+    // 프로필 이미지 불러오기
+    const fetchProfileImage = async () => {
+        try {
+            const response = await axios.get(`http://${SERVER_HOST}/user/profile/${userId}`);
+            const imageUrl = response.data;
+            setProfileImg(imageUrl);
+        } catch (error) {
+            console.error('Failed to fetch profile image:', error);
+            // 이미지가 없거나 에러가 발생하면 기본 이미지로 설정
+            setProfileImg(defaultProfileImg);
+        }
+    };
 
+    // 사용자 데이터 불러오기
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get(`http://${SERVER_HOST}/user/${userId}`);
+            const user = response.data;
+            setUserData({
+                nickName: user.nickName || '',
+                introduction: user.introduction || '',
+                userName: user.userName || '',
+                email: user.email || ''
+            });
+        } catch (error) {
+            console.error('Failed to fetch user data:', error);
+            Swal.alert('사용자 정보를 불러오는데 실패했습니다.');
+        }
+    };
+
+    useEffect(() => {
         fetchProfileImage();
+        fetchUserData();
     }, [userId]);
 
     // 프로필 변경
@@ -80,6 +104,31 @@ const MyInformation = () => {
         }
     };
 
+    // 입력값 변경 핸들러
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setUserData({
+            ...userData,
+            [name]: value
+        });
+    };
+
+    // 사용자 정보 업데이트
+    const handleUpdateUser = async () => {
+        try {
+            const response = await axios.put(`http://${SERVER_HOST}/user/${userId}`, userData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log('User information updated successfully:', response.data);
+            Swal.alert('사용자 정보가 성공적으로 업데이트되었습니다.');
+        } catch (error) {
+            console.error('Failed to update user information:', error);
+            Swal.alert('사용자 정보 업데이트에 실패했습니다.');
+        }
+    };
+
     return (
         <>
             <h1>내 정보 관리</h1>
@@ -115,20 +164,38 @@ const MyInformation = () => {
 
                 <Form.Group>
                     <Form.Label>닉네임</Form.Label>
-                    <Form.Control variant='success' />
+                    <Form.Control
+                        name="nickName"
+                        value={userData.nickName}
+                        onChange={handleInputChange}
+                        variant='success' />
                 </Form.Group>
+
                 <Form.Group>
                     <Form.Label>한 줄 소개</Form.Label>
-                    <Form.Control />
+                    <Form.Control
+                        name="introduction"
+                        value={userData.introduction}
+                        onChange={handleInputChange} />
                 </Form.Group>
+
                 <Form.Group>
-                    <Form.Label>이름</Form.Label>
-                    <Form.Control />
+                    <Form.Label>ID</Form.Label>
+                    <Form.Control
+                        name="userName"
+                        value={userData.userName}
+                        readOnly />
                 </Form.Group>
+
                 <Form.Group>
                     <Form.Label>이메일</Form.Label>
-                    <Form.Control />
+                    <Form.Control
+                        name="email"
+                        value={userData.email}
+                        readOnly />
                 </Form.Group>
+
+                <Button onClick={handleUpdateUser} className="mt-3">정보 수정</Button>
                 
             </Form>
         </>
