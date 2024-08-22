@@ -81,7 +81,9 @@ const Category = () => {
                                                     <ul>
                                                         {subcategories[subcategory].map((subsubcategory) => (
                                                             <li key={subsubcategory}>
-                                                                <Link to={`/ProductList/${encodeURIComponent(category)}/${encodeURIComponent(subcategory)}/${encodeURIComponent(subsubcategory)}`}>
+                                                                <Link to={`/ProductList/${encodeURIComponent(category)}/
+                                                                                        ${encodeURIComponent(subcategory)}/
+                                                                                        ${encodeURIComponent(subsubcategory)}`}>
                                                                     <div>
                                                                     {subsubcategory}
                                                                     </div>

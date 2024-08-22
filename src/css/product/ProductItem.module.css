@@ -40,3 +40,8 @@
     font-weight: bold;
     margin-bottom: 5px;
 }
+
+.productItem h3,
+.productItem p {
+    text-align: left;
+}

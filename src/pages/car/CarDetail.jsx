@@ -32,6 +32,7 @@ const CarDetail = () => {
     const [ listArr, setListArr ] = useState([]);
     const [isDipped, setIsDipped] = useState(false); 
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
+    const [dipsCount, setDipsCount] = useState(0); // 찜 개수 상태 추가
 
     useEffect(() => {
         axios.get(`http://${SERVER_HOST}/car/detail/${id}`)
@@ -66,6 +67,20 @@ const CarDetail = () => {
             });
         }
     }, [car]);
+
+    useEffect(() => {
+        const fetchDipsCount = async () => {
+            try {
+                const response = await axios.get(`http://${SERVER_HOST}/dips/count/car/${id}`);
+                setDipsCount(response.data);
+
+            } catch (error) {
+                console.error('찜 개수 조회 실패', error);
+            }
+        };
+
+        fetchDipsCount();
+    }, [id, car]);
 
     const goDetailPage = (elem) => {
         navigate('/CarDetail/' + elem.carId);
@@ -103,7 +118,7 @@ const CarDetail = () => {
     }, [isChatSidebarOpen]);
 
     if (!car) {
-        return <div>Loading...</div>;
+        return <div>.</div>;
     }
 
     const introduceLines = car.introduce.split(/(?<=니다|입니다|습니다)\s*/);
@@ -216,7 +231,7 @@ const CarDetail = () => {
                     <div className={styles.carInfo}>
                         <div className={styles.carHeader}>
                             <p className={styles.carCategory}>{car.category1} &gt; {car.category2}</p>
-                            <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회 {car.viewCount}</h2>
+                            <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회 {car.viewCount} ·찜 {dipsCount}</h2>
                         </div>
 
                         <div className={styles.carNameContainer}>
