@@ -4,11 +4,16 @@ import Style from '../../css/my/MyHome.module.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import axios from 'axios';
 import { SERVER_HOST } from '../../apis/Api';
+import * as Swal from '../../apis/Alert';
 
 const MyHome = () => {
     const { userInfo } = useContext(LoginContext);
     const [profileImg, setProfileImg] = useState('https://img2.joongna.com/common/Profile/Default/profile_f.png'); // 기본 프로필 이미지
     const [progress, setProgress] = useState(0);
+    const userId = userInfo.userId;
+    const [userData, setUserData] = useState({
+        introduction: ''
+    });
 
     useEffect(() => {
         const fetchProfileImage = async () => {
@@ -24,6 +29,24 @@ const MyHome = () => {
 
         fetchProfileImage();
     }, [userInfo.userId]);
+
+    // 사용자 데이터 불러오기
+    const fetchUserData = async () => {
+        try {
+            const response = await axios.get(`http://${SERVER_HOST}/user/${userId}`);
+            const user = response.data;
+            setUserData({
+                introduction: user.introduction || '',
+            });
+        } catch (error) {
+            console.error('Failed to fetch user data:', error);
+            Swal.alert('사용자 정보를 불러오는데 실패했습니다.');
+        }
+    };
+
+    useEffect(()=> {
+        fetchUserData();
+    }, [userId]);
 
     useEffect(() => {
         const targetReliability = Number(userInfo.reliability) || 0;
@@ -51,7 +74,7 @@ const MyHome = () => {
             <div className={Style.myHomeProfileContent}>
                 <div>
                     <span className={Style.nickNamePrint}>{userInfo.userName}</span>
-                    <p className={Style.oneLineIntro}>{userInfo.introduction || '안녕하세요!'}</p>
+                    <p className={Style.oneLineIntro}>{userData.introduction || '안녕하세요!'}</p>
                 </div>
                 <div>
                     <div className={Style.trustIndexInfo}>
