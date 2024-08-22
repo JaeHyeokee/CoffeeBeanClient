@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { checkEmail, sendEmail, verifyCode } from '../../apis/Auth';
 import * as Swal from '../../apis/Alert'
+import { SERVER_HOST } from '../../apis/Api';
 
 const JoinForm = ({ join }) => {
 
