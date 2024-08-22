@@ -1,0 +1,119 @@
+.postlistBody {
+    padding: 30px 10%;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.postList {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.postListTitle {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 32px;
+    color: #0DCC5A;
+    text-align: center;
+}
+
+.postList a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    padding-bottom: 5px;
+    border-bottom: 3px solid transparent;
+    transition: border-bottom 0.3s ease;
+}
+
+.postList a:hover {
+    border-bottom: 3px solid #0DCC5A;
+}
+
+.divider {
+    margin: 10px 0;
+    border: none;
+    border-top: 2px solid lightgrey; /* 라인의 두께를 두껍게 하고 색상을 밝게 수정 */
+    width: 100%; /* 라인의 너비를 전체 너비로 확장 */
+}
+
+.postTitle {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.postTitle a {
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.postTitle a:hover {
+    color: #0DCC5A;
+}
+
+.postTitle p {
+    margin-bottom: 20px;
+}
+
+.postTitle hr {
+    margin-top: 20px;
+    border: none;
+    border-top: 1px solid lightgrey; /* 포스트 리스트 내 hr의 스타일 */
+    width: 100%;
+}
+
+.createPostButton {
+    display: inline-block;
+    background-color: #0DCC5A;
+    color: white;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.createPostButton:hover {
+    background-color: #0aaa45;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.pagination button {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 10px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 20%;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.pagination button.activePage {
+    background-color: #0DCC5A;
+    color: white;
+    transform: scale(1.1);
+}
+
+.pagination button:hover {
+    background-color: #0aaa45;
+    color: white;
+    transform: scale(1.05);
+}

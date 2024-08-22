@@ -185,17 +185,19 @@ const CarDetail = () => {
             navigate('/login');
             return;
         }
-
+    
         try {
             if (isDipped) {
                 // 찜 취소 요청
                 await axios.delete(`http://${SERVER_HOST}/delete/car/${userId}/${id}`);
                 setIsDipped(false);
+                setDipsCount(dipsCount - 1); 
                 Swal.fire("찜 상품에서 제외 했습니다.", "", "success");
             } else {
                 // 찜 추가 요청
                 await axios.post(`http://${SERVER_HOST}/dips/write/car/${userId}/${id}`);
                 setIsDipped(true);
+                setDipsCount(dipsCount + 1); 
                 Swal.fire("찜 상품에 추가 되었습니다.", "", "success");
             }
         } catch (error) {
@@ -203,6 +205,7 @@ const CarDetail = () => {
             Swal.fire("작업 실패", "다시 시도해주세요.", "error");
         }
     };
+    
 
     
 

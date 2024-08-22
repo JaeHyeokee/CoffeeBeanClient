@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../components/Header';
-import { Form, Button, ListGroup, Col, Row, Image } from 'react-bootstrap';
+import { Form, Button } from 'react-bootstrap';
 import Footer from '../components/Footer';
+import styles from '../../css/post/PostUpdate.module.css';
+import { FaPlus } from 'react-icons/fa';
 import { SERVER_HOST } from '../../apis/Api';
 
 const PostUpdate = () => {
@@ -34,17 +36,11 @@ const PostUpdate = () => {
             id: URL.createObjectURL(file)
         }));
 
-        setPost(prevPost => {
-            // prevPost.files가 배열인지 확인 후 배열로 변환
-            const updatedFiles = Array.isArray(prevPost.files) ? [...prevPost.files, ...newFiles] : [...newFiles];
-            return {
-                ...prevPost,
-                files: updatedFiles,
-            };
-        });
+        setPost(prevPost => ({
+            ...prevPost,
+            files: [...prevPost.files, ...newFiles]
+        }));
     };
-
-
 
     const handleFileRemove = (fileId) => {
         const isExistingFile = post.fileList.some(file => file.attachmentId === fileId);
@@ -63,11 +59,9 @@ const PostUpdate = () => {
         }
     };
 
-
-
     const validate = () => {
         if (!post.type) {
-            window.alert('게시물 유형을 선택해 주세요.')
+            window.alert('게시물 유형을 선택해 주세요.');
             return false;
         } else if (!post.title) {
             window.alert('제목은 필수입니다.');
@@ -86,8 +80,7 @@ const PostUpdate = () => {
         })
             .then(response => {
                 const { data, status } = response;
-                if (status == 200) {
-                    console.log(data);
+                if (status === 200) {
                     setPost({
                         ...data,
                         files: []
@@ -100,21 +93,26 @@ const PostUpdate = () => {
 
     const submitPost = (e) => {
         e.preventDefault();
-
+    
         if (!validate()) return;
-
+    
         const formData = new FormData();
         formData.append('type', post.type);
         formData.append('title', post.title);
         formData.append('content', post.content);
-        post.files.forEach((file) => {
-            formData.append('files', file.file);
-        });
-
+    
+        if (post.files && post.files.length > 0) {
+            post.files.forEach((file) => {
+                formData.append('files', file.file);
+            });
+        } else {
+            formData.append('files', new Blob([])); 
+        }
+    
         if (post.delfile && post.delfile.length > 0) {
             post.delfile.forEach(delfile => formData.append('delfile', delfile));
         }
-
+    
         axios({
             method: 'put',
             url: `http://${SERVER_HOST}/post/update/${post.postId}`,
@@ -123,119 +121,112 @@ const PostUpdate = () => {
             },
             data: formData
         })
-            .then(response => {
-                const { data, status, statusText } = response;
-                if (status === 200) {
-                    window.alert('수정 완료');
-                    navigate(`/PostDetail/${postId}`);
-                } else {
-                    window.alert('실패');
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                window.alert(error);
-            });
-    }
+        .then(response => {
+            const { status } = response;
+            if (status === 200) {
+                window.alert('수정 완료');
+                navigate(`/PostDetail/${postId}`);
+            } else {
+                window.alert('실패');
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            window.alert(error);
+        });
+    };
+    
+    
 
     return (
         <>
             <Header />
-            <div className="container mt-3 mb-3">
-                <Form onSubmit={submitPost}>
-                    <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm={2}>Type:</Form.Label>
-                        <Col sm={10}>
-                            <Form.Select
-                                name="type"
-                                value={post.type}
-                                onChange={changeValue}
-                            >
-                                <option value="">-- 게시물 유형을 선택해 주세요 --</option>
-                                <option value="커피빈 소식">커피빈 소식</option>
-                                <option value="중고거래 팁">중고거래 팁</option>
-                                <option value="사기예방">사기예방</option>
-                            </Form.Select>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm={2}>Title:</Form.Label>
-                        <Col sm={10}>
-                            <Form.Control
-                                type="text"
-                                name="title"
-                                value={post.title}
-                                onChange={changeValue}
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row} className="mb-3">
-                        <Form.Label column sm={2}>Content:</Form.Label>
-                        <Col sm={10}>
-                            <Form.Control
-                                as="textarea"
-                                rows={5}
-                                name="content"
-                                value={post.content}
-                                onChange={changeValue}
-                            />
-                        </Col>
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Attach files:</Form.Label>
-                        <Form.Control
-                            type="file"
-                            multiple
-                            onChange={handleFileChange}
-                        />
-                    </Form.Group>
-                    <div className="mb-3">
-                        <ListGroup>
-                            {/* 기존 파일 목록 (서버에서 가져온 파일) */}
-                            {post.fileList.map(file => (
-                                <ListGroup.Item key={file.attachmentId}>
-                                    <Row>
-                                        <Col>
-                                            <span>{file.source}</span>
-                                        </Col>
-                                        <Col className="text-end">
-                                            <Button
-                                                variant="danger"
-                                                onClick={() => handleFileRemove(file.attachmentId)}
-                                            >
-                                                삭제
-                                            </Button>
-                                        </Col>
-                                    </Row>
-                                </ListGroup.Item>
-                            ))}
-                            {post.files.map(file => (
-                                <ListGroup.Item key={file.id}>
-                                    <Row>
-                                        <Col>
-                                            <span>{file.name}</span>
-                                        </Col>
-                                        <Col className="text-end">
-                                            <Button
-                                                variant="danger"
-                                                onClick={() => handleFileRemove(file.id)}
-                                            >
-                                                삭제
-                                            </Button>
-                                        </Col>
-                                    </Row>
-                                </ListGroup.Item>
-                            ))}
-                        </ListGroup>
+            <div className={styles.postUpdateBody}>
+                <h1 className={styles.postUpdateTitle}>콘텐츠</h1>
+                <hr className={styles.divider} />
+                <div className={styles.postList}>
+                    <Link to='/PostList?contentType=contentType1'>커피빈 소식</Link>
+                    <Link to='/PostList?contentType=contentType2'>중고거래 팁</Link>
+                    <Link to='/PostList?contentType=contentType3'>사기예방</Link>
+                </div>
+                <hr className={styles.divider} />
+                <br /><br />
+                <div className={styles.mainContainer}>
+                    <div className={styles.categoryContainer}>
+                        <h3>Category</h3>
+                        <ul className={styles.categoryList}>
+                            <li className={post.type === '커피빈 소식' ? styles.activeCategory : ''} onClick={() => setPost({ ...post, type: '커피빈 소식' })}>
+                                소식
+                            </li>
+                            <li className={post.type === '중고거래 팁' ? styles.activeCategory : ''} onClick={() => setPost({ ...post, type: '중고거래 팁' })}>
+                                중고거래 팁
+                            </li>
+                            <li className={post.type === '사기예방' ? styles.activeCategory : ''} onClick={() => setPost({ ...post, type: '사기예방' })}>
+                                사기 예방
+                            </li>
+                        </ul>
                     </div>
-                    <Button variant="primary" type="submit" className="me-2">수정 완료</Button>
-                    <Button variant="secondary" onClick={() => navigate('/PostList')}>목록으로 돌아가기</Button>
-                </Form>
+                    <div className={styles.formContainer}>
+                        <Form onSubmit={submitPost}>
+                            <Form.Group className={styles.inputGroup}>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="제목을 입력해주세요."
+                                    name="title"
+                                    value={post.title}
+                                    onChange={changeValue}
+                                    className={styles.inputTitle}
+                                />
+                            </Form.Group>
+                            <Form.Group className={styles.inputGroup}>
+                                <Form.Control
+                                    as="textarea"
+                                    rows={8}
+                                    placeholder="내용을 입력해주세요."
+                                    name="content"
+                                    value={post.content}
+                                    onChange={changeValue}
+                                    className={styles.inputContent}
+                                />
+                            </Form.Group>
+                            <div className={styles.fileUploadContainer}>
+                                <label htmlFor="file-upload" className={styles.fileUploadLabel}>
+                                    <FaPlus className={styles.plusIcon} />
+                                </label>
+                                <Form.Control
+                                    id="file-upload"
+                                    type="file"
+                                    multiple
+                                    onChange={handleFileChange}
+                                    style={{ display: 'none' }}
+                                />
+                                <div className={styles.imagePreviewContainer}>
+                                    {post.fileList.map(file => (
+                                        <div key={file.attachmentId} className={styles.imageWrapper}>
+                                            <img src={file.source} alt={file.name} className={styles.imagePreview} />
+                                            <Button onClick={() => handleFileRemove(file.attachmentId)} className={styles.removeButton}>
+                                                삭제
+                                            </Button>
+                                        </div>
+                                    ))}
+                                    {post.files.map(file => (
+                                        <div key={file.id} className={styles.imageWrapper}>
+                                            <img src={file.id} alt={file.name} className={styles.imagePreview} />
+                                            <Button onClick={() => handleFileRemove(file.id)} className={styles.removeButton}>
+                                                삭제
+                                            </Button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <Button type="submit" className={styles.submitButton}>수정 완료</Button>
+                        </Form>
+                    </div>
+                </div>
             </div>
-            <Footer/>
+            <Footer />
         </>
     );
-
 };
 
 export default PostUpdate;
