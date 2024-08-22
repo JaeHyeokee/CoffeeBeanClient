@@ -113,7 +113,7 @@ const ProductDetail = () => {
             const response = await axios.post(`http://${SERVER_HOST}/chatRooms`, null, {
                 params: { 
                     sellerId, 
-                    buyerId, 
+                    buyerId,
                     productId: id, // productId 추가
                 },
                 headers: { 'Content-Type': 'application/json' }
