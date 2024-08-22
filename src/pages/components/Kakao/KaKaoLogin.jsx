@@ -1,4 +1,6 @@
 import React from 'react';
+import kakao from '../../../image/kakao_login2.png';
+import styles from '../../../css/my/LogIn.module.css';
 
 const KAKAO_CLIENT_ID = process.env.REACT_APP_KAKAO_CLIENT_ID;
 const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
@@ -12,9 +14,14 @@ const KaKaoLogin = () => {
     };
 
     return (
-        <button onClick={handleLogin}>
+        <>
+        {/* <button onClick={handleLogin}>
             카카오 로그인
-        </button>
+        </button> */}
+        <img className={styles.kakobtn}
+        src={kakao} 
+        onClick={handleLogin}/>
+        </>
     );
 };
 

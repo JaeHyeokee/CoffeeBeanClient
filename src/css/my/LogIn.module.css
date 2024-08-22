@@ -135,3 +135,15 @@
 .signUpLink:hover {
   text-decoration: underline;
 }
+
+.kakobtn{
+  width: 100%;
+  padding: 10px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.kakobtn:hover{
+  filter: brightness(90%);
+}
