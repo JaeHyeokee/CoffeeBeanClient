@@ -4,6 +4,7 @@
 
 .searchResult {
     font-size: x-large;
+    font-weight: bolder;
 }
 
 .categoryContainer {
@@ -33,11 +34,25 @@
 .category3,
 .category4 {
     width: 15%;
-    background-color: #e2e2e2;
+    background-color: #ececec;
 }
 
 .productInputPrice {
-    border-style: none;
+    border: none; /* 기본 테두리 제거 */
+    outline: none; /* 포커스 시 기본 아웃라인 제거 */
+    background: none; /* 기본 배경 제거 */
+    box-shadow: none; /* 기본 그림자 제거 */
+    padding: 0; /* 기본 패딩 제거 */
+    margin: 0; /* 기본 마진 제거 */
+    font: inherit; /* 부모 요소의 글꼴을 상속 */
+    color: inherit; /* 부모 요소의 글꼴 색상을 상속 */
+}
+
+.category2Result p {
+    margin-top: 13px;
+    margin-right: 20px;
+    margin-left:  20px;
+
 }
 
 .category2Result {
@@ -93,19 +108,27 @@
 }
 
 .priceInfo {
-    padding: 20px 0;
+    padding: 15px 5px;
     display: flex;
     justify-content: center; /* 가로축에서 가운데 정렬 */
-    gap: 20px; /* 각 항목 사이에 20px 간격 */
-    background-color: #e2e2e2;
+    gap: 30px; /* 각 항목 사이에 20px 간격 */
+    background-color: #ececec;
     height: 70px;
     border-radius: 7px;
+}
+
+.priceInfo p1 {
+    font-weight:bold;
+    font-size: large;
+    margin-top: 5px;
 }
 
 .priceInfo p {
     margin: 0;
     padding: 0 55px; /* 각 p 태그에 좌우 여백 추가 */
     border-right: 1px solid #ccc; /* 구분선 추가 */
+    font-weight: bolder;
+    font-size: x-large;
 }
 
 .priceInfo p:last-child {
@@ -137,4 +160,22 @@
     background-color: #000000;
     color: white;
     border-radius: 5px;
+}
+
+.priceTitle {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.priceTitle h4 {
+    font-weight: bolder;
+    margin-right: 50px;
+}
+
+.priceTitle h6 {
+   margin-top: 14px;
+   color: #525151;
+   font-weight: bold;
+   text-decoration: underline;
+   cursor: pointer;
 }

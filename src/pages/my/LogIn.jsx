@@ -2,15 +2,15 @@ import React from 'react';
 import LoginForm from '../components/LoginForm';
 import KaKaoLogin from '../components/Kakao/KaKaoLogin';
 
-const Login = () => {
+const LogIn = () => {
     return (
         <div>
             <div className='container'>
-            <LoginForm/>
-            <KaKaoLogin/>
+                <LoginForm/>
+                <KaKaoLogin/>
             </div>
         </div>
     );
 };
 
-export default Login;
+export default LogIn;
