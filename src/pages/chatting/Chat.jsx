@@ -73,6 +73,7 @@ const Chat = ({ chatRoomId, onBack }) => {
             setIsConnected(true);
 
             stompClient.current.subscribe(`/topic/public/${chatRoomId}`, (message) => {
+                // 구독경로 --> /topic/public/${chatRoomId}
                 console.log('실시간 message: ', JSON.parse(message.body));  // 메세지가 올 때 마다 console
                 showMessage(JSON.parse(message.body));  // 받은 메세지 화면에 표시
             });
@@ -131,6 +132,12 @@ const Chat = ({ chatRoomId, onBack }) => {
             console.error('메시지를 전송할 수 없음, STOMP 클라이언트가 연결되지 않았습니다.');
         }
     };
+    
+    useEffect(() => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [messages]);
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -175,11 +182,6 @@ const Chat = ({ chatRoomId, onBack }) => {
         return `${ampm} ${formattedHours}:${formattedMinutes}`;
     };
 
-    useEffect(() => {
-        if (messagesEndRef.current) {
-            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [messages]);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -203,7 +205,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         };
     
         fetchProduct();
-    }, [chatRoomId]);
+    }, [chatRoomId, userId]);
     
     const proStatus = async (status) => {
         try {

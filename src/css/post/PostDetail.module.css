@@ -1,0 +1,228 @@
+.postdetailBody {
+    padding: 30px 10%;
+    border-radius: 10px;
+}
+
+.postdetailTitle {
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 32px;
+    color: #0DCC5A; /* 제목 색상을 메인 컬러로 */
+    text-align: center; /* 제목을 중앙 정렬 */
+}
+
+.postList {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.postList a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    padding-bottom: 5px;
+    border-bottom: 3px solid transparent;
+    transition: border-bottom 0.3s ease;
+}
+
+.postList a:hover {
+    border-bottom: 3px solid #0DCC5A;
+}
+
+.divider {
+    margin: 10px 0;
+}
+
+.postContainer {
+    padding: 40px;
+    background-color: #fafafa; /* 더 밝고 은은한 배경색으로 조정 */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    max-width: 1000px;
+    position: relative;
+}
+
+.postHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.postType {
+    display: inline-block; /* 길이가 내용에 따라 동적으로 변경되도록 설정 */
+    font-size: 18px;
+    font-weight: bold;
+    color: #0DCC5A;
+    background-color: #e8f5e9; /* 타입 부분에 배경색 추가 */
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.postTitle {
+    font-size: 22px;
+    margin: 10px 0;
+    font-weight: bold;
+    color: #333;
+}
+
+.postDate {
+    font-size: 14px;
+    color: #666;
+}
+
+.postContent {
+    margin-bottom: 20px;
+    font-family: inherit; 
+    color: #333;
+}
+
+.imageContainer {
+    position: relative;
+}
+
+.imagePreview {
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 8px;
+}
+
+.saveIcon:hover {
+    color: #0aaa45;
+}
+
+.fileListPopup {
+    position: absolute;
+    top: -30px; 
+    right: 0; 
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.saveIcon {
+    position: absolute;
+    top: -30px; 
+    right: 0;
+    font-size: 24px;
+    cursor: pointer;
+    color: #0DCC5A;
+    transition: color 0.3s ease;
+}
+
+.fileListHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.closeIcon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #ff5c5c;
+}
+
+.closeIcon:hover {
+    color: #e04b4b;
+}
+
+.navigationButtons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 30px;
+    gap: 10px;
+}
+
+.bottomNavButtons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.navButton,
+.deleteButton,
+.editButton,
+.backButton {
+    padding: 8px 15px;
+    text-decoration: none;
+    border-radius: 5px; /* 버튼의 모서리를 조금 둥글게 만듦 */
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    font-weight: bold;
+}
+
+.navButton {
+    background-color: #0DCC5A;
+    color: white;
+}
+
+.navButton:hover {
+    background-color: #0aaa45;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+}
+
+.deleteButton {
+    background-color: #FF5C5C;
+    color: white;
+}
+
+.deleteButton:hover {
+    background-color: #e04b4b;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+}
+
+.editButton {
+    background-color: #6fa2f2; /* 버튼 배경색을 조금 더 차분하게 조정 */
+    color: white;
+}
+
+.editButton:hover {
+    background-color: #558ed5; /* hover 시 색상 조정 */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+}
+
+.backButton {
+    background-color: #888888; /* 더 부드러운 중간 회색으로 변경 */
+    color: white;
+}
+
+.backButton:hover {
+    background-color: #666666; /* hover 시 색상 조정 */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+}
+
+.disabledNavButton {
+    background-color: #ccc;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: not-allowed;
+    border: none;
+    font-weight: bold;
+}
+
+.typeLink {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+.typeLink:hover {
+    color: inherit;
+    text-decoration: none;
+}
