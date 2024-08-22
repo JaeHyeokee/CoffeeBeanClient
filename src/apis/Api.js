@@ -6,7 +6,7 @@ import axios from "axios";
 
 
 const api = axios.create();
-export const SERVER_HOST = `localhost:8088`;
-// export const SERVER_HOST = `43.202.202.236:8088`;
+// export const SERVER_HOST = `localhost:8088`;
+export const SERVER_HOST = `43.202.202.236:8088`;
 
 export default api;
