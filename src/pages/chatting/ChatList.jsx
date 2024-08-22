@@ -16,7 +16,7 @@ useEffect(() => {
     if (storedUserId) {
         axios.get(`http://${SERVER_HOST}/chatRooms/user/${storedUserId}/with-last-message`)
             .then(response => {
-                console.log(response.data); // 데이터 구조를 확인
+                console.log('콘솔!: ', response.data); // 데이터 구조를 확인
                 setChatRooms(response.data);
             })
             .catch(error => {
@@ -25,13 +25,9 @@ useEffect(() => {
     }
 }, [userInfo.userId]);
 
-  const getChatUserName = (chatRoom) => {
-    const names = [];
-    if (chatRoom.sellerId && chatRoom.sellerId.userName) {
-        names.push(chatRoom.sellerId);
-    }
-    return names.length > 0 ? names.join(', ') : `비활성화 대화방`;
-  };
+const getChatUserName = (chatRoom) => {
+  return chatRoom.sellerUserName || '비활성화 대화방';
+};
 
   const deleteChatList = async (chatRoomId) => {
     const confirmLeave = window.confirm("채팅방을 나가시겠습니까?");

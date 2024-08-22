@@ -25,11 +25,12 @@ const CarDetail = () => {
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
     const [showFullIntroduce, setShowFullIntroduce] = useState(false); // 더보기 버튼 상태
-    const { userInfo } = useContext(LoginContext);
+    const { userInfo,isLogin } = useContext(LoginContext);
     const userId = userInfo?.userId;
     const navigate = useNavigate();
     const isSeller = userId === car?.user?.userId;
     const [ listArr, setListArr ] = useState([]);
+    const [isDipped, setIsDipped] = useState(false); 
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
 
     useEffect(() => {
@@ -78,14 +79,19 @@ const CarDetail = () => {
         setIsChatSidebarOpen(!isChatSidebarOpen);
     };
 
-    const dip = () => {
-        Swal.fire({
-            title: '찜콩',
-            html: '<div style="display: flex; align-items: center; justify-content: center;"></div>',
-            showConfirmButton: false,
-            width: '400px',
-        });
-    };
+    useEffect(() => {
+        if (car && userId) {
+            axios.get(`http://${SERVER_HOST}/dips/status/car`, {
+                params: { userId, carId: id}
+            })
+            .then(response => {
+                setIsDipped(response.data.isDipped);
+            })
+            .catch(error => {
+                console.error('찜 상태 확인 실패', error);
+            });
+        }
+    }, [car, userId]);   
 
     useEffect(() => {
         if (isChatSidebarOpen) {
@@ -157,6 +163,33 @@ const CarDetail = () => {
             return date.format('YYYY-MM-DD');
         }
     };
+
+    const dip = async () => {
+        if (!isLogin) {
+            Swal.fire("로그인이 필요합니다.", "찜하기 기능을 사용하시려면 로그인이 필요합니다.", "warning");
+            navigate('/login');
+            return;
+        }
+
+        try {
+            if (isDipped) {
+                // 찜 취소 요청
+                await axios.delete(`http://${SERVER_HOST}/delete/car/${userId}/${id}`);
+                setIsDipped(false);
+                Swal.fire("찜 상품에서 제외 했습니다.", "", "success");
+            } else {
+                // 찜 추가 요청
+                await axios.post(`http://${SERVER_HOST}/dips/write/car/${userId}/${id}`);
+                setIsDipped(true);
+                Swal.fire("찜 상품에 추가 되었습니다.", "", "success");
+            }
+        } catch (error) {
+            console.error("찜하기/찜 취소하기 실패:", error);
+            Swal.fire("작업 실패", "다시 시도해주세요.", "error");
+        }
+    };
+
+    
 
 
     const handleShareClick = () => {
@@ -236,7 +269,9 @@ const CarDetail = () => {
                             <button className={styles.chatButton} onClick={toggleChatSidebar}>
                                 채팅하기
                             </button>
-                            <button className={styles.dipButton} onClick={dip}>찜하기</button>
+                            <button className={styles.dipButton} onClick={dip}>
+                                        {isDipped ? '찜 취소하기' : '찜하기'}
+                                    </button>
                         </div>
                         )}
                         {isSeller && (
