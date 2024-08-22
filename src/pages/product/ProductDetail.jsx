@@ -34,17 +34,22 @@ const ProductDetail = () => {
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
     const [isDipped, setIsDipped] = useState(false);
     const [dipsCount, setDipsCount] = useState(0); // 찜 개수 상태 추가
+    const [chatRoomCount, setChatRoomCount] = useState(0);
 
 
     useEffect(() => {
-        axios.get(`http://${SERVER_HOST}/product/detail/${id}`)
-            .then(response => {
+        const fetchProductDetails = async () => {
+            try {
+                const response = await axios.get(`http://${SERVER_HOST}/product/detail/${id}`);
                 setProduct(response.data);
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('상품 조회 실패', error);
-            });
-    }, [id]);
+            }
+        };
+    
+        fetchProductDetails();
+    }, [id]); 
+    
 
     useEffect(() => {
         if (product) {
@@ -147,17 +152,19 @@ const ProductDetail = () => {
             navigate('/login');
             return;
         }
-
+    
         try {
             if (isDipped) {
                 // 찜 취소 요청
                 await axios.delete(`http://${SERVER_HOST}/delete/product/${userId}/${id}`);
                 setIsDipped(false);
+                setDipsCount(prevCount => prevCount - 1);
                 Swal.fire("찜 상품에서 제외 했습니다.", "", "success");
             } else {
                 // 찜 추가 요청
                 await axios.post(`http://${SERVER_HOST}/dips/write/product/${userId}/${id}`);
                 setIsDipped(true);
+                setDipsCount(prevCount => prevCount + 1); 
                 Swal.fire("찜 상품에 추가 되었습니다.", "", "success");
             }
         } catch (error) {
@@ -165,7 +172,7 @@ const ProductDetail = () => {
             Swal.fire("작업 실패", "다시 시도해주세요.", "error");
         }
     };
-
+    
     const handleUpdate = () => {
         navigate(`/ProductUpdate/${id}`);
     };
@@ -177,7 +184,7 @@ const ProductDetail = () => {
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#000000',
-            cancelButtonColor: '#d33',
+            cancelButtonColor: 'rgb(221, 51, 51)',
             confirmButtonText: '확인',
             cancelButtonText: '취소'
         }).then((result) => {
