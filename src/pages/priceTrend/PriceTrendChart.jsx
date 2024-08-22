@@ -30,8 +30,8 @@ const PriceTrendChart = ({ category1, category2, category3 }) => {
             {
                 label: 'Price Distribution',                    
                 data: priceInfo.prices.map((price, idx) => ({ x: idx + 1, y: price })),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: '#0dcc5978',
+                borderColor: '#0dcc5978',
                 borderWidth: 1
             }
         ]
@@ -68,7 +68,7 @@ const PriceTrendChart = ({ category1, category2, category3 }) => {
             },
             title: {
                 display: true,
-                text: `Price Distribution for ${category2 || category3 || category1}`
+                text: `Price Distribution for ${category3 || category2 || category1}`
             }
         }
     };

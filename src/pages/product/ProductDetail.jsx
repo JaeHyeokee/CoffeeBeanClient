@@ -14,6 +14,10 @@ import deleteImage from '../../image/icon-delete.png';
 import shareImage from "../../image/share-icon.png";
 import moment from 'moment';
 import { SERVER_HOST } from '../../apis/Api';
+import one from "../../image/One.svg"
+import place from "../../image/Place.svg";
+import DipHeart from "../../image/Dip.svg"
+import FullDipHeart from "../../image/FullDipHeart.svg" 
 
 const ProductDetail = () => {
     const { id } = useParams();  // productId
@@ -29,6 +33,8 @@ const ProductDetail = () => {
     const [showFullIntroduce, setShowFullIntroduce] = useState(false); // 더보기 버튼 상태
     const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태 추가
     const [isDipped, setIsDipped] = useState(false);
+    const [dipsCount, setDipsCount] = useState(0); // 찜 개수 상태 추가
+
 
     useEffect(() => {
         axios.get(`http://${SERVER_HOST}/product/detail/${id}`)
@@ -121,6 +127,19 @@ const ProductDetail = () => {
             console.error("채팅방 생성 실패", error.response ? error.response.data : error.message);
         }
     };
+
+    useEffect(() => {
+        const fetchDipsCount = async () => {
+            try {
+                const response = await axios.get(`http://${SERVER_HOST}/dips/count/product/${id}`);
+                setDipsCount(response.data);
+            } catch (error) {
+                console.error('찜 개수 조회 실패', error);
+            }
+        };
+
+        fetchDipsCount();
+    }, [id, product]);
 
     const dip = async () => {
         if (!isLogin) {
@@ -243,7 +262,7 @@ const ProductDetail = () => {
                                 {product.category1} &gt; {product.category2} &gt; {product.category3}
                             </p>
                             <h5 className={styles.productpostinfo}>
-                                {formatRegDate(product.regDate)}·조회 {product.viewCount}
+                                {formatRegDate(product.regDate)}·조회 {product.viewCount}·찜 {dipsCount}
                             </h5>
                         </div>
 
@@ -274,6 +293,12 @@ const ProductDetail = () => {
                         <h2 className={styles.productPrice}>
                             {product.price === 0 ? '가격협의' : `${product.price.toLocaleString()} 원`}
                         </h2>
+
+                        <div className={styles.area}>
+                        <div><img src={one} alt="아이콘" /> 거래희망지역 </div>
+                        <div><img src={place} alt='위치'/> {product.desiredArea}</div>
+                        </div>
+
                         <div className={styles.productInfoBottom}>
                             <div className={styles.productInfoBottomDiv}>
                                 <p>제품상태</p>
@@ -291,12 +316,12 @@ const ProductDetail = () => {
                         
                         {!isOwner && (
                         <div className={styles.chatDipButton}>
+                            <button className={styles.dipButton} onClick={dip}>
+                                        {isDipped ? <img src={FullDipHeart} alt='찜취소하기'/> : <img src={DipHeart} alt='찜하기'/>}
+                            </button>
                             <button className={styles.chatButton} onClick={toggleChatSidebar}>
                                 채팅하기
                             </button>
-                            <button className={styles.dipButton} onClick={dip}>
-                                        {isDipped ? '찜 취소하기' : '찜하기'}
-                                    </button>
                         </div>
                         )}
                         {isOwner && (
@@ -363,11 +388,11 @@ const ProductDetail = () => {
                             ))}
                         </div>
                         <br/>
-                        <img
+                        {/* <img
                             src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/ProductDetail/${id}`}
                             style={{ width: '150px', height: '150px' }}
                             alt="QR Code"
-                        />
+                        /> */}
                     </div>
                 </section>
     
