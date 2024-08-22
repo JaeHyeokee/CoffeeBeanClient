@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { LoginContext } from '../../contexts/LoginContextProvider';
+import styles from '../../css/my/LogIn.module.css';
 
 const LoginForm = () => {
 
@@ -29,58 +30,58 @@ const LoginForm = () => {
     },[])
 
     return (
-    <div className="form">
-      <h2 className="login-title">Login</h2>
+      <div className={styles.form}>
+      <h2 className={styles.loginTitle}>로그인</h2>
 
-      <form className="login-form" onSubmit={ (e) => onLogin(e) }>
+      <form className={styles.loginForm} onSubmit={(e) => onLogin(e)}>
         <div>
-          <label htmlFor="name">username</label>
+          <label htmlFor="username">아이디</label>
           <input
-                id="username"
-                type="text"
-                placeholder="username"
-                name="username"
-                autoComplete='username'
-                required
-                defaultValue={rememberUserId}
-                />
+            id="username"
+            type="text"
+            placeholder=""
+            name="username"
+            autoComplete='username'
+            required
+            defaultValue={rememberUserId}
+          />
         </div>
         <div>
-          <label htmlFor="password">password </label>
+          <label htmlFor="password">비밀번호</label>
           <input
-                id="password"
-                type="password"
-                placeholder="password"
-                name="password"
-                autoComplete='current-password'
-                required
-                />
+            id="password"
+            type="password"
+            placeholder=""
+            name="password"
+            autoComplete='current-password'
+            required
+          />
         </div>
-        <div className='form-check'>
-          <label className="toggle-btn">
-            { !rememberUserId 
-              ? 
-              <input type="checkbox" id="remember-id" name='rememberId' value='0' />
-              :
-              <input type="checkbox" id="remember-id" name='rememberId' value='0' defaultChecked />
-            }
-            <span className="slider"></span>
+        <div className={styles.formCheck}>
+          <label className={styles.toggleBtn}>
+            <input
+              type="checkbox"
+              id="remember-id"
+              name='rememberId'
+              defaultChecked={rememberUserId}
+            />
+            <span className={styles.slider}></span>
           </label>
-          <label htmlFor='remember-id' className='check-label'>아이디 저장</label>
+          <label htmlFor='remember-id' className={styles.checkLabel}>아이디 저장</label>
         </div>
 
-        <button className="btn btn--form btn-login" value="Login">
-          Login
+        <button className={styles.btn} type="submit">
+          로그인
         </button>
 
         <div>
-            아직 회원이 아니신가요?
-            <a href='/Join'>회원가입</a>
-            을 지금 하세요!
+          아직 회원이 아니신가요?
+          <a href='/Join' className={styles.signUpLink}>회원가입</a>
+          을 지금 하세요!
         </div>
       </form>
-  </div>
-    );
-};
+    </div>
+  );
+}
 
 export default LoginForm;
