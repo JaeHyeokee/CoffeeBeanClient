@@ -21,7 +21,7 @@ const MyInformation = () => {
         // 프로필 이미지 불러오기
         const fetchProfileImage = async () => {
             try {
-                const response = await axios.get(`http://localhost:8088/user/profile/${userId}`);
+                const response = await axios.get(`http://${SERVER_HOST}/user/profile/${userId}`);
                 const imageUrl = response.data;
                 setProfileImg(imageUrl);
             } catch (error) {

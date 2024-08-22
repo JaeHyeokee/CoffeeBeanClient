@@ -194,7 +194,7 @@ const Chat = ({ chatRoomId, onBack }) => {
     
     const proStatus = async (status) => {
         try {
-            await axios.put(`http://localhost:8088/product/update/status/${product.productId}`, null, {
+            await axios.put(`http://${SERVER_HOST}/product/update/status/${product.productId}`, null, {
                 params: {
                     dealingStatus: status
                 }

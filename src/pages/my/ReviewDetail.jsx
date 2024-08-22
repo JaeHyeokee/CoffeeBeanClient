@@ -52,11 +52,11 @@ const ReviewDetail = () => {
             <Header />
             <div className={styles.reviewDetailContainer}>
                 <div className={styles.header}>
-                    <button className={styles.backButton} onClick={() => navigate(`/WriterReviewList/${writerId}`)}>
+                    <button className={styles.backButton} onClick={() => navigate(`/ReviewList/writer/${writerId}`)}>
                         <FaArrowLeft />
                     </button>
                     <div className={styles.title}>후기 상세</div>
-                    <div></div> {/* Placeholder for alignment */}
+                    <div></div>
                 </div>
                 <div className={styles.contentContainer}>
                     <div className={styles.imageContainer}>

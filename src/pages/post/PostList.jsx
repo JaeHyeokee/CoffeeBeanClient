@@ -62,7 +62,7 @@ const PostList = ({ initialContentType }) => {
             <Header />
             <div className={styles.postlistBody}>
                 <h1 className={styles.postListTitle}>콘텐츠</h1>
-                <hr />
+                <hr className={styles.divider} />
                 <div className={styles.postList}>
                     <Link
                         to='/PostList?contentType=contentType1'
@@ -83,7 +83,7 @@ const PostList = ({ initialContentType }) => {
                         사기예방
                     </Link>
                 </div>
-                <hr />
+                <hr className={styles.divider} />
                 <div className={styles.postTitle}>
                     {currentPosts.length > 0 ? (
                         currentPosts.map((post) => (

@@ -1,22 +1,21 @@
 .postlistBody {
     padding: 30px 10%;
-    /* background-color: #f9f9f9; */
-    border-radius: 10px; /* 전체 컨테이너에 약간의 둥근 모서리 추가 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 컨테이너에 약간의 그림자 추가 */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .postList {
     display: flex;
-    justify-content: space-around; /* 링크를 균등하게 분포 */
-    margin-bottom: 10px; /* 콘텐츠 리스트와 hr 사이의 간격을 줄임 */
+    justify-content: space-around;
+    margin-bottom: 10px;
 }
 
-.postListTitle{
+.postListTitle {
     margin-bottom: 20px;
     font-weight: bold;
     font-size: 32px;
-    color: #0DCC5A; /* 제목 색상을 메인 컬러로 */
-    text-align: center; /* 제목을 중앙 정렬 */
+    color: #0DCC5A;
+    text-align: center;
 }
 
 .postList a {
@@ -29,20 +28,23 @@
 }
 
 .postList a:hover {
-    border-bottom: 3px solid #0DCC5A; /* hover 시 밑줄 추가 */
+    border-bottom: 3px solid #0DCC5A;
 }
 
-hr {
-    margin: 10px 0; /* 콘텐츠 리스트와 hr 사이의 간격을 줄임 */
+.divider {
+    margin: 10px 0;
+    border: none;
+    border-top: 2px solid lightgrey; /* 라인의 두께를 두껍게 하고 색상을 밝게 수정 */
+    width: 100%; /* 라인의 너비를 전체 너비로 확장 */
 }
 
 .postTitle {
     margin-top: 20px;
     margin-bottom: 40px;
-    background-color: white; /* 포스트 리스트 배경을 흰색으로 */
+    background-color: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* 포스트 리스트에 약간의 그림자 추가 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .postTitle a {
@@ -54,7 +56,7 @@ hr {
 }
 
 .postTitle a:hover {
-    color: #0DCC5A; /* hover 시 색상 변경 */
+    color: #0DCC5A;
 }
 
 .postTitle p {
@@ -63,7 +65,9 @@ hr {
 
 .postTitle hr {
     margin-top: 20px;
-    color: lightgrey;
+    border: none;
+    border-top: 1px solid lightgrey; /* 포스트 리스트 내 hr의 스타일 */
+    width: 100%;
 }
 
 .createPostButton {
@@ -72,16 +76,16 @@ hr {
     color: white;
     padding: 12px 24px;
     text-decoration: none;
-    border-radius: 10px; /* 둥근 버튼으로 변경 */
+    border-radius: 10px;
     text-align: center;
     margin-top: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 버튼에 약간의 그림자 추가 */
-    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* 부드러운 hover 효과 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .createPostButton:hover {
     background-color: #0aaa45;
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* hover 시 그림자 강화 */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
 
 .pagination {
@@ -97,19 +101,19 @@ hr {
     padding: 10px 15px;
     margin: 0 5px;
     cursor: pointer;
-    border-radius: 20%; /* 동그란 버튼으로 변경 */
+    border-radius: 20%;
     font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* 부드러운 hover 효과 */
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .pagination button.activePage {
     background-color: #0DCC5A;
     color: white;
-    transform: scale(1.1); /* 활성화된 페이지는 살짝 확대 */
+    transform: scale(1.1);
 }
 
 .pagination button:hover {
     background-color: #0aaa45;
     color: white;
-    transform: scale(1.05); /* hover 시 살짝 확대 */
+    transform: scale(1.05);
 }

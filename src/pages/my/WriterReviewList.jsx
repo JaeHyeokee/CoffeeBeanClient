@@ -5,6 +5,8 @@ import axios from 'axios';
 import styles from '../../css/my/WriterReviewList.module.css';
 import { Button } from 'react-bootstrap';
 import { SERVER_HOST } from '../../apis/Api';
+import Footer from '../components/Footer';
+import { FaArrowLeft } from 'react-icons/fa';
 
 const ReviewList = () => {
     const navigate = useNavigate();
@@ -35,13 +37,21 @@ const ReviewList = () => {
         <>
             <Header />
             <div className={styles.reviewListContainer}>
+                <div className={styles.firstHeader}>
+                    <button className={styles.backButton} onClick={() => navigate('/MyPage')}>
+                        <FaArrowLeft />
+                    </button>
+                    <div className={styles.title}>거래 후기</div>
+                    <div></div>
+                </div>
+                <hr className={styles.firstHeaderLine} />
                 <div className={styles.header}>
                     <div className={styles.navLinkContainer}>
-                        <Link to={'/ReviewList/recipient/' + userId} className={styles.navLink}>내 후기</Link>
+                        <Link to={'/ReviewList/recipient/' + userId} className={styles.navLink}>나의 후기</Link>
                         <Link to={'/WriterReviewList/' + userId} className={styles.activeNavLink}>내가 쓴 후기</Link>
                     </div>
                 </div>
-                <hr/>
+                <hr className={styles.divider} />
                 {reviews.map((item, index) => (
                     <div key={index} className={styles.reviewItem}>
                         <div className={styles.topContainer}>
@@ -82,6 +92,7 @@ const ReviewList = () => {
                     </div>
                 ))}
             </div>
+            <Footer />
         </>
     );
 };

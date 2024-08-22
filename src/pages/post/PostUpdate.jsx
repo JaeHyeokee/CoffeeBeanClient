@@ -112,8 +112,6 @@ const PostUpdate = () => {
         if (post.delfile && post.delfile.length > 0) {
             post.delfile.forEach(delfile => formData.append('delfile', delfile));
         }
-
-        window.alert(post.files);
     
         axios({
             method: 'put',
@@ -145,13 +143,13 @@ const PostUpdate = () => {
             <Header />
             <div className={styles.postUpdateBody}>
                 <h1 className={styles.postUpdateTitle}>콘텐츠</h1>
-                <hr />
+                <hr className={styles.divider} />
                 <div className={styles.postList}>
                     <Link to='/PostList?contentType=contentType1'>커피빈 소식</Link>
                     <Link to='/PostList?contentType=contentType2'>중고거래 팁</Link>
                     <Link to='/PostList?contentType=contentType3'>사기예방</Link>
                 </div>
-                <hr />
+                <hr className={styles.divider} />
                 <br /><br />
                 <div className={styles.mainContainer}>
                     <div className={styles.categoryContainer}>
