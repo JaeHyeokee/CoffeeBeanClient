@@ -2,9 +2,8 @@
 .form {
   width: 450px;
   background: #fff;
-  padding: 20px;
+  padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   margin: 0 auto;
 }
@@ -24,7 +23,7 @@
 
 /* 입력 필드 스타일링 */
 .loginForm div {
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .loginForm label {
@@ -136,14 +135,41 @@
   text-decoration: underline;
 }
 
-.kakobtn{
-  width: 100%;
-  padding: 10px;
-  height: 75px;
-  object-fit: cover;
-  border-radius: 20px;
+
+
+
+
+.kakaoButton {
+  position: relative; /* absolute positioning을 위한 기준 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fee500; /* 카카오톡 고유 색상 */
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 430px;
+  max-width: 430px; /* 버튼 최대 너비 조정 */
+  margin-left: 10px;
+  margin-bottom: 10px;
 }
 
-.kakobtn:hover{
-  filter: brightness(90%);
+.kakaoIcon {
+  position: absolute;
+  left: 20px; /* 버튼의 왼쪽에서 10px 떨어진 위치에 이미지 배치 */
+  width: 20px;
+  height: 20px;
 }
+
+.kakaoText {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000000; /* 텍스트 색상 */
+}
+
+.kakaoButton:hover {
+  background-color: #fdd835; /* hover 시 버튼 색상 */
+}
+
+
