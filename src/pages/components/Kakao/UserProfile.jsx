@@ -8,7 +8,7 @@ const UserProfile = () => {
         const accessToken = localStorage.getItem('accessToken');
 
         if (accessToken) {
-            axios.get('http://localhost:8088/api/user', {
+            axios.get(`http://${SERVER_HOST}/api/user`, {
                 headers: {
                     Authorization: `Bearer ${accessToken}`
                 }

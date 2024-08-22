@@ -53,7 +53,7 @@ const Home = () => {
             });
 
             // 게시글 리스트 가져오기
-        axios.get('http://localhost:8088/post/list')
+        axios.get(`http://${SERVER_HOST}/post/list`)
         .then(response => {
             if (response.data.length > 0) {
                 setFirstPost(response.data[0]); // 첫 번째 게시글 저장
