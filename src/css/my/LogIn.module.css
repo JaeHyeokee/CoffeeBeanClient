@@ -1,10 +1,32 @@
+/* 전체 컨테이너 스타일링 */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  height: 100vh; /* 전체 화면 높이 */
+  padding: 20px; /* 여백 추가 */
+}
+
+/* 이미지 스타일링 */
+.imageWrapper {
+  margin-bottom: 30px; /* 이미지와 폼 간격 */
+}
+
+.image {
+  width: 220px; /* 이미지 크기 조정 */
+  height: auto;
+}
+
 /* 전체 폼 스타일링 */
-.form {
+.formWrapper {
   width: 450px;
   background: #fff;
-  padding: 10px;
+  padding: 20px;
   border-radius: 8px;
   box-sizing: border-box;
+  border: 1px solid rgb(234, 234, 234);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
   margin: 0 auto;
 }
 
@@ -12,7 +34,10 @@
 .loginTitle {
   text-align: center;
   color: #333;
-  margin-bottom: 20px;
+  font-size: 35px;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 80px;
 }
 
 /* 폼 스타일링 */
@@ -135,29 +160,23 @@
   text-decoration: underline;
 }
 
-
-
-
-
+/* 카카오톡 로그인 버튼 스타일링 */
 .kakaoButton {
-  position: relative; /* absolute positioning을 위한 기준 */
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #fee500; /* 카카오톡 고유 색상 */
   border: none;
-  border-radius: 5px;
-  padding: 10px 20px;
+  border-radius: 4px; /* 로그인 버튼과 동일한 border-radius */
+  padding: 10px;
   cursor: pointer;
-  width: 430px;
-  max-width: 430px; /* 버튼 최대 너비 조정 */
-  margin-left: 10px;
-  margin-bottom: 10px;
+  width: 100%; /* 버튼이 폼 전체의 너비를 차지하도록 설정 */
+  transition: background-color 0.3s ease;
+  margin-bottom: 30px; /* 로그인 버튼과 동일한 margin-bottom */
 }
 
 .kakaoIcon {
-  position: absolute;
-  left: 20px; /* 버튼의 왼쪽에서 10px 떨어진 위치에 이미지 배치 */
+  margin-right: 10px; /* 아이콘과 텍스트 간격 조정 */
   width: 20px;
   height: 20px;
 }
@@ -171,5 +190,3 @@
 .kakaoButton:hover {
   background-color: #fdd835; /* hover 시 버튼 색상 */
 }
-
-
