@@ -229,10 +229,11 @@ const Chat = ({ chatRoomId, onBack }) => {
         if (chatRoomId) {
             axios.get(`http://${SERVER_HOST}/chatRooms/${chatRoomId}`)
                 .then(response => {
-                    const { chatRoom, sellerId, sellerUserName, buyerUserName, sellerReliability, buyerReliability } = response.data;
+                    const { chatRoom, sellerId, buyerId, sellerUserName, buyerUserName, sellerReliability, buyerReliability } = response.data;
                     setChatRoomDetail({
                         chatRoom: chatRoom,
                         sellerId: sellerId,
+                        buyerId: buyerId,
                         sellerUserName: sellerUserName,
                         buyerUserName: buyerUserName,
                         sellerReliability: sellerReliability,
@@ -261,6 +262,18 @@ const Chat = ({ chatRoomId, onBack }) => {
         return <div>사용자 정보가 없습니다.</div>;
     }
 
+    let chatUserName = "";
+    if (userInfo.userId == chatRoomDetail.sellerId) {
+        chatUserName = chatRoomDetail.buyerUserName;
+    } else if (userInfo.userId == chatRoomDetail.buyerId) {
+        chatUserName = chatRoomDetail.sellerUserName;
+    }
+    // console.log("바이어바이어: ",chatRoomDetail.buyerUserName)
+    // console.log("유저유저유저1: ", chatRoomDetail.sellerId)
+    // console.log("유저유저유저2: ", chatRoomDetail.buyerId)
+    // console.log("유저유저: ", userInfo.userId)
+    // console.log('chatUserName: ', chatUserName);
+
     return (
         <div className="chat-container">
             <h3 className='chatHeader'>
@@ -270,7 +283,7 @@ const Chat = ({ chatRoomId, onBack }) => {
                     </svg>
                 </button>
                 <div className='header'>
-                    <div>{chatRoomDetail.sellerUserName}</div> &nbsp;
+                    <div>{chatUserName}</div> &nbsp;
                     <div className='reliability'>{chatRoomDetail.sellerReliability}점</div>
                 </div>
             </h3>

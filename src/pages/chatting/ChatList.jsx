@@ -4,6 +4,7 @@ import '../../css/chatting/ChatList.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { SERVER_HOST } from '../../apis/Api';
 import MyIcon from '../../image/MyIcon.svg';
+import chatRoomOut from '../../image/chatRoomOut.png';
 
 
 const ChatList = ({ onSelectChatRoom }) => {
@@ -29,9 +30,15 @@ useEffect(() => {
 }, [userInfo.userId]);
 
 const getChatUserName = (chatRoom) => {
-  return chatRoom.sellerUserName || '비활성화 대화방';
-};
+  let getChatUserName = null;
+  if (userInfo.userId == chatRoom.sellerId) {
+    getChatUserName = chatRoom.buyerUserName;
+  } else if (userInfo.userId == chatRoom.buyerId) {
+    getChatUserName = chatRoom.sellerUserName;
+  }
 
+  return getChatUserName || '비활성화 대화방';
+};
 const deleteChatList = async (chatRoomId) => {
   const confirmLeave = window.confirm("채팅방을 나가시겠습니까?");
   if (confirmLeave) {
@@ -72,9 +79,16 @@ useEffect(() => {
 
 const MyComponent = () => {
   return (
-      <div>
-          <img src={MyIcon} alt="My Icon" />
-      </div>
+    <div>
+        <img src={MyIcon} alt="My Icon" />
+    </div>
+  );
+};
+const ChatRoomOutIcon = () => {
+  return (
+    <div className="chatRoomIcon">
+      <img src={chatRoomOut} alt="방 나가기" style={{ width: '35%', height: '25%' }} />
+    </div>
   );
 };
 
@@ -107,6 +121,13 @@ return (
                   <div className='userNameAndMessage'>
                     <div className='userName'>
                       <div className='userNames'>{getChatUserName(chatRoom)}</div>&nbsp;&nbsp;&nbsp;<div className='lastSendTime'>{chatRoom.lastSendTime}</div>
+                        <div className='unreadMessage'>
+                          {chatRoom.unreadMessage > 0 && (
+                            <div className='circle'>
+                              {chatRoom.unreadMessage}
+                            </div>
+                          )}
+                      </div>
                     </div>
                     <br/>
                     <div className='userMessage'>
@@ -114,17 +135,12 @@ return (
                     </div>
                   </div>                      
                     <img className='productPicture1'src={firstProductImage(chatRoom)} alt="상품 이미지" />
-                  <div className='unreadMessage'>
-                      {chatRoom.unreadMessage > 0 && (
-                          <div className='circle'>
-                              {chatRoom.unreadMessage}
-                          </div>
-                      )}
-                  </div>
                 </div>
               </button>
               <div className='leaveRoom'>
-                  <button className='leaveButton' onClick={() => deleteChatList(chatRoom.chatRoomId)}>방 나가기</button>
+                  <button className='leaveButton' onClick={() => deleteChatList(chatRoom.chatRoomId)}>
+                    <ChatRoomOutIcon />
+                  </button>
               </div>
             </div>
           </li>
