@@ -1,24 +1,24 @@
 .homeBody {
-  width: 1280px;
-  margin: 0 auto;
+  padding: 0 20%;
 }
 
 .productList {
-  margin-bottom: 30px;
+  width: 100%;
 }
 
 .productItems {
   display: flex;
-  justify-content: flex-start;
-  margin-bottom: 20px;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .productItem {
-  flex-basis: 18%;
+  width: 18%;
   text-align: left;
   /* padding: 10px; */
+  margin-bottom: 30px;
   transition: transform 0.2s;
-  margin-right: 28px;
   text-decoration: none;
   color: black;
 }
@@ -28,8 +28,8 @@
 }
 
 .productItem img {
-  width: 233px;
-  height: 233px;
+  width: 100%;
+  height: 210px;
   object-fit: cover;
   margin-bottom: 15px;
   border-radius: 10px;
@@ -56,15 +56,8 @@
 }
 
 .maintext {
-  margin-top: 50px;
-  margin-bottom: 15px;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.maintext2 {
-  margin-top: 150px;
-  margin-bottom: 15px;
+  margin-top: 80px;
+  margin-bottom: 50px;
   font-size: 28px;
   font-weight: bold;
 }
@@ -72,24 +65,22 @@
 /* 슬라이더 섹션 */
 .sliderSection {
   margin-bottom: 100px;
-  margin-top: 30px;
-  margin-left: 10px;
+  margin-top: 40px;
 }
 
 .sliderItem img {
-  width: 410px;
-  height: 410px;
+  width: 370px;
+  height: 370px;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 7px;
 }
 
 
 
 .firstPostSection {
-  margin: 20px auto;      /* 위아래 margin을 20px으로, 좌우는 auto로 설정하여 가운데 정렬 */
+  margin: 20px 0;      /* 위아래 margin을 20px으로, 좌우는 0으로 설정하여 가운데 정렬 */
   text-align: center;
   width: 100%;            /* 부모 요소의 가로를 100% 차지 */
-  max-width: 1100px;      /* 최대 가로 길이를 1200px로 고정 */
   border-radius: 5px;
   /* border: 2px solid rgb(0, 0, 0); */
   background-color: #0DCC5A;
@@ -102,7 +93,7 @@
   background-color: #0DCC5A;
   font-size: 25px;        /* 글자 크기를 50px로 설정 */
   font-weight: bold;
-  color: #f3f3f3;
+  color: white;
   text-decoration: none;
   word-wrap: break-word;  /* 길어지면 단어 단위로 줄바꿈 */
   white-space: normal;    /* 줄바꿈을 허용 */
