@@ -19,13 +19,13 @@ const Chat = ({ chatRoomId, onBack }) => {
         chatRoom: null,
         sellerId: null,
         sellerUserName: '',
-        sellerReliability: null
+        buyerUserName: '',
+        sellerReliability: null,
+        buyerReliability: null
     });    
     const stompClient = useRef(null);
     const messagesEndRef = useRef(null);
     const navigate = useNavigate();
-
-
 
     const { userInfo } = useContext(LoginContext);
     const userId = userInfo ? userInfo.userId : null;
@@ -77,6 +77,10 @@ const Chat = ({ chatRoomId, onBack }) => {
                 // 구독경로 --> /topic/public/${chatRoomId}
                 console.log('실시간 message: ', JSON.parse(message.body));  // 메세지가 올 때 마다 console
                 showMessage(JSON.parse(message.body));  // 받은 메세지 화면에 표시
+
+                if (JSON.parse(message.body).sender.userId !== userId) {
+                    markMessagesAsRead((JSON.parse(message.body)).messageId);
+                }
             });
         }, (error) => {
             console.error('STOMP 오류: ' + error);
@@ -227,12 +231,15 @@ const Chat = ({ chatRoomId, onBack }) => {
         if (chatRoomId) {
             axios.get(`http://${SERVER_HOST}/chatRooms/${chatRoomId}`)
                 .then(response => {
-                    const { chatRoom, sellerId, sellerUserName, sellerReliability } = response.data;
+                    const { chatRoom, sellerId, buyerId, sellerUserName, buyerUserName, sellerReliability, buyerReliability } = response.data;
                     setChatRoomDetail({
                         chatRoom: chatRoom,
                         sellerId: sellerId,
+                        buyerId: buyerId,
                         sellerUserName: sellerUserName,
-                        sellerReliability: sellerReliability
+                        buyerUserName: buyerUserName,
+                        sellerReliability: sellerReliability,
+                        buyerReliability: buyerReliability
                     });
                     console.log('채팅방 정보: ', response.data);
 
@@ -257,6 +264,18 @@ const Chat = ({ chatRoomId, onBack }) => {
         return <div>사용자 정보가 없습니다.</div>;
     }
 
+    let chatUserName = "";
+    if (userInfo.userId == chatRoomDetail.sellerId) {
+        chatUserName = chatRoomDetail.buyerUserName;
+    } else if (userInfo.userId == chatRoomDetail.buyerId) {
+        chatUserName = chatRoomDetail.sellerUserName;
+    }
+    // console.log("바이어바이어: ",chatRoomDetail.buyerUserName)
+    // console.log("유저유저유저1: ", chatRoomDetail.sellerId)
+    // console.log("유저유저유저2: ", chatRoomDetail.buyerId)
+    // console.log("유저유저: ", userInfo.userId)
+    // console.log('chatUserName: ', chatUserName);
+
     return (
         <div className="chat-container">
             <h3 className='chatHeader'>
@@ -266,7 +285,7 @@ const Chat = ({ chatRoomId, onBack }) => {
                     </svg>
                 </button>
                 <div className='header'>
-                    <div>{chatRoomDetail.sellerUserName}</div> &nbsp;
+                    <div>{chatUserName}</div> &nbsp;
                     <div className='reliability'>{chatRoomDetail.sellerReliability}점</div>
                 </div>
             </h3>

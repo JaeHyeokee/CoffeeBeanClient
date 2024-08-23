@@ -4,8 +4,10 @@
     padding: 0;
     text-align: center;
     align-content: center;
-    color: black;
+    color: white;
+    font-weight: bold;
     border-bottom: 1px solid #f5f5f5;
+    background-color: #0DCC5A;
 }
 
 ul {
@@ -16,6 +18,7 @@ ul {
 
 li {
     margin: 0;
+    list-style-type: none;
 }
 
 .chatRoomItem {
@@ -23,10 +26,10 @@ li {
 }
 
 .chatRoomContent {
+    width: 100%;
     display: flex;
     /* align-items: center; */
     justify-content: space-between;
-    width: 100%;
     height: 110px;
     padding: 10px;
     border-bottom: 1px solid #f5f5f5;
@@ -34,12 +37,11 @@ li {
 }
 
 .profile1 {
-    width: 20%;  /* 프로필 컨테이너의 너비를 15%로 유지 */
+    width: 12%;
     height: 100%;  /* 프로필 컨테이너의 높이를 채팅방 항목 높이에 맞춤 */
     display: flex;
     align-items: center;  /* 이미지 수직 가운데 정렬 */
     justify-content: center;  /* 이미지 수평 가운데 정렬 */
-    text-align: center;
 }
 
 .profile2 {
@@ -49,19 +51,29 @@ li {
     max-width: 100%;  /* 최대 너비를 100%로 제한 */
     max-height: 100%;  /* 최대 높이를 100%로 제한 */
 }
+.profile3 {
+
+}
 .chatList {
-    /* flex: 1; */
+    width: 88%;
+    flex: 1;
     display: flex;
     align-items: center;
 }
 
 .userNameAndMessage {
+    width: 75%;
     flex: 1; /* 가로 방향에서 가능한 공간을 차지 */
     display: flex;
     flex-direction: column;
-    margin-left: 10px;
 }
-
+.productPicture1 {
+    width: 20%;
+    height: 100%;
+    padding: 10px;
+    overflow: hidden;
+    border-radius: 20px;
+}
 .userName {
     display: flex;
 }
@@ -69,7 +81,22 @@ li {
 .userNames {
     font-size: 15px;
 }
-
+.unreadMessage {
+    width: 5%;
+    margin-left: 10px; /* 여유 공간 추가 */
+}
+.circle {
+    width: 18px; /* 동그라미의 너비 */
+    height: 18px; /* 동그라미의 높이 */
+    border-radius: 50%; /* 동그라미 모양으로 만들기 */
+    background-color: red; /* 배경색 */
+    color: white; /* 글자 색상 */
+    display: flex; /* 중앙 정렬을 위해 flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    font-size: 14px; /* 숫자 크기 조정 */
+    font-weight: bold;
+}
 .lastSendTime {
     font-size: 11px;
     color: dimgray;
@@ -82,35 +109,19 @@ li {
     color: dimgray;
 }
 
-.unreadMessage {
-    width: 10%; /* 읽지 않은 메시지의 너비 */
-    margin-left: 10px; /* 여유 공간 추가 */
-}
-
-.circle {
-    width: 24px; /* 동그라미의 너비 */
-    height: 24px; /* 동그라미의 높이 */
-    border-radius: 50%; /* 동그라미 모양으로 만들기 */
-    background-color: red; /* 배경색 */
-    color: white; /* 글자 색상 */
-    display: flex; /* 중앙 정렬을 위해 flexbox 사용 */
-    align-items: center; /* 세로 중앙 정렬 */
-    justify-content: center; /* 가로 중앙 정렬 */
-    font-size: 15px; /* 숫자 크기 조정 */
-    font-weight: bold;
-}
-
 .leaveRoom {
-    /* height: 100%; */
+    width: 11%;
     display: flex;
     align-items: center;
-    justify-content: center; /* 가운데 정렬 */
-    flex-shrink: 0; /* 기본 크기 유지 */
-    margin-left: 10px; /* 왼쪽 여백 추가 (옵션) */
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 10px;
+    height: 100%; /* 높이를 100%로 설정하여 크기 일치 */
 }
 
 .leaveButton {
-    height: 100%;
+    width: 100%;
+    height: 100%; /* 높이를 100%로 설정하여 leaveRoom과 일치 */
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -122,7 +133,16 @@ li {
     text-align: center;
 }
 
+.chatRoomIcon {
+    width: 100%; /* leaveRoom과 동일한 너비 */
+    height: 100%; /* leaveRoom과 동일한 높이 */
+    display: flex; /* 중앙 정렬을 위해 flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+}
+
 .list {
+    width: 83%;
     display: flex;
     flex: 1;
     border: none;
@@ -137,4 +157,14 @@ li {
     text-align: center;
     align-content: center;
     margin-top: 30px;
+}
+.chatRoom {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.chatRoomList {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
