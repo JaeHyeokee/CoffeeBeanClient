@@ -14,20 +14,37 @@ const ChatList = ({ onSelectChatRoom }) => {
 
   const { userInfo } = useContext(LoginContext);
 
-useEffect(() => {
+  useEffect(() => {
+    const fetchProfileImage = async (sellerId) => {
+      try {
+        const response = await axios.get(`http://${SERVER_HOST}/user/profile/${sellerId}`);
+        const imageUrl = response.data;
+        setProfileImage(prevState => ({
+          ...prevState,
+          [sellerId]: imageUrl
+        }));
+      } catch (error) {
+        console.error('이미지 불러오기 실패: ', error);
+      }
+    };
+
     const storedUserId = userInfo.userId;
-    setUserId(storedUserId);        
+    setUserId(storedUserId);
     if (storedUserId) {
-        axios.get(`http://${SERVER_HOST}/chatRooms/user/${storedUserId}/with-last-message`)
-            .then(response => {
-                console.log('콘솔!: ', response.data); // 데이터 구조를 확인
-                setChatRooms(response.data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
+      axios.get(`http://${SERVER_HOST}/chatRooms/user/${storedUserId}/with-last-message`)
+        .then(response => {
+          const { data, status } = response;
+          setChatRooms(response.data);
+          console.log('콘솔!: ', response.data); // 데이터 구조를 확인
+          data.forEach(chatRoom => {
+            fetchProfileImage(chatRoom.sellerId);
+          });
+        })
+        .catch(error => {
+          console.error(error);
+        });
     }
-}, [userInfo.userId]);
+  }, [userInfo.userId]);
 
 const getChatUserName = (chatRoom) => {
   let getChatUserName = null;
@@ -43,13 +60,13 @@ const deleteChatList = async (chatRoomId) => {
   const confirmLeave = window.confirm("채팅방을 나가시겠습니까?");
   if (confirmLeave) {
       try {
-          await axios.post(`http://${SERVER_HOST}/chatRooms/leave/${chatRoomId}/${userId}`);
-          setChatRooms(prevRooms => prevRooms.filter(room => room.chatRoomId !== chatRoomId));
-          console.log("채팅방 나가기 성공.");
+        await axios.post(`http://${SERVER_HOST}/chatRooms/leave/${chatRoomId}/${userId}`);
+        setChatRooms(prevRooms => prevRooms.filter(room => room.chatRoomId !== chatRoomId));
+        console.log("채팅방 나가기 성공.");
       } catch (error) {
-          console.log('채팅방 나가기 실패.', error);
+        console.log('채팅방 나가기 실패.', error);
       }
-  } else {
+    } else {
       console.log("채팅방 나가기를 취소했습니다.");
   }
 };
@@ -92,29 +109,29 @@ const ChatRoomOutIcon = () => {
   );
 };
 
-// 첫 번째 상품 이미지를 가져오는 함수
-const firstProductImage = (chatRoom) => {
-  if (chatRoom.attachments && chatRoom.attachments.length > 0) {
-    return chatRoom.attachments[0].source;
+  // 첫 번째 상품 이미지를 가져오는 함수
+  const firstProductImage = (chatRoom) => {
+    if (chatRoom.attachments && chatRoom.attachments.length > 0) {
+      return chatRoom.attachments[0].source;
+    }
+    return null;
   }
-  return null;
-}
 
-return (
-  <div>
-    <h2 className='chatName'>채팅방</h2>
+  return (
+    <div>
+      <h2 className='chatName'>채팅방</h2>
       {chatRooms.length === 0 ? (
         <li className='noChatRoom'>참여중인 채팅방이 없습니다.</li>
-        ) : (
+      ) : (
         chatRooms.map(chatRoom => (
           <li key={chatRoom.chatRoomId} className='chatRoomItem'>
             <div className='chatRoomContent'>
               <button className='list' onClick={() => onSelectChatRoom(chatRoom.chatRoomId)}>
                 <div className='profile1'>
-                  {profileImage[chatRoom.userId] ? (
-                    <img className='profile2' src={profileImage[chatRoom.userId]} alt="프로필 이미지" />
+                  {profileImage[chatRoom.sellerId] ? (
+                    <img className='profile2' src={profileImage[chatRoom.sellerId] || 'https://img2.joongna.com/common/Profile/Default/profile_f.png'} alt="프로필 이미지" />
                   ) : (
-                  <div className='profile3'><MyComponent/></div>
+                    <div className='profile3'><MyComponent /></div>
                   )}
                 </div>
                 <div className='chatList'>
@@ -129,7 +146,7 @@ return (
                           )}
                       </div>
                     </div>
-                    <br/>
+                    <br />
                     <div className='userMessage'>
                       {chatRoom.lastMessage}
                     </div>
@@ -146,7 +163,7 @@ return (
           </li>
         ))
       )}
-  </div>
+    </div>
   );
 };
 
