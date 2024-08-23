@@ -27,8 +27,6 @@ const Chat = ({ chatRoomId, onBack }) => {
     const messagesEndRef = useRef(null);
     const navigate = useNavigate();
 
-
-
     const { userInfo } = useContext(LoginContext);
     const userId = userInfo ? userInfo.userId : null;
 
@@ -79,6 +77,10 @@ const Chat = ({ chatRoomId, onBack }) => {
                 // 구독경로 --> /topic/public/${chatRoomId}
                 console.log('실시간 message: ', JSON.parse(message.body));  // 메세지가 올 때 마다 console
                 showMessage(JSON.parse(message.body));  // 받은 메세지 화면에 표시
+
+                if (JSON.parse(message.body).sender.userId !== userId) {
+                    markMessagesAsRead((JSON.parse(message.body)).messageId);
+                }
             });
         }, (error) => {
             console.error('STOMP 오류: ' + error);
