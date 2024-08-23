@@ -1,0 +1,163 @@
+/* 전체 컨테이너 스타일링 */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+  height: 100vh; /* 전체 화면 높이 */
+  padding: 20px; /* 여백 추가 */
+}
+
+/* 이미지 스타일링 */
+.imageWrapper {
+  margin-bottom: 30px; /* 이미지와 폼 간격 */
+}
+
+.image {
+  width: 220px; /* 이미지 크기 조정 */
+  height: auto;
+}
+
+/* 전체 폼 스타일링 */
+.formWrapper {
+  width: 450px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  border: 1px solid rgb(234, 234, 234);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+  margin: 0 auto;
+}
+
+/* 회원가입 제목 스타일링 */
+.signupTitle {
+  text-align: center;
+  color: #333;
+  font-size: 35px;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 80px;
+}
+
+/* 폼 스타일링 */
+.signupForm {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 입력 필드 스타일링 */
+.signupForm div {
+  margin-bottom: 10px;
+}
+
+.signupForm label {
+  display: block;
+  color: #555;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.signupForm input[type="text"],
+.signupForm input[type="password"],
+.signupForm input[type="email"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.signupForm input[type="text"]::placeholder,
+.signupForm input[type="password"]::placeholder,
+.signupForm input[type="email"]::placeholder {
+  color: #aaa;
+}
+
+/* 버튼 스타일링 */
+.btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  text-align: center;
+  width: 100%;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.btn:hover {
+  background-color: #45a049;
+}
+
+/* 이메일 컨테이너 스타일링 */
+.emailContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.emailInputWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.emailInputWrapper select,
+.emailInputWrapper input[type="text"] {
+  /* margin-left: 5px; */
+  width:250px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+/* 이메일 발송 버튼 스타일링 */
+.emailButton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.emailButton:hover {
+  background-color: #45a049;
+}
+
+/* 인증 확인 버튼 스타일링 */
+.verifyButton {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.verifyButton:hover {
+  background-color: #45a049;
+}
+
+/* 인증코드 입력 및 카운트다운 컨테이너 */
+.verificationContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.countdown {
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+}
