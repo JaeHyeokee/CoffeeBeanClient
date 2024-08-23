@@ -8,8 +8,8 @@
 
 .productItems {
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  justify-content:flex-start;
+  gap: 2.5%;
   flex-wrap: wrap;
 }
 
@@ -40,6 +40,12 @@
   margin-bottom: 10px;
   margin-top: 0;
   /* font-weight: bold; */
+  display: -webkit-box;          /* Flexbox를 사용하여 상자 모델을 정의합니다. */
+  -webkit-line-clamp: 2;         /* 표시할 줄 수를 2로 제한합니다. */
+  -webkit-box-orient: vertical;  /* 상자의 방향을 수직으로 설정합니다. */
+  overflow: hidden;              /* 넘치는 내용은 숨깁니다. */
+  text-overflow: ellipsis;       /* 넘치는 텍스트를 생략 기호로 표시합니다. */
+  height: 40px;
 }
 
 .productItem .price {
@@ -64,12 +70,16 @@
 
 /* 슬라이더 섹션 */
 .sliderSection {
-  margin-bottom: 100px;
-  margin-top: 40px;
+  margin: 40px 0 100px 0;
+}
+
+.sliderItem {
+  margin: 0 10px 0 10px;
+  overflow: hidden;
 }
 
 .sliderItem img {
-  width: 370px;
+  width: 365px;
   height: 370px;
   object-fit: cover;
   border-radius: 7px;
