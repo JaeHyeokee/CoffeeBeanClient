@@ -1,0 +1,114 @@
+.homeBody {
+  width: 1280px;
+  margin: 0 auto;
+}
+
+.productList {
+  margin-bottom: 30px;
+}
+
+.productItems {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.productItem {
+  flex-basis: 18%;
+  text-align: left;
+  /* padding: 10px; */
+  transition: transform 0.2s;
+  margin-right: 28px;
+  text-decoration: none;
+  color: black;
+}
+
+.productItem:hover {
+  transform: translateY(-5px);
+}
+
+.productItem img {
+  width: 233px;
+  height: 233px;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+.productItem h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-top: 0;
+  /* font-weight: bold; */
+}
+
+.productItem .price {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.productItem p {
+  font-size: 15px;
+  color: #555;
+  margin: 0;
+}
+
+.maintext {
+  margin-top: 50px;
+  margin-bottom: 15px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.maintext2 {
+  margin-top: 150px;
+  margin-bottom: 15px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* 슬라이더 섹션 */
+.sliderSection {
+  margin-bottom: 100px;
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
+.sliderItem img {
+  width: 410px;
+  height: 410px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+
+
+.firstPostSection {
+  margin: 20px auto;      /* 위아래 margin을 20px으로, 좌우는 auto로 설정하여 가운데 정렬 */
+  text-align: center;
+  width: 100%;            /* 부모 요소의 가로를 100% 차지 */
+  max-width: 1100px;      /* 최대 가로 길이를 1200px로 고정 */
+  border-radius: 5px;
+  /* border: 2px solid rgb(0, 0, 0); */
+  background-color: #0DCC5A;
+}
+
+.firstPostTitle {
+  display: inline-block;  /* 제목을 인라인 블록으로 설정 */
+  padding: 15px 20px;
+  /* border: 2px solid #000; */
+  background-color: #0DCC5A;
+  font-size: 25px;        /* 글자 크기를 50px로 설정 */
+  font-weight: bold;
+  color: #f3f3f3;
+  text-decoration: none;
+  word-wrap: break-word;  /* 길어지면 단어 단위로 줄바꿈 */
+  white-space: normal;    /* 줄바꿈을 허용 */
+  text-align: center;     /* 텍스트를 가운데 정렬 */
+  max-width: 100%;        /* 글자 영역도 최대 100%까지 차지하도록 설정 */
+  box-sizing: border-box; /* 패딩과 테두리 포함하여 크기 계산 */
+  transition: background-color 0.3s ease;
+}
+
