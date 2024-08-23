@@ -71,6 +71,7 @@ const ProductUpdate = () => {
     });
 
     const [isSubmitted, setIsSubmitted] = useState(false)
+    
 
     const validateForm = () => {
         let formIsValid = true;
@@ -78,7 +79,7 @@ const ProductUpdate = () => {
             name: "",
             description: "",
             price: "",
-            dealingType: "",
+            dealingType: "",    
             desiredArea: "",
             category1: "",
             category2: "",

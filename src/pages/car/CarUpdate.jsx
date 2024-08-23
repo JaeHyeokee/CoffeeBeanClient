@@ -148,6 +148,7 @@ const CarUpdate = () => {
 
     const handleFileChange = (e) => {
         const files = e.target.files;
+        console.log('Selected files:', files);
         if (files.length > 0) {
             const fileArray = Array.from(files).map(file => ({
                 file,
