@@ -3,53 +3,74 @@ import axios from 'axios';
 import '../../css/chatting/ChatList.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { SERVER_HOST } from '../../apis/Api';
+import MyIcon from '../../image/MyIcon.svg';
+
 
 const ChatList = ({ onSelectChatRoom }) => {
   const [chatRooms, setChatRooms] = useState([]);
   const [userId, setUserId] = useState(null);
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState({});
 
   const { userInfo } = useContext(LoginContext);
 
-useEffect(() => {
-    const storedUserId = userInfo.userId;
-    setUserId(storedUserId);        
-    if (storedUserId) {
-        axios.get(`http://${SERVER_HOST}/chatRooms/user/${storedUserId}/with-last-message`)
-            .then(response => {
-                console.log('콘솔!: ', response.data); // 데이터 구조를 확인
-                setChatRooms(response.data);
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
-}, [userInfo.userId]);
-
-const getChatUserName = (chatRoom) => {
-  return chatRoom.sellerUserName || '비활성화 대화방';
-};
-
-const deleteChatList = async (chatRoomId) => {
-  const confirmLeave = window.confirm("채팅방을 나가시겠습니까?");
-  if (confirmLeave) {
+  useEffect(() => {
+    const fetchProfileImage = async (sellerId) => {
       try {
-          await axios.post(`http://${SERVER_HOST}/chatRooms/leave/${chatRoomId}/${userId}`);
-          setChatRooms(prevRooms => prevRooms.filter(room => room.chatRoomId !== chatRoomId));
-          console.log("채팅방 나가기 성공.");
+        const response = await axios.get(`http://${SERVER_HOST}/user/profile/${sellerId}`);
+        const imageUrl = response.data;
+        setProfileImage(prevState => ({
+          ...prevState,
+          [sellerId]: imageUrl
+        }));
       } catch (error) {
-          console.log('채팅방 나가기 실패.', error);
+        console.error('이미지 불러오기 실패: ', error);
       }
-  } else {
+    };
+
+    const storedUserId = userInfo.userId;
+    setUserId(storedUserId);
+    if (storedUserId) {
+      axios.get(`http://${SERVER_HOST}/chatRooms/user/${storedUserId}/with-last-message`)
+        .then(response => {
+          const { data, status } = response;
+          setChatRooms(response.data);
+          console.log('콘솔!: ', response.data); // 데이터 구조를 확인
+          data.forEach(chatRoom => {
+            fetchProfileImage(chatRoom.sellerId);
+          });
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+  }, [userInfo.userId]);
+
+  const getChatUserName = (chatRoom) => {
+    return chatRoom.sellerUserName || '비활성화 대화방';
+  };
+
+  const deleteChatList = async (chatRoomId) => {
+    const confirmLeave = window.confirm("채팅방을 나가시겠습니까?");
+    if (confirmLeave) {
+      try {
+        await axios.post(`http://${SERVER_HOST}/chatRooms/leave/${chatRoomId}/${userId}`);
+        setChatRooms(prevRooms => prevRooms.filter(room => room.chatRoomId !== chatRoomId));
+        console.log("채팅방 나가기 성공.");
+      } catch (error) {
+        console.log('채팅방 나가기 실패.', error);
+      }
+    } else {
       console.log("채팅방 나가기를 취소했습니다.");
-  }
-};
+    }
+  };
 
-useEffect(() => {
-  const profileImages = async (writeId) => {
-
-  }
-})  
+  const MyComponent = () => {
+    return (
+      <div>
+        <img src={MyIcon} alt="My Icon" />
+      </div>
+    );
+  };
 
   // 첫 번째 상품 이미지를 가져오는 함수
   const firstProductImage = (chatRoom) => {
@@ -62,48 +83,47 @@ useEffect(() => {
   return (
     <div>
       <h2 className='chatName'>채팅방</h2>
-      <ul>
-          {chatRooms.length === 0 ? (
-              <li className='noChatRoom'>참여중인 채팅방이 없습니다.</li>
-          ) : (
-              chatRooms.map(chatRoom => (
-                <li key={chatRoom.chatRoomId} className='chatRoomItem'>
-                    <div className='chatRoomContent'>
-                        <button className='list' onClick={() => onSelectChatRoom(chatRoom.chatRoomId)}>
-                            <div className='profile1'>
-                              {firstProductImage(chatRoom) ? (
-                                  <img className='profile2'src={firstProductImage(chatRoom)} alt="상품 이미지" />
-                              ) : (
-                                  <p>상품 정보를 로드하는 중입니다...</p>
-                              )}
-                            </div>
-                            <div className='chatList'>
-                              <div className='userNameAndMessage'>
-                                <div className='userName'>
-                                  <div className='userNames'>{getChatUserName(chatRoom)}</div>&nbsp;&nbsp;&nbsp;<div className='lastSendTime'>{chatRoom.lastSendTime}</div>
-                                </div>
-                                <br/>
-                                <div className='userMessage'>
-                                  {chatRoom.lastMessage}
-                                </div>
-                              </div>
-                              <div className='unreadMessage'>
-                                  {chatRoom.unreadMessage > 0 && (
-                                      <div className='circle'>
-                                          {chatRoom.unreadMessage}
-                                      </div>
-                                  )}
-                              </div>
-                            </div>
-                        </button>
-                        <div className='leaveRoom'>
-                            <button className='leaveButton' onClick={() => deleteChatList(chatRoom.chatRoomId)}>방 나가기</button>
-                        </div>
+      {chatRooms.length === 0 ? (
+        <li className='noChatRoom'>참여중인 채팅방이 없습니다.</li>
+      ) : (
+        chatRooms.map(chatRoom => (
+          <li key={chatRoom.chatRoomId} className='chatRoomItem'>
+            <div className='chatRoomContent'>
+              <button className='list' onClick={() => onSelectChatRoom(chatRoom.chatRoomId)}>
+                <div className='profile1'>
+                  {profileImage[chatRoom.sellerId] ? (
+                    <img className='profile2' src={profileImage[chatRoom.sellerId] || 'https://img2.joongna.com/common/Profile/Default/profile_f.png'} alt="프로필 이미지" />
+                  ) : (
+                    <div className='profile3'><MyComponent /></div>
+                  )}
+                </div>
+                <div className='chatList'>
+                  <div className='userNameAndMessage'>
+                    <div className='userName'>
+                      <div className='userNames'>{getChatUserName(chatRoom)}</div>&nbsp;&nbsp;&nbsp;<div className='lastSendTime'>{chatRoom.lastSendTime}</div>
                     </div>
-                </li>
-              ))
-          )}
-      </ul>
+                    <br />
+                    <div className='userMessage'>
+                      {chatRoom.lastMessage}
+                    </div>
+                  </div>
+                  <img className='productPicture1' src={firstProductImage(chatRoom)} alt="상품 이미지" />
+                  <div className='unreadMessage'>
+                    {chatRoom.unreadMessage > 0 && (
+                      <div className='circle'>
+                        {chatRoom.unreadMessage}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </button>
+              <div className='leaveRoom'>
+                <button className='leaveButton' onClick={() => deleteChatList(chatRoom.chatRoomId)}>방 나가기</button>
+              </div>
+            </div>
+          </li>
+        ))
+      )}
     </div>
   );
 };

@@ -19,7 +19,9 @@ const Chat = ({ chatRoomId, onBack }) => {
         chatRoom: null,
         sellerId: null,
         sellerUserName: '',
-        sellerReliability: null
+        buyerUserName: '',
+        sellerReliability: null,
+        buyerReliability: null
     });    
     const stompClient = useRef(null);
     const messagesEndRef = useRef(null);
@@ -227,12 +229,14 @@ const Chat = ({ chatRoomId, onBack }) => {
         if (chatRoomId) {
             axios.get(`http://${SERVER_HOST}/chatRooms/${chatRoomId}`)
                 .then(response => {
-                    const { chatRoom, sellerId, sellerUserName, sellerReliability } = response.data;
+                    const { chatRoom, sellerId, sellerUserName, buyerUserName, sellerReliability, buyerReliability } = response.data;
                     setChatRoomDetail({
                         chatRoom: chatRoom,
                         sellerId: sellerId,
                         sellerUserName: sellerUserName,
-                        sellerReliability: sellerReliability
+                        buyerUserName: buyerUserName,
+                        sellerReliability: sellerReliability,
+                        buyerReliability: buyerReliability
                     });
                     console.log('채팅방 정보: ', response.data);
 

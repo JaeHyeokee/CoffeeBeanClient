@@ -32,7 +32,7 @@ const ReviewList = () => {
                     [writerId]: imageUrl
                 }));
             } catch (error) {
-                console.error('Failed to fetch profile image:', error);
+                console.error('이미지 불러오기 실패: ', error);
             }
         };
 
