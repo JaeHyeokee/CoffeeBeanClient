@@ -25,10 +25,10 @@ const ProductList = () => {
         maxPrice: 0.0,
         productCount: 0
     });
-    const [minPriceFilter, setMinPriceFilter] = useState('');
-    const [maxPriceFilter, setMaxPriceFilter] = useState('');
+    const [minPriceFilter, setMinPriceFilter] = useState(''); //최소가격 상태 저장
+    const [maxPriceFilter, setMaxPriceFilter] = useState(''); //최대가격 상태 저장
     const [showModal, setShowModal] = useState(false);
-    const [includeSoldOut, setIncludeSoldOut] = useState(false);
+    const [includeSoldOut, setIncludeSoldOut] = useState(false); //판매완료 여부 상태 저장
 
     const { category, subcategory, subsubcategory } = useParams();
 
@@ -85,29 +85,34 @@ const ProductList = () => {
         fetchPriceInfo();
     }, [keyword, category, subcategory, subsubcategory]);
 
+    const handleFilterProducts = () => {
+        const minPrice = parseFloat(minPriceFilter) || 0;
+        const maxPrice = parseFloat(maxPriceFilter) || Infinity;
+        const filtered = products.filter(product => {
+            const productPrice = product.price;
+            const isSoldOut = product.dealingStatus === '판매완료';
+
+            return (
+                (category ? product.category1 === category : true) &&
+                (subcategory ? product.category2 === subcategory : true) &&
+                (subsubcategory ? product.category3 === subsubcategory : true) &&
+                (productPrice >= minPrice && productPrice <= maxPrice) &&
+                (includeSoldOut || !isSoldOut) // 판매 완료 상품 포함 여부
+            );
+        });
+        setFilteredProducts(filtered);
+        setTotalPages(Math.ceil(filtered.length / ITEMS_PER_PAGE));
+        setCurrentPage(1); // 필터 적용 시 페이지를 첫 페이지로 리셋
+    };
+
+    //판매완료 상품 포함 여부
     useEffect(() => {
-        if (Array.isArray(products)) {
-            const minPrice = parseFloat(minPriceFilter) || 0;
-            const maxPrice = parseFloat(maxPriceFilter) || Infinity;
-            const filtered = products.filter(product => {
-                const productPrice = product.price;
-                const isSoldOut = product.dealingStatus === '판매완료';
+        handleFilterProducts();
+    }, [products, category, subcategory, subsubcategory, includeSoldOut]); //includeSoldOut값이 변경될때마다 필터링 적용
 
-                return (
-                    (category ? product.category1 === category : true) &&
-                    (subcategory ? product.category2 === subcategory : true) &&
-                    (subsubcategory ? product.category3 === subsubcategory : true) &&
-                    (productPrice >= minPrice && productPrice <= maxPrice) &&
-                    (includeSoldOut || !isSoldOut)
-                );
-            });
-            setFilteredProducts(filtered);
-            setTotalPages(Math.ceil(filtered.length / ITEMS_PER_PAGE));
-        }
-    }, [products, category, subcategory, subsubcategory, minPriceFilter, maxPriceFilter, includeSoldOut]);
-
+    //가격 필터링
     const handlePriceFilterClick = () => {
-        setCurrentPage(1);
+        handleFilterProducts();
     };
 
     const handlePageChange = (page) => {
@@ -192,10 +197,10 @@ const ProductList = () => {
                                     >
                                         <img 
                                             src={includeSoldOut ? Soldout : UnSoldout} 
-                                            alt={includeSoldOut ? '' : ''} 
+                                            alt={includeSoldOut ? '판매완료 상품 포함' : '판매완료 상품 미포함'} 
                                             className={styles.icon}
                                         />
-                                        {includeSoldOut ? '판매완료 상품 포함' : '판매완료 상품 포함'}
+                                        {includeSoldOut ? '판매완료 상품 포함' : '판매완료 상품 미포함'}
                                     </button>
                                 </div>
                             </td>
@@ -209,7 +214,7 @@ const ProductList = () => {
                     <h6 onClick={handleOpenModal}> 그래프 보기</h6>
                     </div>
                     <div className={styles.priceInfo}>
-                        <p1>평균 가격</p1> <p>{priceInfo.averagePrice.toLocaleString()}원</p>
+                        <p1>평균 가격</p1> <p>{priceInfo.averagePrice.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}원</p>
                         <p1>최저 가격</p1> <p>{priceInfo.minPrice.toLocaleString()}원</p>
                         <p1>최고 가격</p1> <p>{priceInfo.maxPrice.toLocaleString()}원</p>
                         {/* <p1>상품 수</p1> <p>{priceInfo.productCount}개</p> */}
@@ -240,7 +245,7 @@ const ProductList = () => {
                                 <ProductItem key={product.id} product={product} />
                             ))
                         ) : (
-                            <p></p>
+                            <p>상품이 없습니다.</p>
                         )
                     )}
                 </div>

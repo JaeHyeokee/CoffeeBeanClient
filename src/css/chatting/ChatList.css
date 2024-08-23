@@ -158,3 +158,13 @@ li {
     align-content: center;
     margin-top: 30px;
 }
+.chatRoom {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.chatRoomList {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
