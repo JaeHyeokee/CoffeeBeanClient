@@ -3,11 +3,13 @@ import axios from 'axios';
 import '../../css/chatting/ChatList.css';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 import { SERVER_HOST } from '../../apis/Api';
+import MyIcon from '../../image/MyIcon.svg';
+
 
 const ChatList = ({ onSelectChatRoom }) => {
   const [chatRooms, setChatRooms] = useState([]);
   const [userId, setUserId] = useState(null);
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState({});
 
   const { userInfo } = useContext(LoginContext);
 
@@ -46,65 +48,89 @@ const deleteChatList = async (chatRoomId) => {
 };
 
 useEffect(() => {
-  const profileImages = async (writeId) => {
+  const fetchProfileImages = async () => {
+    const updatedProfileImage = {};
 
-  }
-})  
-
-  // 첫 번째 상품 이미지를 가져오는 함수
-  const firstProductImage = (chatRoom) => {
-    if (chatRoom.attachments && chatRoom.attachments.length > 0) {
-      return chatRoom.attachments[0].source;
+    for (const chatRoom of chatRooms) {
+      if (chatRoom.userId && !profileImage[chatRoom.userId]) {
+        try {
+          const response = await axios.get(`http://${SERVER_HOST}/user/profile/${chatRoom.userId}`);
+          updatedProfileImage[chatRoom.userId] = response.data;
+        } catch (error) {
+          console.error('Failed to fetch profile image:', error);
+        }
+      }
     }
-    return null;
-  }
 
+    setProfileImage(prevImage => ({ ...prevImage, ...updatedProfileImage }));
+  };
+
+  if (chatRooms.length > 0) {
+    fetchProfileImages();
+  }
+}, [chatRooms]);
+
+const MyComponent = () => {
   return (
-    <div>
-      <h2 className='chatName'>채팅방</h2>
-      <ul>
-          {chatRooms.length === 0 ? (
-              <li className='noChatRoom'>참여중인 채팅방이 없습니다.</li>
-          ) : (
-              chatRooms.map(chatRoom => (
-                <li key={chatRoom.chatRoomId} className='chatRoomItem'>
-                    <div className='chatRoomContent'>
-                        <button className='list' onClick={() => onSelectChatRoom(chatRoom.chatRoomId)}>
-                            <div className='profile1'>
-                              {firstProductImage(chatRoom) ? (
-                                  <img className='profile2'src={firstProductImage(chatRoom)} alt="상품 이미지" />
-                              ) : (
-                                  <p>상품 정보를 로드하는 중입니다...</p>
-                              )}
-                            </div>
-                            <div className='chatList'>
-                              <div className='userNameAndMessage'>
-                                <div className='userName'>
-                                  <div className='userNames'>{getChatUserName(chatRoom)}</div>&nbsp;&nbsp;&nbsp;<div className='lastSendTime'>{chatRoom.lastSendTime}</div>
-                                </div>
-                                <br/>
-                                <div className='userMessage'>
-                                  {chatRoom.lastMessage}
-                                </div>
-                              </div>
-                              <div className='unreadMessage'>
-                                  {chatRoom.unreadMessage > 0 && (
-                                      <div className='circle'>
-                                          {chatRoom.unreadMessage}
-                                      </div>
-                                  )}
-                              </div>
-                            </div>
-                        </button>
-                        <div className='leaveRoom'>
-                            <button className='leaveButton' onClick={() => deleteChatList(chatRoom.chatRoomId)}>방 나가기</button>
-                        </div>
+      <div>
+          <img src={MyIcon} alt="My Icon" />
+      </div>
+  );
+};
+
+// 첫 번째 상품 이미지를 가져오는 함수
+const firstProductImage = (chatRoom) => {
+  if (chatRoom.attachments && chatRoom.attachments.length > 0) {
+    return chatRoom.attachments[0].source;
+  }
+  return null;
+}
+
+return (
+  <div>
+    <h2 className='chatName'>채팅방</h2>
+      {chatRooms.length === 0 ? (
+        <li className='noChatRoom'>참여중인 채팅방이 없습니다.</li>
+        ) : (
+        chatRooms.map(chatRoom => (
+          <li key={chatRoom.chatRoomId} className='chatRoomItem'>
+            <div className='chatRoomContent'>
+              <button className='list' onClick={() => onSelectChatRoom(chatRoom.chatRoomId)}>
+                <div className='profile1'>
+                  {profileImage[chatRoom.userId] ? (
+                    <img className='profile2' src={profileImage[chatRoom.userId]} alt="프로필 이미지" />
+                  ) : (
+                  <div className='profile3'><MyComponent/></div>
+                  )}
+                </div>
+                <div className='chatList'>
+                  <div className='userNameAndMessage'>
+                    <div className='userName'>
+                      <div className='userNames'>{getChatUserName(chatRoom)}</div>&nbsp;&nbsp;&nbsp;<div className='lastSendTime'>{chatRoom.lastSendTime}</div>
                     </div>
-                </li>
-              ))
-          )}
-      </ul>
-    </div>
+                    <br/>
+                    <div className='userMessage'>
+                      {chatRoom.lastMessage}
+                    </div>
+                  </div>                      
+                    <img className='productPicture1'src={firstProductImage(chatRoom)} alt="상품 이미지" />
+                  <div className='unreadMessage'>
+                      {chatRoom.unreadMessage > 0 && (
+                          <div className='circle'>
+                              {chatRoom.unreadMessage}
+                          </div>
+                      )}
+                  </div>
+                </div>
+              </button>
+              <div className='leaveRoom'>
+                  <button className='leaveButton' onClick={() => deleteChatList(chatRoom.chatRoomId)}>방 나가기</button>
+              </div>
+            </div>
+          </li>
+        ))
+      )}
+  </div>
   );
 };
 
