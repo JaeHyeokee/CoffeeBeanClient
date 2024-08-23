@@ -127,7 +127,7 @@ const Home = () => {
                 {/* 첫 번째 게시글 타이틀 출력 */}
                 {firstPost && (
                     <section className="first-post-section">
-                        <Link to={`/PostDetail/${firstPost.id}`} className="first-post-title">
+                        <Link to={`/PostDetail/${firstPost.postId}`} className="first-post-title">
                             {firstPost.title}
                         </Link>
                     </section>
