@@ -1,19 +1,19 @@
-.home-body {
+.homeBody {
   width: 1280px;
   margin: 0 auto;
 }
 
-.product-list {
+.productList {
   margin-bottom: 30px;
 }
 
-.product-items {
+.productItems {
   display: flex;
   justify-content: flex-start;
   margin-bottom: 20px;
 }
 
-.product-item {
+.productItem {
   flex-basis: 18%;
   text-align: left;
   /* padding: 10px; */
@@ -23,11 +23,11 @@
   color: black;
 }
 
-.product-item:hover {
+.productItem:hover {
   transform: translateY(-5px);
 }
 
-.product-item img {
+.productItem img {
   width: 233px;
   height: 233px;
   object-fit: cover;
@@ -35,21 +35,21 @@
   border-radius: 10px;
 }
 
-.product-item h4 {
+.productItem h4 {
   font-size: 16px;
   margin-bottom: 10px;
   margin-top: 0;
   /* font-weight: bold; */
 }
 
-.product-item .price {
+.productItem .price {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
   color: black;
 }
 
-.product-item p {
+.productItem p {
   font-size: 15px;
   color: #555;
   margin: 0;
@@ -70,13 +70,13 @@
 }
 
 /* 슬라이더 섹션 */
-.slider-section {
+.sliderSection {
   margin-bottom: 100px;
   margin-top: 30px;
   margin-left: 10px;
 }
 
-.slider-item img {
+.sliderItem img {
   width: 410px;
   height: 410px;
   object-fit: cover;
@@ -85,7 +85,7 @@
 
 
 
-.first-post-section {
+.firstPostSection {
   margin: 20px auto;      /* 위아래 margin을 20px으로, 좌우는 auto로 설정하여 가운데 정렬 */
   text-align: center;
   width: 100%;            /* 부모 요소의 가로를 100% 차지 */
@@ -95,7 +95,7 @@
   background-color: #0DCC5A;
 }
 
-.first-post-title {
+.firstPostTitle {
   display: inline-block;  /* 제목을 인라인 블록으로 설정 */
   padding: 15px 20px;
   /* border: 2px solid #000; */
