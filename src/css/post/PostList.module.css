@@ -1,13 +1,9 @@
 .postlistBody {
-    padding: 30px 10%;
+    padding: 30px 5%; /* 기존 10%에서 5%로 줄여서 가로 길이를 줄임 */
+    max-width: 1200px; /* 최대 가로 너비를 제한 */
+    margin: 0 auto; /* 가운데 정렬 */
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.postList {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 10px;
 }
 
 .postListTitle {
@@ -16,6 +12,13 @@
     font-size: 32px;
     color: #0DCC5A;
     text-align: center;
+    padding-left: 15px; /* 제목이 왼쪽에 너무 붙지 않도록 패딩 추가 */
+}
+
+.postList {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
 }
 
 .postList a {
@@ -78,9 +81,10 @@
     text-decoration: none;
     border-radius: 10px;
     text-align: center;
-    margin-top: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin: 20px 0 0 84%;
+    font-weight: bold;
 }
 
 .createPostButton:hover {

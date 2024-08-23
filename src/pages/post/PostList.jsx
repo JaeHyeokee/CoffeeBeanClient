@@ -60,6 +60,7 @@ const PostList = ({ initialContentType }) => {
     return (
         <>
             <Header />
+            <br/><br/>
             <div className={styles.postlistBody}>
                 <h1 className={styles.postListTitle}>콘텐츠</h1>
                 <hr className={styles.divider} />
@@ -132,6 +133,7 @@ const PostList = ({ initialContentType }) => {
                     </>
                 )}
             </div>
+            <br/><br/>
             <Footer />
         </>
     );

@@ -3,6 +3,7 @@ import { checkEmail, sendEmail, verifyCode } from '../../apis/Auth';
 import * as Swal from '../../apis/Alert'
 import { SERVER_HOST } from '../../apis/Api';
 
+
 const JoinForm = ({ join }) => {
 
   const KAKAO_CLIENT_ID = 'YOUR_KAKAO_CLIENT_ID';  // 카카오에서 발급받은 앱의 REST API 키
