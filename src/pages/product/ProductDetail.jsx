@@ -106,6 +106,13 @@ const ProductDetail = () => {
     };
 
     const toggleChatSidebar = async () => {
+
+        if (!isLogin) {
+            Swal.fire("로그인이 필요합니다.", "채팅하기 기능을 사용하시려면 로그인이 필요합니다.", "warning");
+            navigate('/login');
+            return;
+        }
+
         if (chatRoomExists) {
             setIsChatSidebarOpen(true);
             return;

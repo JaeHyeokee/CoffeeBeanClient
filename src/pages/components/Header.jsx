@@ -135,14 +135,14 @@ const Header = () => {
                             <NavDropdown title="&nbsp;판매하기" id="basic-nav-dropdown" className={Style.dropdownMenu}>
                                 <NavDropdown.Item className={Style.dropdownMenuTab} as={Link} to={`/ProductCreate/${userId}`}>중고물품</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item className={Style.dropdownMenuTab} href={`/CarCreate/${userId}`}>중고차</NavDropdown.Item>
+                                <NavDropdown.Item className={Style.dropdownMenuTab} as={Link} to={`/CarCreate/${userId}`}>중고차</NavDropdown.Item>
                             </NavDropdown>
                         </Navbar>
                         
                         { !isLogin ?
                             // 로그인
                             <div className={Style.navBarTop}>
-                                <button className={Style.navItem} onClick={() => setLoginShow(true)}>
+                                <button className={Style.navItem} onClick={() => navigate("/login")}>
                                     <img src={my} alt="아이콘" />&nbsp;로그인
                                 </button>
                             </div>
@@ -186,14 +186,14 @@ const Header = () => {
                     </>
                 )}
 
-            <Modal show={loginShow} onHide={() => setLoginShow(false)}>
+            {/* <Modal show={loginShow} onHide={() => setLoginShow(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>로그인</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <LogIn/>
                 </Modal.Body>
-            </Modal>
+            </Modal> */}
 
             </header>
             <ProgressBar className={Style.loadingBar} now={progress} animated={false}/>

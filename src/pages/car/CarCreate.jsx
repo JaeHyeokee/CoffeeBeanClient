@@ -99,7 +99,7 @@ const CarCreate = () => {
         setErrors(newErrors);
         return formIsValid;
     };
-
+    
     useEffect(() => {
         if (!userInfo || !roles) {
             console.error("사용자 정보 또는 권한 정보가 부족합니다.");
@@ -112,6 +112,8 @@ const CarCreate = () => {
             return;
         }
     }, [isLogin, roles, userInfo, navigate]);
+
+
 
     useEffect(() => {
         if (selectedCategory) {
