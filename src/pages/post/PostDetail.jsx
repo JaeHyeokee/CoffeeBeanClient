@@ -160,8 +160,9 @@ const PostDetail = () => {
         {roles?.isAdmin && (
             <>
         <div className={styles.navigationButtons}>
-          <button className={styles.deleteButton} onClick={deletePost}>삭제</button>
           <button className={styles.editButton} onClick={() => navigate(`/PostUpdate/${postId}`)}>수정</button>
+          <button className={styles.deleteButton} onClick={deletePost}>삭제</button>
+          <br/><br/><br/><br/><br/>
         </div>
         </>
           )}
