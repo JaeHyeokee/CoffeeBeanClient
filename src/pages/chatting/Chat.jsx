@@ -15,6 +15,7 @@ const Chat = ({ chatRoomId, onBack }) => {
     const [isConnected, setIsConnected] = useState(false);
     const [product, setProduct] = useState(null);
     const [isJoin, setIsJoin] = useState(null);
+    const [timeOffset, setTimeOffset] = useState(0);
     const [chatRoomDetail, setChatRoomDetail] = useState({
         chatRoom: null,
         sellerId: null,
@@ -29,6 +30,21 @@ const Chat = ({ chatRoomId, onBack }) => {
 
     const { userInfo } = useContext(LoginContext);
     const userId = userInfo ? userInfo.userId : null;
+
+    useEffect(() => {
+        const fetchServerTime = async () => {
+            try {
+                const response = await axios.get(`http://${SERVER_HOST}/api/current-time`);
+                const serverTime = new Date(response.data).getTime();
+                const clientTime = new Date().getTime();
+                setTimeOffset(serverTime - clientTime);
+            } catch (error) {
+                console.error("서버 시간 가져오는 중 오류 발생:", error);
+            }
+        };
+
+        fetchServerTime();
+    }, []);
 
     useEffect(() => {
         const fetchIsJoin = async () => {
@@ -76,10 +92,9 @@ const Chat = ({ chatRoomId, onBack }) => {
             stompClient.current.subscribe(`/topic/public/${chatRoomId}`, (message) => {
                 // 구독경로 --> /topic/public/${chatRoomId}
                 console.log('실시간 message: ', JSON.parse(message.body));  // 메세지가 올 때 마다 console
-                const receivedMessage = JSON.parse(message.body);
-                showMessage(receivedMessage);  // 받은 메세지 화면에 표시
+                showMessage(JSON.parse(message.body));  // 받은 메세지 화면에 표시
 
-                // 메시지를 읽음으로 처리
+                const receivedMessage = JSON.parse(message.body);
                 if (receivedMessage.sender.userId !== userId) {
                     markMessageAsRead(receivedMessage.messageId); // 특정 메시지의 읽음 상태만 업데이트
                 }
@@ -99,8 +114,6 @@ const Chat = ({ chatRoomId, onBack }) => {
                 }
             }
         };
-
-        // 초기 로딩 시 메시지 읽음 상태를 업데이트하는 부분은 삭제되었습니다.
 
         return () => {
             if (stompClient.current !== null) {
@@ -155,26 +168,27 @@ const Chat = ({ chatRoomId, onBack }) => {
     };
 
     const handleDelete = async (messageId, sendTime) => {
-        const currentTime = new Date().getTime();
+        const currentTime = new Date().getTime() + timeOffset;
         const messageTime = new Date(sendTime).getTime();
     
         // 1분이 지나지 않은 경우에만 삭제 요청을 보냄
-        if ((currentTime - messageTime) <= 60000) {
+        if ((currentTime - messageTime) <= 300000) {
             const isConfirmed = window.confirm('삭제하시겠습니까?');
             if (!isConfirmed) return;
     
             try {
-                const response = await axios.delete(`http://${SERVER_HOST}/api/messages/${messageId}`);
-                console.log('삭제된 메시지 ID:', messageId); // 삭제된 메시지의 ID
-                if (response.status === 200) {
+                await axios.delete(`http://${SERVER_HOST}/api/${messageId}`, {
+                    params: {
+                        sendTime: sendTime
+                        }
+                    });
                     setMessages(prevMessages => prevMessages.filter(message => message.messageId !== messageId));
                     window.alert("메시지가 삭제되었습니다.");
-                }
-            } catch (error) {
+                } catch (error) {
                 console.error('메시지 삭제 중 오류 발생:', error);
             }
         } else {
-            window.alert('메시지를 작성한 지 1분 이상 경과하였습니다.');
+            window.alert('메시지를 작성한 지 5분 이상 경과하였습니다.');
         }
     };
 
@@ -344,13 +358,12 @@ const Chat = ({ chatRoomId, onBack }) => {
                 {isProductSold && (
                     <div className="joinMessage1">
                         판매완료된 상품입니다.
-                        <div className='joinMessage2'>(채팅방이 비활성화됩니다)</div>
                     </div>
                 )}
                 </div>
             </div>
             
-            <div className={`message-input ${isProductSold ? 'sold-out' : ''}`}>
+            <div>
                 <TextareaAutosize
                     className='textarea'
                     type="text"
@@ -360,9 +373,9 @@ const Chat = ({ chatRoomId, onBack }) => {
                     placeholder="메시지를 입력하세요"
                     minRows={1}
                     maxRows={5}
-                    disabled={isJoin === 1 || isProductSold}
+                    disabled={isJoin === 1}
                 />
-                <button className='sendBtn' onClick={sendMessage} disabled={isJoin === 1 || isProductSold}>전송</button>
+                <button className='sendBtn' onClick={sendMessage} disabled={isJoin === 1}>전송</button>
             </div>
         </div>
     );
