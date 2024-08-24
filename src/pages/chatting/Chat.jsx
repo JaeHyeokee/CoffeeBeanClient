@@ -76,10 +76,12 @@ const Chat = ({ chatRoomId, onBack }) => {
             stompClient.current.subscribe(`/topic/public/${chatRoomId}`, (message) => {
                 // 구독경로 --> /topic/public/${chatRoomId}
                 console.log('실시간 message: ', JSON.parse(message.body));  // 메세지가 올 때 마다 console
-                showMessage(JSON.parse(message.body));  // 받은 메세지 화면에 표시
+                const receivedMessage = JSON.parse(message.body);
+                showMessage(receivedMessage);  // 받은 메세지 화면에 표시
 
-                if (JSON.parse(message.body).sender.userId !== userId) {
-                    markMessagesAsRead((JSON.parse(message.body)).messageId);
+                // 메시지를 읽음으로 처리
+                if (receivedMessage.sender.userId !== userId) {
+                    markMessageAsRead(receivedMessage.messageId); // 특정 메시지의 읽음 상태만 업데이트
                 }
             });
         }, (error) => {
@@ -87,17 +89,18 @@ const Chat = ({ chatRoomId, onBack }) => {
             setIsConnected(false);
         });
 
-        const markMessagesAsRead = async () => {
+        const markMessageAsRead = async (messageId) => {
             if (userId && chatRoomId) {
                 try {
-                    const response = await axios.post(`http://${SERVER_HOST}/api/messages/read/${chatRoomId}/${userId}`);
+                    const response = await axios.post(`http://${SERVER_HOST}/api/messages/read/${chatRoomId}/${userId}`, { messageId });
                     console.log('메시지를 읽음으로 표시:', response.data); // 메시지를 읽음으로 표시
                 } catch (error) {
                     console.error('메시지를 읽음으로 표시하는 중 오류 발생:', error);
                 }
             }
         };
-        markMessagesAsRead();
+
+        // 초기 로딩 시 메시지 읽음 상태를 업데이트하는 부분은 삭제되었습니다.
 
         return () => {
             if (stompClient.current !== null) {
@@ -185,7 +188,6 @@ const Chat = ({ chatRoomId, onBack }) => {
         return `${ampm} ${formattedHours}:${formattedMinutes}`;
     };
 
-
     useEffect(() => {
         const fetchProduct = async () => {
             if (chatRoomId) {
@@ -240,21 +242,12 @@ const Chat = ({ chatRoomId, onBack }) => {
                         buyerReliability: buyerReliability
                     });
                     console.log('채팅방 정보: ', response.data);
-
-                    // console.log('Buyer ID:', sellerId);
-                    // console.log('Seller ID:', sellerId);
                 })
                 .catch(error => {
                     console.error("Error fetching chat room details:", error);
                 });
         }
     }, [chatRoomId]);
-
-    // const handleImageClick = () => {
-    //     navigate(`/ProductDetail/${product.productId}`, null);
-    // };
-
-    // console.log('유저유저 :', userInfo.userId);
 
     const firstProductImage = product && product.fileList && product.fileList.length > 0 ? product.fileList[0].source : null;
 
@@ -263,16 +256,11 @@ const Chat = ({ chatRoomId, onBack }) => {
     }
 
     let chatUserName = "";
-    if (userInfo.userId == chatRoomDetail.sellerId) {
+    if (userInfo.userId === chatRoomDetail.sellerId) {
         chatUserName = chatRoomDetail.buyerUserName;
-    } else if (userInfo.userId == chatRoomDetail.buyerId) {
+    } else if (userInfo.userId === chatRoomDetail.buyerId) {
         chatUserName = chatRoomDetail.sellerUserName;
     }
-    // console.log("바이어바이어: ",chatRoomDetail.buyerUserName)
-    // console.log("유저유저유저1: ", chatRoomDetail.sellerId)
-    // console.log("유저유저유저2: ", chatRoomDetail.buyerId)
-    // console.log("유저유저: ", userInfo.userId)
-    // console.log('chatUserName: ', chatUserName);
 
     const isProductSold = product && product.dealingStatus === '판매완료';
     
@@ -307,7 +295,7 @@ const Chat = ({ chatRoomId, onBack }) => {
                 </div>
                 <div className='status'>
                     <div className='status1'>
-                        {userId == chatRoomDetail.sellerId && (
+                        {userId === chatRoomDetail.sellerId && (
                         <select onChange={(e) => proStatus(e.target.value)} defaultValue=""
                         value={product ? product.dealingStatus : ''}
                         disabled={product && product.dealingStatus === "판매완료"}>
@@ -352,7 +340,16 @@ const Chat = ({ chatRoomId, onBack }) => {
                         </div>
                     )}
                 </div>
+                <div className='joinDiv'>
+                {isProductSold && (
+                    <div className="joinMessage1">
+                        판매완료된 상품입니다.
+                        <div className='joinMessage2'>(채팅방이 비활성화됩니다)</div>
+                    </div>
+                )}
+                </div>
             </div>
+            
             <div className={`message-input ${isProductSold ? 'sold-out' : ''}`}>
                 <TextareaAutosize
                     className='textarea'
