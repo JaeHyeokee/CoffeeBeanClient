@@ -22,7 +22,8 @@ const Chat = ({ chatRoomId, onBack }) => {
         sellerUserName: '',
         buyerUserName: '',
         sellerReliability: null,
-        buyerReliability: null
+        buyerReliability: null,
+        unreadMessage: null
     });    
     const stompClient = useRef(null);
     const messagesEndRef = useRef(null);
@@ -79,7 +80,6 @@ const Chat = ({ chatRoomId, onBack }) => {
                 setMessages([]);
             }
         };
-
         fetchMessages();
 
         const socket = new SockJS(`http://${SERVER_HOST}/ws`);
@@ -91,10 +91,11 @@ const Chat = ({ chatRoomId, onBack }) => {
 
             stompClient.current.subscribe(`/topic/public/${chatRoomId}`, (message) => {
                 // 구독경로 --> /topic/public/${chatRoomId}
-                console.log('실시간 message: ', JSON.parse(message.body));  // 메세지가 올 때 마다 console
-                showMessage(JSON.parse(message.body));  // 받은 메세지 화면에 표시
-
                 const receivedMessage = JSON.parse(message.body);
+                console.log('실시간 message: ', receivedMessage);  // 메세지가 올 때 마다 console
+                showMessage(receivedMessage);  // 받은 메세지 화면에 표시
+
+                // 상대방의 메시지일 경우 읽음 상태 업데이트
                 if (receivedMessage.sender.userId !== userId) {
                     markMessageAsRead(receivedMessage.messageId); // 특정 메시지의 읽음 상태만 업데이트
                 }
@@ -114,6 +115,7 @@ const Chat = ({ chatRoomId, onBack }) => {
                 }
             }
         };
+        markMessageAsRead();
 
         return () => {
             if (stompClient.current !== null) {
@@ -128,7 +130,6 @@ const Chat = ({ chatRoomId, onBack }) => {
     const showMessage = (message) => {
         if (message) {
             console.log('받은 메시지:', message); // STOMP를 통해 받은 메시지
-            console.log('보낸 사람 ID:', message.sender ? message.sender.userId : 'No Sender ID');
             setMessages(prevMessages => [...prevMessages, message]);
         } else {
             console.error('유효하지 않은 메시지:', message);
@@ -171,7 +172,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         const currentTime = new Date().getTime() + timeOffset;
         const messageTime = new Date(sendTime).getTime();
     
-        // 1분이 지나지 않은 경우에만 삭제 요청을 보냄
+        // 5분이 지나지 않은 경우에만 삭제 요청을 보냄
         if ((currentTime - messageTime) <= 300000) {
             const isConfirmed = window.confirm('삭제하시겠습니까?');
             if (!isConfirmed) return;
@@ -193,7 +194,7 @@ const Chat = ({ chatRoomId, onBack }) => {
     };
 
     const formatTime = (dateTime) => {
-        const date = new Date(dateTime);
+        const date = new Date(dateTime + timeOffset);
         const hours = date.getHours();
         const minutes = date.getMinutes();
         const ampm = hours >= 12 ? '오후' : '오전';
@@ -243,9 +244,9 @@ const Chat = ({ chatRoomId, onBack }) => {
 
     useEffect(() => {
         if (chatRoomId) {
-            axios.get(`http://${SERVER_HOST}/chatRooms/${chatRoomId}`)
+            const response = axios.get(`http://${SERVER_HOST}/chatRooms/${chatRoomId}`)
                 .then(response => {
-                    const { chatRoom, sellerId, buyerId, sellerUserName, buyerUserName, sellerReliability, buyerReliability } = response.data;
+                    const { chatRoom, sellerId, buyerId, sellerUserName, buyerUserName, sellerReliability, buyerReliability, unreadMessage } = response.data;
                     setChatRoomDetail({
                         chatRoom: chatRoom,
                         sellerId: sellerId,
@@ -253,7 +254,8 @@ const Chat = ({ chatRoomId, onBack }) => {
                         sellerUserName: sellerUserName,
                         buyerUserName: buyerUserName,
                         sellerReliability: sellerReliability,
-                        buyerReliability: buyerReliability
+                        buyerReliability: buyerReliability,
+                        unreadMessage: unreadMessage
                     });
                     console.log('채팅방 정보: ', response.data);
                 })
