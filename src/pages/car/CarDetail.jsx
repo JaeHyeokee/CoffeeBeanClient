@@ -405,16 +405,18 @@ const CarDetail = () => {
                     <div className={styles.infoBoxinsurance}>
                         <h2 className={styles.infotextinsurance}>보험처리 이력</h2>
                         <div className={styles.insuranceContent}>
-                            <img src={insuranceImage} alt="" className={styles.insuranceImage} />
-                            <span className={styles.insuranceText}>
-                                보험처리 &nbsp;<span className={styles.redText}>{car.insuranceVictim + car.insuranceInjurer}</span> 회
-                            </span>
-                            <p>
-                                보험사고(피해) 이력&nbsp;<span className={styles.redText}>{car.insuranceVictim}</span>회
+                            <div>
+                                <img src={insuranceImage} alt="" className={styles.insuranceImage} />
+                                <span className={styles.insuranceText}>
+                                    보험처리 &nbsp;<span className={styles.redText}>{car.insuranceVictim + car.insuranceInjurer}</span> 회
+                                </span>
+                            </div>
+                            <p className={styles.insuranceInfo}>
+                                보험사고(피해) 이력&nbsp;<span className={styles.redText}>{'\u00A0' + car.insuranceVictim + '\u00A0'}</span>회
                                 <span className={styles.separator}></span>|<span className={styles.separator}></span>
-                                보험사고(가해) 이력&nbsp;<span className={styles.redText}>{car.insuranceInjurer}</span>회
+                                보험사고(가해) 이력&nbsp;<span className={styles.redText}>{'\u00A0' + car.insuranceInjurer + '\u00A0'}</span>회
                                 <span className={styles.separator}></span>|<span className={styles.separator}></span>
-                                소유자 변경 이력&nbsp;<span className={styles.redText}>{car.ownerChange}</span>회
+                                소유자 변경 이력&nbsp;<span className={styles.redText}>{'\u00A0' + car.ownerChange + '\u00A0'}</span>회
                             </p>
                         </div>
                     </div>
