@@ -23,7 +23,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         sellerReliability: null,
         buyerReliability: null,
         unreadMessage: null
-    });
+    });    
     const stompClient = useRef(null);
     const messagesEndRef = useRef(null);
     const navigate = useNavigate();
@@ -36,7 +36,7 @@ const Chat = ({ chatRoomId, onBack }) => {
             if (userId && chatRoomId) {
                 try {
                     const response = await axios.get(`http://${SERVER_HOST}/chatRooms/leave/${chatRoomId}/${userId}`);
-                    console.log("isJoin 값 가져오기:", response.data);
+                    console.log("isJoin 값 가져오기:", response.data); // isJoin 값을 가져옴
                     setIsJoin(response.data);
                 } catch (error) {
                     console.error("isJoin 값을 가져오는 중 오류 발생:", error);
@@ -53,7 +53,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         const fetchMessages = async () => {
             try {
                 const response = await axios.get(`http://${SERVER_HOST}/api/messages/${chatRoomId}`);
-                console.log('메시지 목록 가져오기:', response.data);
+                console.log('메시지 목록 가져오기:', response.data); // 메시지 목록을 가져옴
                 if (Array.isArray(response.data)) {
                     setMessages(response.data);
                 } else {
@@ -68,26 +68,27 @@ const Chat = ({ chatRoomId, onBack }) => {
 
         const socket = new SockJS(`http://${SERVER_HOST}/ws`);
         stompClient.current = Stomp.over(socket);
-
+        
         stompClient.current.connect({}, (frame) => {
             console.log('STOMP 연결됨: ' + frame);
             setIsConnected(true);
 
             stompClient.current.subscribe(`/topic/public/${chatRoomId}`, (message) => {
+                // 구독경로 --> /topic/public/${chatRoomId}
                 const receivedMessage = JSON.parse(message.body);
-                console.log('실시간 message: ', receivedMessage);
-                showMessage(receivedMessage);
+                console.log('실시간 message: ', receivedMessage);  // 메세지가 올 때 마다 console
+                showMessage(receivedMessage);  // 받은 메세지 화면에 표시
 
                 // 상대방의 메시지일 경우 읽음 상태 업데이트
                 if (receivedMessage.sender.userId !== userId) {
-                    markMessageAsRead(receivedMessage.messageId); // 읽음 처리 요청
+                    markMessageAsRead(receivedMessage.messageId); // 특정 메시지의 읽음 상태만 업데이트
                 }
             });
         }, (error) => {
             console.error('STOMP 오류: ' + error);
             setIsConnected(false);
         });
-
+        
         return () => {
             if (stompClient.current !== null) {
                 stompClient.current.disconnect(() => {
@@ -100,7 +101,7 @@ const Chat = ({ chatRoomId, onBack }) => {
 
     const showMessage = (message) => {
         if (message) {
-            console.log('받은 메시지:', message);
+            console.log('받은 메시지:', message); // STOMP를 통해 받은 메시지
             setMessages(prevMessages => [...prevMessages, message]);
         } else {
             console.error('유효하지 않은 메시지:', message);
@@ -110,8 +111,11 @@ const Chat = ({ chatRoomId, onBack }) => {
     const markMessageAsRead = async (messageId) => {
         if (userId && chatRoomId) {
             try {
-                const response = await axios.post(`http://${SERVER_HOST}/api/messages/read/${chatRoomId}/${userId}`, { messageId });
-                console.log('메시지를 읽음으로 표시:', response.data);
+                await axios.post(`http://${SERVER_HOST}/api/messages/read/${chatRoomId}/${userId}`, { messageId });
+                // 메시지 읽음 상태 업데이트
+                setMessages(prevMessages => prevMessages.map(msg => 
+                    msg.messageId === messageId ? { ...msg, isRead: true } : msg
+                ));
             } catch (error) {
                 console.error('메시지를 읽음으로 표시하는 중 오류 발생:', error);
             }
@@ -125,23 +129,20 @@ const Chat = ({ chatRoomId, onBack }) => {
                 chatRoomId: chatRoomId,
                 messageText: messageInput
             };
-            console.log('보내는 메시지:', chatMessage);
+            console.log('보내는 메시지:', chatMessage); // 사용자가 전송하는 메시지
 
             stompClient.current.send(
                 `/app/sendMessage/${chatRoomId}`,
                 {},
                 JSON.stringify(chatMessage)
             );
-
-            // 메시지 전송 후에 읽음 상태 업데이트는 필요 없음. 
-            // 메세지 전송 후 상대방의 연결 상태에 따라 처리
-
+            
             setMessageInput('');
         } else {
             console.error('메시지를 전송할 수 없음, STOMP 클라이언트가 연결되지 않았습니다.');
         }
     };
-
+    
     useEffect(() => {
         if (messagesEndRef.current) {
             messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -159,6 +160,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         const currentTime = new Date().getTime();
         const messageTime = new Date(sendTime).getTime();
     
+        // 5분이 지나지 않은 경우에만 삭제 요청을 보냄
         if ((currentTime - messageTime) <= 300000) {
             const isConfirmed = window.confirm('삭제하시겠습니까?');
             if (!isConfirmed) return;
@@ -189,7 +191,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
         return `${ampm} ${formattedHours}:${formattedMinutes}`;
     };
-
+    
     useEffect(() => {
         const fetchProduct = async () => {
             if (chatRoomId) {
@@ -197,7 +199,7 @@ const Chat = ({ chatRoomId, onBack }) => {
                     console.log(`채팅방 ID로 상품 정보 가져오기: ${chatRoomId}`);
                     const response = await axios.get(`http://${SERVER_HOST}/chatRooms/chatRoom/${chatRoomId}/product`);
                     const product = response.data;
-                    console.log('받은 상품 정보:', product);
+                    console.log('받은 상품 정보:', product); // 채팅방 ID로 가져온 상품 정보
                     if (product) {
                         setProduct(product);
                     } else {
@@ -210,19 +212,19 @@ const Chat = ({ chatRoomId, onBack }) => {
                 console.error("유효하지 않은 채팅방 ID:", chatRoomId);
             }
         };
-
+    
         fetchProduct();
     }, [chatRoomId, userId]);
-
+    
     const proStatus = async (status) => {
         try {
-            console.log(`상품 상태 업데이트: ${status}`);
+            console.log(`상품 상태 업데이트: ${status}`); // 상품 상태 업데이트 로그
             const response = await axios.put(`http://${SERVER_HOST}/product/update/status/${product.productId}`, null, {
                 params: {
                     dealingStatus: status
                 }
             });
-            console.log('업데이트된 상품 상태:', response.data);
+            console.log('업데이트된 상품 상태:', response.data); // 업데이트된 상품 상태
             setProduct(prevProduct => ({ ...prevProduct, dealingStatus: status }));
         } catch (error) {
             console.error("상품 상태를 업데이트하는 중 오류 발생:", error.response ? error.response.data : error.message);
