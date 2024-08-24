@@ -12,6 +12,8 @@ import insuranceImage from '../../image/insurance2.png';
 import updateImage from '../../image/icon-update.png';
 import deleteImage from '../../image/icon-delete.png';
 import shareImage from "../../image/share-icon.png";
+import DipHeart from "../../image/Dip.svg";
+import FullDipHeart from "../../image/FullDipHeart.svg";
 import { SERVER_HOST } from '../../apis/Api';
 
 
@@ -233,16 +235,17 @@ const CarDetail = () => {
 
                     <div className={styles.carInfo}>
                         <div className={styles.carHeader}>
-                            <p className={styles.carCategory}>{car.category1} &gt; {car.category2}</p>
-                            <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회 {car.viewCount} ·찜 {dipsCount}</h2>
+                            <p className={car.category2 === "" ? styles.lastcarCategory : styles.carCategory}>{car.category1}</p>
+                            {car.category2 !== "" && <p className={styles.carCategory}>&nbsp; &gt; &nbsp;</p>}
+                            <p className={styles.lastcarCategory}>{car.category2}</p>
                         </div>
 
                         <div className={styles.carNameContainer}>
                             <h1 className={styles.carName}>{car.name}</h1>
                             <img
+                                className={styles.shareImg}
                                 src={shareImage}
                                 alt="Share"
-                                style={{ width: '20px', height: '20px', cursor: 'pointer', marginLeft: '50px'}}
                                 onClick={handleShareClick}
                             />
                         </div>
@@ -270,34 +273,43 @@ const CarDetail = () => {
                         <h1 className={styles.carPrice}>
                             {car.price === 0 ? '가격협의' : `${car.price.toLocaleString()} 만원`}
                         </h1>
-                        <p>{car.modelYear} 년식·{car.distance} KM·{car.fuel}</p>
-                        <button className={styles.carsearch} onClick={handleCarSearchClick}>보험료 조회</button>
+
+                        <h2 className={styles.carpostinfo}>{formatRegDate(car.regDate)}·조회 {car.viewCount} ·찜 {dipsCount}</h2>
+
+                        <div className={styles.area}>
+                            <div>{car.modelYear} 년식·{car.distance} km·{car.fuel}</div>
+                            <button className={styles.carsearch} onClick={handleCarSearchClick}>보험료 조회</button>
+                        </div>
+                        
                         <div className={styles.carInfoBottom}>
                             <div className={styles.carInfoBottomDiv}>
                                 <p>제품상태</p>
                                 <p>{car.status}</p>
                             </div>
+                            <div className={styles.carInfoBottomLine}></div>
                             <div className={styles.carInfoBottomDiv}>
                                 <p>판매상태</p>
                                 <p>{car.dealingStatus}</p>
                             </div>
                         </div>
-                        {!isSeller && (
+                        {!isSeller && car.dealingStatus !== "판매완료" && (
                         <div className={styles.chatDipButton}>
+                            <button className={styles.dipButton} onClick={dip}>
+                                {isDipped ? <img src={FullDipHeart} alt='찜 취소하기'/> : <img src={DipHeart} alt='찜하기'/>}
+                            </button>
                             <button className={styles.chatButton} onClick={toggleChatSidebar}>
                                 채팅하기
                             </button>
-                            <button className={styles.dipButton} onClick={dip}>
-                                        {isDipped ? '찜 취소하기' : '찜하기'}
-                                    </button>
                         </div>
                         )}
+
                         {isSeller && (
                             <div className={styles.changeButton}>
                                 <button className={styles.imageButton} onClick={() => navigate(`/CarUpdate/${id}`)}>
                                     <img src={updateImage} alt="상품수정" className={styles.updateImage} />
                                     <span className={styles.buttonText}>상품수정</span>
                                 </button>
+                                <div className={styles.carInfoBottomLine}></div>
                                 <button className={styles.imageButton} onClick={deletecar}>
                                     <img src={deleteImage} alt="상품삭제" className={styles.deleteImage} />
                                     <span className={styles.buttonText}>상품삭제</span>
@@ -311,33 +323,33 @@ const CarDetail = () => {
 
                 <section className={styles.cardetailInfo}>
                     <div className={styles.leftPanel}>
-                    <h2 className={styles.infotext}>차량 기본정보</h2>
+                        <h2 className={styles.infotext}>차량 기본정보</h2>
                         <div className={styles.infoBox}>
                             <div className={styles.leftColumn}>
                                 <p>
-                                    <span className={styles.label}>연식:</span> 
+                                    <span className={styles.label}>연식</span> 
                                     <span className={styles.value}>{car.modelYear} 년</span>
                                 </p>
                                 <p>
-                                    <span className={styles.label}>주행거리:</span> 
-                                    <span className={styles.value}>{car.distance} KM</span>
+                                    <span className={styles.label}>주행거리</span> 
+                                    <span className={styles.value}>{car.distance} km</span>
                                 </p>
                                 <p>
-                                    <span className={styles.label}>변속기:</span> 
+                                    <span className={styles.label}>변속기</span> 
                                     <span className={styles.value}>{car.transmission}</span>
                                 </p>
                             </div>
                             <div className={styles.rightColumn}>
                                 <p>
-                                    <span className={styles.label}>차량번호:</span> 
+                                    <span className={styles.label}>차량번호</span> 
                                     <span className={styles.value}>{car.carNum}</span>
                                 </p>
                                 <p>
-                                    <span className={styles.label}>배기량:</span> 
+                                    <span className={styles.label}>배기량</span> 
                                     <span className={styles.value}>{car.displacement} cc</span>
                                 </p>
                                 <p>
-                                    <span className={styles.label}>연료:</span> 
+                                    <span className={styles.label}>연료</span> 
                                     <span className={styles.value}>{car.fuel}</span>
                                 </p>
                             </div>
@@ -350,36 +362,35 @@ const CarDetail = () => {
 
 
 
+
                     <div className={styles.rightPanel}>
-                        <div className={styles.infoBoxuser}>
-                            <h2 className={styles.infotext}>가게정보</h2>
-                            <div className={styles.nickNameAndProfileImgFrame}>
-                                <span className={styles.sellerNickName}>{car.user.userName}</span>
-                                <img className={styles.sellerProfileImg} src={'https://img2.joongna.com/common/Profile/Default/profile_f.png'} alt='프로필'/>
-                            </div>
-                            <div>
-                                <div className={styles.trustIndexFrame}>
-                                    <div className={styles.sellerTrustIndex}>
-                                        <p className={styles.sellerTrustIndexLabel}>신뢰지수</p>
-                                        <p className={styles.sellerTrustIndexFigure}>{car.user.reliability}</p>
-                                    </div>
-                                    <p className={styles.maxTrustIndex}>1,000</p>
+                        <h2 className={styles.infotext}>가게정보</h2>
+                        <div className={styles.nickNameAndProfileImgFrame}>
+                            <span className={styles.sellerNickName}>{car.user.userName}</span>
+                            <img className={styles.sellerProfileImg} src={'https://img2.joongna.com/common/Profile/Default/profile_f.png'} alt='프로필'/>
+                        </div>
+                        <div>
+                            <div className={styles.trustIndexFrame}>
+                                <div className={styles.sellerTrustIndex}>
+                                    <p className={styles.sellerTrustIndexLabel}>신뢰지수</p>
+                                    <p className={styles.sellerTrustIndexFigure}>{car.user.reliability}</p>
                                 </div>
-                                <ProgressBar className={styles.trustIndexBar} now={car.user.reliability / 10}/>
+                                <p className={styles.maxTrustIndex}>1,000</p>
                             </div>
-                            <div className={styles.sellListFrame}>
-                                {listArr.map(elem => (
-                                    <Card className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
-                                        <div className={styles.sellInfoCardImgContainer}>
-                                            <Card.Img className={styles.sellInfoCardImg} src={elem.fileList[0].source}/>
-                                        </div>
-                                        <Card.Body className={styles.sellInfoCardBody}>
-                                            <Card.Title className={styles.sellInfoTitle}>{elem.name}</Card.Title>
-                                            <Card.Text className={styles.sellInfoPrice}>{elem.price.toLocaleString()}만원</Card.Text>
-                                        </Card.Body>
-                                    </Card>
-                                ))}
-                            </div>
+                            <ProgressBar className={styles.trustIndexBar} now={car.user.reliability / 10}/>
+                        </div>
+                        <div className={styles.sellListFrame}>
+                            {listArr.map(elem => (
+                                <Card className={styles.sellInfoCard} onClick={() => goDetailPage(elem)}>
+                                    <div className={styles.sellInfoCardImgContainer}>
+                                        <Card.Img className={styles.sellInfoCardImg} src={elem.fileList[0].source}/>
+                                    </div>
+                                    <Card.Body className={styles.sellInfoCardBody}>
+                                        <Card.Title className={styles.sellInfoTitle}>{elem.name}</Card.Title>
+                                        <Card.Text className={styles.sellInfoPrice}>{elem.price.toLocaleString()}만원</Card.Text>
+                                    </Card.Body>
+                                </Card>
+                            ))}
                         </div>
                     </div>
 
@@ -396,14 +407,14 @@ const CarDetail = () => {
                         <div className={styles.insuranceContent}>
                             <img src={insuranceImage} alt="" className={styles.insuranceImage} />
                             <span className={styles.insuranceText}>
-                                보험처리 <span className={styles.redText}>{car.insuranceVictim + car.insuranceInjurer}</span> 회
+                                보험처리 &nbsp;<span className={styles.redText}>{car.insuranceVictim + car.insuranceInjurer}</span> 회
                             </span>
                             <p>
-                                보험사고(피해) 이력 횟수: <span className={styles.redText}>{car.insuranceVictim}</span> 회
-                                <span className={styles.separator}></span>
-                                보험사고(가해) 이력 횟수: <span className={styles.redText}>{car.insuranceInjurer}</span> 회
-                                <span className={styles.separator}></span>
-                                소유자 변경 이력 횟수: <span className={styles.redText}>{car.ownerChange}</span> 회
+                                보험사고(피해) 이력&nbsp;<span className={styles.redText}>{car.insuranceVictim}</span>회
+                                <span className={styles.separator}></span>|<span className={styles.separator}></span>
+                                보험사고(가해) 이력&nbsp;<span className={styles.redText}>{car.insuranceInjurer}</span>회
+                                <span className={styles.separator}></span>|<span className={styles.separator}></span>
+                                소유자 변경 이력&nbsp;<span className={styles.redText}>{car.ownerChange}</span>회
                             </p>
                         </div>
                     </div>
@@ -436,7 +447,7 @@ const CarDetail = () => {
                                         <img src={firstImage} alt={recCar.name} className={styles.recommendationImage} />
                                     )}
                                     <h3 className={styles.recommendationName}>{recCar.name}</h3>
-                                    <p className={styles.recommendationPrice}>{recCar.price === 0 ? '가격협의' : `${recCar.price} 만원`}</p>
+                                    <p className={styles.recommendationPrice}>{recCar.price === 0 ? '가격협의' : `${recCar.price.toLocaleString()} 만원`}</p>
                                 </div>
                             );
                         })}

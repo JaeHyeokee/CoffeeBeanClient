@@ -259,7 +259,7 @@ const ProductDetail = () => {
 
     return (
         <>
-             <Header />
+            <Header />
             <div className={styles.productdetailBody}>
                 <section className={styles.productdetailTop}>
                     <Carousel activeIndex={index} onSelect={handleSelect} interval={null} className={styles.carousel}>
@@ -272,21 +272,20 @@ const ProductDetail = () => {
     
                     <div className={styles.productInfo}>
                         <div className={styles.productHeader}>
-                            <p className={styles.productCategory}>
-                                {product.category1} &gt; {product.category2} &gt; {product.category3}
-                            </p>
-                            <h5 className={styles.productpostinfo}>
-                                {formatRegDate(product.regDate)}·조회 {product.viewCount}·찜 {dipsCount}
-                            </h5>
+                            <p className={product.category2 === "" ? styles.lastproductCategory : styles.productCategory}>{product.category1}</p>
+                            {product.category2 !== "" && <p className={styles.productCategory}>&nbsp; &gt; &nbsp;</p>}
+                            <p className={product.category3 === "" ? styles.lastproductCategory : styles.productCategory}>{product.category2}</p>
+                            {product.category3 !== "" && <p className={styles.productCategory}>&nbsp; &gt; &nbsp;</p>}
+                            <p className={styles.lastproductCategory}>{product.category3}</p>
                         </div>
 
 
                         <div className={styles.productNameContainer}>
                             <h1 className={styles.productName}>{product.name}</h1>
                             <img
+                                className={styles.shareImg}
                                 src={shareImage}
                                 alt="Share"
-                                style={{ width: '20px', height: '20px', cursor: 'pointer', marginLeft: '50px', marginTop: '10px'}}
                                 onClick={handleShareClick}
                             />
                         </div>
@@ -305,12 +304,16 @@ const ProductDetail = () => {
                         )}
                 
                         <h2 className={styles.productPrice}>
-                            {product.price === 0 ? '가격협의' : `${product.price.toLocaleString()} 원`}
+                            {product.price === 0 ? '무료나눔' : `${product.price.toLocaleString()} 원`}
                         </h2>
 
+                        <h5 className={styles.productpostinfo}>
+                            {formatRegDate(product.regDate)}·조회 {product.viewCount}·찜 {dipsCount}
+                        </h5>
+
                         <div className={styles.area}>
-                        <div><img src={one} alt="아이콘" /> 거래희망지역 </div>
-                        <div><img src={place} alt='위치'/> {product.desiredArea}</div>
+                            <div>{product.dealingType === "직거래" && <img src={one} alt="아이콘" />}{product.dealingType === "직거래" && "거래희망지역"} </div>
+                            <div>{product.dealingType === "직거래" && <img src={place} alt='위치'/>}{product.dealingType === "직거래" && '\u00A0' + product.desiredArea}</div>
                         </div>
 
                         <div className={styles.productInfoBottom}>
@@ -318,39 +321,42 @@ const ProductDetail = () => {
                                 <p>제품상태</p>
                                 <p>{product.status}</p>
                             </div>
+                            <div className={styles.productInfoBottomLine}></div>
                             <div className={styles.productInfoBottomDiv}>
                                 <p>거래방식</p>
                                 <p>{product.dealingType}</p>
                             </div>
+                            <div className={styles.productInfoBottomLine}></div>
                             <div className={styles.productInfoBottomDiv}>
                                 <p>판매상태</p>
                                 <p>{product.dealingStatus}</p>
                             </div>
                         </div>
                         
-                        {!isOwner && (
+                        {!isOwner && product.dealingStatus !== "판매완료" && (
                         <div className={styles.chatDipButton}>
                             <button className={styles.dipButton} onClick={dip}>
-                                        {isDipped ? <img src={FullDipHeart} alt='찜취소하기'/> : <img src={DipHeart} alt='찜하기'/>}
+                                {isDipped ? <img src={FullDipHeart} alt='찜 취소하기'/> : <img src={DipHeart} alt='찜하기'/>}
                             </button>
                             <button className={styles.chatButton} onClick={toggleChatSidebar}>
                                 채팅하기
                             </button>
                         </div>
                         )}
+
                         {isOwner && (
                             <div className={styles.changeButton}>
                                 <button className={styles.imageButton} onClick={handleUpdate}>
                                     <img src={updateImage} alt="상품수정" className={styles.updateImage} />
                                     <span className={styles.buttonText}>상품수정</span>
                                 </button>
+                                <div className={styles.productInfoBottomLine}></div>
                                 <button className={styles.imageButton} onClick={deleteProduct}>
                                     <img src={deleteImage} alt="상품삭제" className={styles.deleteImage} />
                                     <span className={styles.buttonText}>상품삭제</span>
                                 </button>
                             </div>
                         )}
-
                     </div>
                 </section>
     
@@ -376,7 +382,7 @@ const ProductDetail = () => {
                         <h2 className={styles.infotext}>가게정보</h2>
                         <div className={styles.nickNameAndProfileImgFrame}>
                             <span className={styles.sellerNickName}>{product.user.userName}</span>
-                            <img className={styles.sellerProfileImg} src={'https://img2.joongna.com/common/Profile/Default/profile_f.png'} alt='프로필'/>
+                            <img className={styles.sellerProfileImg} src={product.user.profileImg} alt='프로필'/>
                         </div>
                         <div>
                             <div className={styles.trustIndexFrame}>
