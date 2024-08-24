@@ -154,14 +154,12 @@ const Chat = ({ chatRoomId, onBack }) => {
     const handleDelete = async (messageId, sendTime) => {
         const currentTime = new Date().getTime();
         const messageTime = new Date(sendTime).getTime();
-
-        const isConfirmed = window.confirm('삭제하시겠습니까?');
-        
-        if (!isConfirmed) {
-            return;
-        }
-        
+    
+        // 1분이 지나지 않은 경우에만 삭제 요청을 보냄
         if ((currentTime - messageTime) <= 60000) {
+            const isConfirmed = window.confirm('삭제하시겠습니까?');
+            if (!isConfirmed) return;
+    
             try {
                 const response = await axios.delete(`http://${SERVER_HOST}/api/messages/${messageId}`);
                 console.log('삭제된 메시지 ID:', messageId); // 삭제된 메시지의 ID
@@ -276,8 +274,10 @@ const Chat = ({ chatRoomId, onBack }) => {
     // console.log("유저유저: ", userInfo.userId)
     // console.log('chatUserName: ', chatUserName);
 
+    const isProductSold = product && product.dealingStatus === '판매완료';
+    
     return (
-        <div className="chat-container">
+        <div className={`chat-container ${isProductSold ? 'sold-out' : ''}`}>
             <h3 className='chatHeader'>
                 <button className="backBtn" onClick={onBack}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
@@ -326,8 +326,7 @@ const Chat = ({ chatRoomId, onBack }) => {
                     </div>
                 </div>
             </div>
-            <div>{chatRoomId.sellerId}</div>
-            <div className={`messages ${isJoin === 1 ? 'gray-background' : ''}`}>
+            <div className={`messages ${isProductSold ? 'sold-out' : ''}`}>
                 {messages.map((message, index) => {
                     const isOwnMessage = userId !== null && message.sender && message.sender.userId === parseInt(userId, 10);
 
@@ -354,7 +353,7 @@ const Chat = ({ chatRoomId, onBack }) => {
                     )}
                 </div>
             </div>
-            <div className="message-input">
+            <div className={`message-input ${isProductSold ? 'sold-out' : ''}`}>
                 <TextareaAutosize
                     className='textarea'
                     type="text"
@@ -364,9 +363,9 @@ const Chat = ({ chatRoomId, onBack }) => {
                     placeholder="메시지를 입력하세요"
                     minRows={1}
                     maxRows={5}
-                    disabled={isJoin === 1}
+                    disabled={isJoin === 1 || isProductSold}
                 />
-                <button className='sendBtn' onClick={sendMessage}>전송</button>
+                <button className='sendBtn' onClick={sendMessage} disabled={isJoin === 1 || isProductSold}>전송</button>
             </div>
         </div>
     );
