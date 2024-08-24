@@ -33,17 +33,25 @@ const Chat = ({ chatRoomId, onBack }) => {
     const userId = userInfo ? userInfo.userId : null;
 
     useEffect(() => {
+        console.log('useEffect 실행됨');
         const fetchServerTime = async () => {
             try {
                 const response = await axios.get(`http://${SERVER_HOST}/api/current-time`);
+                console.log('서버 응답:', response.data); // 서버 응답 로그 추가
+    
                 const serverTime = new Date(response.data).getTime();
                 const clientTime = new Date().getTime();
-                setTimeOffset(serverTime - clientTime);
+                const offset = serverTime - clientTime;
+                setTimeOffset(offset);
+    
+                console.log('서버 시간:', serverTime);
+                console.log('클라이언트 시간:', clientTime);
+                console.log('시간 오프셋:', offset);
             } catch (error) {
                 console.error("서버 시간 가져오는 중 오류 발생:", error);
             }
         };
-
+    
         fetchServerTime();
     }, []);
 
@@ -104,19 +112,7 @@ const Chat = ({ chatRoomId, onBack }) => {
             console.error('STOMP 오류: ' + error);
             setIsConnected(false);
         });
-
-        const markMessageAsRead = async (messageId) => {
-            if (userId && chatRoomId) {
-                try {
-                    const response = await axios.post(`http://${SERVER_HOST}/api/messages/read/${chatRoomId}/${userId}`, { messageId });
-                    console.log('메시지를 읽음으로 표시:', response.data); // 메시지를 읽음으로 표시
-                } catch (error) {
-                    console.error('메시지를 읽음으로 표시하는 중 오류 발생:', error);
-                }
-            }
-        };
-        markMessageAsRead();
-
+        
         return () => {
             if (stompClient.current !== null) {
                 stompClient.current.disconnect(() => {
@@ -136,7 +132,18 @@ const Chat = ({ chatRoomId, onBack }) => {
         }
     };
 
-    const sendMessage = () => {
+    const markMessageAsRead = async (messageId) => {
+        if (userId && chatRoomId) {
+            try {
+                const response = await axios.post(`http://${SERVER_HOST}/api/messages/read/${chatRoomId}/${userId}`, { messageId });
+                console.log('메시지를 읽음으로 표시:', response.data); // 메시지를 읽음으로 표시
+            } catch (error) {
+                console.error('메시지를 읽음으로 표시하는 중 오류 발생:', error);
+            }
+        }
+    };
+
+    const sendMessage = async () => {
         if (isConnected && messageInput.trim() !== '' && userId) {
             const chatMessage = {
                 sender: { userId: parseInt(userId, 10) },
@@ -144,11 +151,20 @@ const Chat = ({ chatRoomId, onBack }) => {
                 messageText: messageInput
             };
             console.log('보내는 메시지:', chatMessage); // 사용자가 전송하는 메시지
+
             stompClient.current.send(
                 `/app/sendMessage/${chatRoomId}`,
                 {},
                 JSON.stringify(chatMessage)
             );
+            
+            // 메시지 전송 후에 읽음 상태 업데이트
+            try {
+                await markMessageAsRead(chatMessage.messageId);
+            } catch (error) {
+                console.error('메시지 전송 후 읽음 처리 중 오류 발생:', error);
+            }
+
             setMessageInput('');
         } else {
             console.error('메시지를 전송할 수 없음, STOMP 클라이언트가 연결되지 않았습니다.');
@@ -194,7 +210,7 @@ const Chat = ({ chatRoomId, onBack }) => {
     };
 
     const formatTime = (dateTime) => {
-        const date = new Date(dateTime + timeOffset);
+        const date = new Date(new Date(dateTime).getTime() + timeOffset);
         const hours = date.getHours();
         const minutes = date.getMinutes();
         const ampm = hours >= 12 ? '오후' : '오전';
@@ -202,7 +218,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
         return `${ampm} ${formattedHours}:${formattedMinutes}`;
     };
-
+    
     useEffect(() => {
         const fetchProduct = async () => {
             if (chatRoomId) {
@@ -331,22 +347,22 @@ const Chat = ({ chatRoomId, onBack }) => {
                 </div>
             </div>
             <div className={`messages ${isProductSold ? 'sold-out' : ''}`}>
-                {messages.map((message, index) => {
-                    const isOwnMessage = userId !== null && message.sender && message.sender.userId === parseInt(userId, 10);
+            {messages.map((message, index) => {
+                const isOwnMessage = userId !== null && message.sender && message.sender.userId === parseInt(userId, 10);
 
-                    return (
-                        <div key={index} className={`message ${isOwnMessage ? 'own-message' : 'other-message'}`}>
-                            <div className='messageText'>{message.messageText}</div>
-                            <div className='messageDetails'>
-                                <div className={`isRead${isOwnMessage ? '1' : '2'}`}>{message.isRead ? '' : '안읽음'}</div>
-                                <div className={`sendTime${isOwnMessage ? '1' : '2'}`}>{formatTime(message.sendTime)}</div>
-                            </div>
-                            {isOwnMessage && (
-                                <button className='messageDelete' onClick={() => handleDelete(message.messageId, message.sendTime)}>x</button>
-                            )}
+                return (
+                    <div key={index} className={`message ${isOwnMessage ? 'own-message' : 'other-message'}`}>
+                        <div className='messageText'>{message.messageText}</div>
+                        <div className='messageDetails'>
+                            <div className={`isRead${isOwnMessage ? '1' : '2'}`}>{message.isRead ? '' : '안읽음'}</div>
+                            <div className={`sendTime${isOwnMessage ? '1' : '2'}`}>{formatTime(message.sendTime)}</div>
                         </div>
-                    );
-                })}
+                        {isOwnMessage && (
+                            <button className='messageDelete' onClick={() => handleDelete(message.messageId, message.sendTime)}>x</button>
+                        )}
+                    </div>
+                );
+            })}
 
                 <div ref={messagesEndRef} />
                 <div className='joinDiv'>
