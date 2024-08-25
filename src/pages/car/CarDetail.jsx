@@ -255,7 +255,7 @@ const CarDetail = () => {
                                 <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
                                     <h3 className={styles.modaltitle}>공유하기</h3>
                                     <img className={styles.modalqrimg}
-                                        src={`https://api.qrserver.com/v1/create-qr-code/?data=http://localhost:3000/carDetail/${id}`}
+                                        src={`https://api.qrserver.com/v1/create-qr-code/?data=http://${SERVER_HOST.slice(0, SERVER_HOST.length - 5)}:3000/carDetail/${id}`}
                                         alt="QR Code"
                                     />
                                     <button onClick={handleCloseModal} className={styles.closeModalButton}>닫기</button>
