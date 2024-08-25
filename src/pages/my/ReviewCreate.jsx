@@ -123,7 +123,7 @@ const ReviewCreate = () => {
             })
             .catch(error => {
                 console.error('Submission failed:', error.response?.data || error.message);
-                window.alert('등록 중 오류가 발생했습니다.');
+                window.alert('상세 후기가 너무 깁니다.');
             });
     };
 

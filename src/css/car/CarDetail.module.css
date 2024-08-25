@@ -1,20 +1,19 @@
 .cardetailBody {
-    width: 1280px;
-    margin: auto;
-    padding: 20px;
+    padding: 0 20%;
 }
 
 
 .cardetailTop {
-    margin-top: 30px;
+    margin-top: 70px;
     display: flex;
-    gap: 20px;
+    width: 100%;
+    gap: 70px;
     margin-bottom: 50px;
 }
 
 /* Carousel 전체 컨테이너의 크기 설정 */
 .carousel {
-    width: 630px; /* 슬라이더의 전체 너비 설정 */
+    width: 600px; /* 슬라이더의 전체 너비 설정 */
   
 }
 
@@ -28,15 +27,14 @@
 
 /* 이미지 크기 조정 */
 .carImage {
-    width: 630px; /* 고정된 가로 크기 */
-    height: 550px; /* 고정된 세로 크기 */
+    width: 100%; /* 고정된 가로 크기 */
+    height: 500px; /* 고정된 세로 크기 */
     border-radius: 10px; /* 둥근 모서리 설정 */
     object-fit: cover; /* 이미지가 부모 요소에 맞게 조정되도록 설정 */
 }
 
 .carHeader {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     width: 100%;
     margin: 0;
@@ -44,38 +42,51 @@
 
 .carCategory {
     text-align: left; /* 텍스트를 왼쪽으로 정렬 */
-    margin-top: 30px;
-    color: #686868;
+    margin: 0 !important;
+    margin-top: 10px !important;
+    color: #B9BAC4;
+    font-size: 13px;
+}
+
+.lastcarCategory {
+    text-align: left; /* 텍스트를 왼쪽으로 정렬 */
+    margin: 0 !important;
+    margin-top: 10px !important;
+    color: black;
+    font-size: 13px;
 }
 
 .carpostinfo {
+    font-size: 13px;
     margin-top: 10px;
-    font-size: 15px;
-    color: rgb(94, 94, 94);
+    color: #B9BAC4;
 }
 
 
 .carInfo {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    justify-content: flex-start; /* 요소를 위쪽에 붙게 함 */
+    justify-content: space-between; /* 요소를 위쪽에 붙게 함 */
     width: 630px;
-    padding: 20px;
-    padding-top: 0;
     /* border: 1px solid #bababa; */
 }
 
 
 .carInfo p:first-of-type {
-    font-size: 16px;
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 .carName {
-    font-size: 28px;
-    font-weight: 600;
-    margin:0;
+    font-size: 25px;
+    margin-bottom: 0;
+    padding-right: 25px;
+}
+
+.shareImg {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin-top: 5px;
 }
 
 .carInfo p:nth-of-type(2) {
@@ -84,17 +95,22 @@
 }
 
 .carPrice {
-    font-size: 40px;
-    font-weight: 700;
-    margin: 20px 0;
+    font-size: 30px;
+    font-weight: 1000;
+}
+
+.area {
+    margin: 10px 0 25px 0;
+    display: flex;
+    color: #787E89;
+    gap: 20px;
+    font-size: 12px;
 }
 
 .carsearch {
     width: 120px;
     border-radius: 30px;
-    color: rgb(46, 46, 46);
     border: 0;
-    margin-bottom: 30px;
     cursor: pointer;
     background-color: rgb(225, 225, 225);
 }
@@ -109,14 +125,13 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 10px;
+    border: 1px solid #EBEBEB;
+    border-radius: 5px;
     width: 100%;
     margin-bottom: 30px;
-    position: relative;
 }
 
-.carInfoBottom::before {
+/* .carInfoBottom::before {
     content: '';
     position: absolute;
     top: 50%;
@@ -125,11 +140,22 @@
     width: 2px;
     height: 80%;
     background-color: #ccc;
+} */
+
+.carInfoBottomLine {
+    width: 1px;
+    height: 70%;
+    background-color: #EBEBEB;
 }
 
-.carInfoBottom div {
+.carInfoBottomDiv {
     text-align: center;
     width: 45%;
+    p {
+        font-size: 12px;
+        color: #B9BAC4;
+        margin-bottom: 0 !important;
+    }
 }
 
 .carInfoBottomText {
@@ -143,30 +169,23 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
+    padding-top: 80px;
 }
 
-.chatButton,
-.dipButton {
-    width: 48%;
+.chatButton {
+    width: 48%; 
     height: 50px;
     border: 1px solid black;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.chatButton {
-    background-color: white;
-}
-
-.dipButton {
     background-color: black;
     color: white;
 }
 
-
-
-
-
+.dipButton {
+    background-color: white;
+    border-style: none;
+}
 
 
 
@@ -177,7 +196,8 @@
     justify-content: center; /* 버튼들이 중앙에 배치되도록 설정 */
     gap: 100px; /* 버튼들 사이의 간격 */
     width: 100%;
-    border: 2px solid #ccc;
+    background-color: #F7F9FA;
+    align-items: center;
     padding: 20px;
     border-radius: 10px;
 }
@@ -198,8 +218,9 @@
 }
 
 .buttonText {
-    font-size: 15px;
-    margin-top: 5px;
+    font-size: 13px;
+    margin-top: 10px;
+    font-weight: bold;
 }
 
 
@@ -213,24 +234,23 @@
 
 
 .cardetailInfo {
-    margin: auto;
-    padding: 20px;
     display: flex;
-    gap: 20px;
-}
-
-.leftPanel, .rightPanel {
-    flex: 1;
+    width: 100%;
+    justify-content: space-between;
+    gap: 70px;
+    margin-top: 100px;
 }
 
 .leftPanel{
-    width:580px;
+    box-sizing: border-box;
+    width: 60%;
 }
 
 .infoBox {
     display: flex;
-    width: 640px;
-    margin-bottom: 10px;
+    justify-content: space-between;
+    width: 100%;
+    gap: 70px;
 }
 
 .leftColumn, .rightColumn {
@@ -239,7 +259,7 @@
 
 
 .infotext{
-    width: 580px;
+    width: 100%;
     font-weight: bold;
     font-size: 24px;
     padding-bottom: 20px;
@@ -257,18 +277,18 @@
 .infoBox p {
     display: flex;
     justify-content: space-between;
-    padding: 5px 0;
+    margin: 20px 0;
 }
 
 .infoBox .label {
     /* font-weight: bold; */
     font-size: 18px;
-    
+    font-weight: bold;
 }
 
 .infoBox .value {
     font-size: 16px;
-    margin-right: 50px;
+    text-align: end;
     font-weight: 550;
     color: #757575;
 }
@@ -283,22 +303,14 @@
 
 
 /* 가게정보 */
-.infoBoxuser {
-    background-color: #ffffff; /* 배경색 */
-  
-}
-
-.infoBoxuser h2 {
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ddd; /* 하단 줄 추가 */
-    padding-bottom: 20px;
-    font-size: 24px; /* 폰트 크기 조정 */
+.rightPanel {
+    width: 40%;
 }
 
 .nickNameAndProfileImgFrame {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 25px;
+    margin: 25px 0 25px 0;
 }
 
 .sellerNickName {
@@ -341,7 +353,7 @@
 
 .trustIndexBar {
     width: 100%;
-    height: 10px;
+    height: 10px !important;
     margin-bottom: 15px;
     border-radius: 10px !important;
     transition: width 0.5s ease-in-out;
@@ -354,14 +366,14 @@
 
 .sellListFrame {
     display: flex;
+    justify-content: flex-start;
     margin-top: 20px;
-    gap: 20px;
+    gap: 5%;
     flex-wrap: wrap;
 }
 
 .sellInfoCard {
-    padding: 5px;
-    width: 31%;
+    width: 30%;
     height: 250px !important;
     border: 0 !important;
     cursor: pointer;
@@ -373,7 +385,7 @@
 
 .sellInfoCardImgContainer {
     overflow: hidden;
-    height: 65%;
+    height: 55%;
     border-radius: 5px;
 }
 
@@ -384,18 +396,18 @@
 
 .sellInfoCardBody {
     padding: 15px 5px !important;
-    height: 35%;
+    height: 45%;
 }
 
 .sellInfoTitle {
     margin-top: 5px;
     margin-bottom: 20px;
     display: -webkit-box;          /* Flexbox를 사용하여 상자 모델을 정의합니다. */
-    -webkit-line-clamp: 1;         /* 표시할 줄 수를 2로 제한합니다. */
+    -webkit-line-clamp: 2;         /* 표시할 줄 수를 2로 제한합니다. */
     -webkit-box-orient: vertical;  /* 상자의 방향을 수직으로 설정합니다. */
     overflow: hidden;              /* 넘치는 내용은 숨깁니다. */
     text-overflow: ellipsis;       /* 넘치는 텍스트를 생략 기호로 표시합니다. */
-    height: 18px;
+    height: 35px;
     font-size: 15px !important;
     color: #757575;
 }
@@ -415,10 +427,7 @@
 
 .insurance {
     width: 100%;
-    margin: 20px 0;
-    padding: 20px;
-
-
+    margin: 70px 0;
     border-radius: 10px; /* 모서리 둥글게 */
 
 }
@@ -428,34 +437,36 @@
 }
 
 .infotextinsurance {
-    margin-bottom: 20px;
+    margin-bottom: 8px;
     font-size: 24px;
     font-weight: bold;
     border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 
 .insuranceContent {
     display: flex;
+    justify-content: space-between;
     align-items: center;
 }
 
 .insuranceImage {
-    width: 60px; /* 이미지 크기 */
-    height: 60px; 
-    padding: 10px;
+    width: 50px; /* 이미지 크기 */
+    height: 50px; 
+    margin: 20px 0;
     
 }
 
 .insuranceText {
     font-size: 22px;
+    margin-left: 10px;
     margin-right: 30px; /* 텍스트 사이 여백 */
     font-weight: bold;
-    margin-right: 330px;
 }
 
-.insuranceContent p {
+.insuranceInfo {
     font-size: 16px;
+    font-weight: bold;
     margin: 0;
     line-height: 1.5;
     display: flex;
@@ -463,7 +474,7 @@
 }
 
 .redText {
-    color: red;
+    color: #0DCC5A;
 }
 
 .separator {
@@ -483,8 +494,7 @@
 }
 
 .cardetailBottom {
-    padding: 20px;
-    margin-top: 20px;
+    margin: 70px 0;
 }
 
 .cardetailBottom .infoBox {
@@ -493,7 +503,7 @@
 
 .links {
     display: flex;
-    gap: 20px; /* 각 링크 사이의 간격을 설정 */
+    gap: 50px; /* 각 링크 사이의 간격을 설정 */
     margin-top: 20px;
     margin-bottom: 20px; /* 링크와 introduce 섹션 사이의 간격을 설정 */
     padding-left: 20px;
@@ -562,7 +572,6 @@
     font-size: 24px;
     padding-bottom: 20px;
     border-bottom: 1px solid #ddd;
-    margin-left: 20px;
 }
 
 
@@ -571,14 +580,14 @@
 
 
 .carRecommend {
-    margin: 20px 0;
+    margin: 70px 0;
 }
 
 .recommendationContainer {
-    padding: 20px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
+    padding: 15px 0;
     justify-content: space-between;
 }
 
@@ -586,10 +595,9 @@
     flex: 1 1 calc(20% - 20px);
     max-width: calc(20% - 20px);
     background-color: #fff;
-    border-radius: 8px;
+    border-radius: 5px;
     overflow: hidden;
     text-align: center;
-    padding: 10px;
     box-sizing: border-box;
     transition: transform 0.3s ease;
 }
@@ -603,6 +611,7 @@
     height: 160px;
     border-bottom: 1px solid #ddd;
     margin-bottom: 10px;
+    border-radius: 5px;
     transition: transform 0.3s ease;
 }
 
@@ -620,8 +629,8 @@
 
 .recommendationPrice {
     margin: 0;
-    font-size: 0.875rem;
-    color: red; 
+    font-size: 1.1rem;
+    text-align: start;
     font-weight: bold;
 }
 
@@ -674,9 +683,9 @@
   }
 
   .carInfoBottomDiv p:nth-of-type(2) {
-    font-size: 18px; /* 원하는 크기로 설정 */
+    font-size: 13px; /* 원하는 크기로 설정 */
     font-weight: bold;
-    color: #979797;
+    color: black;
 }
 
 
@@ -684,7 +693,9 @@
 
 .carNameContainer {
     display: flex;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 10px 0;
 }
 
 .modalOverlay {

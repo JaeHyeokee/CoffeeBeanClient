@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../css/home.css';
+import Style from '../css/home.module.css';
 import Header from './components/Header.jsx';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -100,25 +100,25 @@ const Home = () => {
     return (
         <>
             <Header />
-            <div className='home-body'>
+            <div className={Style.homeBody}>
                 {/* 슬라이더 섹션 */}
-                <section className='slider-section'>
+                <section className={Style.sliderSection}>
                     <Slider {...sliderSettings}>
-                        <div className="slider-item">
+                        <div className={Style.sliderItem}>
                             <img src={main1} alt="slider-img-1" />
                         </div>
-                        <div className="slider-item">
+                        <div className={Style.sliderItem}>
                             <a href="https://thecheat.co.kr/rb/?mod=_search" target="_blank" rel="noopener noreferrer">
                                 <img src={main2} alt="slider-img-2" />
                             </a>
                         </div>
-                        <div className="slider-item">
+                        <div className={Style.sliderItem}>
                             <img src={main3} alt="slider-img-3" />
                         </div>
-                        <div className="slider-item">
+                        <div className={Style.sliderItem}>
                             <img src={main4} alt="slider-img-4" />
                         </div>
-                        <div className="slider-item">
+                        <div className={Style.sliderItem}>
                             <img src={main5} alt="slider-img-5" />
                         </div>
                     </Slider>
@@ -126,8 +126,8 @@ const Home = () => {
 
                 {/* 첫 번째 게시글 타이틀 출력 */}
                 {firstPost && (
-                    <section className="first-post-section">
-                        <Link to={`/PostDetail/${firstPost.postId}`} className="first-post-title">
+                    <section className={Style.firstPostSection}>
+                        <Link to={`/PostDetail/${firstPost.postId}`} className={Style.firstPostTitle}>
                             {firstPost.title}
                         </Link>
                     </section>
@@ -137,27 +137,14 @@ const Home = () => {
 
                 {/* 인기 상품 */}
                 <section>
-                    <div className="product-list">
-                        <h2 className="maintext">실시간 인기 상품</h2>
-                        <div className="product-items">
-                            {topProducts.slice(0, 5).map(product => (
-                                <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
+                    <div className={Style.productList}>
+                        <h2 className={Style.maintext}>실시간 인기 상품</h2>
+                        <div className={Style.productItems}>
+                            {topProducts.slice(0, 10).map(product => (
+                                <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className={Style.productItem}>
                                     <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
-                                    <p className="price">{product.price.toLocaleString()}원</p>
-                                    <p>
-                                        {product.desiredArea ? product.desiredArea + ' | ' : ''}
-                                        {formatRegDate(product.regDate)}
-                                    </p>
-                                </Link>
-                            ))}
-                        </div>
-                        <div className="product-items">
-                            {topProducts.slice(5, 10).map(product => (
-                                <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
-                                    <img src={product.fileList[0].source} alt={product.name} />
-                                    <h4>{product.name}</h4>
-                                    <p className="price">{product.price.toLocaleString()}원</p>
+                                    <p className={Style.price}>{product.price.toLocaleString()}원</p>
                                     <p>
                                         {product.desiredArea ? product.desiredArea + ' | ' : ''}
                                         {formatRegDate(product.regDate)}
@@ -170,27 +157,14 @@ const Home = () => {
 
                 {/* 최근 등록 상품 */}
                 <section>
-                    <div className="product-list">
-                        <h2 className='maintext2'>방금 등록된 상품</h2>
-                        <div className="product-items">
-                            {recentProducts.slice(0, 5).map(product => (
-                                <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
+                    <div className={Style.productList}>
+                        <h2 className={Style.maintext}>방금 등록된 상품</h2>
+                        <div className={Style.productItems}>
+                            {recentProducts.slice(0, 10).map(product => (
+                                <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className={Style.productItem}>
                                     <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
-                                    <p className="price">{product.price.toLocaleString()}원</p>
-                                    <p>
-                                        {product.desiredArea ? product.desiredArea + ' | ' : ''}
-                                        {formatRegDate(product.regDate)}
-                                    </p>
-                                </Link>
-                            ))}
-                        </div>
-                        <div className="product-items">
-                            {recentProducts.slice(5, 10).map(product => (
-                                <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className="product-item">
-                                    <img src={product.fileList[0].source} alt={product.name} />
-                                    <h4>{product.name}</h4>
-                                    <p className="price">{product.price.toLocaleString()}원</p>
+                                    <p className={Style.price}>{product.price.toLocaleString()}원</p>
                                     <p>
                                         {product.desiredArea ? product.desiredArea + ' | ' : ''}
                                         {formatRegDate(product.regDate)}
@@ -203,32 +177,17 @@ const Home = () => {
 
                 {/* 최근 등록 중고차 */}
                 <section>
-                    <div className="product-list">
-                        <h2 className='maintext2'>방금 등록된 중고차</h2>
-                        <div className="product-items">
-                            {topCars.slice(0, 5).map(car => (
-                                <Link key={car.carId} to={`/CarDetail/${car.carId}`} className="product-item">
+                    <div className={Style.productList}>
+                        <h2 className={Style.maintext}>방금 등록된 중고차</h2>
+                        <div className={Style.productItems}>
+                            {topCars.slice(0, 10).map(car => (
+                                <Link key={car.carId} to={`/CarDetail/${car.carId}`} className={Style.productItem}>
                                     <img src={car.fileList[0].source} alt={car.name} />
                                     <h4>{car.name}</h4>
-                                    <p className="price">
+                                    <p className={Style.price}>
                                         {car.price === 0 ? "가격협의" : `${car.price.toLocaleString()} 만원`}
                                     </p>
 
-                                    <p>
-                                        {car.location ? car.location + ' | ' : ''}
-                                        {formatRegDate(car.regDate)}
-                                    </p>
-                                </Link>
-                            ))}
-                        </div>
-                        <div className="product-items">
-                            {topCars.slice(5, 10).map(car => (
-                                <Link key={car.carId} to={`/CarDetail/${car.carId}`} className="product-item">
-                                    <img src={car.fileList[0].source} alt={car.name} />
-                                    <h4>{car.name}</h4>
-                                    <p className="price">
-                                        {car.price === 0 ? "가격협의" : `${car.price.toLocaleString()} 만원`}
-                                    </p>
                                     <p>
                                         {car.location ? car.location + ' | ' : ''}
                                         {formatRegDate(car.regDate)}

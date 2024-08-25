@@ -1,0 +1,115 @@
+.homeBody {
+  padding: 0 20%;
+}
+
+.productList {
+  width: 100%;
+}
+
+.productItems {
+  display: flex;
+  justify-content:flex-start;
+  gap: 2.5%;
+  flex-wrap: wrap;
+}
+
+.productItem {
+  width: 18%;
+  text-align: left;
+  /* padding: 10px; */
+  margin-bottom: 30px;
+  transition: transform 0.2s;
+  text-decoration: none;
+  color: black;
+}
+
+.productItem:hover {
+  transform: translateY(-5px);
+}
+
+.productItem img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border-radius: 10px;
+}
+
+.productItem h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  margin-top: 0;
+  /* font-weight: bold; */
+  display: -webkit-box;          /* Flexbox를 사용하여 상자 모델을 정의합니다. */
+  -webkit-line-clamp: 2;         /* 표시할 줄 수를 2로 제한합니다. */
+  -webkit-box-orient: vertical;  /* 상자의 방향을 수직으로 설정합니다. */
+  overflow: hidden;              /* 넘치는 내용은 숨깁니다. */
+  text-overflow: ellipsis;       /* 넘치는 텍스트를 생략 기호로 표시합니다. */
+  height: 40px;
+}
+
+.productItem .price {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: black;
+}
+
+.productItem p {
+  font-size: 15px;
+  color: #555;
+  margin: 0;
+}
+
+.maintext {
+  margin-top: 80px;
+  margin-bottom: 50px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* 슬라이더 섹션 */
+.sliderSection {
+  margin: 40px 0 100px 0;
+}
+
+.sliderItem {
+  margin: 0 10px 0 10px;
+  overflow: hidden;
+}
+
+.sliderItem img {
+  width: 365px;
+  height: 370px;
+  object-fit: cover;
+  border-radius: 7px;
+}
+
+
+
+.firstPostSection {
+  margin: 20px 0;      /* 위아래 margin을 20px으로, 좌우는 0으로 설정하여 가운데 정렬 */
+  text-align: center;
+  width: 100%;            /* 부모 요소의 가로를 100% 차지 */
+  border-radius: 5px;
+  /* border: 2px solid rgb(0, 0, 0); */
+  background-color: #0DCC5A;
+}
+
+.firstPostTitle {
+  display: inline-block;  /* 제목을 인라인 블록으로 설정 */
+  padding: 15px 20px;
+  /* border: 2px solid #000; */
+  background-color: #0DCC5A;
+  font-size: 25px;        /* 글자 크기를 50px로 설정 */
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+  word-wrap: break-word;  /* 길어지면 단어 단위로 줄바꿈 */
+  white-space: normal;    /* 줄바꿈을 허용 */
+  text-align: center;     /* 텍스트를 가운데 정렬 */
+  max-width: 100%;        /* 글자 영역도 최대 100%까지 차지하도록 설정 */
+  box-sizing: border-box; /* 패딩과 테두리 포함하여 크기 계산 */
+  transition: background-color 0.3s ease;
+}
+

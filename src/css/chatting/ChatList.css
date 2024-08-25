@@ -62,7 +62,7 @@ li {
 }
 
 .userNameAndMessage {
-    width: 70%;
+    width: 75%;
     flex: 1; /* 가로 방향에서 가능한 공간을 차지 */
     display: flex;
     flex-direction: column;
@@ -81,7 +81,22 @@ li {
 .userNames {
     font-size: 15px;
 }
-
+.unreadMessage {
+    width: 5%;
+    margin-left: 10px; /* 여유 공간 추가 */
+}
+.circle {
+    width: 18px; /* 동그라미의 너비 */
+    height: 18px; /* 동그라미의 높이 */
+    border-radius: 50%; /* 동그라미 모양으로 만들기 */
+    background-color: red; /* 배경색 */
+    color: white; /* 글자 색상 */
+    display: flex; /* 중앙 정렬을 위해 flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    font-size: 14px; /* 숫자 크기 조정 */
+    font-weight: bold;
+}
 .lastSendTime {
     font-size: 11px;
     color: dimgray;
@@ -94,37 +109,19 @@ li {
     color: dimgray;
 }
 
-.unreadMessage {
-    width: 5%; /* 읽지 않은 메시지의 너비 */
-    margin-left: 10px; /* 여유 공간 추가 */
-}
-
-.circle {
-    width: 24px; /* 동그라미의 너비 */
-    height: 24px; /* 동그라미의 높이 */
-    border-radius: 50%; /* 동그라미 모양으로 만들기 */
-    background-color: red; /* 배경색 */
-    color: white; /* 글자 색상 */
-    display: flex; /* 중앙 정렬을 위해 flexbox 사용 */
-    align-items: center; /* 세로 중앙 정렬 */
-    justify-content: center; /* 가로 중앙 정렬 */
-    font-size: 15px; /* 숫자 크기 조정 */
-    font-weight: bold;
-}
-
 .leaveRoom {
-    /* height: 100%; */
     width: 11%;
     display: flex;
     align-items: center;
-    justify-content: center; /* 가운데 정렬 */
-    flex-shrink: 0; /* 기본 크기 유지 */
-    margin-left: 10px; /* 왼쪽 여백 추가 (옵션) */
+    justify-content: center;
+    flex-shrink: 0;
+    margin-left: 10px;
+    height: 100%; /* 높이를 100%로 설정하여 크기 일치 */
 }
 
 .leaveButton {
     width: 100%;
-    height: 100%;
+    height: 100%; /* 높이를 100%로 설정하여 leaveRoom과 일치 */
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -134,6 +131,14 @@ li {
     align-items: center;
     justify-content: center;
     text-align: center;
+}
+
+.chatRoomIcon {
+    width: 100%; /* leaveRoom과 동일한 너비 */
+    height: 100%; /* leaveRoom과 동일한 높이 */
+    display: flex; /* 중앙 정렬을 위해 flexbox 사용 */
+    align-items: center; /* 세로 중앙 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
 }
 
 .list {
@@ -152,4 +157,14 @@ li {
     text-align: center;
     align-content: center;
     margin-top: 30px;
+}
+.chatRoom {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.chatRoomList {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
 }

@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 const Chat = ({ chatRoomId, onBack }) => {
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
+    const [deleteStatus, setDeleteStatus] = useState('');
     const [isConnected, setIsConnected] = useState(false);
     const [product, setProduct] = useState(null);
     const [isJoin, setIsJoin] = useState(null);
@@ -21,13 +22,12 @@ const Chat = ({ chatRoomId, onBack }) => {
         sellerUserName: '',
         buyerUserName: '',
         sellerReliability: null,
-        buyerReliability: null
+        buyerReliability: null,
+        unreadMessage: null
     });    
     const stompClient = useRef(null);
     const messagesEndRef = useRef(null);
     const navigate = useNavigate();
-
-
 
     const { userInfo } = useContext(LoginContext);
     const userId = userInfo ? userInfo.userId : null;
@@ -37,7 +37,7 @@ const Chat = ({ chatRoomId, onBack }) => {
             if (userId && chatRoomId) {
                 try {
                     const response = await axios.get(`http://${SERVER_HOST}/chatRooms/leave/${chatRoomId}/${userId}`);
-                    console.log("isJoin 값 가져오기:", response.data); // isJoin 값을 가져옴
+                    console.log("isJoin 값 가져오기:", response.data);
                     setIsJoin(response.data);
                 } catch (error) {
                     console.error("isJoin 값을 가져오는 중 오류 발생:", error);
@@ -54,7 +54,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         const fetchMessages = async () => {
             try {
                 const response = await axios.get(`http://${SERVER_HOST}/api/messages/${chatRoomId}`);
-                console.log('메시지 목록 가져오기:', response.data); // 메시지 목록을 가져옴
+                console.log('메시지 목록 가져오기:', response.data);
                 if (Array.isArray(response.data)) {
                     setMessages(response.data);
                 } else {
@@ -65,7 +65,6 @@ const Chat = ({ chatRoomId, onBack }) => {
                 setMessages([]);
             }
         };
-
         fetchMessages();
 
         const socket = new SockJS(`http://${SERVER_HOST}/ws`);
@@ -76,27 +75,27 @@ const Chat = ({ chatRoomId, onBack }) => {
             setIsConnected(true);
 
             stompClient.current.subscribe(`/topic/public/${chatRoomId}`, (message) => {
-                // 구독경로 --> /topic/public/${chatRoomId}
-                console.log('실시간 message: ', JSON.parse(message.body));  // 메세지가 올 때 마다 console
-                showMessage(JSON.parse(message.body));  // 받은 메세지 화면에 표시
+                const receivedMessage = JSON.parse(message.body);
+                console.log('실시간 message: ', receivedMessage);
+
+                // 메시지 중복 방지 처리
+                setMessages(prevMessages => {
+                    if (!prevMessages.find(msg => msg.messageId === receivedMessage.messageId)) {
+                        return [...prevMessages, receivedMessage];
+                    }
+                    return prevMessages;
+                });
+
+                // 상대방의 메시지일 경우 읽음 상태 업데이트
+                if (receivedMessage.sender.userId !== userId) {
+                    markMessageAsRead(receivedMessage.messageId);
+                }
             });
         }, (error) => {
             console.error('STOMP 오류: ' + error);
             setIsConnected(false);
         });
-
-        const markMessagesAsRead = async () => {
-            if (userId && chatRoomId) {
-                try {
-                    const response = await axios.post(`http://${SERVER_HOST}/api/messages/read/${chatRoomId}/${userId}`);
-                    console.log('메시지를 읽음으로 표시:', response.data); // 메시지를 읽음으로 표시
-                } catch (error) {
-                    console.error('메시지를 읽음으로 표시하는 중 오류 발생:', error);
-                }
-            }
-        };
-        markMessagesAsRead();
-
+        
         return () => {
             if (stompClient.current !== null) {
                 stompClient.current.disconnect(() => {
@@ -107,29 +106,35 @@ const Chat = ({ chatRoomId, onBack }) => {
         };
     }, [chatRoomId, userId]);
 
-    const showMessage = (message) => {
-        if (message) {
-            console.log('받은 메시지:', message); // STOMP를 통해 받은 메시지
-            console.log('보낸 사람 ID:', message.sender ? message.sender.userId : 'No Sender ID');
-            setMessages(prevMessages => [...prevMessages, message]);
-        } else {
-            console.error('유효하지 않은 메시지:', message);
+    const markMessageAsRead = async (messageId) => {
+        if (userId && chatRoomId) {
+            try {
+                await axios.post(`http://${SERVER_HOST}/api/messages/read/${chatRoomId}/${userId}`, { messageId });
+                setMessages(prevMessages => prevMessages.map(msg => 
+                    msg.messageId === messageId ? { ...msg, isRead: true } : msg
+                ));
+            } catch (error) {
+                console.error('메시지를 읽음으로 표시하는 중 오류 발생:', error);
+            }
         }
     };
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
         if (isConnected && messageInput.trim() !== '' && userId) {
             const chatMessage = {
                 sender: { userId: parseInt(userId, 10) },
                 chatRoomId: chatRoomId,
-                messageText: messageInput
+                messageText: messageInput,
+                isRead: false
             };
-            console.log('보내는 메시지:', chatMessage); // 사용자가 전송하는 메시지
+            console.log('보내는 메시지:', chatMessage);
+
             stompClient.current.send(
                 `/app/sendMessage/${chatRoomId}`,
                 {},
                 JSON.stringify(chatMessage)
             );
+            
             setMessageInput('');
         } else {
             console.error('메시지를 전송할 수 없음, STOMP 클라이언트가 연결되지 않았습니다.');
@@ -150,42 +155,44 @@ const Chat = ({ chatRoomId, onBack }) => {
     };
 
     const handleDelete = async (messageId, sendTime) => {
-        const currentTime = new Date().getTime();
-        const messageTime = new Date(sendTime).getTime();
-
-        const isConfirmed = window.confirm('삭제하시겠습니까?');
-        
-        if (!isConfirmed) {
-            return;
+        if (!window.confirm("정말로 이 메시지를 삭제하시겠습니까?")) {
+            return; // 사용자가 삭제를 취소한 경우
         }
-        
-        if ((currentTime - messageTime) <= 60000) {
-            try {
-                const response = await axios.delete(`http://${SERVER_HOST}/api/messages/${messageId}`);
-                console.log('삭제된 메시지 ID:', messageId); // 삭제된 메시지의 ID
-                if (response.status === 200) {
-                    setMessages(prevMessages => prevMessages.filter(message => message.messageId !== messageId));
-                    window.alert("메시지가 삭제되었습니다.");
-                }
-            } catch (error) {
-                console.error('메시지 삭제 중 오류 발생:', error);
-            }
-        } else {
-            window.alert('메시지를 작성한 지 1분 이상 경과하였습니다.');
+    
+        try {
+            // Ensure sendTime is in ISO format
+            const formattedSendTime = new Date(sendTime).toISOString();
+    
+            // Send delete request to the server
+            await axios.delete(`http://${SERVER_HOST}/api/${messageId}`, {
+                params: { sendTime: formattedSendTime }
+            });
+    
+            // Update the messages state to remove the deleted message
+            setMessages(prevMessages => 
+                prevMessages.filter(message => message.messageId !== messageId)
+            );
+    
+            // Update status message for successful deletion
+            alert('메시지가 성공적으로 삭제되었습니다.');
+        } catch (error) {
+            // Alert for failed deletion
+            alert('메시지 작성 5분이 경과하였습니다.');
+            console.error('메시지를 삭제하는 중 오류 발생:', error.response ? error.response.data : error.message);
         }
     };
 
     const formatTime = (dateTime) => {
         const date = new Date(dateTime);
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
+        const localDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000); // 한국 시간으로 변환
+        const hours = localDate.getHours();
+        const minutes = localDate.getMinutes();
         const ampm = hours >= 12 ? '오후' : '오전';
         const formattedHours = hours % 12 || 12;
         const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
         return `${ampm} ${formattedHours}:${formattedMinutes}`;
     };
-
-
+    
     useEffect(() => {
         const fetchProduct = async () => {
             if (chatRoomId) {
@@ -227,21 +234,20 @@ const Chat = ({ chatRoomId, onBack }) => {
 
     useEffect(() => {
         if (chatRoomId) {
-            axios.get(`http://${SERVER_HOST}/chatRooms/${chatRoomId}`)
+            const response = axios.get(`http://${SERVER_HOST}/chatRooms/${chatRoomId}`)
                 .then(response => {
-                    const { chatRoom, sellerId, sellerUserName, buyerUserName, sellerReliability, buyerReliability } = response.data;
+                    const { chatRoom, sellerId, buyerId, sellerUserName, buyerUserName, sellerReliability, buyerReliability, unreadMessage } = response.data;
                     setChatRoomDetail({
                         chatRoom: chatRoom,
                         sellerId: sellerId,
+                        buyerId: buyerId,
                         sellerUserName: sellerUserName,
                         buyerUserName: buyerUserName,
                         sellerReliability: sellerReliability,
-                        buyerReliability: buyerReliability
+                        buyerReliability: buyerReliability,
+                        unreadMessage: unreadMessage
                     });
                     console.log('채팅방 정보: ', response.data);
-
-                    // console.log('Buyer ID:', sellerId);
-                    // console.log('Seller ID:', sellerId);
                 })
                 .catch(error => {
                     console.error("Error fetching chat room details:", error);
@@ -249,20 +255,23 @@ const Chat = ({ chatRoomId, onBack }) => {
         }
     }, [chatRoomId]);
 
-    // const handleImageClick = () => {
-    //     navigate(`/ProductDetail/${product.productId}`, null);
-    // };
-
-    // console.log('유저유저 :', userInfo.userId);
-
     const firstProductImage = product && product.fileList && product.fileList.length > 0 ? product.fileList[0].source : null;
 
     if (userId === null) {
         return <div>사용자 정보가 없습니다.</div>;
     }
 
+    let chatUserName = "";
+    if (userInfo.userId === chatRoomDetail.sellerId) {
+        chatUserName = chatRoomDetail.buyerUserName;
+    } else if (userInfo.userId === chatRoomDetail.buyerId) {
+        chatUserName = chatRoomDetail.sellerUserName;
+    }
+
+    const isProductSold = product && product.dealingStatus === '판매완료';
+    
     return (
-        <div className="chat-container">
+        <div className={`chat-container ${isProductSold ? 'sold-out' : ''}`}>
             <h3 className='chatHeader'>
                 <button className="backBtn" onClick={onBack}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none">
@@ -270,7 +279,7 @@ const Chat = ({ chatRoomId, onBack }) => {
                     </svg>
                 </button>
                 <div className='header'>
-                    <div>{chatRoomDetail.sellerUserName}</div> &nbsp;
+                    <div>{chatUserName}</div> &nbsp;
                     <div className='reliability'>{chatRoomDetail.sellerReliability}점</div>
                 </div>
             </h3>
@@ -292,7 +301,7 @@ const Chat = ({ chatRoomId, onBack }) => {
                 </div>
                 <div className='status'>
                     <div className='status1'>
-                        {userId == chatRoomDetail.sellerId && (
+                        {userId === chatRoomDetail.sellerId && (
                         <select onChange={(e) => proStatus(e.target.value)} defaultValue=""
                         value={product ? product.dealingStatus : ''}
                         disabled={product && product.dealingStatus === "판매완료"}>
@@ -311,24 +320,23 @@ const Chat = ({ chatRoomId, onBack }) => {
                     </div>
                 </div>
             </div>
-            <div>{chatRoomId.sellerId}</div>
-            <div className={`messages ${isJoin === 1 ? 'gray-background' : ''}`}>
-                {messages.map((message, index) => {
-                    const isOwnMessage = userId !== null && message.sender && message.sender.userId === parseInt(userId, 10);
+            <div className={`messages ${isProductSold ? 'sold-out' : ''}`}>
+            {messages.map((message, index) => {
+                const isOwnMessage = userId !== null && message.sender && message.sender.userId === parseInt(userId, 10);
 
-                    return (
-                        <div key={index} className={`message ${isOwnMessage ? 'own-message' : 'other-message'}`}>
-                            <div className='messageText'>{message.messageText}</div>
-                            <div className='messageDetails'>
-                                <div className={`isRead${isOwnMessage ? '1' : '2'}`}>{message.isRead ? '' : '안읽음'}</div>
-                                <div className={`sendTime${isOwnMessage ? '1' : '2'}`}>{formatTime(message.sendTime)}</div>
-                            </div>
-                            {isOwnMessage && (
-                                <button className='messageDelete' onClick={() => handleDelete(message.messageId, message.sendTime)}>x</button>
-                            )}
+                return (
+                    <div key={index} className={`message ${isOwnMessage ? 'own-message' : 'other-message'}`}>
+                        <div className='messageText'>{message.messageText}</div>
+                        <div className='messageDetails'>
+                            <div className={`isRead${isOwnMessage ? '1' : '2'}`}>{message.isRead ? '' : '안읽음'}</div>
+                            <div className={`sendTime${isOwnMessage ? '1' : '2'}`}>{formatTime(message.sendTime)}</div>
                         </div>
-                    );
-                })}
+                        {isOwnMessage && (
+                            <button className='messageDelete' onClick={() => handleDelete(message.messageId, message.sendTime)}>x</button>
+                        )}
+                    </div>
+                );
+            })}
 
                 <div ref={messagesEndRef} />
                 <div className='joinDiv'>
@@ -338,8 +346,16 @@ const Chat = ({ chatRoomId, onBack }) => {
                         </div>
                     )}
                 </div>
+                <div className='joinDiv'>
+                {isProductSold && (
+                    <div className="joinMessage1">
+                        판매완료된 상품입니다.
+                    </div>
+                )}
+                </div>
             </div>
-            <div className="message-input">
+            
+            <div>
                 <TextareaAutosize
                     className='textarea'
                     type="text"
@@ -351,7 +367,7 @@ const Chat = ({ chatRoomId, onBack }) => {
                     maxRows={5}
                     disabled={isJoin === 1}
                 />
-                <button className='sendBtn' onClick={sendMessage}>전송</button>
+                <button className='sendBtn' onClick={sendMessage} disabled={isJoin === 1}>전송</button>
             </div>
         </div>
     );
