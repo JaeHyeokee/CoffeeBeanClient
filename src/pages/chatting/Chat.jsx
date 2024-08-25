@@ -75,7 +75,6 @@ const Chat = ({ chatRoomId, onBack }) => {
             setIsConnected(true);
 
             stompClient.current.subscribe(`/topic/public/${chatRoomId}`, (message) => {
-                // 구독경로 --> /topic/public/${chatRoomId}
                 const receivedMessage = JSON.parse(message.body);
                 console.log('실시간 message: ', receivedMessage);  // 메세지가 올 때 마다 console
                 showMessage(receivedMessage);  // 받은 메세지 화면에 표시
@@ -128,7 +127,8 @@ const Chat = ({ chatRoomId, onBack }) => {
             const chatMessage = {
                 sender: { userId: parseInt(userId, 10) },
                 chatRoomId: chatRoomId,
-                messageText: messageInput
+                messageText: messageInput,
+                isRead: false // 메시지 전송 시 isRead를 false로 설정
             };
             console.log('보내는 메시지:', chatMessage); // 사용자가 전송하는 메시지
 
