@@ -37,7 +37,7 @@ const Chat = ({ chatRoomId, onBack }) => {
             if (userId && chatRoomId) {
                 try {
                     const response = await axios.get(`http://${SERVER_HOST}/chatRooms/leave/${chatRoomId}/${userId}`);
-                    console.log("isJoin 값 가져오기:", response.data); // isJoin 값을 가져옴
+                    console.log("isJoin 값 가져오기:", response.data);
                     setIsJoin(response.data);
                 } catch (error) {
                     console.error("isJoin 값을 가져오는 중 오류 발생:", error);
@@ -54,7 +54,7 @@ const Chat = ({ chatRoomId, onBack }) => {
         const fetchMessages = async () => {
             try {
                 const response = await axios.get(`http://${SERVER_HOST}/api/messages/${chatRoomId}`);
-                console.log('메시지 목록 가져오기:', response.data); // 메시지 목록을 가져옴
+                console.log('메시지 목록 가져오기:', response.data);
                 if (Array.isArray(response.data)) {
                     setMessages(response.data);
                 } else {
@@ -76,12 +76,19 @@ const Chat = ({ chatRoomId, onBack }) => {
 
             stompClient.current.subscribe(`/topic/public/${chatRoomId}`, (message) => {
                 const receivedMessage = JSON.parse(message.body);
-                console.log('실시간 message: ', receivedMessage);  // 메세지가 올 때 마다 console
-                showMessage(receivedMessage);  // 받은 메세지 화면에 표시
+                console.log('실시간 message: ', receivedMessage);
+
+                // 메시지 중복 방지 처리
+                setMessages(prevMessages => {
+                    if (!prevMessages.find(msg => msg.messageId === receivedMessage.messageId)) {
+                        return [...prevMessages, receivedMessage];
+                    }
+                    return prevMessages;
+                });
 
                 // 상대방의 메시지일 경우 읽음 상태 업데이트
                 if (receivedMessage.sender.userId !== userId) {
-                    markMessageAsRead(receivedMessage.messageId); // 특정 메시지의 읽음 상태만 업데이트
+                    markMessageAsRead(receivedMessage.messageId);
                 }
             });
         }, (error) => {
@@ -99,20 +106,10 @@ const Chat = ({ chatRoomId, onBack }) => {
         };
     }, [chatRoomId, userId]);
 
-    const showMessage = (message) => {
-        if (message) {
-            console.log('받은 메시지:', message); // STOMP를 통해 받은 메시지
-            setMessages(prevMessages => [...prevMessages, message]);
-        } else {
-            console.error('유효하지 않은 메시지:', message);
-        }
-    };
-
     const markMessageAsRead = async (messageId) => {
         if (userId && chatRoomId) {
             try {
                 await axios.post(`http://${SERVER_HOST}/api/messages/read/${chatRoomId}/${userId}`, { messageId });
-                // 메시지 읽음 상태 업데이트
                 setMessages(prevMessages => prevMessages.map(msg => 
                     msg.messageId === messageId ? { ...msg, isRead: true } : msg
                 ));
@@ -128,9 +125,9 @@ const Chat = ({ chatRoomId, onBack }) => {
                 sender: { userId: parseInt(userId, 10) },
                 chatRoomId: chatRoomId,
                 messageText: messageInput,
-                isRead: false // 메시지 전송 시 isRead를 false로 설정
+                isRead: false
             };
-            console.log('보내는 메시지:', chatMessage); // 사용자가 전송하는 메시지
+            console.log('보내는 메시지:', chatMessage);
 
             stompClient.current.send(
                 `/app/sendMessage/${chatRoomId}`,
