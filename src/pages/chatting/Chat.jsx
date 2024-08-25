@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 const Chat = ({ chatRoomId, onBack }) => {
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
+    const [deleteStatus, setDeleteStatus] = useState('');
     const [isConnected, setIsConnected] = useState(false);
     const [product, setProduct] = useState(null);
     const [isJoin, setIsJoin] = useState(null);
@@ -157,27 +158,30 @@ const Chat = ({ chatRoomId, onBack }) => {
     };
 
     const handleDelete = async (messageId, sendTime) => {
-        const currentTime = new Date().getTime();
-        const messageTime = new Date(sendTime).getTime();
+        if (!window.confirm("정말로 이 메시지를 삭제하시겠습니까?")) {
+            return; // 사용자가 삭제를 취소한 경우
+        }
     
-        // 5분이 지나지 않은 경우에만 삭제 요청을 보냄
-        if ((currentTime - messageTime) <= 300000) {
-            const isConfirmed = window.confirm('삭제하시겠습니까?');
-            if (!isConfirmed) return;
+        try {
+            // Ensure sendTime is in ISO format
+            const formattedSendTime = new Date(sendTime).toISOString();
     
-            try {
-                await axios.delete(`http://${SERVER_HOST}/api/${messageId}`, {
-                    params: {
-                        sendTime: sendTime
-                    }
-                });
-                setMessages(prevMessages => prevMessages.filter(message => message.messageId !== messageId));
-                window.alert("메시지가 삭제되었습니다.");
-            } catch (error) {
-                console.error('메시지 삭제 중 오류 발생:', error);
-            }
-        } else {
-            window.alert('메시지를 작성한 지 5분 이상 경과하였습니다.');
+            // Send delete request to the server
+            await axios.delete(`http://${SERVER_HOST}/api/${messageId}`, {
+                params: { sendTime: formattedSendTime }
+            });
+    
+            // Update the messages state to remove the deleted message
+            setMessages(prevMessages => 
+                prevMessages.filter(message => message.messageId !== messageId)
+            );
+    
+            // Update status message for successful deletion
+            alert('메시지가 성공적으로 삭제되었습니다.');
+        } catch (error) {
+            // Alert for failed deletion
+            alert('메시지 작성 5분이 경과하였습니다.');
+            console.error('메시지를 삭제하는 중 오류 발생:', error.response ? error.response.data : error.message);
         }
     };
 
