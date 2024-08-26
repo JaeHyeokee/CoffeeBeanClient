@@ -35,6 +35,7 @@ const ProductDetail = () => {
     const [isDipped, setIsDipped] = useState(false);
     const [dipsCount, setDipsCount] = useState(0); // 찜 개수 상태 추가
     const [chatRoomCount, setChatRoomCount] = useState(0);
+    const [profileImg, setProfileImg] = useState('https://img2.joongna.com/common/Profile/Default/profile_f.png');
 
 
     useEffect(() => {
@@ -86,6 +87,20 @@ const ProductDetail = () => {
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
     };
+
+    useEffect(() => {
+        const fetchProfileImage = async () => {
+            try {
+                const response = await axios.get(`http://${SERVER_HOST}/user/profile/${userInfo.userId}`);
+                const imageUrl = response.data;
+                setProfileImg(imageUrl); 
+            } catch (error) {
+                console.error('Failed to fetch profile image:', error);
+            }
+        };
+
+        fetchProfileImage();
+    }, [userInfo.userId]);
 
     const checkChatRoomExists = async () => {
         try {
@@ -382,7 +397,7 @@ const ProductDetail = () => {
                         <h2 className={styles.infotext}>가게정보</h2>
                         <div className={styles.nickNameAndProfileImgFrame}>
                             <span className={styles.sellerNickName}>{product.user.userName}</span>
-                            <img className={styles.sellerProfileImg} src={product.user.profileImg} alt='프로필'/>
+                            <img className={styles.sellerProfileImg} src={profileImg} alt='프로필'/>
                         </div>
                         <div>
                             <div className={styles.trustIndexFrame}>
