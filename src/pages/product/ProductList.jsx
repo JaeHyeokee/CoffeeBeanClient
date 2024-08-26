@@ -28,7 +28,7 @@ const ProductList = () => {
     const [minPriceFilter, setMinPriceFilter] = useState(''); //최소가격 상태 저장
     const [maxPriceFilter, setMaxPriceFilter] = useState(''); //최대가격 상태 저장
     const [showModal, setShowModal] = useState(false);
-    const [includeSoldOut, setIncludeSoldOut] = useState(false); //판매완료 여부 상태 저장
+    const [includeSoldOut, setIncludeSoldOut] = useState(false); //판매완료 포함 미포함 상태 저장
 
     const { category, subcategory, subsubcategory } = useParams();
 
@@ -68,13 +68,21 @@ const ProductList = () => {
     
         const fetchPriceInfo = async () => {
             try {
-                const response = await axios.get(`http://${SERVER_HOST}/product/priceInfo`, {
-                    params: {
-                        category1: category,
-                        category2: subcategory,
-                        category3: subsubcategory
-                    }
-                });
+                let response;
+                if(keyword === '') {
+                    response = await axios.get(`http://${SERVER_HOST}/product/priceInfo`, {
+                        params: {
+                            category1: category,
+                            category2: subcategory,
+                            category3: subsubcategory
+                        }
+                    });
+                } else {
+                    response = await axios({
+                        method: "get",
+                        url: `http://${SERVER_HOST}/product/priceInfo/${keyword}`,
+                    });
+                }
                 setPriceInfo(response.data);
             } catch (error) {
                 console.error(error);
@@ -105,14 +113,18 @@ const ProductList = () => {
         setCurrentPage(1); // 필터 적용 시 페이지를 첫 페이지로 리셋
     };
 
-    //판매완료 상품 포함 여부
+    //필터링 조건이 변경될 때마다 필터링을 자동으로 수행
     useEffect(() => {
         handleFilterProducts();
     }, [products, category, subcategory, subsubcategory, includeSoldOut]); //includeSoldOut값이 변경될때마다 필터링 적용
 
-    //가격 필터링
+    //가격 필터를 적용버튼을 클릭했을때 호출
     const handlePriceFilterClick = () => {
         handleFilterProducts();
+    };
+    //판매 완료 여부 필터를 토글하여 필터링 조건을 변경
+    const handleToggleSoldOut = () => {
+        setIncludeSoldOut(prev => !prev);
     };
 
     const handlePageChange = (page) => {
@@ -126,9 +138,6 @@ const ProductList = () => {
     const handleOpenModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
-    const handleToggleSoldOut = () => {
-        setIncludeSoldOut(prev => !prev);
-    };
 
     const currentItems = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
@@ -136,7 +145,7 @@ const ProductList = () => {
         <>
             <Header />
             <div className={styles.productlistBody}>
-                <div className={styles.searchResult}>검색결과</div>
+                <div className={styles.searchResult}>{keyword !== '' ? "'" + keyword + "'" + '\u00A0' : ''}검색 결과</div>
 
                 <table className={styles.categoryContainer}>
                     <tbody>
@@ -197,10 +206,10 @@ const ProductList = () => {
                                     >
                                         <img 
                                             src={includeSoldOut ? Soldout : UnSoldout} 
-                                            alt={includeSoldOut ? '판매완료 상품 포함' : '판매완료 상품 미포함'} 
+                                            alt={includeSoldOut ? '판매완료 상품 포함' : '판매완료 상품 포함'} 
                                             className={styles.icon}
                                         />
-                                        {includeSoldOut ? '판매완료 상품 포함' : '판매완료 상품 미포함'}
+                                        {includeSoldOut ? '판매완료 상품 포함' : '판매완료 상품 포함'}
                                     </button>
                                 </div>
                             </td>
@@ -210,7 +219,7 @@ const ProductList = () => {
 
                 <div className={styles.price}>
                     <div className={styles.priceTitle}>
-                    <h4>현재 카테고리의 상품 가격 비교</h4>
+                    <h4 className={styles.priceh4}>현재 검색 결과의 상품 가격 비교</h4>
                     <h6 onClick={handleOpenModal}> 그래프 보기</h6>
                     </div>
                     <div className={styles.priceInfo}>

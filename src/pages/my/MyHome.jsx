@@ -73,7 +73,7 @@ const MyHome = () => {
             <img className={Style.myHomeProfileImg} src={profileImg} alt='프로필' />
             <div className={Style.myHomeProfileContent}>
                 <div>
-                    <span className={Style.nickNamePrint}>{userInfo.userName}</span>
+                    <span className={Style.nickNamePrint}>{userInfo.nickName}</span>
                     <p className={Style.oneLineIntro}>{userData.introduction || '안녕하세요!'}</p>
                 </div>
                 <div>
