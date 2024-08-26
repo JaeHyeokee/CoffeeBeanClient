@@ -28,7 +28,7 @@ const ProductList = () => {
     const [minPriceFilter, setMinPriceFilter] = useState(''); //최소가격 상태 저장
     const [maxPriceFilter, setMaxPriceFilter] = useState(''); //최대가격 상태 저장
     const [showModal, setShowModal] = useState(false);
-    const [includeSoldOut, setIncludeSoldOut] = useState(false); //판매완료 여부 상태 저장
+    const [includeSoldOut, setIncludeSoldOut] = useState(false); //판매완료 포함 미포함 상태 저장
 
     const { category, subcategory, subsubcategory } = useParams();
 
@@ -113,14 +113,18 @@ const ProductList = () => {
         setCurrentPage(1); // 필터 적용 시 페이지를 첫 페이지로 리셋
     };
 
-    //판매완료 상품 포함 여부
+    //필터링 조건이 변경될 때마다 필터링을 자동으로 수행
     useEffect(() => {
         handleFilterProducts();
     }, [products, category, subcategory, subsubcategory, includeSoldOut]); //includeSoldOut값이 변경될때마다 필터링 적용
 
-    //가격 필터링
+    //가격 필터를 적용버튼을 클릭했을때 호출
     const handlePriceFilterClick = () => {
         handleFilterProducts();
+    };
+    //판매 완료 여부 필터를 토글하여 필터링 조건을 변경
+    const handleToggleSoldOut = () => {
+        setIncludeSoldOut(prev => !prev);
     };
 
     const handlePageChange = (page) => {
@@ -134,9 +138,6 @@ const ProductList = () => {
     const handleOpenModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
-    const handleToggleSoldOut = () => {
-        setIncludeSoldOut(prev => !prev);
-    };
 
     const currentItems = filteredProducts.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
@@ -205,10 +206,10 @@ const ProductList = () => {
                                     >
                                         <img 
                                             src={includeSoldOut ? Soldout : UnSoldout} 
-                                            alt={includeSoldOut ? '판매완료 상품 포함' : '판매완료 상품 미포함'} 
+                                            alt={includeSoldOut ? '판매완료 상품 포함' : '판매완료 상품 포함'} 
                                             className={styles.icon}
                                         />
-                                        {includeSoldOut ? '판매완료 상품 포함' : '판매완료 상품 미포함'}
+                                        {includeSoldOut ? '판매완료 상품 포함' : '판매완료 상품 포함'}
                                     </button>
                                 </div>
                             </td>
