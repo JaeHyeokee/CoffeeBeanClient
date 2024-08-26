@@ -1,31 +1,29 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../../css/my/WriterReviewList.module.css';
-import { Button } from 'react-bootstrap';
 import { SERVER_HOST } from '../../apis/Api';
-import { FaArrowLeft } from 'react-icons/fa';
+import { LoginContext } from '../../contexts/LoginContextProvider';
 
-const ReviewList = () => {
-    const navigate = useNavigate();
-    const { userId } = useParams();
+const WriterReviewList = () => {
+    const {isLogin, logout, userInfo } = useContext(LoginContext);
     const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         axios({
             method: "get",
-            url: `http://${SERVER_HOST}/review/list/writer/${userId}`
+            url: `http://${SERVER_HOST}/review/list/writer/${userInfo.userId}`
         })
-            .then(response => {
-                const { data, status } = response;
-                if (status === 200) {
-                    console.log(data);
-                    setReviews(data);
-                } else {
-                    window.alert('읽어오기 실패');
-                }
-            });
-    }, [userId]);
+        .then(response => {
+            const { data, status } = response;
+            if (status === 200) {
+                console.log(data);
+                setReviews(data);
+            } else {
+                window.alert('읽어오기 실패');
+            }
+        });
+    }, []);
 
     const isSeller = (recipient, seller) => {
         return recipient.userId === seller.userId;
@@ -35,17 +33,12 @@ const ReviewList = () => {
         <>
             <div className={styles.reviewListContainer}>
                 <div className={styles.firstHeader}>
-                    <button className={styles.backButton} onClick={() => navigate('/MyPage')}>
-                        <FaArrowLeft />
-                    </button>
                     <div className={styles.title}>거래 후기</div>
-                    <div></div>
                 </div>
-                <hr className={styles.firstHeaderLine} />
                 <div className={styles.header}>
                     <div className={styles.navLinkContainer}>
-                        <Link to={'/ReviewList/recipient/' + userId} className={styles.navLink}>나의 후기</Link>
-                        <Link to={'/WriterReviewList/' + userId} className={styles.activeNavLink}>내가 쓴 후기</Link>
+                        <Link to={'/ReviewList/recipient/' + userInfo.userId} className={styles.navLink}>나의 후기</Link>
+                        <Link to={'/WriterReviewList/' + userInfo.userId} className={styles.activeNavLink}>내가 쓴 후기</Link>
                     </div>
                 </div>
                 <hr className={styles.divider} />
@@ -93,4 +86,4 @@ const ReviewList = () => {
     );
 };
 
-export default ReviewList;
+export default WriterReviewList;

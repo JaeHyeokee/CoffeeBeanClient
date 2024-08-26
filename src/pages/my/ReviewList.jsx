@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import WriteReviewList from './WriterReviewList';
+import Style from '../../css/my/ReviewList.module.css';
 
 const ReviewList = () => {
     const [reviewType, setReviewType] = useState('received');

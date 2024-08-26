@@ -84,7 +84,17 @@ const DealList = (props) => {
                         </div>
                         <Card.Body className={Style.sellInfoCardBody}>
                             <Card.Title className={Style.sellInfoTitle}>{elem.name}</Card.Title>
-                            <Card.Text className={Style.sellInfoPrice}>{elem.price.toLocaleString()}{isProductOrCar === 'product' ? '원' : '만원'}</Card.Text>
+                            <Card.Text className={Style.sellInfoPrice}>
+                                {
+                                    elem.price === 0 ?
+                                        isProductOrCar === 'product' ?
+                                            '무료 나눔'
+                                        :
+                                            '가격 협의'
+                                    :
+                                        elem.price.toLocaleString() + (isProductOrCar === 'product' ? '원' : '만원')
+                                }
+                            </Card.Text>
                             <Card.Text className={Style.sellInfoExtra}>{isProductOrCar === 'product' && elem.desiredArea !== '' ? elem.desiredArea + ' | ' : ''}{formatRegDate(elem.regDate)}</Card.Text>
                         </Card.Body>
                     </Card>
