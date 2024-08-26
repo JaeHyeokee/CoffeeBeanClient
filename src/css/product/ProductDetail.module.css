@@ -1,23 +1,17 @@
 .productdetailBody {
-    width: 1280px;
-    margin: auto;
-    padding: 20px;
+    padding: 0 20%;
 }
 
-/* .productDetail {
-    display: flex;
-    flex-direction: column; 
-} */
-
 .productdetailTop {
-    margin-top: 30px;
+    margin-top: 70px;
     display: flex;
-    gap: 20px;
+    width: 100%;
+    gap: 70px;
     margin-bottom: 50px;
 }
 
 .carousel {
-    width: 630px; /* 슬라이더의 전체 너비 설정 */
+    width: 600px; /* 슬라이더의 전체 너비 설정 */
 }
 
 .carouselItem {
@@ -28,15 +22,14 @@
 }
 
 .productImage {
-    width: 630px; /* 고정된 가로 크기 */
-    height: 550px; /* 고정된 세로 크기 */
+    width: 100%; /* 고정된 가로 크기 */
+    height: 500px; /* 고정된 세로 크기 */
     border-radius: 10px; /* 둥근 모서리 설정 */
     object-fit: cover; /* 이미지가 부모 요소에 맞게 조정되도록 설정 */
 }
 
 .productHeader {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     width: 100%;
     margin: 0;
@@ -44,16 +37,26 @@
 
 .productCategory {
     text-align: left; /* 텍스트를 왼쪽으로 정렬 */
-    margin-top: 30px;
-    color: #686868;
+    margin: 0 !important;
+    margin-top: 10px !important;
+    color: #B9BAC4;
+    font-size: 13px;
+}
+
+.lastproductCategory {
+    text-align: left; /* 텍스트를 왼쪽으로 정렬 */
+    margin: 0 !important;
+    margin-top: 10px !important;
+    color: black;
+    font-size: 13px;
 }
 
 
 /* 상품정보 */
 .productpostinfo {
+    font-size: 13px;
     margin-top: 10px;
-    font-size: 15px;
-    color: rgb(94, 94, 94);
+    color: #B9BAC4;
 }
 
 
@@ -62,24 +65,27 @@
 .productInfo {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    justify-content: flex-start; /* 요소를 위쪽에 붙게 함 */
+    justify-content: space-between; /* 요소를 위쪽에 붙게 함 */
     width: 630px;
-    padding: 20px;
-    padding-top: 0;
     /* border: 1px solid #bababa; */
 }
 
 
 .productInfo p:first-of-type {
-    font-size: 16px;
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 .productName {
-    font-size: 28px;
-    font-weight: 600;
-    margin-top: 20px;
+    font-size: 25px;
+    margin-bottom: 0;
+    padding-right: 25px;
+}
+
+.shareImg {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    margin-top: 5px;
 }
 
 .productInfo p:nth-of-type(2) {
@@ -88,17 +94,16 @@
 }
 
 .productPrice {
-    font-size: 40px;
-    font-weight: 700;
-    margin: 20px 0;
-    margin-bottom: 10px;
+    font-size: 30px;
+    font-weight: 1000;
 }
 
 .area {
-    margin-bottom: 40px;
+    margin: 10px 0 25px 0;
     display: flex;
+    color: #787E89;
     gap: 20px;
-    
+    font-size: 12px;
 }
 
 
@@ -107,11 +112,10 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 10px;
+    border: 1px solid #EBEBEB;
+    border-radius: 5px;
     width: 100%;
     margin-bottom: 30px;
-    position: relative;
 }
 
 /* .productInfoBottom::before {
@@ -125,23 +129,28 @@
     background-color: #ccc;
 } */
 
-.productInfoBottom div {
+.productInfoBottomLine {
+    width: 1px;
+    height: 70%;
+    background-color: #EBEBEB;
+}
+
+.productInfoBottomDiv {
     text-align: center;
-    width: 45%;
+    width: 25%;
+    p {
+        font-size: 12px;
+        color: #B9BAC4;
+        margin-bottom: 0 !important;
+    }
 }
-
-.productInfoBottomText {
-    font-weight: bold;
-}
-
-
-
 
 /* 채팅하기, 찜하기 버튼 */
 .chatDipButton {
     display: flex;
     justify-content: space-between;
-    width: 100%; 
+    width: 100%;
+    padding-top: 80px;
 }
 
 .chatButton {
@@ -165,7 +174,8 @@
     justify-content: center; /* 버튼들이 중앙에 배치되도록 설정 */
     gap: 100px; /* 버튼들 사이의 간격 */
     width: 100%;
-    border: 2px solid #ccc;
+    background-color: #F7F9FA;
+    align-items: center;
     padding: 20px;
     border-radius: 10px;
 }
@@ -186,8 +196,9 @@
 }
 
 .buttonText {
-    font-size: 15px;
-    margin-top: 5px;
+    font-size: 13px;
+    margin-top: 10px;
+    font-weight: bold;
 }
 
 
@@ -257,18 +268,19 @@
 .productdetailBottom {
     display: flex;
     width: 100%;
-    justify-content: space-between; 
+    justify-content: space-between;
+    gap: 70px;
+    margin-top: 100px;
 }
 
 .productInfoDetail {
-    padding: 10px;
     box-sizing: border-box;
-    margin-right: 100px;
-    width: 90%;
+    width: 60%;
 }
 
 .productInfoDetail p {
-    font-size: 15px
+    font-size: 15px;
+    padding-top: 20px;
 }
 
 
@@ -284,8 +296,7 @@
 
 
 .userInfo {
-    padding: 10px;
-    width: 70%;
+    width: 40%;
 }
 
 
@@ -296,18 +307,12 @@
 
 
 
-.userInfodiv {
-    padding-bottom: 10px;
-    border-bottom: 2px solid #ccc;
-    font-size: medium;
-    font-weight: bold;
-}
 
 
 .nickNameAndProfileImgFrame {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 25px;
+    margin: 25px 0 25px 0;
 }
 
 .sellerNickName {
@@ -317,8 +322,7 @@
 }
 
 .sellerProfileImg {
-    margin-top: 20px;
-    height: 50px;
+    height: 60px;
     border-radius: 50%;
 }
 
@@ -351,7 +355,7 @@
 
 .trustIndexBar {
     width: 100%;
-    height: 10px;
+    height: 10px !important;
     margin-bottom: 15px;
     border-radius: 10px !important;
     transition: width 0.5s ease-in-out;
@@ -364,14 +368,14 @@
 
 .sellListFrame {
     display: flex;
+    justify-content: flex-start;
     margin-top: 20px;
-    gap: 10px;
+    gap: 5%;
     flex-wrap: wrap;
 }
 
 .sellInfoCard {
-    padding: 5px;
-    width: 31%;
+    width: 30%;
     height: 250px !important;
     border: 0 !important;
     cursor: pointer;
@@ -383,7 +387,7 @@
 
 .sellInfoCardImgContainer {
     overflow: hidden;
-    height: 65%;
+    height: 55%;
     border-radius: 5px;
 }
 
@@ -394,18 +398,18 @@
 
 .sellInfoCardBody {
     padding: 15px 5px !important;
-    height: 35%;
+    height: 45%;
 }
 
 .sellInfoTitle {
     margin-top: 5px;
     margin-bottom: 20px;
     display: -webkit-box;          /* Flexbox를 사용하여 상자 모델을 정의합니다. */
-    -webkit-line-clamp: 1;         /* 표시할 줄 수를 2로 제한합니다. */
+    -webkit-line-clamp: 2;        /* 표시할 줄 수를 2로 제한합니다. */
     -webkit-box-orient: vertical;  /* 상자의 방향을 수직으로 설정합니다. */
     overflow: hidden;              /* 넘치는 내용은 숨깁니다. */
     text-overflow: ellipsis;       /* 넘치는 텍스트를 생략 기호로 표시합니다. */
-    height: 18px;
+    height: 35px;
     font-size: 15px !important;
     color: #757575;
 }
@@ -416,7 +420,7 @@
 }
 
 .infotext{
-    width: 580px;
+    width: 100%;
     font-weight: bold;
     font-size: 24px;
     padding-bottom: 20px;
@@ -441,9 +445,9 @@
 }
 
 .productInfoBottomDiv p:nth-of-type(2) {
-    font-size: 17px; /* 원하는 크기로 설정 */
+    font-size: 13px; /* 원하는 크기로 설정 */
     font-weight: bold;
-    color: #757575;
+    color: black;
 }
 
 
@@ -453,7 +457,9 @@
 
 .productNameContainer {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    padding: 10px 0;
 }
 
 .modalOverlay {

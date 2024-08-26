@@ -140,20 +140,7 @@ const Home = () => {
                     <div className={Style.productList}>
                         <h2 className={Style.maintext}>실시간 인기 상품</h2>
                         <div className={Style.productItems}>
-                            {topProducts.slice(0, 5).map(product => (
-                                <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className={Style.productItem}>
-                                    <img src={product.fileList[0].source} alt={product.name} />
-                                    <h4>{product.name}</h4>
-                                    <p className={Style.price}>{product.price.toLocaleString()}원</p>
-                                    <p>
-                                        {product.desiredArea ? product.desiredArea + ' | ' : ''}
-                                        {formatRegDate(product.regDate)}
-                                    </p>
-                                </Link>
-                            ))}
-                        </div>
-                        <div className={Style.productItems}>
-                            {topProducts.slice(5, 10).map(product => (
+                            {topProducts.slice(0, 10).map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className={Style.productItem}>
                                     <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
@@ -171,22 +158,9 @@ const Home = () => {
                 {/* 최근 등록 상품 */}
                 <section>
                     <div className={Style.productList}>
-                        <h2 className={Style.maintext2}>방금 등록된 상품</h2>
+                        <h2 className={Style.maintext}>방금 등록된 상품</h2>
                         <div className={Style.productItems}>
-                            {recentProducts.slice(0, 5).map(product => (
-                                <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className={Style.productItem}>
-                                    <img src={product.fileList[0].source} alt={product.name} />
-                                    <h4>{product.name}</h4>
-                                    <p className={Style.price}>{product.price.toLocaleString()}원</p>
-                                    <p>
-                                        {product.desiredArea ? product.desiredArea + ' | ' : ''}
-                                        {formatRegDate(product.regDate)}
-                                    </p>
-                                </Link>
-                            ))}
-                        </div>
-                        <div className={Style.productItems}>
-                            {recentProducts.slice(5, 10).map(product => (
+                            {recentProducts.slice(0, 10).map(product => (
                                 <Link key={product.productId} to={`/ProductDetail/${product.productId}`} className={Style.productItem}>
                                     <img src={product.fileList[0].source} alt={product.name} />
                                     <h4>{product.name}</h4>
@@ -204,9 +178,9 @@ const Home = () => {
                 {/* 최근 등록 중고차 */}
                 <section>
                     <div className={Style.productList}>
-                        <h2 className={Style.maintext2}>방금 등록된 중고차</h2>
+                        <h2 className={Style.maintext}>방금 등록된 중고차</h2>
                         <div className={Style.productItems}>
-                            {topCars.slice(0, 5).map(car => (
+                            {topCars.slice(0, 10).map(car => (
                                 <Link key={car.carId} to={`/CarDetail/${car.carId}`} className={Style.productItem}>
                                     <img src={car.fileList[0].source} alt={car.name} />
                                     <h4>{car.name}</h4>
@@ -214,21 +188,6 @@ const Home = () => {
                                         {car.price === 0 ? "가격협의" : `${car.price.toLocaleString()} 만원`}
                                     </p>
 
-                                    <p>
-                                        {car.location ? car.location + ' | ' : ''}
-                                        {formatRegDate(car.regDate)}
-                                    </p>
-                                </Link>
-                            ))}
-                        </div>
-                        <div className={Style.productItems}>
-                            {topCars.slice(5, 10).map(car => (
-                                <Link key={car.carId} to={`/CarDetail/${car.carId}`} className={Style.productItem}>
-                                    <img src={car.fileList[0].source} alt={car.name} />
-                                    <h4>{car.name}</h4>
-                                    <p className={Style.price}>
-                                        {car.price === 0 ? "가격협의" : `${car.price.toLocaleString()} 만원`}
-                                    </p>
                                     <p>
                                         {car.location ? car.location + ' | ' : ''}
                                         {formatRegDate(car.regDate)}
