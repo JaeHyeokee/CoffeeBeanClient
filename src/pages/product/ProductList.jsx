@@ -68,13 +68,21 @@ const ProductList = () => {
     
         const fetchPriceInfo = async () => {
             try {
-                const response = await axios.get(`http://${SERVER_HOST}/product/priceInfo`, {
-                    params: {
-                        category1: category,
-                        category2: subcategory,
-                        category3: subsubcategory
-                    }
-                });
+                let response;
+                if(keyword === '') {
+                    response = await axios.get(`http://${SERVER_HOST}/product/priceInfo`, {
+                        params: {
+                            category1: category,
+                            category2: subcategory,
+                            category3: subsubcategory
+                        }
+                    });
+                } else {
+                    response = await axios({
+                        method: "get",
+                        url: `http://${SERVER_HOST}/product/priceInfo/${keyword}`,
+                    });
+                }
                 setPriceInfo(response.data);
             } catch (error) {
                 console.error(error);
@@ -136,7 +144,7 @@ const ProductList = () => {
         <>
             <Header />
             <div className={styles.productlistBody}>
-                <div className={styles.searchResult}>검색결과</div>
+                <div className={styles.searchResult}>{keyword !== '' ? "'" + keyword + "'" + '\u00A0' : ''}검색 결과</div>
 
                 <table className={styles.categoryContainer}>
                     <tbody>
@@ -210,7 +218,7 @@ const ProductList = () => {
 
                 <div className={styles.price}>
                     <div className={styles.priceTitle}>
-                    <h4>현재 카테고리의 상품 가격 비교</h4>
+                    <h4 className={styles.priceh4}>현재 검색 결과의 상품 가격 비교</h4>
                     <h6 onClick={handleOpenModal}> 그래프 보기</h6>
                     </div>
                     <div className={styles.priceInfo}>

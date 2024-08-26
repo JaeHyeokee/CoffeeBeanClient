@@ -50,13 +50,15 @@ const ChatList = ({ onSelectChatRoom }) => {
   }, [userInfo.userId]);
 
   const getChatUserName = (chatRoom) => {
+    let getChatUserName = null;
     if (userInfo.userId === chatRoom.sellerId) {
-      return chatRoom.buyerUserName;
+      getChatUserName = chatRoom.buyerUserName;
     } else if (userInfo.userId === chatRoom.buyerId) {
-      return chatRoom.sellerUserName;
+      getChatUserName = chatRoom.sellerUserName;
     }
-    return '비활성화 대화방';
+    return getChatUserName || '비활성화 대화방';
   };
+
 
   const deleteChatList = async (chatRoomId) => {
     const confirmLeave = window.confirm("채팅방을 나가시겠습니까?");
@@ -94,8 +96,9 @@ const ChatList = ({ onSelectChatRoom }) => {
   };
 
   return (
-    <div>
+    <div className='chatRoom'>
       <h2 className='chatName'>채팅방</h2>
+      <div className='chatRoomList'>
       {chatRooms.length === 0 ? (
         <li className='noChatRoom'>참여중인 채팅방이 없습니다.</li>
       ) : (
@@ -146,6 +149,7 @@ const ChatList = ({ onSelectChatRoom }) => {
           );
         })
       )}
+      </div>
     </div>
   );
 };

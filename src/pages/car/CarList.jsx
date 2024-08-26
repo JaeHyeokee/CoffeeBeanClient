@@ -182,7 +182,7 @@ const CarList = () => {
         <>
             <Header/>
             <div className={styles.carListBody}>
-                <div className={styles.searchResult}>검색결과</div>
+            <div className={styles.searchResult}>{keyword !== '' ? "'" + keyword + "'" + '\u00A0' : ''}검색 결과</div>
                 <table className={styles.categoryContainer}>
                     <tbody>
                         <tr>
@@ -250,20 +250,11 @@ const CarList = () => {
                                 </div>
                             </td>
                         </tr>
-
-                        <tr>
-                            <td className={styles.category4}>
-                                <h2>선택한 필터</h2>
-                            </td>
-                            <td>
-                                <div className={styles.category4Result}>위에 선택한 필터 검색 결과 뽑아내기</div>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
 
                 <div className={styles.price}>
-                    <h4>현재 카테고리의 상품 가격 비교</h4>
+                    <h4>현재 검색 결과의 상품 가격 비교</h4>
                     <div className={styles.priceInfo}>
                         <p>평균 가격: {carInfo.averagePrice.toFixed(0)} 만원</p>
                         <p>최저 가격: {carInfo.minPrice.toFixed(0)} 만원</p>
