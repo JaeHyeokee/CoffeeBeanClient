@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import Header from '../components/Header';
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../../css/my/WriterReviewList.module.css';
 import { Button } from 'react-bootstrap';
 import { SERVER_HOST } from '../../apis/Api';
-import Footer from '../components/Footer';
 import { FaArrowLeft } from 'react-icons/fa';
 
 const ReviewList = () => {
@@ -35,7 +33,6 @@ const ReviewList = () => {
 
     return (
         <>
-            <Header />
             <div className={styles.reviewListContainer}>
                 <div className={styles.firstHeader}>
                     <button className={styles.backButton} onClick={() => navigate('/MyPage')}>
@@ -92,7 +89,6 @@ const ReviewList = () => {
                     </div>
                 ))}
             </div>
-            <Footer />
         </>
     );
 };

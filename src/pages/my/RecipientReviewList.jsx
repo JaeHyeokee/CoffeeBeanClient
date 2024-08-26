@@ -72,7 +72,6 @@ const ReviewList = () => {
 
     return (
         <>
-            <Header />
             <div className={styles.reviewListContainer}>
                 <div className={styles.firstHeader}>
                     <button className={styles.backButton} onClick={() => navigate('/MyPage')}>
@@ -147,7 +146,6 @@ const ReviewList = () => {
                     ))}
                 </div>
             </div>
-            <Footer />
         </>
     );
 };

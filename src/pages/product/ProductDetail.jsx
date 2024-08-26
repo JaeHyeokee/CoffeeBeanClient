@@ -20,7 +20,7 @@ import DipHeart from "../../image/Dip.svg"
 import FullDipHeart from "../../image/FullDipHeart.svg" 
 
 const ProductDetail = () => {
-    const { id } = useParams();  // productId
+    const { id } = useParams();  // productIdg
     const [product, setProduct] = useState(null);
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
