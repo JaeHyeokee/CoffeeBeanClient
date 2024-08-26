@@ -53,10 +53,11 @@ const PostCreate = () => {
         } else if (!post.title) {
             window.alert('제목은 필수입니다.');
             return false;
-        } else if (!post.content) {
-            window.alert('내용은 한 글자 이상 작성해 주세요.');
-            return false;
         }
+        // } else if (!post.content) {
+        //     window.alert('내용은 한 글자 이상 작성해 주세요.');
+        //     return false;
+        // }
         return true;
     };
 

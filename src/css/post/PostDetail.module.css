@@ -98,7 +98,8 @@
 }
 
 .imagePreview {
-    max-width: 100%; /* 컨테이너의 너비를 초과하지 않도록 제한 */
+    display: block;
+    width: 100%;
     height: auto;
     margin-top: 10px;
     border-radius: 8px;
