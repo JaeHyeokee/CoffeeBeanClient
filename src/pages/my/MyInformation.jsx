@@ -150,11 +150,11 @@ const MyInformation = () => {
                         </Button>
                     </div>
                     <div>
-                        <Button onClick={handleImageUpload} className={Style.profileSave} >
-                            프로필 이미지 저장
+                        <Button variant='success' onClick={handleImageUpload} className={Style.profileSave} >
+                            프로필 저장
                         </Button>
-                        <Button onClick={handleImageDelete} className={Style.profileSave} >
-                            프로필 이미지 삭제
+                        <Button variant='danger' onClick={handleImageDelete} className={Style.profileSave} >
+                            프로필 삭제
                         </Button>
                     </div>
 
