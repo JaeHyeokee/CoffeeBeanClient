@@ -6,7 +6,7 @@ import { SERVER_HOST } from '../../apis/Api';
 import { LoginContext } from '../../contexts/LoginContextProvider';
 
 const WriterReviewList = () => {
-    const {isLogin, logout, userInfo } = useContext(LoginContext);
+    const { userInfo } = useContext(LoginContext);
     const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
@@ -32,16 +32,6 @@ const WriterReviewList = () => {
     return (
         <>
             <div className={styles.reviewListContainer}>
-                <div className={styles.firstHeader}>
-                    <div className={styles.title}>거래 후기</div>
-                </div>
-                <div className={styles.header}>
-                    <div className={styles.navLinkContainer}>
-                        <Link to={'/ReviewList/recipient/' + userInfo.userId} className={styles.navLink}>나의 후기</Link>
-                        <Link to={'/WriterReviewList/' + userInfo.userId} className={styles.activeNavLink}>내가 쓴 후기</Link>
-                    </div>
-                </div>
-                <hr className={styles.divider} />
                 {reviews.map((item, index) => (
                     <div key={index} className={styles.reviewItem}>
                         <div className={styles.topContainer}>

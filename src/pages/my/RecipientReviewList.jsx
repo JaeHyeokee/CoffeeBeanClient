@@ -10,7 +10,6 @@ import Footer from '../components/Footer';
 
 const ReviewList = () => {
     const navigate = useNavigate();
-    const { userId } = useParams();
     const { userInfo } = useContext(LoginContext);
 
     const [reviews, setReviews] = useState([]);
@@ -38,7 +37,7 @@ const ReviewList = () => {
 
         axios({
             method: "get",
-            url: `http://${SERVER_HOST}/review/list/recipient/${userId}`
+            url: `http://${SERVER_HOST}/review/list/recipient/${userInfo.userId}`
         }).then(response => {
             const { data, status } = response;
             if (status === 200) {
@@ -50,12 +49,12 @@ const ReviewList = () => {
                 window.alert('읽어오기 실패');
             }
         });
-    }, [userId]);
+    }, [userInfo.userId]);
 
     useEffect(() => {
         axios({
             method: "get",
-            url: `http://${SERVER_HOST}/user/sampleReview/${userId}`
+            url: `http://${SERVER_HOST}/user/sampleReview/${userInfo.userId}`
         }).then(response => {
             const { data, status } = response;
             if (status === 200) {
@@ -64,7 +63,7 @@ const ReviewList = () => {
                 window.alert('읽어오기 실패');
             }
         });
-    }, [userId]);
+    }, [userInfo.userId]);
 
     const isSeller = (recipient, seller) => {
         return recipient.userId === seller.userId;
@@ -73,17 +72,6 @@ const ReviewList = () => {
     return (
         <>
             <div className={styles.reviewListContainer}>
-                <div className={styles.firstHeader}>
-                    <div className={styles.title}>거래 후기</div>
-                </div>
-                <hr className={styles.firstHeaderLine} />
-                <div className={styles.header}>
-                    <div className={styles.navLinkContainer}>
-                        <Link to={'/ReviewList/recipient/' + userId} className={`${styles.navLink} ${styles.activeNavLink}`}>나의 후기</Link>
-                        <Link to={'/ReviewList/writer/' + userId} className={styles.navLink}>내가 쓴 후기</Link>
-                    </div>
-                </div>
-                <hr className={styles.divider} />
                 <div className={styles.positivePoints}>
                     <h4>이런 점이 좋았어요!</h4>
                     <ul>
