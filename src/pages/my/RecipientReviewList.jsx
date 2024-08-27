@@ -74,11 +74,7 @@ const ReviewList = () => {
         <>
             <div className={styles.reviewListContainer}>
                 <div className={styles.firstHeader}>
-                    <button className={styles.backButton} onClick={() => navigate('/MyPage')}>
-                        <FaArrowLeft />
-                    </button>
                     <div className={styles.title}>거래 후기</div>
-                    <div></div>
                 </div>
                 <hr className={styles.firstHeaderLine} />
                 <div className={styles.header}>
