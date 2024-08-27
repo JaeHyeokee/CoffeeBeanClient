@@ -25,7 +25,7 @@ const ProductDetail = () => {
     const [index, setIndex] = useState(0);
     const [isChatSidebarOpen, setIsChatSidebarOpen] = useState(false);
     const{userInfo ,isLogin} = useContext(LoginContext);
-    const userId = userInfo ?.userId;
+    const userId = userInfo.userId;
     const navigate = useNavigate();
     const [ listArr, setListArr ] = useState([]);
     const [chatRoomExists, setChatRoomExists] = useState(false);
